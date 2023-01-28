@@ -10,8 +10,7 @@
     "lint:script": "eslint --ext .ts,tsx --ignore-path .gitignore .",
     "prettier": "prettier . --ignore-path .gitignore",
     "format:check": "npm run prettier -- --check",
-    "format:fix": "npm run prettier -- --write",
-    "prepare": "husky install"
+    "format:fix": "npm run prettier -- --write"
   },
   "dependencies": {
     "react": "^18.2.0",
