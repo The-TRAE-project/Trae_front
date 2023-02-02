@@ -32,7 +32,7 @@ const Main = () => {
           </TraeLogoImageWrapper>
 
           <Stack spacing={50}>
-            <Button title="Сотрудники" onClick={navigateToEmployees} />
+            <Button title="Сотрудники" onClick={navigateToEmployees} disabled />
             <Button title="Проекты" onClick={navigateToSelection} />
           </Stack>
         </ApartContainer>

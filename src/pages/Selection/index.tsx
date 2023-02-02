@@ -32,8 +32,8 @@ const Selection = () => {
           </TraeLogoImageWrapper>
 
           <Stack spacing={50}>
-            <Button title="Проекты" onClick={navigateToEmployees} />
-            <Button title="Этапы" onClick={navigateToProjects} />
+            <Button title="Проекты" onClick={navigateToEmployees} disabled />
+            <Button title="Этапы" onClick={navigateToProjects} disabled />
           </Stack>
         </ApartContainer>
       </WrapperWithBgImage>

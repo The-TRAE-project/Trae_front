@@ -18,6 +18,16 @@ export const Wrapper = styled.button`
     color: #ffffff;
   }
 
+  &:disabled {
+    cursor: not-allowed;
+  }
+
+  &:disabled:hover {
+    background: #ffffff;
+    border: 1px solid transparent;
+    color: #2a302b;
+  }
+
   @media ${mediaQueries.mqMedium} {
     padding: 18px 30px;
     font-size: 1.9em;
