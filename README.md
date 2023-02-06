@@ -40,6 +40,18 @@ Frontend part of TRAE.
 
 4. Run the project
 
+   - In Development Mode:
+
    ```sh
-   npm ren dev
+   npm run dev
+   ```
+
+   - In Production Mode:
+
+   ```sh
+   npm run build
+   ```
+
+   ```sh
+   npm run preview
    ```
