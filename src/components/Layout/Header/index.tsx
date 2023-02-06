@@ -1,9 +1,9 @@
 import { Group } from '@mantine/core';
-import { faArrowLeft, faUser } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { Paths } from '../../../constants/paths';
+import User from '../../svgs/User';
+import ArrowLeft from '../../svgs/ArrowLeft';
 import { Container } from '../../styles';
 import { Button, Wrapper } from './styles';
 
@@ -20,12 +20,12 @@ const Header = () => {
       <Container>
         <Group position={isMainPage ? 'apart' : 'right'}>
           {isMainPage && (
-            <Button onClick={navigateToBack} type="button" isOrange>
-              <FontAwesomeIcon icon={faArrowLeft} />
+            <Button onClick={navigateToBack} type="button">
+              <ArrowLeft />
             </Button>
           )}
           <Button>
-            <FontAwesomeIcon icon={faUser} />
+            <User />
           </Button>
         </Group>
       </Container>

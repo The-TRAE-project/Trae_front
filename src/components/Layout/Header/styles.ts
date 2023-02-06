@@ -21,16 +21,11 @@ export const Wrapper = styled.header`
   }
 `;
 
-type ButtonProps = {
-  isOrange?: boolean;
-};
-
 export const Button = styled.button`
   background: none;
   border: none;
   text-align: center;
   cursor: pointer;
-  color: ${(props: ButtonProps) => (props.isOrange ? '#FF9A4A' : '#fdf7f7')};
 
   svg {
     @media ${mediaQueries.mqMedium} {
