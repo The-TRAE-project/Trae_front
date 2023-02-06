@@ -11,22 +11,22 @@ export const Wrapper = styled.button`
   cursor: pointer;
   transition: all 0.4s linear;
 
-  &:is(:hover, :focus, :active) {
+  /* &:is(:hover, :focus, :active) {
     outline: none;
     border: 1px solid #2a302b;
     background: #2a302b;
     color: #ffffff;
-  }
+  } */
 
   &:disabled {
     cursor: not-allowed;
   }
 
-  &:disabled:hover {
+  /* &:disabled:hover {
     background: #ffffff;
     border: 1px solid transparent;
     color: #2a302b;
-  }
+  } */
 
   @media ${mediaQueries.mqMedium} {
     padding: 18px 30px;
