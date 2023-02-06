@@ -20,8 +20,8 @@ const Selection = () => {
   return (
     <>
       <SEO
-        title="Selection"
-        description="Selection page."
+        title="Выбор"
+        description="Страница выбора."
         name="TRAE"
         type="application"
       />

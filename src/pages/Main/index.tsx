@@ -20,8 +20,8 @@ const Main = () => {
   return (
     <>
       <SEO
-        title="Main"
-        description="Main page."
+        title="Главная"
+        description="Главная страница."
         name="TRAE"
         type="application"
       />
