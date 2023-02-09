@@ -8,7 +8,8 @@ import User from '../../svgs/User';
 import ArrowLeft from '../../svgs/ArrowLeft';
 import Home from '../../svgs/Home';
 import { Container } from '../../styles';
-import { Button, DisplayTime, Title, Wrapper } from './styles';
+import HeaderTitle from './HeaderTitle';
+import { Button, DisplayTime, Wrapper } from './styles';
 
 const Header = () => {
   const location = useLocation();
@@ -27,7 +28,7 @@ const Header = () => {
         <Group position="apart">
           <DisplayTime
             color={
-              findCurrentPath(Paths.MAIN, Paths.SELECTION)
+              !findCurrentPath(Paths.PROJECTS)
                 ? colors.whiteBlack
                 : colors.white
             }
@@ -41,8 +42,8 @@ const Header = () => {
           )}
           {!findCurrentPath(Paths.MAIN) && (
             <>
-              {findCurrentPath(Paths.PROJECTS) && (
-                <Title>Выберите проект</Title>
+              {findCurrentPath(Paths.PROJECTS, Paths.PROJECT_STAGES) && (
+                <HeaderTitle />
               )}
 
               <Group spacing={40}>

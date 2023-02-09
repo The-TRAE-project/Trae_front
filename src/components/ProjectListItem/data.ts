@@ -4,6 +4,7 @@ export interface Project {
   itemName: string;
   employee: string;
   status: string;
+  isInWork: boolean;
 }
 
 export const fakeData: Project[] = [
@@ -13,6 +14,7 @@ export const fakeData: Project[] = [
     itemName: 'Шкаф',
     employee: 'Иванова',
     status: 'Отгрузка',
+    isInWork: true,
   },
   {
     id: '2',
@@ -20,6 +22,7 @@ export const fakeData: Project[] = [
     itemName: 'Шкаф',
     employee: 'Иванова',
     status: 'Отгрузка',
+    isInWork: false,
   },
   {
     id: '3',
@@ -27,6 +30,7 @@ export const fakeData: Project[] = [
     itemName: 'Кровать для мальчика',
     employee: 'Бабушкина',
     status: 'Покраска',
+    isInWork: true,
   },
   {
     id: '4',
@@ -34,6 +38,7 @@ export const fakeData: Project[] = [
     itemName: 'Тумба',
     employee: 'Петрова',
     status: 'Подготовка к отгрузке',
+    isInWork: false,
   },
   {
     id: '5',
@@ -41,6 +46,7 @@ export const fakeData: Project[] = [
     itemName: 'СУ',
     employee: 'Лапкина',
     status: 'Покраска',
+    isInWork: false,
   },
   {
     id: '6',
@@ -48,6 +54,7 @@ export const fakeData: Project[] = [
     itemName: 'Кровать',
     employee: 'Иванова',
     status: 'Подготовка к отгрузке',
+    isInWork: false,
   },
   {
     id: '7',
@@ -55,6 +62,7 @@ export const fakeData: Project[] = [
     itemName: 'Комод',
     employee: 'Березовик',
     status: 'Раскрой',
+    isInWork: true,
   },
   {
     id: '8',
@@ -62,6 +70,7 @@ export const fakeData: Project[] = [
     itemName: 'СУ',
     employee: 'Иванова',
     status: 'Фрезеровка',
+    isInWork: true,
   },
   {
     id: '9',
@@ -69,6 +78,7 @@ export const fakeData: Project[] = [
     itemName: 'Шкаф',
     employee: 'Сидорова',
     status: 'Отгрузка',
+    isInWork: true,
   },
   {
     id: '10',
@@ -76,6 +86,7 @@ export const fakeData: Project[] = [
     itemName: 'Тумба',
     employee: 'Сидорова',
     status: 'Покраска',
+    isInWork: true,
   },
   {
     id: '11',
@@ -83,6 +94,7 @@ export const fakeData: Project[] = [
     itemName: 'Комод',
     employee: 'Березовик',
     status: 'Раскрой',
+    isInWork: false,
   },
   {
     id: '12',
@@ -90,6 +102,7 @@ export const fakeData: Project[] = [
     itemName: 'СУ',
     employee: 'Иванова',
     status: 'Фрезеровка',
+    isInWork: false,
   },
   {
     id: '13',
@@ -97,6 +110,7 @@ export const fakeData: Project[] = [
     itemName: 'Шкаф',
     employee: 'Сидорова',
     status: 'Отгрузка',
+    isInWork: true,
   },
   {
     id: '14',
@@ -104,5 +118,6 @@ export const fakeData: Project[] = [
     itemName: 'Тумба',
     employee: 'Сидорова',
     status: 'Покраска',
+    isInWork: true,
   },
 ];

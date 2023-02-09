@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { Title as MantineTitle } from '@mantine/core';
 
 import { mediaQueries } from '../../../constants/breakpoints';
 
@@ -49,13 +48,6 @@ export const Button = styled.button`
       height: 50px;
     }
   }
-`;
-
-export const Title = styled(MantineTitle)`
-  font-weight: 600;
-  font-size: 48px;
-  line-height: 56px;
-  color: #ffffff;
 `;
 
 export const DisplayTime = styled.p`

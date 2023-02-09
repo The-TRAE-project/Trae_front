@@ -1,9 +1,10 @@
 import styled from 'styled-components';
 import { Box } from '@mantine/core';
 
-import { fApart } from '../../helpers/cssFragments';
 import bg from '../../assets/bg.svg';
+import { fApart } from '../../helpers/cssFragments';
 import { mediaQueries } from '../../constants/breakpoints';
+import { colors } from '../../constants/colors';
 
 export const Container = styled.div`
   margin: 0 auto;
@@ -74,5 +75,13 @@ export const TraeLogoImageWrapper = styled(Box)`
 `;
 
 export const WrapperBgGreen = styled(WrapperWithBgImage)`
-  background: linear-gradient(264.53deg, #508255 2.46%, #419149 70.65%);
+  background: linear-gradient(
+    264.53deg,
+    ${colors.gradientGreen1} 2.46%,
+    ${colors.gradientGreen2} 70.65%
+  );
+`;
+
+export const WrapperBgWhite = styled(WrapperWithBgImage)`
+  background: ${colors.white2};
 `;

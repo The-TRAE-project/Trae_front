@@ -12,6 +12,7 @@ export const Wrapper = styled.div`
   padding: 61px 20px 18px;
   background-color: ${colors.secondaryWhite};
   ${fColumn};
+  align-items: center;
   gap: 0.9rem;
   border-radius: 15px;
   box-shadow: 0px 4px 6px ${colors.blackShadow};
@@ -55,9 +56,20 @@ export const ProjectName = styled.p`
   margin: 0;
 `;
 
-export const ProjectStatus = styled.p`
+export const ProjectStatus = styled.button`
   font-weight: 600;
   ${fontSize30};
-  color: ${colors.green};
-  margin: 0;
+  color: ${colors.orange};
+  background: none;
+  border: none;
+  cursor: pointer;
+
+  &:is(:hover, :active, :focus) {
+    outline: none;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    color: ${colors.green};
+  }
 `;
