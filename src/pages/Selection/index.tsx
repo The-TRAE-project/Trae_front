@@ -15,7 +15,7 @@ const Selection = () => {
   const navigate = useNavigate();
 
   const navigateToProjects = () => navigate(Paths.PROJECTS);
-  const navigateToStages = () => navigate(Paths.STAGES);
+  const navigateToStages = () => navigate(Paths.PROJECT_STAGES);
 
   return (
     <>
