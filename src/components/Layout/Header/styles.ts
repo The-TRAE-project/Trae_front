@@ -1,5 +1,11 @@
 import styled from 'styled-components';
+import { Title as MantineTitle } from '@mantine/core';
+
 import { mediaQueries } from '../../../constants/breakpoints';
+
+type DisplayTimeProps = {
+  color: string;
+};
 
 export const Wrapper = styled.header`
   position: fixed;
@@ -29,18 +35,35 @@ export const Button = styled.button`
 
   svg {
     @media ${mediaQueries.mqMedium} {
-      height: 20px;
-      width: 20px;
-    }
-
-    @media ${mediaQueries.mqLarge} {
       height: 30px;
       width: 30px;
     }
 
-    @media ${mediaQueries.mqXlarge} {
+    @media ${mediaQueries.mqLarge} {
       height: 40px;
       width: 40px;
     }
+
+    @media ${mediaQueries.mqXlarge} {
+      width: 50px;
+      height: 50px;
+    }
   }
+`;
+
+export const Title = styled(MantineTitle)`
+  font-weight: 600;
+  font-size: 48px;
+  line-height: 56px;
+  color: #ffffff;
+`;
+
+export const DisplayTime = styled.p`
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500;
+  font-size: 54px;
+  line-height: 63px;
+  color: ${(props: DisplayTimeProps) => props.color};
+  opacity: 0.9;
+  margin: 0;
 `;

@@ -16,6 +16,7 @@ const Main = () => {
 
   const navigateToSelection = () => navigate(Paths.SELECTION);
   const navigateToEmployees = () => navigate(Paths.EMPLOYEES);
+  const navigateToStagesInWork = () => navigate(Paths.STAGES_IN_WORK);
 
   return (
     <>
@@ -31,9 +32,14 @@ const Main = () => {
             <Image src={traeLogo} alt="logo" />
           </TraeLogoImageWrapper>
 
-          <Stack spacing={50}>
+          <Stack spacing={68}>
             <Button title="Сотрудники" onClick={navigateToEmployees} disabled />
             <Button title="Проекты" onClick={navigateToSelection} />
+            <Button
+              title="Этапы в работе"
+              onClick={navigateToStagesInWork}
+              disabled
+            />
           </Stack>
         </ApartContainer>
       </WrapperWithBgImage>
