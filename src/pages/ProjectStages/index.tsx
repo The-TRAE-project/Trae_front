@@ -1,4 +1,5 @@
 import SEO from '../../components/SEO';
+import ProjectStagesListItem from '../../components/ProjectStagesListItem';
 import { Container, WrapperBgWhite } from '../../components/styles';
 
 const ProjectStages = () => {
@@ -11,7 +12,9 @@ const ProjectStages = () => {
         type="application"
       />
       <WrapperBgWhite>
-        <Container>Этапы проекта</Container>
+        <Container>
+          <ProjectStagesListItem />
+        </Container>
       </WrapperBgWhite>
     </>
   );

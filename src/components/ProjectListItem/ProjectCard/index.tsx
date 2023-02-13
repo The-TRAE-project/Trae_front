@@ -1,7 +1,6 @@
 import { useNavigate } from 'react-router-dom';
-import { Paths } from '../../../constants/paths';
 
-import { Project } from '../data';
+import { Project } from '../../../helpers/services/types';
 import {
   ProjectNumber,
   ProjectName,
@@ -17,7 +16,8 @@ interface Props {
 const ProjectCard = ({ project }: Props) => {
   const navigate = useNavigate();
 
-  const navigateToProjectStages = () => navigate(Paths.PROJECT_STAGES);
+  const navigateToProjectStages = () =>
+    navigate(`/project/${project.id}/stages`);
 
   return (
     <Wrapper>

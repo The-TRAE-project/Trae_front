@@ -1,7 +1,6 @@
-import { Project } from '../components/ProjectListItem/data';
-
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // eslint-disable-next-line consistent-return
-export const divisorByChunk = (data: Project[], chunk: number) => {
+export const divisorByChunk = (data: any[], chunk: number) => {
   if (data) {
     const result = data.reduce((acc, item, index) => {
       const chunkIndex = Math.floor(index / chunk);
@@ -13,7 +12,7 @@ export const divisorByChunk = (data: Project[], chunk: number) => {
       acc[chunkIndex].push(item);
 
       return acc;
-    }, [] as Project[][]);
+    }, [] as any[][]);
 
     return result;
   }

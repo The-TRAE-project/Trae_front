@@ -1,40 +1,39 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
+import { useSlider } from '../../helpers/hooks/useSlider';
+import { ProjectServices } from '../../helpers/services/projectServices';
+import { Project } from '../../helpers/services/types';
 import { divisorByChunk } from '../../helpers/divisorByChunk';
-import ControlButtons from './ControlButtons';
+import ControlButtons from '../ControlButtons';
 import ProjectCard from './ProjectCard';
 import { Grid, Wrapper } from './styles';
-import { fakeData } from './data';
 
 const ProjectListItem = () => {
-  const [data, setData] = useState(divisorByChunk(fakeData, 10));
-  const [slideIndex, setSlideIndex] = useState<number>(0);
+  const [projects, setProjects] = useState<Project[][] | undefined>([]);
+  const { quantity, current, slideIndex, prevSlide, nextSlide } =
+    useSlider(projects);
 
-  const nextSlide = () => {
-    if (slideIndex !== data?.length) {
-      setSlideIndex((prev) => prev + 1);
-    }
-  };
+  useEffect(() => {
+    const getProjects = async () => {
+      const response = await ProjectServices.getAll();
+      const dividedBy10 = divisorByChunk(response, 10);
+      setProjects(dividedBy10);
+    };
 
-  const prevSlide = () => {
-    if (slideIndex !== 0) {
-      setSlideIndex((prev) => prev - 1);
-    }
-  };
-
-  const quantity = divisorByChunk(fakeData, 10)?.length || 0;
+    getProjects();
+  }, []);
 
   return (
     <Wrapper>
       <Grid>
-        {data
-          ? data[slideIndex].map((project) => (
+        {projects
+          ? projects[slideIndex]?.map((project) => (
               <ProjectCard key={project.id} project={project} />
             ))
           : null}
       </Grid>
       <ControlButtons
-        current={slideIndex + 1}
+        current={current}
         quantity={quantity}
         prevSlide={prevSlide}
         nextSlide={nextSlide}

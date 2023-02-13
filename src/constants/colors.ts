@@ -9,4 +9,6 @@ export const colors = {
   green: '#42894d',
   gradientGreen1: '#508255',
   gradientGreen2: '#419149',
+  gradientGreen3: '#367345',
+  lightGreen: '#83cc8c',
 };

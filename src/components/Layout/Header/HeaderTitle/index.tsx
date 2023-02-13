@@ -8,14 +8,15 @@ const HeaderTitle = () => {
   const location = useLocation();
 
   return (
-    <>
-      {location.pathname === Paths.PROJECTS && (
-        <Title color={colors.white}>Выберите проект</Title>
-      )}
-      {location.pathname === Paths.PROJECT_STAGES && (
-        <Title color={colors.whiteBlack}>Выберите этап</Title>
-      )}
-    </>
+    <Title
+      color={
+        location.pathname === Paths.PROJECTS ? colors.white : colors.whiteBlack
+      }
+    >
+      {location.pathname === Paths.PROJECTS
+        ? 'Выберите проект'
+        : 'Выберите этап'}
+    </Title>
   );
 };
 

@@ -11,7 +11,7 @@ export const Wrapper = styled.div`
 
 export const Grid = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: repeat(5, 1fr);
   column-gap: 42px;
   row-gap: 83px;
 `;

@@ -1,8 +1,7 @@
-import { useEffect, useState } from 'react';
 import { Group } from '@mantine/core';
 import { useLocation, useNavigate } from 'react-router-dom';
-import dayjs from 'dayjs';
 
+import { useDate } from '../../../helpers/hooks/useDate';
 import { Paths } from '../../../constants/paths';
 import { colors } from '../../../constants/colors';
 import User from '../../svgs/User';
@@ -15,7 +14,7 @@ import { Button, DisplayTime, Wrapper } from './styles';
 const Header = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const [date, setDate] = useState(new Date());
+  const { date } = useDate();
 
   const navigateToBack = () => navigate(-1);
   const navigateToHome = () => navigate(Paths.MAIN);
@@ -23,15 +22,6 @@ const Header = () => {
   function findCurrentPath(...arg: string[]) {
     return arg.some((path) => path === location.pathname);
   }
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setDate(new Date());
-    }, 60 * 1000);
-    return () => {
-      clearInterval(timer);
-    };
-  }, []);
 
   return (
     <Wrapper>
@@ -44,7 +34,7 @@ const Header = () => {
                 : colors.white
             }
           >
-            {dayjs(date).format('HH:mm')}
+            {date}
           </DisplayTime>
           {findCurrentPath(Paths.MAIN) && (
             <Button type="button">
@@ -53,9 +43,7 @@ const Header = () => {
           )}
           {!findCurrentPath(Paths.MAIN) && (
             <>
-              {findCurrentPath(Paths.PROJECTS, Paths.PROJECT_STAGES) && (
-                <HeaderTitle />
-              )}
+              {!findCurrentPath(Paths.SELECTION) && <HeaderTitle />}
 
               <Group spacing={40}>
                 {!findCurrentPath(Paths.SELECTION) && (

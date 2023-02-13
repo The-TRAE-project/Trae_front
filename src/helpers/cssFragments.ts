@@ -31,3 +31,8 @@ export const fontSize32 = css`
   font-size: 32px;
   line-height: 38px;
 `;
+
+export const fontSize40 = css`
+  font-size: 40px;
+  line-height: 47px;
+`;
