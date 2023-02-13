@@ -64,6 +64,10 @@ export const StageStatus = styled.button`
     color: ${colors.white};
     background-color: ${colors.orange};
   }
+
+  &:disabled {
+    cursor: not-allowed;
+  }
 `;
 
 export const Employee = styled.p`
