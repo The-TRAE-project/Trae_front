@@ -37,7 +37,7 @@ const StageCard = ({ stage, down }: Props) => {
         <StageStatus
           onClick={handleChooseEmployee}
           className={isComplete || isTodo || isNextNeedComplete}
-          disabled={stage.isNext || stage.isTodo || stage.isComplete}
+          disabled={stage.isTodo || stage.isComplete}
         >
           {stage.stage}
         </StageStatus>

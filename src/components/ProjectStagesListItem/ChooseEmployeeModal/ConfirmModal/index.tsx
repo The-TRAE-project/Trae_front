@@ -33,7 +33,7 @@ const ConfirmModal = ({ isOpen, onClose, candidate }: Props) => {
               <Button onClick={onClose}>Нет</Button>
             </Group>
           </TitleStack>
-          <Timer isStart={isInform} onStop={onClose} />
+          <Timer isStart={isOpen} onStop={onClose} />
         </Stack>
       </Modal>
       <InformModal
