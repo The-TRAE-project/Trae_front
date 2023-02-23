@@ -1,4 +1,4 @@
-import { useTimer } from '../../../../helpers/hooks/useTimer';
+import { useTimer } from '../../../helpers/hooks/useTimer';
 import { TimerTitle } from './styles';
 
 interface Props {

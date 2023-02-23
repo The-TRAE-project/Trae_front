@@ -5,10 +5,10 @@ import { ProjectServices } from '../../helpers/services/projectServices';
 import { Project } from '../../helpers/services/types';
 import { divisorByChunk } from '../../helpers/divisorByChunk';
 import ControlButtons from '../ControlButtons';
-import ProjectCard from './ProjectCard';
+import ProjectCard from '../ProjectListItem/ProjectCard';
 import { Grid, Wrapper } from './styles';
 
-const ProjectListItem = () => {
+const EmployeeProjectListItem = () => {
   const [projects, setProjects] = useState<Project[][] | undefined>([]);
   const { quantity, current, slideIndex, prevSlide, nextSlide } =
     useSlider(projects);
@@ -42,4 +42,4 @@ const ProjectListItem = () => {
   );
 };
 
-export default ProjectListItem;
+export default EmployeeProjectListItem;

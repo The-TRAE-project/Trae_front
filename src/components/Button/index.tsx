@@ -4,11 +4,12 @@ interface Props {
   title: string;
   onClick: () => void;
   disabled?: boolean;
+  width: number;
 }
 
-const Button = ({ title, onClick, disabled }: Props) => {
+const Button = ({ title, onClick, disabled, width }: Props) => {
   return (
-    <Wrapper onClick={onClick} disabled={disabled}>
+    <Wrapper onClick={onClick} disabled={disabled} width={width}>
       {title}
     </Wrapper>
   );

@@ -1,68 +1,58 @@
 import styled from 'styled-components';
-import { colors } from '../../../constants/colors';
-import {
-  fColumn,
-  fontSize28,
-  fontSize30,
-  fCenter,
-} from '../../../helpers/cssFragments';
 
 export const Wrapper = styled.div`
   position: relative;
-  padding: 61px 20px 18px;
-  background-color: ${colors.secondaryWhite};
-  ${fColumn};
+  padding: 57px 20px 13px;
+  background-color: var(--secondary-white);
+  ${({ theme }) => theme.mixins.column};
   align-items: center;
   gap: 0.9rem;
   border-radius: 15px;
-  box-shadow: 0px 4px 6px ${colors.blackShadow};
+  box-shadow: 0px 4px 6px var(black-shadow);
   text-align: center;
 `;
 
 export const ProjectNumber = styled.p`
   height: 82px;
   width: 80px;
-  font-family: 'Roboto, san-serif';
+  font-family: var(--font-roboto);
   font-weight: 500;
-  ${fontSize28};
-  color: ${colors.white};
+  ${({ theme }) => theme.mixins.fontSize28};
+  color: var(--white);
   position: absolute;
   top: -16%;
   left: 0;
   right: 0;
   margin: 0 auto;
-  ${fCenter};
-  background-color: ${colors.orange};
-  outline: 7px solid ${colors.green};
+  ${({ theme }) => theme.mixins.fCenter};
+  background-color: var(--orange);
+  outline: 7px solid var(--green);
   border-radius: 50%;
 `;
 
 export const Employee = styled.p`
   font-weight: 400;
-  color: ${colors.black};
-  ${fontSize30};
-  margin: 0;
+  color: var(--black);
+  ${({ theme }) => theme.mixins.fontSize30};
 `;
 
 export const ProjectName = styled.p`
   font-weight: 600;
-  ${fontSize30};
-  color: ${colors.black};
+  color: var(--black);
+  ${({ theme }) => theme.mixins.fontSize30};
   width: 182px;
   text-align: center;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
-  margin: 0;
 `;
 
 export const ProjectStatus = styled.button`
   font-weight: 600;
-  ${fontSize30};
-  color: ${colors.orange};
+  ${({ theme }) => theme.mixins.fontSize30};
+  color: var(--orange);
   background: none;
   border: none;
-  cursor: pointer;
 
   &:is(:hover, :active, :focus) {
     outline: none;
@@ -70,6 +60,6 @@ export const ProjectStatus = styled.button`
 
   &:disabled {
     cursor: not-allowed;
-    color: ${colors.green};
+    color: var(--green);
   }
 `;

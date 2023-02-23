@@ -10,18 +10,19 @@ import {
   TraeLogoImageWrapper,
   WrapperWithBgImage,
 } from '../../components/styles';
+import { DashedButton } from './styles';
 
-const Selection = () => {
+const EmployeeMain = () => {
   const navigate = useNavigate();
 
-  const navigateToProjects = () => navigate(Paths.PROJECTS);
-  const navigateToStages = () => navigate(Paths.PROJECT_STAGES);
+  const navigateToSelection = () => navigate(Paths.EMPLOYEE_SELECTION);
+  const navigateToStagesInWork = () => navigate(Paths.EMPLOYEE_STAGES_IN_WORK);
 
   return (
     <>
       <SEO
-        title="Выбор"
-        description="Страница выбора."
+        title="TRAE | Главная Сотрудника"
+        description="Главная страница сотрудника."
         name="TRAE"
         type="application"
       />
@@ -31,9 +32,15 @@ const Selection = () => {
             <Image src={traeLogo} alt="logo" />
           </TraeLogoImageWrapper>
 
-          <Stack spacing={68}>
-            <Button title="Проекты" onClick={navigateToProjects} />
-            <Button title="Этапы" onClick={navigateToStages} disabled />
+          <Stack spacing={40}>
+            <Button title="Проекты" onClick={navigateToSelection} width={410} />
+            <Button
+              title="Этапы в работе"
+              onClick={navigateToStagesInWork}
+              disabled
+              width={410}
+            />
+            <DashedButton>Завершить смену</DashedButton>
           </Stack>
         </ApartContainer>
       </WrapperWithBgImage>
@@ -41,4 +48,4 @@ const Selection = () => {
   );
 };
 
-export default Selection;
+export default EmployeeMain;

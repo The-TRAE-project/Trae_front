@@ -1,7 +1,6 @@
 import { Group } from '@mantine/core';
 import { useLocation } from 'react-router-dom';
 
-import { colors } from '../../constants/colors';
 import { Paths } from '../../constants/paths';
 import ControlArrowLeft from '../svgs/ControlArrowLeft';
 import ControlArrowRight from '../svgs/ControlArrowRight';
@@ -17,30 +16,34 @@ interface Props {
 const ControlButtons = ({ current, quantity, prevSlide, nextSlide }: Props) => {
   const location = useLocation();
 
-  const isProjectPage = location.pathname === Paths.PROJECTS;
+  const isEmployeeProjectPage = location.pathname === Paths.EMPLOYEE_PROJECTS;
 
   return (
     <Wrapper>
-      <Group spacing={58}>
+      <Group spacing={44}>
         <Button
           onClick={prevSlide}
           disabled={current === 1}
-          isWhite={isProjectPage}
+          isWhite={isEmployeeProjectPage}
         >
           <ControlArrowRight
-            color={isProjectPage ? colors.white : colors.whiteBlack}
+            color={
+              isEmployeeProjectPage ? 'var(--white)' : 'var(--white-black)'
+            }
           />
         </Button>
-        <InformTitle isWhite={isProjectPage}>
+        <InformTitle isWhite={isEmployeeProjectPage}>
           {current}/{quantity}
         </InformTitle>
         <Button
           onClick={nextSlide}
           disabled={current === quantity}
-          isWhite={isProjectPage}
+          isWhite={isEmployeeProjectPage}
         >
           <ControlArrowLeft
-            color={isProjectPage ? colors.white : colors.whiteBlack}
+            color={
+              isEmployeeProjectPage ? 'var(--white)' : 'var(--white-black)'
+            }
           />
         </Button>
       </Group>

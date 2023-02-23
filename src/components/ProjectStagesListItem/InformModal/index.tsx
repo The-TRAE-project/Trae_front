@@ -1,8 +1,8 @@
 import { useNavigate } from 'react-router-dom';
 
-import { Paths } from '../../../../constants/paths';
-import Modal from '../../../Modal';
-import Home from '../../../svgs/Home';
+import { Paths } from '../../../constants/paths';
+import Modal from '../../Modal';
+import Home from '../../svgs/Home';
 import Timer from '../Timer';
 import { HomeButton, InformTitle, Stack } from './styles';
 
@@ -17,12 +17,12 @@ const InformModal = ({ isOpen, onClose, candidate }: Props) => {
 
   const handleClose = () => {
     onClose();
-    navigate(Paths.MAIN);
+    navigate(Paths.EMPLOYEE_MAIN);
   };
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} withCloseButton={false}>
-      <HomeButton onClick={() => navigate(Paths.MAIN)}>
+      <HomeButton onClick={() => navigate(Paths.EMPLOYEE_MAIN)}>
         <Home />
       </HomeButton>
       <Stack>

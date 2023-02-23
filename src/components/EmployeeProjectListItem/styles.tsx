@@ -1,10 +1,9 @@
 import styled from 'styled-components';
-import { fColumn } from '../../helpers/cssFragments';
 
 export const Wrapper = styled.div`
   min-height: calc(100vh - 289px);
-  padding-top: 97px;
-  ${fColumn};
+  padding-top: 35px;
+  ${({ theme }) => theme.mixins.column};
   justify-content: space-between;
   gap: 3rem;
 `;

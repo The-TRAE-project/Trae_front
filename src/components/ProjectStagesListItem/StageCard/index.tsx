@@ -1,10 +1,9 @@
 import { useState } from 'react';
 
-import { colors } from '../../../constants/colors';
 import { ProjectStage } from '../../../helpers/services/types';
 import ArrowDown from '../../svgs/ArrowDown';
 import ArrowUp from '../../svgs/ArrowUp';
-import ChooseEmployeeModal from '../ChooseEmployeeModal';
+import ConfirmModal from '../ConfirmModal';
 import {
   StageStatus,
   Employee,
@@ -25,9 +24,7 @@ const StageCard = ({ stage, down }: Props) => {
   const isTodo = stage.isTodo ? 'isTodo' : '';
   const isNextNeedComplete = stage.isNext ? 'next' : '';
 
-  const handleChooseEmployee = () => {
-    setOpened(true);
-  };
+  const handleOpenModal = () => setOpened(true);
 
   const handleCloseModal = () => setOpened(false);
 
@@ -35,7 +32,7 @@ const StageCard = ({ stage, down }: Props) => {
     <>
       <Wrapper className={isComplete || isTodo || isNextNeedComplete}>
         <StageStatus
-          onClick={handleChooseEmployee}
+          onClick={handleOpenModal}
           className={isComplete || isTodo || isNextNeedComplete}
           disabled={stage.isTodo || stage.isComplete}
         >
@@ -46,7 +43,9 @@ const StageCard = ({ stage, down }: Props) => {
           <StatusArrowDown>
             <ArrowDown
               color={
-                stage.isComplete || stage.isTodo ? colors.green : colors.orange
+                stage.isComplete || stage.isTodo
+                  ? 'var(--green)'
+                  : 'var(--orange)'
               }
             />
           </StatusArrowDown>
@@ -54,13 +53,19 @@ const StageCard = ({ stage, down }: Props) => {
           <StatusArrowUp>
             <ArrowUp
               color={
-                stage.isComplete || stage.isTodo ? colors.green : colors.orange
+                stage.isComplete || stage.isTodo
+                  ? 'var(--green)'
+                  : 'var(--orange)'
               }
             />
           </StatusArrowUp>
         )}
       </Wrapper>
-      <ChooseEmployeeModal isOpen={opened} onClose={handleCloseModal} />
+      <ConfirmModal
+        isOpen={opened}
+        onClose={handleCloseModal}
+        candidate="Иван Иванов"
+      />
     </>
   );
 };

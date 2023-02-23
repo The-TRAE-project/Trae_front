@@ -17,7 +17,7 @@ const ProjectCard = ({ project }: Props) => {
   const navigate = useNavigate();
 
   const navigateToProjectStages = () =>
-    navigate(`/project/${project.id}/stages`);
+    navigate(`/employee/project/${project.id}/stages`);
 
   return (
     <Wrapper>

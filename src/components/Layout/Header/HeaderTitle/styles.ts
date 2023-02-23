@@ -1,13 +1,12 @@
 import styled from 'styled-components';
-import { Title as MantineTitle } from '@mantine/core';
 
 type TitleProps = {
-  color: string;
+  path: boolean;
 };
 
-export const Title = styled(MantineTitle)`
+export const Title = styled.h1`
   font-weight: 600;
-  font-size: 48px;
-  line-height: 56px;
-  color: ${(props: TitleProps) => props.color};
+  ${({ theme }) => theme.mixins.fontSize48};
+  color: ${(props: TitleProps) =>
+    props.path ? 'var(--white)' : 'var(--white-black)'};
 `;

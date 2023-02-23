@@ -1,48 +1,24 @@
 import styled from 'styled-components';
-import { mediaQueries } from '../../constants/breakpoints';
+
+type WrapperProps = {
+  width: number;
+};
 
 export const Wrapper = styled.button`
-  font-family: 'Raleway';
-  font-weight: 600;
-  color: #2a302b;
-  border-radius: 15px;
-  background: #ffffff;
+  width: ${(props: WrapperProps) => props.width}px;
+  height: 123px;
+  padding: 38px 24px;
+  border-radius: var(--border-radius);
+  background: var(--white);
   border: 1px solid transparent;
-  cursor: pointer;
-  transition: all 0.4s linear;
+  transition: var(--transition);
+  ${({ theme }) => theme.mixins.fCenter};
 
-  /* &:is(:hover, :focus, :active) {
-    outline: none;
-    border: 1px solid #2a302b;
-    background: #2a302b;
-    color: #ffffff;
-  } */
+  font-weight: 500;
+  color: var(--white-black);
+  ${({ theme }) => theme.mixins.fontSize40};
 
   &:disabled {
     cursor: not-allowed;
-  }
-
-  /* &:disabled:hover {
-    background: #ffffff;
-    border: 1px solid transparent;
-    color: #2a302b;
-  } */
-
-  @media ${mediaQueries.mqMedium} {
-    padding: 18px 30px;
-    font-size: 1.9em;
-    line-height: 1;
-  }
-
-  @media ${mediaQueries.mqLarge} {
-    padding: 28px 50px;
-    font-size: 2.2em;
-    line-height: 1.1;
-  }
-
-  @media ${mediaQueries.mqXlarge} {
-    padding: 38px 70px;
-    font-size: 2.5em;
-    line-height: 1.2;
   }
 `;

@@ -2,11 +2,11 @@ import SEO from '../../components/SEO';
 import ProjectStagesListItem from '../../components/ProjectStagesListItem';
 import { Container, WrapperBgWhite } from '../../components/styles';
 
-const ProjectStages = () => {
+const EmployeeProjectStages = () => {
   return (
     <>
       <SEO
-        title="Этапы проекта"
+        title="TRAE | Этапы проекта"
         description="Страница этапов проекта."
         name="TRAE"
         type="application"
@@ -20,4 +20,4 @@ const ProjectStages = () => {
   );
 };
 
-export default ProjectStages;
+export default EmployeeProjectStages;

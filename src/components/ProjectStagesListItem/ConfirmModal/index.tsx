@@ -1,7 +1,7 @@
 import { Group } from '@mantine/core';
 import { useState } from 'react';
 
-import Modal from '../../../Modal';
+import Modal from '../../Modal';
 import InformModal from '../InformModal';
 import Timer from '../Timer';
 import { Button, ConfirmTitle, Stack, TitleStack } from './styles';

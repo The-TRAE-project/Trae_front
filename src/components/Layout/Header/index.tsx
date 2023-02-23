@@ -3,8 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 import { useDate } from '../../../helpers/hooks/useDate';
 import { Paths } from '../../../constants/paths';
-import { colors } from '../../../constants/colors';
-import User from '../../svgs/User';
+// import User from '../../svgs/User';
 import ArrowLeft from '../../svgs/ArrowLeft';
 import Home from '../../svgs/Home';
 import { Container } from '../../styles';
@@ -17,7 +16,7 @@ const Header = () => {
   const { date } = useDate();
 
   const navigateToBack = () => navigate(-1);
-  const navigateToHome = () => navigate(Paths.MAIN);
+  const navigateToHome = () => navigate(Paths.EMPLOYEE_MAIN);
 
   function findCurrentPath(...arg: string[]) {
     return arg.some((path) => path === location.pathname);
@@ -27,42 +26,42 @@ const Header = () => {
     <Wrapper>
       <Container>
         <Group position="apart">
-          <DisplayTime
-            color={
-              !findCurrentPath(Paths.PROJECTS)
-                ? colors.whiteBlack
-                : colors.white
-            }
-          >
+          <DisplayTime path={!findCurrentPath(Paths.EMPLOYEE_PROJECTS)}>
             {date}
           </DisplayTime>
-          {findCurrentPath(Paths.MAIN) && (
+          {/* {!findCurrentPath(Paths.MAIN) && (
             <Button type="button">
               <User />
             </Button>
-          )}
-          {!findCurrentPath(Paths.MAIN) && (
+          )} */}
+          {!findCurrentPath(Paths.EMPLOYEE_LOGIN) && (
             <>
-              {!findCurrentPath(Paths.SELECTION) && <HeaderTitle />}
+              {!findCurrentPath(
+                Paths.EMPLOYEE_SELECTION,
+                Paths.EMPLOYEE_MAIN
+              ) && <HeaderTitle />}
 
-              <Group spacing={40}>
-                {!findCurrentPath(Paths.SELECTION) && (
+              <Group spacing={11}>
+                <Button
+                  onClick={navigateToBack}
+                  type="button"
+                  aria-label="back step button"
+                >
+                  <ArrowLeft />
+                </Button>
+
+                {!findCurrentPath(
+                  Paths.EMPLOYEE_LOGIN,
+                  Paths.EMPLOYEE_MAIN
+                ) && (
                   <Button
-                    onClick={navigateToBack}
+                    onClick={navigateToHome}
                     type="button"
-                    aria-label="back step button"
+                    aria-label="home button"
                   >
-                    <ArrowLeft />
+                    <Home />
                   </Button>
                 )}
-
-                <Button
-                  onClick={navigateToHome}
-                  type="button"
-                  aria-label="home button"
-                >
-                  <Home />
-                </Button>
               </Group>
             </>
           )}

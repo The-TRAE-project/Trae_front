@@ -11,18 +11,17 @@ import {
   WrapperWithBgImage,
 } from '../../components/styles';
 
-const Main = () => {
+const EmployeeSelection = () => {
   const navigate = useNavigate();
 
-  const navigateToSelection = () => navigate(Paths.SELECTION);
-  const navigateToEmployees = () => navigate(Paths.EMPLOYEES);
-  const navigateToStagesInWork = () => navigate(Paths.STAGES_IN_WORK);
+  const navigateToProjects = () => navigate(Paths.EMPLOYEE_PROJECTS);
+  const navigateToStages = () => navigate(Paths.PROJECT_STAGES);
 
   return (
     <>
       <SEO
-        title="Главная"
-        description="Главная страница."
+        title="TRAE | Выбор"
+        description="Страница выбора."
         name="TRAE"
         type="application"
       />
@@ -33,11 +32,11 @@ const Main = () => {
           </TraeLogoImageWrapper>
 
           <Stack spacing={68}>
-            <Button title="Сотрудники" onClick={navigateToEmployees} disabled />
-            <Button title="Проекты" onClick={navigateToSelection} />
+            <Button title="Проекты" onClick={navigateToProjects} width={313} />
             <Button
-              title="Этапы в работе"
-              onClick={navigateToStagesInWork}
+              title="Этапы"
+              onClick={navigateToStages}
+              width={313}
               disabled
             />
           </Stack>
@@ -47,4 +46,4 @@ const Main = () => {
   );
 };
 
-export default Main;
+export default EmployeeSelection;
