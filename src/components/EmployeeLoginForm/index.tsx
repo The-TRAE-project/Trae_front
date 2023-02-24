@@ -2,9 +2,12 @@ import { useForm } from '@mantine/form';
 import { useNavigate } from 'react-router-dom';
 
 import { Paths } from '../../constants/paths';
+import { useAppDispatch } from '../../helpers/hooks/useAppDispatch';
+import { loginEmployee } from '../../store/slices/employee';
 import { Button, GroupForm, Input } from './styles';
 
 const EmployeeLoginForm = () => {
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const form = useForm({
     initialValues: {
@@ -13,7 +16,8 @@ const EmployeeLoginForm = () => {
   });
 
   const handleSubmit = (data: any) => {
-    navigate(Paths.EMPLOYEE_MAIN);
+    // navigate(Paths.EMPLOYEE_MAIN);
+    dispatch(loginEmployee(data.password));
     console.log(data);
   };
 
