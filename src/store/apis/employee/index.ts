@@ -1,9 +1,14 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { baseApi } from '..';
+import { Project } from './types';
 
-export const baseApi = createApi({
-  reducerPath: 'baseApi',
-  baseQuery: fetchBaseQuery({
-    baseUrl: import.meta.env.VITE_BACK_API_URL,
+const employeeTags = baseApi.enhanceEndpoints({ addTagTypes: ['Employee'] });
+
+const employeeApi = employeeTags.injectEndpoints({
+  endpoints: (build) => ({
+    getAvailableProjectsByEmployeeId: build.query<Project, number>({
+      query: (id) => `/project/employee/available-projects/${id}`,
+    }),
   }),
-  endpoints: () => ({}),
 });
+
+export const { useGetAvailableProjectsByEmployeeIdQuery } = employeeApi;

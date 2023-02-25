@@ -1,6 +1,6 @@
 export interface InitialState {
   isLoggedIn: boolean;
-  employee: Employee;
+  employee: Employee | null;
   isLoading: 'idle' | 'pending';
   error: any;
 }

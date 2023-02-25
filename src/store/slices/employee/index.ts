@@ -5,50 +5,56 @@ import { InitialState } from './types';
 
 const initialState = {
   isLoggedIn: false,
-  employee: {},
+  employee: null,
   isLoading: 'idle',
   error: {},
 } as InitialState;
 
-export const loginEmployee = createAsyncThunk(
-  'employee/login',
-  // eslint-disable-next-line consistent-return
+export const getEmployee = createAsyncThunk(
+  'employee/getEmployee',
   async (pinCode: number, { rejectWithValue }) => {
     try {
       const response = await axios.get(
         `${import.meta.env.VITE_BACK_API_URL}/employee/checkin/${pinCode}`
       );
 
-      // if (!response.statusText) {
-      //   throw new Error('Server Error!');
-      // }
+      if (response.status !== 200) {
+        throw new Error('Server Error!');
+      }
 
       return response.data;
-    } catch (error: any) {
-      return rejectWithValue(error.response.data);
+    } catch (error) {
+      return rejectWithValue(error);
     }
   }
 );
 
-export const employee = createSlice({
+export const employeeSlice = createSlice({
   name: 'employee',
   initialState,
-  reducers: {},
+  reducers: {
+    logOut(state) {
+      state.employee = null;
+      state.isLoggedIn = false;
+    },
+    logIn(state, payload) {
+      state.isLoggedIn = !!payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
-      .addCase(loginEmployee.pending, (state) => {
+      .addCase(getEmployee.pending, (state) => {
         if (state.isLoading === 'idle') {
           state.isLoading = 'pending';
         }
       })
-      .addCase(loginEmployee.fulfilled, (state, action) => {
+      .addCase(getEmployee.fulfilled, (state, action) => {
         if (state.isLoading === 'pending') {
           state.isLoading = 'idle';
           state.employee = action.payload;
-          state.isLoggedIn = !!action.payload;
         }
       })
-      .addCase(loginEmployee.rejected, (state, action) => {
+      .addCase(getEmployee.rejected, (state, action) => {
         if (state.isLoading === 'pending') {
           state.isLoading = 'idle';
           state.error = action.error;
@@ -57,4 +63,5 @@ export const employee = createSlice({
   },
 });
 
-export default employee.reducer;
+export const { logOut, logIn } = employeeSlice.actions;
+export default employeeSlice.reducer;

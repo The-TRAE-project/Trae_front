@@ -12,7 +12,7 @@ import {
 } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
-import { baseApi } from './apis/employee';
+import { baseApi } from './apis';
 import employeeReducer from './slices/employee';
 
 const rootReducer = combineReducers({
