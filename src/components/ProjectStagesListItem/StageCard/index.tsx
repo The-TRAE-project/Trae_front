@@ -1,9 +1,9 @@
 import { useState } from 'react';
 
 import { ProjectStage } from '../../../helpers/services/types';
+import ConfirmModal from '../../ConfirmModal';
 import ArrowDown from '../../svgs/ArrowDown';
 import ArrowUp from '../../svgs/ArrowUp';
-import ConfirmModal from '../ConfirmModal';
 import {
   StageStatus,
   Employee,
@@ -25,7 +25,6 @@ const StageCard = ({ stage, down }: Props) => {
   const isNextNeedComplete = stage.isNext ? 'next' : '';
 
   const handleOpenModal = () => setOpened(true);
-
   const handleCloseModal = () => setOpened(false);
 
   return (
@@ -64,7 +63,8 @@ const StageCard = ({ stage, down }: Props) => {
       <ConfirmModal
         isOpen={opened}
         onClose={handleCloseModal}
-        candidate="Иван Иванов"
+        questionTitle="Иван Иванов"
+        informTitle="Иван Иванов"
       />
     </>
   );

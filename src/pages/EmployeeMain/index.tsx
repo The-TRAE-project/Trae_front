@@ -1,6 +1,9 @@
 import { Image, Stack } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
 
+import { logoutEmployee } from '../../store/slices/employee';
+import { useAppDispatch } from '../../helpers/hooks/useAppDispatch';
+import { useAppSelector } from '../../helpers/hooks/useAppSelector';
 import traeLogo from '../../assets/traeLogo.svg';
 import { Paths } from '../../constants/paths';
 import Button from '../../components/Button';
@@ -14,9 +17,17 @@ import { DashedButton } from './styles';
 
 const EmployeeMain = () => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const { employee } = useAppSelector((store) => store.employee);
 
   const navigateToSelection = () => navigate(Paths.EMPLOYEE_SELECTION);
   const navigateToStagesInWork = () => navigate(Paths.EMPLOYEE_STAGES_IN_WORK);
+
+  const handleLogOut = () => {
+    if (!employee) return;
+
+    dispatch(logoutEmployee(employee.id));
+  };
 
   return (
     <>
@@ -40,7 +51,7 @@ const EmployeeMain = () => {
               disabled
               width={410}
             />
-            <DashedButton>Завершить смену</DashedButton>
+            <DashedButton onClick={handleLogOut}>Завершить смену</DashedButton>
           </Stack>
         </ApartContainer>
       </WrapperWithBgImage>

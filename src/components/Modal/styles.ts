@@ -37,4 +37,8 @@ export const useModalStyles = createStyles(() => ({
     color: '#2A302B',
     opacity: 0.9,
   },
+
+  body: {
+    height: '90%',
+  },
 }));

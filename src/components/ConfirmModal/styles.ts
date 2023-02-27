@@ -2,8 +2,9 @@ import { Stack as MantineStack } from '@mantine/core';
 import styled from 'styled-components';
 
 export const Stack = styled(MantineStack)`
-  gap: 122px;
+  height: 100%;
   padding-top: 74px;
+  justify-content: space-between;
   align-items: center;
 `;
 

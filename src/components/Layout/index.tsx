@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
 import { MantineProvider } from '@mantine/core';
+import { NotificationsProvider } from '@mantine/notifications';
 import { ThemeProvider } from 'styled-components';
 
 import GlobalStyles from '../../styles/GlobalStyles';
@@ -21,11 +22,13 @@ const Layout = ({ children }: Props) => {
           fontFamily: 'Raleway, sans-serif',
         }}
       >
-        <GlobalStyles />
-        <Wrapper>
-          <Header />
-          <ContentWrapper>{children}</ContentWrapper>
-        </Wrapper>
+        <NotificationsProvider>
+          <GlobalStyles />
+          <Wrapper>
+            <Header />
+            <ContentWrapper>{children}</ContentWrapper>
+          </Wrapper>
+        </NotificationsProvider>
       </MantineProvider>
     </ThemeProvider>
   );

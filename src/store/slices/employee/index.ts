@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import axios from 'axios';
+
+import instance from '../../../config/axiosConfig';
 
 import { InitialState } from './types';
 
@@ -7,19 +8,36 @@ const initialState = {
   isLoggedIn: false,
   employee: null,
   isLoading: 'idle',
-  error: {},
+  isError: false,
+  error: null,
+  isModalOpen: false,
 } as InitialState;
 
-export const getEmployee = createAsyncThunk(
-  'employee/getEmployee',
-  async (pinCode: number, { rejectWithValue }) => {
+export const loginEmployee = createAsyncThunk(
+  'employee/loginEmployee',
+  async (id: number, { rejectWithValue }) => {
     try {
-      const response = await axios.get(
-        `${import.meta.env.VITE_BACK_API_URL}/employee/checkin/${pinCode}`
-      );
+      const response = await instance.get(`/employee/checkin/${id}`);
 
-      if (response.status !== 200) {
-        throw new Error('Server Error!');
+      if (response.status === 404) {
+        throw new Error(response.data.error);
+      }
+
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
+export const logoutEmployee = createAsyncThunk(
+  'employee/logoutEmployee',
+  async (id: number, { rejectWithValue }) => {
+    try {
+      const response = await instance.get(`/employee/checkout/${id}`);
+
+      if (response.status === 404) {
+        throw new Error(response.data.error);
       }
 
       return response.data;
@@ -33,35 +51,34 @@ export const employeeSlice = createSlice({
   name: 'employee',
   initialState,
   reducers: {
-    logOut(state) {
-      state.employee = null;
-      state.isLoggedIn = false;
+    toggleModal(state, action) {
+      state.isModalOpen = action.payload;
     },
-    logIn(state, payload) {
-      state.isLoggedIn = !!payload;
+    login(state, action) {
+      state.employee = action.payload;
+      state.isLoggedIn = !!action.payload;
     },
   },
   extraReducers: (builder) => {
     builder
-      .addCase(getEmployee.pending, (state) => {
+      .addCase(loginEmployee.pending, (state) => {
         if (state.isLoading === 'idle') {
           state.isLoading = 'pending';
         }
       })
-      .addCase(getEmployee.fulfilled, (state, action) => {
+      .addCase(loginEmployee.fulfilled, (state, action) => {
         if (state.isLoading === 'pending') {
           state.isLoading = 'idle';
           state.employee = action.payload;
+          state.isLoggedIn = !!action.payload;
         }
       })
-      .addCase(getEmployee.rejected, (state, action) => {
-        if (state.isLoading === 'pending') {
-          state.isLoading = 'idle';
-          state.error = action.error;
-        }
+      .addCase(logoutEmployee.fulfilled, (state) => {
+        state.employee = null;
+        state.isLoggedIn = false;
       });
   },
 });
 
-export const { logOut, logIn } = employeeSlice.actions;
+export const { toggleModal, login } = employeeSlice.actions;
 export default employeeSlice.reducer;

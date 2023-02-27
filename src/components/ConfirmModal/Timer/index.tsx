@@ -4,10 +4,11 @@ import { TimerTitle } from './styles';
 interface Props {
   isStart: boolean;
   onStop: () => void;
+  timer: number;
 }
 
-const Timer = ({ isStart, onStop }: Props) => {
-  const { seconds, minutes } = useTimer(isStart, onStop);
+const Timer = ({ isStart, onStop, timer }: Props) => {
+  const { seconds, minutes } = useTimer(isStart, onStop, timer);
 
   return <TimerTitle>{`${minutes}:${seconds}`}</TimerTitle>;
 };

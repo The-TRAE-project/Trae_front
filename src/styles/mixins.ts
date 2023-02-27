@@ -1,4 +1,4 @@
-import { css } from 'styled-components';
+import { css, keyframes } from 'styled-components';
 
 const mixins = {
   apart: css`
@@ -46,6 +46,16 @@ const mixins = {
   fontSize48: css`
     font-size: 48px;
     line-height: 56px;
+  `,
+
+  // animations
+  loader: keyframes`
+    0%{
+      transform: rotate(0deg);
+    }
+    100%{
+      transform: rotate(360deg);
+    }
   `,
 };
 

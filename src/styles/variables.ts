@@ -14,7 +14,7 @@ const variables = css`
     --gradient-green2: #419149;
     --gradient-green3: #367345;
     --light-green: #83cc8c;
-    --font-roboto: 'Roboto, san-serif',
+    --font-roboto: 'Roboto, san-serif';
     --fz-xxs: 12px;
     --fz-xs: 13px;
     --fz-sm: 14px;
@@ -25,7 +25,7 @@ const variables = css`
     --fz-heading: 32px;
     --border-radius: 15px;
     --easing: cubic-bezier(0.645, 0.045, 0.355, 1);
-    --transition: all 0.4s  linear .2s;
+    --transition: all 0.4s linear 0.2s;
   }
 `;
 

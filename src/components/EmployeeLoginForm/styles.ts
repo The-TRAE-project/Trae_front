@@ -1,4 +1,3 @@
-import InputMask from 'react-input-mask';
 import styled from 'styled-components';
 
 export const GroupForm = styled.form`
@@ -6,6 +5,22 @@ export const GroupForm = styled.form`
   ${({ theme }) => theme.mixins.center};
   width: 463px;
   width: 463px;
+
+  .maskedInput {
+    position: absolute;
+    left: 0;
+    z-index: 1;
+    height: 88px;
+    width: 220px;
+    padding: 27px 30px 28px;
+    border: none;
+    border-radius: 15px 0 0 15px;
+
+    font-weight: 400;
+    ${({ theme }) => theme.mixins.fontSize28};
+    text-align: center;
+    color: var(--white-black);
+  }
 `;
 
 export const Button = styled.button`
@@ -24,20 +39,8 @@ export const Button = styled.button`
   ${({ theme }) => theme.mixins.fontSize30};
   text-align: center;
   color: var(--white);
-`;
 
-export const Input = styled(InputMask)`
-  position: absolute;
-  left: 0;
-  z-index: 1;
-  height: 88px;
-  width: 220px;
-  padding: 27px 30px 28px;
-  border: none;
-  border-radius: 15px 0 0 15px;
-
-  font-weight: 400;
-  ${({ theme }) => theme.mixins.fontSize28};
-  text-align: center;
-  color: var(--white-black);
+  &:disabled {
+    cursor: not-allowed;
+  }
 `;

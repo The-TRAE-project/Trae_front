@@ -30,6 +30,7 @@ const Modal = ({
       withCloseButton={withCloseButton}
       classNames={{
         modal: classes.modal,
+        body: classes.body,
         header: classes.header,
         title: classes.title,
         close: classes.close,
