@@ -1,22 +1,31 @@
 import { Group } from '@mantine/core';
 import { useLocation, useNavigate } from 'react-router-dom';
 
+import { logout } from '../../../store/slices/employee';
 import { useDate } from '../../../helpers/hooks/useDate';
+import { useAppDispatch } from '../../../helpers/hooks/useAppDispatch';
+import { useAppSelector } from '../../../helpers/hooks/useAppSelector';
 import { Paths } from '../../../constants/paths';
-// import User from '../../svgs/User';
 import ArrowLeft from '../../svgs/ArrowLeft';
 import Home from '../../svgs/Home';
 import { Container } from '../../styles';
 import HeaderTitle from './HeaderTitle';
-import { Button, DisplayTime, Wrapper } from './styles';
+import { Button, DisplayGroup, DisplayTime, UserName, Wrapper } from './styles';
 
 const Header = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const { employee } = useAppSelector((store) => store.employee);
+
   const { date } = useDate();
 
   const navigateToBack = () => navigate(-1);
-  const navigateToHome = () => navigate(Paths.EMPLOYEE_MAIN);
+
+  const navigateToLogin = () => {
+    dispatch(logout());
+    navigate(Paths.EMPLOYEE_LOGIN);
+  };
 
   function findCurrentPath(...arg: string[]) {
     return arg.some((path) => path === location.pathname);
@@ -26,36 +35,38 @@ const Header = () => {
     <Wrapper>
       <Container>
         <Group position="apart">
-          <DisplayTime path={!findCurrentPath(Paths.EMPLOYEE_PROJECTS)}>
-            {date}
-          </DisplayTime>
-          {/* {!findCurrentPath(Paths.MAIN) && (
-            <Button type="button">
-              <User />
-            </Button>
-          )} */}
+          <DisplayGroup>
+            <DisplayTime
+              isWhiteBlack={!findCurrentPath(Paths.EMPLOYEE_PROJECTS)}
+            >
+              {date}
+            </DisplayTime>
+            {!findCurrentPath(Paths.EMPLOYEE_LOGIN) && (
+              <UserName
+                isWhiteBlack={!findCurrentPath(Paths.EMPLOYEE_PROJECTS)}
+              >
+                {employee && `${employee.firstName} ${employee.lastName}`}
+              </UserName>
+            )}
+          </DisplayGroup>
           {!findCurrentPath(Paths.EMPLOYEE_LOGIN) && (
             <>
-              {!findCurrentPath(
-                Paths.EMPLOYEE_SELECTION,
-                Paths.EMPLOYEE_MAIN
-              ) && <HeaderTitle />}
+              {!findCurrentPath(Paths.EMPLOYEE_MAIN) && <HeaderTitle />}
 
               <Group spacing={11}>
-                <Button
-                  onClick={navigateToBack}
-                  type="button"
-                  aria-label="back step button"
-                >
-                  <ArrowLeft />
-                </Button>
-
-                {!findCurrentPath(
-                  Paths.EMPLOYEE_LOGIN,
-                  Paths.EMPLOYEE_MAIN
-                ) && (
+                {!findCurrentPath(Paths.EMPLOYEE_MAIN) && (
                   <Button
-                    onClick={navigateToHome}
+                    onClick={navigateToBack}
+                    type="button"
+                    aria-label="back step button"
+                  >
+                    <ArrowLeft />
+                  </Button>
+                )}
+
+                {!findCurrentPath(Paths.EMPLOYEE_LOGIN) && (
+                  <Button
+                    onClick={navigateToLogin}
                     type="button"
                     aria-label="home button"
                   >

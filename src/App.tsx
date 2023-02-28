@@ -4,7 +4,6 @@ import Layout from './components/Layout';
 import { Paths } from './constants/paths';
 import EmployeeLogin from './pages/EmployeeLogin';
 import EmployeeMain from './pages/EmployeeMain';
-import EmployeeSelection from './pages/EmployeeSelection';
 import EmployeeProjects from './pages/EmployeeProjects';
 import EmployeeProjectStages from './pages/EmployeeProjectStages';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -27,10 +26,6 @@ const App = () => {
           }
         >
           <Route path={Paths.EMPLOYEE_MAIN} element={<EmployeeMain />} />
-          <Route
-            path={Paths.EMPLOYEE_SELECTION}
-            element={<EmployeeSelection />}
-          />
           <Route
             path={Paths.EMPLOYEE_PROJECTS}
             element={<EmployeeProjects />}
