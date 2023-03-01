@@ -58,6 +58,10 @@ export const employeeSlice = createSlice({
       state.employee = action.payload;
       state.isLoggedIn = !!action.payload;
     },
+    logout(state) {
+      state.employee = null;
+      state.isLoggedIn = false;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -80,5 +84,5 @@ export const employeeSlice = createSlice({
   },
 });
 
-export const { toggleModal, login } = employeeSlice.actions;
+export const { toggleModal, login, logout } = employeeSlice.actions;
 export default employeeSlice.reducer;

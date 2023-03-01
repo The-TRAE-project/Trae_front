@@ -1,6 +1,3 @@
-import { useNavigate } from 'react-router-dom';
-
-import { Paths } from '../../../constants/paths';
 import Home from '../../svgs/Home';
 import Modal from '../../Modal';
 import Timer from '../Timer';
@@ -10,24 +7,25 @@ interface Props {
   isOpen: boolean;
   onClose: () => void;
   informTitle: string;
+  isHideHomeBtn?: boolean;
 }
 
-const InformModal = ({ isOpen, onClose, informTitle }: Props) => {
-  const navigate = useNavigate();
-
-  const handleClose = () => {
-    onClose();
-    navigate(Paths.EMPLOYEE_MAIN);
-  };
-
+const InformModal = ({
+  isOpen,
+  onClose,
+  informTitle,
+  isHideHomeBtn = false,
+}: Props) => {
   return (
-    <Modal isOpen={isOpen} onClose={handleClose} withCloseButton={false}>
-      <HomeButton onClick={handleClose}>
-        <Home />
-      </HomeButton>
+    <Modal isOpen={isOpen} onClose={onClose} withCloseButton={false}>
+      {isHideHomeBtn && (
+        <HomeButton onClick={onClose}>
+          <Home />
+        </HomeButton>
+      )}
       <Stack>
         <InformTitle>{informTitle}</InformTitle>
-        <Timer isStart={isOpen} onStop={handleClose} timer={10} />
+        <Timer isStart={isOpen} onStop={onClose} timer={3} />
       </Stack>
     </Modal>
   );

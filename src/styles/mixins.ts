@@ -48,6 +48,20 @@ const mixins = {
     line-height: 56px;
   `,
 
+  // components
+  orangeCircle: css`
+    height: 82px;
+    width: 80px;
+    font-family: var(--font-roboto);
+    font-weight: 500;
+    ${({ theme }) => theme.mixins.fontSize28};
+    color: var(--white);
+    ${({ theme }) => theme.mixins.fCenter};
+    background-color: var(--orange);
+    outline: 7px solid var(--green);
+    border-radius: 50%;
+  `,
+
   // animations
   loader: keyframes`
     0%{

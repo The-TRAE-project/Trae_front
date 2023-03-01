@@ -1,6 +1,10 @@
 import { Group } from '@mantine/core';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
+import { logout } from '../../store/slices/employee';
+import { useAppDispatch } from '../../helpers/hooks/useAppDispatch';
+import { Paths } from '../../constants/paths';
 import Modal from '../Modal';
 import InformModal from './InformModal';
 import Timer from './Timer';
@@ -10,8 +14,10 @@ interface Props {
   isOpen: boolean;
   onClose: () => void;
   handleAgreementClick?: () => void;
+  redirectPath: string;
   questionTitle: string;
   informTitle: string;
+  isHideHomeBtn?: boolean;
 }
 
 const ConfirmModal = ({
@@ -19,9 +25,14 @@ const ConfirmModal = ({
   onClose,
   questionTitle,
   informTitle,
+  isHideHomeBtn,
   handleAgreementClick,
+  redirectPath,
 }: Props) => {
   const [isInform, setIsInform] = useState<boolean>(false);
+
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   const handleOpenInformModal = () => {
     setIsInform(true);
@@ -29,11 +40,17 @@ const ConfirmModal = ({
     handleAgreementClick?.();
   };
 
-  const handleCloseInformModal = () => setIsInform(false);
+  const handleCloseInformModal = () => {
+    setIsInform(false);
+    navigate(redirectPath);
+    if (redirectPath !== Paths.EMPLOYEE_LOGIN) {
+      dispatch(logout());
+    }
+  };
 
   return (
     <>
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal isOpen={isOpen} onClose={onClose} withCloseButton={false}>
         <Stack>
           <TitleStack>
             <ConfirmTitle>{questionTitle}</ConfirmTitle>
@@ -49,6 +66,7 @@ const ConfirmModal = ({
         isOpen={isInform}
         onClose={handleCloseInformModal}
         informTitle={informTitle}
+        isHideHomeBtn={isHideHomeBtn}
       />
     </>
   );

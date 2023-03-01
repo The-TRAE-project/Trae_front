@@ -1,12 +1,14 @@
 import { Route, Routes } from 'react-router-dom';
 
 import Layout from './components/Layout';
+import ProtectedRoute from './components/ProtectedRoute';
 import { Paths } from './constants/paths';
+
 import EmployeeLogin from './pages/EmployeeLogin';
 import EmployeeMain from './pages/EmployeeMain';
 import EmployeeProjects from './pages/EmployeeProjects';
 import EmployeeProjectStages from './pages/EmployeeProjectStages';
-import ProtectedRoute from './components/ProtectedRoute';
+import EmployeeStagesInWork from './pages/EmployeeStagesInWork';
 
 import { useAppSelector } from './helpers/hooks/useAppSelector';
 
@@ -33,6 +35,10 @@ const App = () => {
           <Route
             path={Paths.EMPLOYEE_PROJECT_STAGES}
             element={<EmployeeProjectStages />}
+          />
+          <Route
+            path={Paths.EMPLOYEE_STAGES_IN_WORK}
+            element={<EmployeeStagesInWork />}
           />
         </Route>
       </Routes>

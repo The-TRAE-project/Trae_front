@@ -1,6 +1,31 @@
 export interface Project {
-  projectId: number;
+  id: number;
   projectName: string;
+  number: number;
   customerLastName: string;
   availableOperationName: string;
+}
+
+export interface StageInWork {
+  customerLastName: string;
+  operationId: number;
+  operationName: string;
+  projectId: number;
+  projectName: string;
+  projectNumber: number;
+}
+
+export interface ProjectStage {
+  id: number;
+  name: string;
+  readyToAcceptance: boolean;
+  isEnded: boolean;
+  inWork: boolean;
+  employeeFirstName: null | string;
+  employeeLastName: null | string;
+}
+
+export interface ReceiveProjectStageValue {
+  employeeId: number;
+  operationId: number;
 }
