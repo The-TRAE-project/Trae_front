@@ -1,14 +1,34 @@
-import styled from 'styled-components';
+import { Group as MantineGroup } from '@mantine/core';
+import styled, { css } from 'styled-components';
 
-import { colors } from '../../constants/colors';
-import { fCenter, fontSize28 } from '../../helpers/cssFragments';
+type VerticalPositionProps = {
+  isVertical?: boolean;
+};
 
-type Props = {
-  isWhite: boolean;
+type BtnProps = {
+  color: string;
+  isVertical?: boolean;
+};
+
+type TitleProps = {
+  color: string;
 };
 
 export const Wrapper = styled.div`
-  ${fCenter};
+  ${({ theme }) => theme.mixins.fCenter};
+  ${(props: VerticalPositionProps) =>
+    props.isVertical &&
+    css`
+      position: absolute;
+      right: 0;
+      top: 0;
+      bottom: 0;
+    `}
+`;
+
+export const Group = styled(MantineGroup)`
+  flex-direction: ${(props: VerticalPositionProps) =>
+    props.isVertical ? 'column' : 'row'};
 `;
 
 export const Button = styled.button`
@@ -16,11 +36,11 @@ export const Button = styled.button`
   width: 22px;
   background: none;
   border: none;
-  cursor: pointer;
+  transform: ${(props: BtnProps) =>
+    props.isVertical ? 'rotate(90deg)' : 'rotate(0deg)'};
 
   svg {
-    fill: ${(props: Props) =>
-      props.isWhite ? colors.white : colors.whiteBlack};
+    fill: ${(props: BtnProps) => `var(${props.color})`};
   }
 
   &:disabled {
@@ -32,10 +52,8 @@ export const Button = styled.button`
 `;
 
 export const InformTitle = styled.p`
-  font-family: 'Roboto, san-serif';
+  font-family: var(--font-roboto);
   font-weight: 500;
-  ${fontSize28};
-  color: ${(props: Props) =>
-    props.isWhite ? colors.white : colors.whiteBlack};
-  margin: 0;
+  ${({ theme }) => theme.mixins.fontSize28};
+  color: ${(props: TitleProps) => `var(${props.color})`};
 `;

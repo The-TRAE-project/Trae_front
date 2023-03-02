@@ -1,68 +1,53 @@
 import styled from 'styled-components';
 
-import { colors } from '../../../constants/colors';
-import { fCenter, fColumn, fontSize28 } from '../../../helpers/cssFragments';
-
 export const Wrapper = styled.div`
   position: relative;
-  /* min-height: 191px; */
-  min-height: 100%;
-  ${fColumn};
-  /* justify-content; */
+  min-height: 158px;
+  ${({ theme }) => theme.mixins.column};
   gap: 18px;
   align-items: center;
   padding: 22px 20px 24px;
   border-radius: 10px;
-  background: ${colors.white};
-  filter: drop-shadow(0px 4px 8px ${colors.blackShadow});
+  background: var(--white);
+  filter: drop-shadow(0px 4px 8px var(--black-shadow));
 
   &.completed {
-    background: ${colors.lightGreen};
+    background: var(--light-green);
   }
 
-  &.isTodo {
-    background: ${colors.orange};
-  }
-
-  &.next {
+  &.readyToAcceptance {
     background: linear-gradient(
       97.03deg,
-      ${colors.green} 7.5%,
-      ${colors.gradientGreen3} 94.35%
+      var(--green) 7.5%,
+      var(--gradient-green3) 94.35%
     );
   }
 `;
 
-export const StageStatus = styled.button`
-  ${fCenter};
+export const StageName = styled.button`
+  ${({ theme }) => theme.mixins.fCenter}
   padding: 12px 10px;
   width: 226px;
-  font-family: 'Roboto';
+  font-family: var(--font-roboto);
   font-weight: 500;
-  ${fontSize28}
+  ${({ theme }) => theme.mixins.fontSize28}
   text-align: center;
-  color: ${colors.white};
-  background-color: ${colors.orange};
+  color: var(--white);
+  background-color: var(--orange);
   border: none;
   border-radius: 10px;
-  cursor: pointer;
+  cursor: not-allowed;
 
   &.completed {
     cursor: not-allowed;
-    color: ${colors.whiteBlack};
-    background: ${colors.white};
+    color: var(--white-black);
+    background: var(--white);
   }
 
-  &.isTodo {
-    cursor: not-allowed;
-    color: ${colors.whiteBlack};
-    background: ${colors.white};
-  }
-
-  &.next {
+  &.readyToAcceptance {
     cursor: pointer;
-    color: ${colors.white};
-    background-color: ${colors.orange};
+    color: var(----white-black);
+    background-color: var(--white);
   }
 
   &:disabled {
@@ -72,10 +57,9 @@ export const StageStatus = styled.button`
 
 export const Employee = styled.p`
   font-weight: 400;
-  ${fontSize28};
+  ${({ theme }) => theme.mixins.fontSize28};
   text-align: center;
-  color: ${colors.whiteBlack};
-  margin: 0;
+  color: var(--white-black);
 `;
 
 export const StatusArrowDown = styled.div`

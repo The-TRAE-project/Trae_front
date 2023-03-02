@@ -26,5 +26,7 @@ module.exports = {
     'react/function-component-definition': 0,
     'import/prefer-default-export': 0,
     'react/require-default-props': 0,
+    'react/jsx-props-no-spreading': 0,
+    'no-param-reassign': 0,
   },
 };

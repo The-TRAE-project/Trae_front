@@ -3,51 +3,52 @@ import { useParams } from 'react-router-dom';
 
 import { divisorByChunk } from '../../helpers/divisorByChunk';
 import { useSlider } from '../../helpers/hooks/useSlider';
-import { ProjectServices } from '../../helpers/services/projectServices';
-import { ProjectStage } from '../../helpers/services/types';
+import { useGetProjectStagesQuery } from '../../store/apis/employee';
+import { ProjectStage } from '../../store/apis/employee/types';
 import ControlButtons from '../ControlButtons';
 import StageCard from './StageCard';
 import { FlexContainer, Stack, Wrapper } from './styles';
 
 const ProjectStagesListItem = () => {
   const { id } = useParams();
-  const [projectStages, setProjectStages] = useState<
-    ProjectStage[] | undefined
-  >([]);
+  const [projectStages, setProjectStages] = useState<ProjectStage[][] | null>(
+    null
+  );
   const { quantity, current, slideIndex, prevSlide, nextSlide } =
     useSlider(projectStages);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const dividerByEven = (data: any, even: number) =>
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    data?.filter((_: any, index: number) => index % even === 0);
+  const { data } = useGetProjectStagesQuery(id as unknown as number);
+  console.log(data);
+  const dividerByEven = (stagesArr: ProjectStage[]) =>
+    stagesArr?.filter((_: ProjectStage, index: number) => index % 2 === 0);
+
+  const dividerByOdd = (stagesArr: ProjectStage[]) =>
+    stagesArr?.filter((_: ProjectStage, index: number) => !(index % 2 === 0));
 
   useEffect(() => {
-    const getProjectById = async () => {
-      if (!id) return;
-      const response = await ProjectServices.getByProjectId(id);
-      if (response) {
-        const dividedBy7 = divisorByChunk(response.stages, 7);
+    const dividedProjectStages = async () => {
+      if (data) {
+        const dividedBy7 = divisorByChunk(data, 7);
         setProjectStages(dividedBy7);
       }
     };
 
-    getProjectById();
-  }, [id]);
+    dividedProjectStages();
+  }, [data]);
 
   return (
     <Wrapper>
       {projectStages ? (
         <Stack>
           <FlexContainer>
-            {dividerByEven(projectStages[slideIndex], 2)?.map(
+            {dividerByEven(projectStages[slideIndex]).map(
               (stage: ProjectStage) => (
                 <StageCard key={stage.id} stage={stage} down />
               )
             )}
           </FlexContainer>
           <FlexContainer>
-            {dividerByEven(projectStages[slideIndex], 3)?.map(
+            {dividerByOdd(projectStages[slideIndex]).map(
               (stage: ProjectStage) => (
                 <StageCard key={stage.id} stage={stage} />
               )
@@ -60,6 +61,7 @@ const ProjectStagesListItem = () => {
         quantity={quantity}
         prevSlide={prevSlide}
         nextSlide={nextSlide}
+        color="--white-black"
       />
     </Wrapper>
   );

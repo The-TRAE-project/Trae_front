@@ -1,21 +1,34 @@
 import { useLocation } from 'react-router-dom';
 
-import { colors } from '../../../../constants/colors';
 import { Paths } from '../../../../constants/paths';
 import { Title } from './styles';
 
-const HeaderTitle = () => {
+interface Props {
+  findCurrentPath: (...arg: string[]) => boolean;
+}
+
+const HeaderTitle = ({ findCurrentPath }: Props) => {
   const location = useLocation();
+  // TODO:
+  const displayTitleByPath = (path: any) => {
+    switch (path) {
+      case '/employee-projects':
+        return 'Выберите проект';
+      case '/employee-stages-in-work':
+        return 'Этапы в работе';
+      default:
+        return 'Выберите этап';
+    }
+  };
 
   return (
     <Title
-      color={
-        location.pathname === Paths.PROJECTS ? colors.white : colors.whiteBlack
-      }
+      isWhite={findCurrentPath(
+        Paths.EMPLOYEE_PROJECTS,
+        Paths.EMPLOYEE_STAGES_IN_WORK
+      )}
     >
-      {location.pathname === Paths.PROJECTS
-        ? 'Выберите проект'
-        : 'Выберите этап'}
+      {displayTitleByPath(location.pathname)}
     </Title>
   );
 };

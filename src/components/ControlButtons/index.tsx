@@ -1,47 +1,45 @@
-import { Group } from '@mantine/core';
-import { useLocation } from 'react-router-dom';
-
-import { colors } from '../../constants/colors';
-import { Paths } from '../../constants/paths';
 import ControlArrowLeft from '../svgs/ControlArrowLeft';
 import ControlArrowRight from '../svgs/ControlArrowRight';
-import { Button, InformTitle, Wrapper } from './styles';
+import { Button, Group, InformTitle, Wrapper } from './styles';
 
 interface Props {
   current: number;
   quantity: number;
   prevSlide: () => void;
   nextSlide: () => void;
+  color: string;
+  isVertical?: boolean;
 }
 
-const ControlButtons = ({ current, quantity, prevSlide, nextSlide }: Props) => {
-  const location = useLocation();
-
-  const isProjectPage = location.pathname === Paths.PROJECTS;
-
+const ControlButtons = ({
+  current,
+  quantity,
+  prevSlide,
+  nextSlide,
+  color,
+  isVertical,
+}: Props) => {
   return (
-    <Wrapper>
-      <Group spacing={58}>
+    <Wrapper isVertical={isVertical}>
+      <Group isVertical={isVertical} spacing={44}>
         <Button
           onClick={prevSlide}
           disabled={current === 1}
-          isWhite={isProjectPage}
+          color={color}
+          isVertical={isVertical}
         >
-          <ControlArrowRight
-            color={isProjectPage ? colors.white : colors.whiteBlack}
-          />
+          <ControlArrowRight color={color} />
         </Button>
-        <InformTitle isWhite={isProjectPage}>
+        <InformTitle color={color}>
           {current}/{quantity}
         </InformTitle>
         <Button
           onClick={nextSlide}
           disabled={current === quantity}
-          isWhite={isProjectPage}
+          color={color}
+          isVertical={isVertical}
         >
-          <ControlArrowLeft
-            color={isProjectPage ? colors.white : colors.whiteBlack}
-          />
+          <ControlArrowLeft color={color} />
         </Button>
       </Group>
     </Wrapper>

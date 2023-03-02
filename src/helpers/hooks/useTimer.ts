@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 
-export function useTimer(isStart: boolean, onClose: () => void) {
+export function useTimer(isStart: boolean, onClose: () => void, timer: number) {
   const [countDown, setCountDown] = useState(0);
 
   useEffect(() => {
-    let timerId: number | undefined;
+    let timerId: any;
 
     if (isStart) {
-      setCountDown(60 * 1.92);
+      setCountDown(timer);
       timerId = setInterval(() => {
         setCountDown((prevTime) => prevTime - 1);
       }, 1000);
@@ -16,7 +16,7 @@ export function useTimer(isStart: boolean, onClose: () => void) {
     }
 
     return () => clearInterval(timerId);
-  }, [isStart]);
+  }, [isStart, timer]);
 
   useEffect(() => {
     if (Math.floor(countDown) < 0 && isStart) {

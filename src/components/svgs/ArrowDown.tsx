@@ -1,10 +1,8 @@
-import { colors } from '../../constants/colors';
-
 interface Props {
   color: string;
 }
 
-const ArrowDown = ({ color = colors.green }: Props) => {
+const ArrowDown = ({ color = 'var(--green)' }: Props) => {
   return (
     <svg
       width="76"

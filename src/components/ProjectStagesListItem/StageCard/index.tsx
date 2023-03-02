@@ -1,12 +1,17 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import { colors } from '../../../constants/colors';
-import { ProjectStage } from '../../../helpers/services/types';
+import { Paths } from '../../../constants/paths';
+import { useAppDispatch } from '../../../helpers/hooks/useAppDispatch';
+import { useAppSelector } from '../../../helpers/hooks/useAppSelector';
+import { useReceiveProjectStageMutation } from '../../../store/apis/employee';
+import { ProjectStage } from '../../../store/apis/employee/types';
+import { logout } from '../../../store/slices/employee';
+import ConfirmModal from '../../ConfirmModal';
 import ArrowDown from '../../svgs/ArrowDown';
 import ArrowUp from '../../svgs/ArrowUp';
-import ChooseEmployeeModal from '../ChooseEmployeeModal';
 import {
-  StageStatus,
+  StageName,
   Employee,
   Wrapper,
   StatusArrowDown,
@@ -21,46 +26,74 @@ interface Props {
 const StageCard = ({ stage, down }: Props) => {
   const [opened, setOpened] = useState<boolean>(false);
 
-  const isComplete = stage.isComplete ? 'completed' : '';
-  const isTodo = stage.isTodo ? 'isTodo' : '';
-  const isNextNeedComplete = stage.isNext ? 'next' : '';
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const { employee } = useAppSelector((store) => store.employee);
 
-  const handleChooseEmployee = () => {
-    setOpened(true);
+  const [receiveProject] = useReceiveProjectStageMutation();
+
+  const isComplete = stage.isEnded ? 'completed' : '';
+  const isReady = stage.readyToAcceptance ? 'readyToAcceptance' : '';
+
+  const handleOpenModal = () => setOpened(true);
+  const handleCloseModal = () => setOpened(false);
+
+  const handleReceiveProject = async () => {
+    try {
+      if (!employee) return;
+
+      await receiveProject({ employeeId: employee.id, operationId: stage.id });
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error(error);
+    }
   };
 
-  const handleCloseModal = () => setOpened(false);
+  const handleCloseInformModal = () => {
+    navigate(Paths.EMPLOYEE_LOGIN);
+    dispatch(logout());
+  };
 
   return (
     <>
-      <Wrapper className={isComplete || isTodo || isNextNeedComplete}>
-        <StageStatus
-          onClick={handleChooseEmployee}
-          className={isComplete || isTodo || isNextNeedComplete}
-          disabled={stage.isTodo || stage.isComplete}
+      <Wrapper className={isComplete || isReady}>
+        <StageName
+          onClick={handleOpenModal}
+          className={isComplete || isReady}
+          disabled={stage.inWork || stage.isEnded || !stage.readyToAcceptance}
         >
-          {stage.stage}
-        </StageStatus>
-        <Employee>{stage.employee}</Employee>
+          {stage.name}
+        </StageName>
+        <Employee>
+          {stage.employeeFirstName &&
+            stage.employeeLastName &&
+            `${stage.employeeFirstName} ${stage.employeeLastName}`}
+        </Employee>
         {down ? (
           <StatusArrowDown>
             <ArrowDown
-              color={
-                stage.isComplete || stage.isTodo ? colors.green : colors.orange
-              }
+              color={stage.isEnded ? 'var(--green)' : 'var(--orange)'}
             />
           </StatusArrowDown>
         ) : (
           <StatusArrowUp>
-            <ArrowUp
-              color={
-                stage.isComplete || stage.isTodo ? colors.green : colors.orange
-              }
-            />
+            <ArrowUp color={stage.isEnded ? 'var(--green)' : 'var(--orange)'} />
           </StatusArrowUp>
         )}
       </Wrapper>
-      <ChooseEmployeeModal isOpen={opened} onClose={handleCloseModal} />
+      <ConfirmModal
+        isOpen={opened}
+        onClose={handleCloseModal}
+        onCloseInformModal={handleCloseInformModal}
+        isHideHomeBtn={false}
+        handleAgreementClick={handleReceiveProject}
+        questionTitle={`${employee?.firstName} ${
+          employee?.lastName
+        } начинает <br /> этап ${stage.name.toLowerCase()}?`}
+        informTitle={`${employee?.firstName} ${
+          employee?.lastName
+        } начал этап ${stage.name.toLowerCase()}`}
+      />
     </>
   );
 };
