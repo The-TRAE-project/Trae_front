@@ -3,8 +3,9 @@ import styled from 'styled-components';
 
 export const Stack = styled(MantineStack)`
   height: 100%;
-  justify-content: space-between;
   padding-top: 104px;
+  justify-content: space-between;
+  align-items: center;
 `;
 
 export const InformTitle = styled.h1`
