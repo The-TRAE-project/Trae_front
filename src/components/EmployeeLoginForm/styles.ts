@@ -1,5 +1,9 @@
 import styled from 'styled-components';
 
+export const Wrapper = styled.div`
+  position: relative;
+`;
+
 export const GroupForm = styled.form`
   position: relative;
   ${({ theme }) => theme.mixins.center};

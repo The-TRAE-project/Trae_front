@@ -3,20 +3,22 @@ import { useNavigate } from 'react-router-dom';
 import { useForm } from '@mantine/form';
 import MaskedInput from 'react-text-mask';
 
-import { Paths } from '../../constants/paths';
 import { useAppDispatch } from '../../helpers/hooks/useAppDispatch';
 import { useAppSelector } from '../../helpers/hooks/useAppSelector';
 import { login, loginEmployee, toggleModal } from '../../store/slices/employee';
 import { Employee } from '../../store/slices/employee/types';
+import { Paths } from '../../constants/paths';
 import instance from '../../config/axiosConfig';
 import Loader from '../Loader';
 import ConfirmModal from '../ConfirmModal';
-import { Button, GroupForm } from './styles';
+import { Button, GroupForm, Wrapper } from './styles';
 import { LoginFormValues } from './types';
+import NumericKeyboard from './NumericKeyboard';
 
 const EmployeeLoginForm = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [employee, setEmployee] = useState<Employee>();
+  const [isInputInFocus, setIsInputInFocus] = useState<boolean>(false);
 
   const dispatch = useAppDispatch();
   const { isModalOpen } = useAppSelector((store) => store.employee);
@@ -51,31 +53,38 @@ const EmployeeLoginForm = () => {
   };
 
   const handleCloseModal = () => dispatch(toggleModal(false));
+  const handleCloseInformModal = () => navigate(Paths.EMPLOYEE_MAIN);
 
   const disabled = /^\d{3}$/i.test(form.values.pinCode);
 
   return (
     <>
-      <GroupForm onSubmit={form.onSubmit(handleSubmit)}>
-        <MaskedInput
-          mask={[/\d/, /\d/, /\d/]}
-          className="maskedInput"
-          placeholder="Пароль"
-          {...form.getInputProps('pinCode')}
-        />
-        <Button type="submit" disabled={!disabled}>
-          {isLoading ? <Loader size={40} /> : 'Подтвердить'}
-        </Button>
-      </GroupForm>
+      <Wrapper>
+        <GroupForm onSubmit={form.onSubmit(handleSubmit)}>
+          <MaskedInput
+            mask={[/\d/, /\d/, /\d/]}
+            className="maskedInput"
+            placeholder="Пароль"
+            {...form.getInputProps('pinCode')}
+            onFocus={() => setIsInputInFocus(true)}
+            // onBlur={() => setIsInputInFocus(false)}
+          />
+          <Button type="submit" disabled={!disabled}>
+            {isLoading ? <Loader size={40} /> : 'Подтвердить'}
+          </Button>
+        </GroupForm>
+
+        <NumericKeyboard isOpen={isInputInFocus} />
+      </Wrapper>
 
       <ConfirmModal
         isOpen={isModalOpen}
-        handleAgreementClick={handleAgreementClick}
         onClose={handleCloseModal}
-        questionTitle={`${employee?.firstName} ${employee?.lastName} начинает рабочую смену?`}
-        informTitle={`
-            ${employee?.firstName} ${employee?.lastName}, 
-            добро пожаловать в Trae \n Хорошего рабочего дня
+        onCloseInformModal={handleCloseInformModal}
+        handleAgreementClick={handleAgreementClick}
+        isHideHomeBtn={false}
+        questionTitle={`${employee?.firstName} ${employee?.lastName} начинает <br /> рабочую смену?`}
+        informTitle={`${employee?.firstName} ${employee?.lastName}, <br /> добро пожаловать в Trae <br /> Хорошего рабочего дня
         `}
       />
     </>
