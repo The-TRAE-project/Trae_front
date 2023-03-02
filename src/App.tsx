@@ -1,4 +1,4 @@
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 
 import Layout from './components/Layout';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -19,6 +19,7 @@ const App = () => {
     <Layout>
       <Routes>
         <Route path={Paths.EMPLOYEE_LOGIN} element={<EmployeeLogin />} />
+        <Route path="*" element={<Navigate to={Paths.EMPLOYEE_LOGIN} />} />
         <Route
           element={
             <ProtectedRoute
