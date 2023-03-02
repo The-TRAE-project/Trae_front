@@ -4,7 +4,7 @@ export function useTimer(isStart: boolean, onClose: () => void, timer: number) {
   const [countDown, setCountDown] = useState(0);
 
   useEffect(() => {
-    let timerId: number | undefined;
+    let timerId: any;
 
     if (isStart) {
       setCountDown(timer);

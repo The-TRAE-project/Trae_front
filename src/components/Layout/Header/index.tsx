@@ -37,13 +37,23 @@ const Header = () => {
         <Group position="apart">
           <DisplayGroup>
             <DisplayTime
-              isWhiteBlack={!findCurrentPath(Paths.EMPLOYEE_PROJECTS)}
+              isWhiteBlack={
+                !findCurrentPath(
+                  Paths.EMPLOYEE_PROJECTS,
+                  Paths.EMPLOYEE_STAGES_IN_WORK
+                )
+              }
             >
               {date}
             </DisplayTime>
             {!findCurrentPath(Paths.EMPLOYEE_LOGIN) && (
               <UserName
-                isWhiteBlack={!findCurrentPath(Paths.EMPLOYEE_PROJECTS)}
+                isWhiteBlack={
+                  !findCurrentPath(
+                    Paths.EMPLOYEE_PROJECTS,
+                    Paths.EMPLOYEE_STAGES_IN_WORK
+                  )
+                }
               >
                 {employee && `${employee.firstName} ${employee.lastName}`}
               </UserName>
@@ -51,7 +61,10 @@ const Header = () => {
           </DisplayGroup>
           {!findCurrentPath(Paths.EMPLOYEE_LOGIN) && (
             <>
-              {!findCurrentPath(Paths.EMPLOYEE_MAIN) && <HeaderTitle />}
+              {!findCurrentPath(Paths.EMPLOYEE_MAIN) && (
+                // eslint-disable-next-line react/jsx-no-bind
+                <HeaderTitle findCurrentPath={findCurrentPath} />
+              )}
 
               <Group spacing={11}>
                 {!findCurrentPath(Paths.EMPLOYEE_MAIN) && (

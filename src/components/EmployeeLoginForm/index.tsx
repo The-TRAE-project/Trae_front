@@ -19,6 +19,7 @@ const EmployeeLoginForm = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [employee, setEmployee] = useState<Employee>();
   const [isInputInFocus, setIsInputInFocus] = useState<boolean>(false);
+  const [pinCode, setPinCode] = useState<string>('');
 
   const dispatch = useAppDispatch();
   const { isModalOpen } = useAppSelector((store) => store.employee);
@@ -56,7 +57,7 @@ const EmployeeLoginForm = () => {
   const handleCloseInformModal = () => navigate(Paths.EMPLOYEE_MAIN);
 
   const disabled = /^\d{3}$/i.test(form.values.pinCode);
-
+  console.log(pinCode);
   return (
     <>
       <Wrapper>
@@ -72,9 +73,12 @@ const EmployeeLoginForm = () => {
           <Button type="submit" disabled={!disabled}>
             {isLoading ? <Loader size={40} /> : 'Подтвердить'}
           </Button>
+          <NumericKeyboard
+            pinCode={pinCode}
+            setPinCode={setPinCode}
+            isOpen={isInputInFocus}
+          />
         </GroupForm>
-
-        <NumericKeyboard isOpen={isInputInFocus} />
       </Wrapper>
 
       <ConfirmModal

@@ -1,12 +1,14 @@
-import { useId } from 'react';
+import { useId, Dispatch, SetStateAction } from 'react';
 import { FlexContainer, KeyboardBtn, Wrapper } from './styles';
 
 interface Props {
   isOpen: boolean;
   onClose?: () => void;
+  pinCode: string;
+  setPinCode: Dispatch<SetStateAction<string>>;
 }
 
-const NumericKeyboard = ({ isOpen, onClose }: Props) => {
+const NumericKeyboard = ({ isOpen, onClose, pinCode, setPinCode }: Props) => {
   const keyboard = [
     {
       id: useId(),
@@ -55,7 +57,7 @@ const NumericKeyboard = ({ isOpen, onClose }: Props) => {
   ];
 
   const handleOnChangeKeyboard = (value: number | string) => {
-    console.log(value);
+    setPinCode(String(...pinCode, value));
   };
 
   return (
@@ -64,6 +66,7 @@ const NumericKeyboard = ({ isOpen, onClose }: Props) => {
         {keyboard.map((keyboardIt) => (
           <KeyboardBtn
             key={keyboardIt.id}
+            type="button"
             onClick={() => handleOnChangeKeyboard(keyboardIt.value)}
           >
             {keyboardIt.value}
