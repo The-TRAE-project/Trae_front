@@ -1,12 +1,12 @@
 import { useNavigate } from 'react-router-dom';
 
-import { Project } from '../../../helpers/services/types';
+import { Project } from '../../../store/apis/employee/types';
 import {
   ProjectNumber,
   ProjectName,
   Wrapper,
-  ProjectStatus,
-  Employee,
+  ProjectOperationName,
+  Customer,
 } from './styles';
 
 interface Props {
@@ -21,15 +21,12 @@ const ProjectCard = ({ project }: Props) => {
 
   return (
     <Wrapper>
-      <ProjectNumber>{project.projectNumber}</ProjectNumber>
-      <Employee>{project.employee}</Employee>
-      <ProjectName>{project.itemName}</ProjectName>
-      <ProjectStatus
-        onClick={navigateToProjectStages}
-        disabled={project.isInWork}
-      >
-        {project.status}
-      </ProjectStatus>
+      <ProjectNumber>{project.number}</ProjectNumber>
+      <Customer>{project.customerLastName}</Customer>
+      <ProjectName>{project.projectName}</ProjectName>
+      <ProjectOperationName onClick={navigateToProjectStages}>
+        {project.availableOperationName}
+      </ProjectOperationName>
     </Wrapper>
   );
 };

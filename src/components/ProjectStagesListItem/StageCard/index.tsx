@@ -1,11 +1,17 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import { ProjectStage } from '../../../helpers/services/types';
+import { Paths } from '../../../constants/paths';
+import { useAppDispatch } from '../../../helpers/hooks/useAppDispatch';
+import { useAppSelector } from '../../../helpers/hooks/useAppSelector';
+import { useReceiveProjectStageMutation } from '../../../store/apis/employee';
+import { ProjectStage } from '../../../store/apis/employee/types';
+import { logout } from '../../../store/slices/employee';
 import ConfirmModal from '../../ConfirmModal';
 import ArrowDown from '../../svgs/ArrowDown';
 import ArrowUp from '../../svgs/ArrowUp';
 import {
-  StageStatus,
+  StageName,
   Employee,
   Wrapper,
   StatusArrowDown,
@@ -20,51 +26,73 @@ interface Props {
 const StageCard = ({ stage, down }: Props) => {
   const [opened, setOpened] = useState<boolean>(false);
 
-  const isComplete = stage.isComplete ? 'completed' : '';
-  const isTodo = stage.isTodo ? 'isTodo' : '';
-  const isNextNeedComplete = stage.isNext ? 'next' : '';
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const { employee } = useAppSelector((store) => store.employee);
+
+  const [receiveProject] = useReceiveProjectStageMutation();
+
+  const isComplete = stage.isEnded ? 'completed' : '';
+  const isReady = stage.readyToAcceptance ? 'readyToAcceptance' : '';
 
   const handleOpenModal = () => setOpened(true);
   const handleCloseModal = () => setOpened(false);
 
+  const handleReceiveProject = async () => {
+    try {
+      if (!employee) return;
+
+      await receiveProject({ employeeId: employee.id, operationId: stage.id });
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error(error);
+    }
+  };
+
+  const handleCloseInformModal = () => {
+    navigate(Paths.EMPLOYEE_LOGIN);
+    dispatch(logout());
+  };
+
   return (
     <>
-      <Wrapper className={isComplete || isTodo || isNextNeedComplete}>
-        <StageStatus
+      <Wrapper className={isComplete || isReady}>
+        <StageName
           onClick={handleOpenModal}
-          className={isComplete || isTodo || isNextNeedComplete}
-          disabled={stage.isTodo || stage.isComplete}
+          className={isComplete || isReady}
+          disabled={stage.inWork || stage.isEnded || !stage.readyToAcceptance}
         >
-          {stage.stage}
-        </StageStatus>
-        <Employee>{stage.employee}</Employee>
+          {stage.name}
+        </StageName>
+        <Employee>
+          {stage.employeeFirstName &&
+            stage.employeeLastName &&
+            `${stage.employeeFirstName} ${stage.employeeLastName}`}
+        </Employee>
         {down ? (
           <StatusArrowDown>
             <ArrowDown
-              color={
-                stage.isComplete || stage.isTodo
-                  ? 'var(--green)'
-                  : 'var(--orange)'
-              }
+              color={stage.isEnded ? 'var(--green)' : 'var(--orange)'}
             />
           </StatusArrowDown>
         ) : (
           <StatusArrowUp>
-            <ArrowUp
-              color={
-                stage.isComplete || stage.isTodo
-                  ? 'var(--green)'
-                  : 'var(--orange)'
-              }
-            />
+            <ArrowUp color={stage.isEnded ? 'var(--green)' : 'var(--orange)'} />
           </StatusArrowUp>
         )}
       </Wrapper>
       <ConfirmModal
         isOpen={opened}
         onClose={handleCloseModal}
-        questionTitle="Иван Иванов"
-        informTitle="Иван Иванов"
+        onCloseInformModal={handleCloseInformModal}
+        isHideHomeBtn={false}
+        handleAgreementClick={handleReceiveProject}
+        questionTitle={`${employee?.firstName} ${
+          employee?.lastName
+        } начинает <br /> этап ${stage.name.toLowerCase()}?`}
+        informTitle={`${employee?.firstName} ${
+          employee?.lastName
+        } начал этап ${stage.name.toLowerCase()}`}
       />
     </>
   );

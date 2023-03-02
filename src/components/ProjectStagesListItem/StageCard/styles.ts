@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const Wrapper = styled.div`
   position: relative;
-  min-height: 100%;
+  min-height: 158px;
   ${({ theme }) => theme.mixins.column};
   gap: 18px;
   align-items: center;
@@ -15,11 +15,7 @@ export const Wrapper = styled.div`
     background: var(--light-green);
   }
 
-  &.isTodo {
-    background: var(--orange);
-  }
-
-  &.next {
+  &.readyToAcceptance {
     background: linear-gradient(
       97.03deg,
       var(--green) 7.5%,
@@ -28,7 +24,7 @@ export const Wrapper = styled.div`
   }
 `;
 
-export const StageStatus = styled.button`
+export const StageName = styled.button`
   ${({ theme }) => theme.mixins.fCenter}
   padding: 12px 10px;
   width: 226px;
@@ -40,7 +36,7 @@ export const StageStatus = styled.button`
   background-color: var(--orange);
   border: none;
   border-radius: 10px;
-  cursor: pointer;
+  cursor: not-allowed;
 
   &.completed {
     cursor: not-allowed;
@@ -48,16 +44,10 @@ export const StageStatus = styled.button`
     background: var(--white);
   }
 
-  &.isTodo {
-    cursor: not-allowed;
-    color: var(--white-black);
-    background: var(--white);
-  }
-
-  &.next {
+  &.readyToAcceptance {
     cursor: pointer;
-    color: var(--white);
-    background-color: var(--orange);
+    color: var(----white-black);
+    background-color: var(--white);
   }
 
   &:disabled {

@@ -1,10 +1,9 @@
 import { useEffect, useState } from 'react';
 
 import { useGetAvailableProjectsByEmployeeIdQuery } from '../../store/apis/employee';
+import { Project } from '../../store/apis/employee/types';
 import { useSlider } from '../../helpers/hooks/useSlider';
 import { useAppSelector } from '../../helpers/hooks/useAppSelector';
-import { ProjectServices } from '../../helpers/services/projectServices';
-import { Project } from '../../helpers/services/types';
 import { divisorByChunk } from '../../helpers/divisorByChunk';
 import ControlButtons from '../ControlButtons';
 import ProjectCard from './ProjectCard';
@@ -20,16 +19,17 @@ const EmployeeProjectListItem = () => {
   const { data } = useGetAvailableProjectsByEmployeeIdQuery(
     employee?.id as number
   );
-  console.log({ data });
+
   useEffect(() => {
-    const getProjects = async () => {
-      const response = await ProjectServices.getAll();
-      const dividedBy10 = divisorByChunk(response, 10);
-      setProjects(dividedBy10);
+    const dividedProjects = async () => {
+      if (data) {
+        const dividedBy10 = divisorByChunk(data, 10);
+        setProjects(dividedBy10);
+      }
     };
 
-    getProjects();
-  }, []);
+    dividedProjects();
+  }, [data]);
 
   return (
     <Wrapper>
@@ -45,6 +45,7 @@ const EmployeeProjectListItem = () => {
         quantity={quantity}
         prevSlide={prevSlide}
         nextSlide={nextSlide}
+        color="--white"
       />
     </Wrapper>
   );

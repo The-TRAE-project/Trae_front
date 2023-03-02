@@ -6,6 +6,7 @@ export const Wrapper = styled.div`
   ${({ theme }) => theme.mixins.center};
   background: var(--white);
   border-radius: var(--border-radius);
+  margin-left: 51px;
   padding: 25px 15px 24px 58px;
 `;
 

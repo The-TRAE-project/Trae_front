@@ -1,9 +1,13 @@
 import { Group } from '@mantine/core';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import { Paths } from '../../../constants/paths';
+import { useAppDispatch } from '../../../helpers/hooks/useAppDispatch';
 import { useAppSelector } from '../../../helpers/hooks/useAppSelector';
 import { useFinishProjectStageMutation } from '../../../store/apis/employee';
 import { StageInWork } from '../../../store/apis/employee/types';
+import { logout } from '../../../store/slices/employee';
 import ConfirmModal from '../../ConfirmModal';
 import {
   Customer,
@@ -23,6 +27,8 @@ const StageInWorkCard = ({ stage }: Props) => {
 
   const [finishProject] = useFinishProjectStageMutation();
 
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const { employee } = useAppSelector((store) => store.employee);
 
   const handleOpenConfirmModal = () => setIsConfirmModal(true);
@@ -44,6 +50,11 @@ const StageInWorkCard = ({ stage }: Props) => {
     }
   };
 
+  const handleCloseInformModal = () => {
+    navigate(Paths.EMPLOYEE_LOGIN);
+    dispatch(logout());
+  };
+
   return (
     <>
       <Wrapper>
@@ -62,10 +73,15 @@ const StageInWorkCard = ({ stage }: Props) => {
       <ConfirmModal
         isOpen={isConfirmModal}
         onClose={handleCloseConfirmModal}
-        redirectPath={Paths.EMPLOYEE_MAIN}
+        onCloseInformModal={handleCloseInformModal}
+        isHideHomeBtn={false}
         handleAgreementClick={handleFinishProject}
-        questionTitle={`${employee?.firstName} ${employee?.lastName} закончил этап ${stage.operationName}?`}
-        informTitle={`${employee?.firstName} ${employee?.lastName} закончил этап ${stage.operationName}`}
+        questionTitle={`${employee?.firstName} ${
+          employee?.lastName
+        } закончил этап <br /> ${stage.operationName.toLowerCase()}?`}
+        informTitle={`${employee?.firstName} ${
+          employee?.lastName
+        } закончил <br /> этап ${stage.operationName.toLowerCase()}`}
       />
     </>
   );

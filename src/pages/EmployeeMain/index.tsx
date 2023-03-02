@@ -1,13 +1,15 @@
+import { useState } from 'react';
 import { Image, Stack } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
 
-import { logoutEmployee } from '../../store/slices/employee';
+import { logout, logoutEmployee } from '../../store/slices/employee';
 import { useAppDispatch } from '../../helpers/hooks/useAppDispatch';
 import { useAppSelector } from '../../helpers/hooks/useAppSelector';
 import traeLogo from '../../assets/traeLogo.svg';
 import { Paths } from '../../constants/paths';
 import Button from '../../components/Button';
 import SEO from '../../components/SEO';
+import ConfirmModal from '../../components/ConfirmModal';
 import {
   ApartContainer,
   TraeLogoImageWrapper,
@@ -16,17 +18,27 @@ import {
 import { DashedButton } from './styles';
 
 const EmployeeMain = () => {
+  const [isConfirmModal, setIsConfirmModal] = useState<boolean>(false);
+
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { employee } = useAppSelector((store) => store.employee);
 
-  const navigateToSelection = () => navigate(Paths.EMPLOYEE_SELECTION);
+  const navigateToProjects = () => navigate(Paths.EMPLOYEE_PROJECTS);
   const navigateToStagesInWork = () => navigate(Paths.EMPLOYEE_STAGES_IN_WORK);
 
-  const handleLogOut = () => {
+  const handleOpenConfirmModal = () => setIsConfirmModal(true);
+  const handleCloseConfirmModal = () => setIsConfirmModal(false);
+
+  const handleAgreementClick = () => {
     if (!employee) return;
 
     dispatch(logoutEmployee(employee.id));
+  };
+
+  const handleCloseInformModal = () => {
+    navigate(Paths.EMPLOYEE_LOGIN);
+    dispatch(logout());
   };
 
   return (
@@ -44,16 +56,28 @@ const EmployeeMain = () => {
           </TraeLogoImageWrapper>
 
           <Stack spacing={40}>
-            <Button title="Проекты" onClick={navigateToSelection} width={410} />
+            <Button title="Проекты" onClick={navigateToProjects} width={410} />
             <Button
               title="Этапы в работе"
               onClick={navigateToStagesInWork}
-              disabled
               width={410}
             />
-            <DashedButton onClick={handleLogOut}>Завершить смену</DashedButton>
+            <DashedButton onClick={handleOpenConfirmModal}>
+              Завершить смену
+            </DashedButton>
           </Stack>
         </ApartContainer>
+
+        <ConfirmModal
+          isOpen={isConfirmModal}
+          onClose={handleCloseConfirmModal}
+          onCloseInformModal={handleCloseInformModal}
+          handleAgreementClick={handleAgreementClick}
+          isHideHomeBtn
+          questionTitle={`${employee?.firstName} ${employee?.lastName} завершает <br /> рабочую смену?`}
+          informTitle={`${employee?.firstName} ${employee?.lastName}, <br /> ждем Вас снова в Trae <br /> До встречи 
+        `}
+        />
       </WrapperWithBgImage>
     </>
   );
