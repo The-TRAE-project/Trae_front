@@ -1,11 +1,34 @@
-import styled from 'styled-components';
+import { Group as MantineGroup } from '@mantine/core';
+import styled, { css } from 'styled-components';
 
-type Props = {
-  isWhite: boolean;
+type VerticalPositionProps = {
+  isVertical?: boolean;
+};
+
+type BtnProps = {
+  color: string;
+  isVertical?: boolean;
+};
+
+type TitleProps = {
+  color: string;
 };
 
 export const Wrapper = styled.div`
   ${({ theme }) => theme.mixins.fCenter};
+  ${(props: VerticalPositionProps) =>
+    props.isVertical &&
+    css`
+      position: absolute;
+      right: 0;
+      top: 0;
+      bottom: 0;
+    `}
+`;
+
+export const Group = styled(MantineGroup)`
+  flex-direction: ${(props: VerticalPositionProps) =>
+    props.isVertical ? 'column' : 'row'};
 `;
 
 export const Button = styled.button`
@@ -13,10 +36,11 @@ export const Button = styled.button`
   width: 22px;
   background: none;
   border: none;
+  transform: ${(props: BtnProps) =>
+    props.isVertical ? 'rotate(90deg)' : 'rotate(0deg)'};
 
   svg {
-    fill: ${(props: Props) =>
-      props.isWhite ? 'var(--white)' : 'var(--white-black)'};
+    fill: ${(props: BtnProps) => `var(${props.color})`};
   }
 
   &:disabled {
@@ -31,6 +55,5 @@ export const InformTitle = styled.p`
   font-family: var(--font-roboto);
   font-weight: 500;
   ${({ theme }) => theme.mixins.fontSize28};
-  color: ${(props: Props) =>
-    props.isWhite ? 'var(--white)' : 'var(--white-black)'};
+  color: ${(props: TitleProps) => `var(${props.color})`};
 `;

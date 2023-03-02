@@ -14,6 +14,7 @@ const variables = css`
     --gradient-green2: #419149;
     --gradient-green3: #367345;
     --light-green: #83cc8c;
+    --light-green2: #8fb398;
     --font-roboto: 'Roboto, san-serif';
     --fz-xxs: 12px;
     --fz-xs: 13px;

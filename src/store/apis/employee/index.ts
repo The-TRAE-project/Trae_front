@@ -32,6 +32,7 @@ const employeeApi = employeeTags.injectEndpoints({
 
     receiveProjectStage: build.mutation<void, ReceiveProjectStageValue>({
       query(value) {
+        console.log(value);
         return {
           url: '/operation/employee/receive-operation',
           method: 'POST',
@@ -43,10 +44,12 @@ const employeeApi = employeeTags.injectEndpoints({
 
     finishProjectStage: build.mutation<void, ReceiveProjectStageValue>({
       query(value) {
+        console.log(value);
         return {
           url: '/operation/employee/finish-operation',
           method: 'POST',
           body: value,
+          // mode: 'no-cors',
         };
       },
       invalidatesTags: ['ProjectStage'],

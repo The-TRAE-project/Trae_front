@@ -1,50 +1,45 @@
-import { Group } from '@mantine/core';
-import { useLocation } from 'react-router-dom';
-
-import { Paths } from '../../constants/paths';
 import ControlArrowLeft from '../svgs/ControlArrowLeft';
 import ControlArrowRight from '../svgs/ControlArrowRight';
-import { Button, InformTitle, Wrapper } from './styles';
+import { Button, Group, InformTitle, Wrapper } from './styles';
 
 interface Props {
   current: number;
   quantity: number;
   prevSlide: () => void;
   nextSlide: () => void;
+  color: string;
+  isVertical?: boolean;
 }
 
-const ControlButtons = ({ current, quantity, prevSlide, nextSlide }: Props) => {
-  const location = useLocation();
-
-  const isEmployeeProjectPage = location.pathname === Paths.EMPLOYEE_PROJECTS;
-
+const ControlButtons = ({
+  current,
+  quantity,
+  prevSlide,
+  nextSlide,
+  color,
+  isVertical,
+}: Props) => {
   return (
-    <Wrapper>
-      <Group spacing={44}>
+    <Wrapper isVertical={isVertical}>
+      <Group isVertical={isVertical} spacing={44}>
         <Button
           onClick={prevSlide}
           disabled={current === 1}
-          isWhite={isEmployeeProjectPage}
+          color={color}
+          isVertical={isVertical}
         >
-          <ControlArrowRight
-            color={
-              isEmployeeProjectPage ? 'var(--white)' : 'var(--white-black)'
-            }
-          />
+          <ControlArrowRight color={color} />
         </Button>
-        <InformTitle isWhite={isEmployeeProjectPage}>
+        <InformTitle color={color}>
           {current}/{quantity}
         </InformTitle>
         <Button
           onClick={nextSlide}
           disabled={current === quantity}
-          isWhite={isEmployeeProjectPage}
+          color={color}
+          isVertical={isVertical}
         >
-          <ControlArrowLeft
-            color={
-              isEmployeeProjectPage ? 'var(--white)' : 'var(--white-black)'
-            }
-          />
+          <ControlArrowLeft color={color} />
         </Button>
       </Group>
     </Wrapper>
