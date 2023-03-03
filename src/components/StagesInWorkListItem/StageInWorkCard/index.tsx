@@ -1,6 +1,7 @@
 import { Group } from '@mantine/core';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 import { Paths } from '../../../constants/paths';
 import { useAppDispatch } from '../../../helpers/hooks/useAppDispatch';
@@ -41,6 +42,19 @@ const StageInWorkCard = ({ stage }: Props) => {
           employeeId: employee.id,
           operationId: stage.operationId,
         }).unwrap();
+        // const response = await axios.post(
+        //   'http://195.80.51.155:8088/api/operation/employee/finish-operation',
+        //   {
+        //     employeeId: employee.id,
+        //     operationId: stage.operationId,
+        //   },
+        //   {
+        //     headers: {
+        //       Accept: 'application/json, text/plain, /',
+        //       'Content-Type': 'multipart/form-data',
+        //     },
+        //   }
+        // );
 
         console.log(response);
       }
@@ -51,9 +65,15 @@ const StageInWorkCard = ({ stage }: Props) => {
   };
 
   const handleCloseInformModal = () => {
-    navigate(Paths.EMPLOYEE_LOGIN);
-    dispatch(logout());
+    // navigate(Paths.EMPLOYEE_LOGIN);
+    // dispatch(logout());
   };
+  console.log(
+    import.meta.env.PROD
+      ? import.meta.env.VITE_BACK_PROD_API_URL
+      : import.meta.env.VITE_BACK_DEV_API_URL,
+    import.meta.env.PROD
+  );
 
   return (
     <>
