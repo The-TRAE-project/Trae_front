@@ -2,13 +2,15 @@ import styled from 'styled-components';
 
 export const Wrapper = styled.div`
   position: relative;
+  width: 463px;
+  margin-bottom: 180px;
 `;
 
 export const GroupForm = styled.form`
   position: relative;
   ${({ theme }) => theme.mixins.center};
-  width: 463px;
-  width: 463px;
+  width: 100%;
+  height: 100%;
 
   .maskedInput {
     position: absolute;
