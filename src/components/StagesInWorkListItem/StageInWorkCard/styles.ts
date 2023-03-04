@@ -18,26 +18,34 @@ export const ProjectNumber = styled.p`
 `;
 
 export const Customer = styled.p`
-  min-width: 283px;
+  width: 206px;
   font-weight: 600;
   ${({ theme }) => theme.mixins.fontSize30};
   color: var(--white-black);
+  word-break: break-all;
 `;
 
 export const ProjectOperation = styled.p`
-  min-width: 316px;
+  width: 206px;
   font-weight: 600;
   ${({ theme }) => theme.mixins.fontSize30};
   text-align: center;
   color: var(--orange);
+  word-break: break-all;
 `;
 
 export const Furniture = styled.p`
-  min-width: 209px;
+  width: 209px;
   font-weight: 400;
   ${({ theme }) => theme.mixins.fontSize28};
   text-align: center;
   color: var(--black);
+  word-break: break-all;
+`;
+
+export const NavigateButton = styled.button`
+  border: none;
+  background: none;
 `;
 
 export const FinishButton = styled.button`

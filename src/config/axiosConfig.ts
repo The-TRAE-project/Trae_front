@@ -1,9 +1,7 @@
 import axios from 'axios';
 
 const instance = axios.create({
-  baseURL: import.meta.env.PROD
-    ? import.meta.env.VITE_BACK_PROD_API_URL
-    : import.meta.env.VITE_BACK_DEV_API_URL,
+  baseURL: 'http://195.80.51.155:8088/api',
 });
 
 export default instance;

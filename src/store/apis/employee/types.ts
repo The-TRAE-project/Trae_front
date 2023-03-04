@@ -2,7 +2,7 @@ export interface Project {
   id: number;
   projectName: string;
   number: number;
-  customerLastName: string;
+  customer: string;
   availableOperationName: string;
 }
 

@@ -22,6 +22,10 @@ export const Wrapper = styled.div`
       var(--gradient-green3) 94.35%
     );
   }
+
+  &.inWork {
+    background: var(--orange);
+  }
 `;
 
 export const StageName = styled.button`
@@ -41,11 +45,17 @@ export const StageName = styled.button`
   &.completed {
     cursor: not-allowed;
     color: var(--white-black);
-    background: var(--white);
+    background-color: var(--white);
   }
 
   &.readyToAcceptance {
     cursor: pointer;
+    color: var(----white-black);
+    background-color: var(--white);
+  }
+
+  &.inWork {
+    cursor: not-allowed;
     color: var(----white-black);
     background-color: var(--white);
   }

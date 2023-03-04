@@ -1,7 +1,6 @@
 import { Group } from '@mantine/core';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 
 import { Paths } from '../../../constants/paths';
 import { useAppDispatch } from '../../../helpers/hooks/useAppDispatch';
@@ -10,10 +9,12 @@ import { useFinishProjectStageMutation } from '../../../store/apis/employee';
 import { StageInWork } from '../../../store/apis/employee/types';
 import { logout } from '../../../store/slices/employee';
 import ConfirmModal from '../../ConfirmModal';
+import Vector from '../../svgs/Vector';
 import {
   Customer,
   FinishButton,
   Furniture,
+  NavigateButton,
   ProjectNumber,
   ProjectOperation,
   Wrapper,
@@ -38,52 +39,41 @@ const StageInWorkCard = ({ stage }: Props) => {
   const handleFinishProject = async () => {
     try {
       if (employee) {
-        const response = await finishProject({
+        await finishProject({
           employeeId: employee.id,
           operationId: stage.operationId,
-        }).unwrap();
-        // const response = await axios.post(
-        //   'http://195.80.51.155:8088/api/operation/employee/finish-operation',
-        //   {
-        //     employeeId: employee.id,
-        //     operationId: stage.operationId,
-        //   },
-        //   {
-        //     headers: {
-        //       Accept: 'application/json, text/plain, /',
-        //       'Content-Type': 'multipart/form-data',
-        //     },
-        //   }
-        // );
-
-        console.log(response);
+        });
       }
-    } catch (error) {
+    } catch (err) {
       // eslint-disable-next-line no-console
-      console.log(error);
+      console.log(err);
     }
   };
 
   const handleCloseInformModal = () => {
-    // navigate(Paths.EMPLOYEE_LOGIN);
-    // dispatch(logout());
+    navigate(Paths.EMPLOYEE_LOGIN);
+    dispatch(logout());
   };
-  console.log(
-    import.meta.env.PROD
-      ? import.meta.env.VITE_BACK_PROD_API_URL
-      : import.meta.env.VITE_BACK_DEV_API_URL,
-    import.meta.env.PROD
-  );
+
+  const navigateToProjectStages = () =>
+    navigate(`/employee/project/${stage.projectId}/stages`, {
+      state: { projectNumber: stage.projectNumber },
+    });
 
   return (
     <>
       <Wrapper>
         <ProjectNumber>{stage.projectNumber}</ProjectNumber>
-        <Group spacing={13}>
-          <Group spacing={0}>
-            <Customer>{stage.customerLastName}</Customer>
-            <ProjectOperation>{stage.operationName}</ProjectOperation>
-            <Furniture>{stage.projectName}</Furniture>
+        <Group spacing={75} position="apart">
+          <Group spacing={52}>
+            <Group spacing={0}>
+              <Customer>{stage.customerLastName}</Customer>
+              <ProjectOperation>{stage.operationName}</ProjectOperation>
+              <Furniture>{stage.projectName}</Furniture>
+            </Group>
+            <NavigateButton onClick={navigateToProjectStages}>
+              <Vector />
+            </NavigateButton>
           </Group>
           <FinishButton onClick={handleOpenConfirmModal}>
             Завершить

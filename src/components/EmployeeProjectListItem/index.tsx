@@ -6,6 +6,7 @@ import { useSlider } from '../../helpers/hooks/useSlider';
 import { useAppSelector } from '../../helpers/hooks/useAppSelector';
 import { divisorByChunk } from '../../helpers/divisorByChunk';
 import ControlButtons from '../ControlButtons';
+import Loader from '../Loader';
 import ProjectCard from './ProjectCard';
 import { Grid, Wrapper } from './styles';
 
@@ -16,7 +17,7 @@ const EmployeeProjectListItem = () => {
   const { quantity, current, slideIndex, prevSlide, nextSlide } =
     useSlider(projects);
 
-  const { data } = useGetAvailableProjectsByEmployeeIdQuery(
+  const { data, isLoading } = useGetAvailableProjectsByEmployeeIdQuery(
     employee?.id as number
   );
 
@@ -33,20 +34,26 @@ const EmployeeProjectListItem = () => {
 
   return (
     <Wrapper>
-      <Grid>
-        {projects
-          ? projects[slideIndex]?.map((project) => (
-              <ProjectCard key={project.id} project={project} />
-            ))
-          : null}
-      </Grid>
-      <ControlButtons
-        current={current}
-        quantity={quantity}
-        prevSlide={prevSlide}
-        nextSlide={nextSlide}
-        color="--white"
-      />
+      {!isLoading ? (
+        <>
+          <Grid>
+            {projects
+              ? projects[slideIndex]?.map((project) => (
+                  <ProjectCard key={project.id} project={project} />
+                ))
+              : null}
+          </Grid>
+          <ControlButtons
+            current={current}
+            quantity={quantity}
+            prevSlide={prevSlide}
+            nextSlide={nextSlide}
+            color="--white"
+          />
+        </>
+      ) : (
+        <Loader size={80} isAbsoluteCentered />
+      )}
     </Wrapper>
   );
 };

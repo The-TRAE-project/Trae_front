@@ -1,24 +1,32 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 
 import { divisorByChunk } from '../../helpers/divisorByChunk';
 import { useSlider } from '../../helpers/hooks/useSlider';
 import { useGetProjectStagesQuery } from '../../store/apis/employee';
 import { ProjectStage } from '../../store/apis/employee/types';
 import ControlButtons from '../ControlButtons';
+import Loader from '../Loader';
 import StageCard from './StageCard';
-import { FlexContainer, Stack, Wrapper } from './styles';
+import {
+  FlexContainer,
+  FooterWrapper,
+  ProjectNumber,
+  Stack,
+  Wrapper,
+} from './styles';
 
 const ProjectStagesListItem = () => {
   const { id } = useParams();
+  const location = useLocation();
   const [projectStages, setProjectStages] = useState<ProjectStage[][] | null>(
     null
   );
   const { quantity, current, slideIndex, prevSlide, nextSlide } =
     useSlider(projectStages);
 
-  const { data } = useGetProjectStagesQuery(id as unknown as number);
-  console.log(data);
+  const { data, isLoading } = useGetProjectStagesQuery(id as unknown as number);
+
   const dividerByEven = (stagesArr: ProjectStage[]) =>
     stagesArr?.filter((_: ProjectStage, index: number) => index % 2 === 0);
 
@@ -38,31 +46,42 @@ const ProjectStagesListItem = () => {
 
   return (
     <Wrapper>
-      {projectStages ? (
-        <Stack>
-          <FlexContainer>
-            {dividerByEven(projectStages[slideIndex]).map(
-              (stage: ProjectStage) => (
-                <StageCard key={stage.id} stage={stage} down />
-              )
+      {!isLoading ? (
+        <>
+          {projectStages ? (
+            <Stack>
+              <FlexContainer>
+                {dividerByEven(projectStages[slideIndex]).map(
+                  (stage: ProjectStage) => (
+                    <StageCard key={stage.id} stage={stage} down />
+                  )
+                )}
+              </FlexContainer>
+              <FlexContainer>
+                {dividerByOdd(projectStages[slideIndex]).map(
+                  (stage: ProjectStage) => (
+                    <StageCard key={stage.id} stage={stage} />
+                  )
+                )}
+              </FlexContainer>
+            </Stack>
+          ) : null}
+          <FooterWrapper>
+            <ControlButtons
+              current={current}
+              quantity={quantity}
+              prevSlide={prevSlide}
+              nextSlide={nextSlide}
+              color="--white-black"
+            />
+            {location.state.projectNumber && (
+              <ProjectNumber>{location.state.projectNumber}</ProjectNumber>
             )}
-          </FlexContainer>
-          <FlexContainer>
-            {dividerByOdd(projectStages[slideIndex]).map(
-              (stage: ProjectStage) => (
-                <StageCard key={stage.id} stage={stage} />
-              )
-            )}
-          </FlexContainer>
-        </Stack>
-      ) : null}
-      <ControlButtons
-        current={current}
-        quantity={quantity}
-        prevSlide={prevSlide}
-        nextSlide={nextSlide}
-        color="--white-black"
-      />
+          </FooterWrapper>
+        </>
+      ) : (
+        <Loader size={80} color="--white-black" isAbsoluteCentered />
+      )}
     </Wrapper>
   );
 };

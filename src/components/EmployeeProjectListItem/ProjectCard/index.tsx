@@ -17,12 +17,14 @@ const ProjectCard = ({ project }: Props) => {
   const navigate = useNavigate();
 
   const navigateToProjectStages = () =>
-    navigate(`/employee/project/${project.id}/stages`);
+    navigate(`/employee/project/${project.id}/stages`, {
+      state: { projectNumber: project.number },
+    });
 
   return (
     <Wrapper>
       <ProjectNumber>{project.number}</ProjectNumber>
-      <Customer>{project.customerLastName}</Customer>
+      <Customer>{project.customer}</Customer>
       <ProjectName>{project.projectName}</ProjectName>
       <ProjectOperationName onClick={navigateToProjectStages}>
         {project.availableOperationName}

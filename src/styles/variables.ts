@@ -10,12 +10,13 @@ const variables = css`
     --black-shadow: rgba(0, 0, 0, 0.25);
     --orange: #ff9a4a;
     --green: #42894d;
+    --green2: rgba(131, 204, 140, 0.6);
     --gradient-green1: #508255;
     --gradient-green2: #419149;
     --gradient-green3: #367345;
     --light-green: #83cc8c;
     --light-green2: #8fb398;
-    --font-roboto: 'Roboto, san-serif';
+    --font-roboto: 'Roboto', sans-serif;
     --fz-xxs: 12px;
     --fz-xs: 13px;
     --fz-sm: 14px;

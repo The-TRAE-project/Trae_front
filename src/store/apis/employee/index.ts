@@ -41,7 +41,7 @@ const employeeApi = employeeTags.injectEndpoints({
       invalidatesTags: ['ProjectStage'],
     }),
 
-    finishProjectStage: build.mutation<any, ReceiveProjectStageValue>({
+    finishProjectStage: build.mutation<void, ReceiveProjectStageValue>({
       query(body) {
         return {
           url: `operation/employee/finish-operation`,

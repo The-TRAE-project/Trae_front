@@ -34,6 +34,7 @@ const StageCard = ({ stage, down }: Props) => {
 
   const isComplete = stage.isEnded ? 'completed' : '';
   const isReady = stage.readyToAcceptance ? 'readyToAcceptance' : '';
+  const isInWork = stage.inWork ? 'inWork' : '';
 
   const handleOpenModal = () => setOpened(true);
   const handleCloseModal = () => setOpened(false);
@@ -56,10 +57,10 @@ const StageCard = ({ stage, down }: Props) => {
 
   return (
     <>
-      <Wrapper className={isComplete || isReady}>
+      <Wrapper className={isComplete || isReady || isInWork}>
         <StageName
           onClick={handleOpenModal}
-          className={isComplete || isReady}
+          className={isComplete || isReady || isInWork}
           disabled={stage.inWork || stage.isEnded || !stage.readyToAcceptance}
         >
           {stage.name}

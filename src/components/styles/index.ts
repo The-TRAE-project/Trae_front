@@ -2,11 +2,10 @@ import styled from 'styled-components';
 import { Box } from '@mantine/core';
 
 import bg from '../../assets/bg.svg';
-import { mediaQueries } from '../../constants/breakpoints';
 
 export const Container = styled.div`
   margin: 0 auto;
-  @media ${mediaQueries.mqXlarge} {
+  @media ${({ theme }) => theme.bp.bpXlarge} {
     max-width: calc(100vw - 640px);
   }
 `;
@@ -18,7 +17,7 @@ export const WrapperWithBgImage = styled.section`
   background-repeat: no-repeat;
   min-height: 100vh;
 
-  @media ${mediaQueries.mqXlarge} {
+  @media ${({ theme }) => theme.bp.bpXlarge} {
     padding: 185px 0 104px;
   }
 `;
@@ -26,13 +25,13 @@ export const WrapperWithBgImage = styled.section`
 export const ApartContainer = styled(Container)`
   ${({ theme }) => theme.mixins.apart};
 
-  @media ${mediaQueries.mqXlarge} {
+  @media ${({ theme }) => theme.bp.bpXlarge} {
     min-height: calc(100vh - 289px);
   }
 `;
 
 export const TraeLogoImageWrapper = styled(Box)`
-  @media ${mediaQueries.mqXlarge} {
+  @media ${({ theme }) => theme.bp.bpXlarge} {
     height: 549px;
     width: 478px;
   }

@@ -4,7 +4,7 @@ import { useState } from 'react';
 export function useSlider(data: any) {
   const [slideIndex, setSlideIndex] = useState<number>(0);
 
-  const quantity = data?.length || 0;
+  const quantity = data?.length || 1;
   const current = slideIndex + 1;
 
   const nextSlide = () => {

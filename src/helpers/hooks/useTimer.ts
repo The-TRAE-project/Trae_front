@@ -4,12 +4,12 @@ export function useTimer(isStart: boolean, onClose: () => void, timer: number) {
   const [countDown, setCountDown] = useState(0);
 
   useEffect(() => {
-    let timerId: any;
+    let timerId: ReturnType<typeof setInterval> = setInterval(() => {});
 
     if (isStart) {
       setCountDown(timer);
       timerId = setInterval(() => {
-        setCountDown((prevTime) => prevTime - 1);
+        setCountDown((prevTime) => Math.floor(prevTime - 1));
       }, 1000);
     } else {
       clearInterval(timerId);
@@ -19,7 +19,7 @@ export function useTimer(isStart: boolean, onClose: () => void, timer: number) {
   }, [isStart, timer]);
 
   useEffect(() => {
-    if (Math.floor(countDown) < 0 && isStart) {
+    if (countDown < 0 && isStart) {
       onClose();
       setCountDown(0);
     }

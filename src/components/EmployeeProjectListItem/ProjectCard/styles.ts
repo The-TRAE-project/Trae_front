@@ -26,6 +26,11 @@ export const Customer = styled.p`
   font-weight: 400;
   color: var(--black);
   ${({ theme }) => theme.mixins.fontSize30};
+  width: 182px;
+  text-align: center;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 `;
 
 export const ProjectName = styled.p`
