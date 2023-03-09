@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import instance from '../../../config/axiosConfig';
 import { Paths } from '../../../constants/paths';
 import { useAppDispatch } from '../../../helpers/hooks/useAppDispatch';
 import { useAppSelector } from '../../../helpers/hooks/useAppSelector';
@@ -42,8 +43,12 @@ const StageCard = ({ stage, down }: Props) => {
   const handleReceiveProject = async () => {
     try {
       if (!employee) return;
+      await instance.patch('operation/employee/receive-operation', {
+        employeeId: employee.id,
+        operationId: stage.id,
+      });
 
-      await receiveProject({ employeeId: employee.id, operationId: stage.id });
+      // await receiveProject({ employeeId: employee.id, operationId: stage.id });
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error(error);

@@ -31,11 +31,14 @@ const EmployeeMain = () => {
   const handleCloseConfirmModal = () => setIsConfirmModal(false);
 
   const handleCloseInformModal = () => {
+    dispatch(logout());
+    navigate(Paths.EMPLOYEE_LOGIN);
+  };
+
+  const handleAgreementClick = () => {
     if (!employee) return;
 
     dispatch(logoutEmployee(employee.id));
-    dispatch(logout());
-    navigate(Paths.EMPLOYEE_LOGIN);
   };
 
   return (
@@ -69,6 +72,7 @@ const EmployeeMain = () => {
           isOpen={isConfirmModal}
           onClose={handleCloseConfirmModal}
           onCloseInformModal={handleCloseInformModal}
+          handleAgreementClick={handleAgreementClick}
           isHideHomeBtn
           questionTitle={`${employee?.firstName} ${employee?.lastName} завершает <br /> рабочую смену?`}
           informTitle={`${employee?.firstName} ${employee?.lastName}, <br /> ждем Вас снова в Trae <br /> До встречи 

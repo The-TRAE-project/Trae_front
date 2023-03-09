@@ -9,7 +9,7 @@ interface Props {
 const Loader = ({
   size,
   color = 'var(--white)',
-  isAbsoluteCentered,
+  isAbsoluteCentered = false,
 }: Props) => {
   return (
     <LoaderWrapper
