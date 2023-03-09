@@ -1,0 +1,9 @@
+version: '3.9'
+services:
+  react-app:
+    image: eld11ar/trae-front
+    container_name: trae_front
+    ports:
+      - '3000:80'
+    environment:
+      - VITE_BACK_API_URL=http://195.80.51.155:8088/api

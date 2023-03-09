@@ -16,6 +16,7 @@ const employeeApi = employeeTags.injectEndpoints({
     getAvailableProjectsByEmployeeId: build.query<Project[], number>({
       query: (employeeId) =>
         `/project/employee/available-projects/${employeeId}`,
+      providesTags: ['ProjectStage'],
     }),
 
     getStagesInWorkByEmployeeId: build.query<StageInWork[], number>({
@@ -34,7 +35,7 @@ const employeeApi = employeeTags.injectEndpoints({
       query(body) {
         return {
           url: '/operation/employee/receive-operation',
-          method: 'POST',
+          method: 'PATCH',
           body,
         };
       },
@@ -45,7 +46,7 @@ const employeeApi = employeeTags.injectEndpoints({
       query(body) {
         return {
           url: `operation/employee/finish-operation`,
-          method: 'POST',
+          method: 'PATCH',
           body,
         };
       },
