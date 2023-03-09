@@ -6,16 +6,12 @@ interface Props {
   isAbsoluteCentered?: boolean;
 }
 
-const Loader = ({
-  size,
-  color = 'var(--white)',
-  isAbsoluteCentered = false,
-}: Props) => {
+const Loader = ({ size, color = '--white', isAbsoluteCentered }: Props) => {
   return (
     <LoaderWrapper
       size={size}
       strokeWidth={2}
-      color={color}
+      color={`var(${color})`}
       isAbsoluteCentered={isAbsoluteCentered}
     />
   );
