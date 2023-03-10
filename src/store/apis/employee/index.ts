@@ -35,7 +35,7 @@ const employeeApi = employeeTags.injectEndpoints({
       query(body) {
         return {
           url: '/operation/employee/receive-operation',
-          method: 'PATCH',
+          method: 'POST',
           body,
         };
       },
@@ -46,7 +46,7 @@ const employeeApi = employeeTags.injectEndpoints({
       query(body) {
         return {
           url: `operation/employee/finish-operation`,
-          method: 'PATCH',
+          method: 'POST',
           body,
         };
       },

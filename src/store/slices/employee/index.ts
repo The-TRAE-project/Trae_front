@@ -34,7 +34,7 @@ export const logoutEmployee = createAsyncThunk(
   'employee/logoutEmployee',
   async (id: number, { rejectWithValue }) => {
     try {
-      const response = await instance.patch(`/employee/checkout/${id}`);
+      const response = await instance.post(`/employee/checkout/${id}`);
 
       if (response.status === 404) {
         throw new Error(response.data.error);
