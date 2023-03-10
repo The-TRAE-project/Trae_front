@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { Paths } from '../../../constants/paths';
 import { useAppDispatch } from '../../../helpers/hooks/useAppDispatch';
 import { useAppSelector } from '../../../helpers/hooks/useAppSelector';
+import { showErrorNotification } from '../../../helpers/showErrorNotification';
 import { useFinishProjectStageMutation } from '../../../store/apis/employee';
 import { StageInWork } from '../../../store/apis/employee/types';
 import { logout } from '../../../store/slices/employee';
@@ -42,11 +43,15 @@ const StageInWorkCard = ({ stage }: Props) => {
         await finishProject({
           employeeId: employee.id,
           operationId: stage.operationId,
-        });
+        }).unwrap();
       }
-    } catch (err) {
-      // eslint-disable-next-line no-console
-      console.log(err);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      handleCloseConfirmModal();
+      showErrorNotification(
+        error.response.data.status,
+        error.response.data.error
+      );
     }
   };
 

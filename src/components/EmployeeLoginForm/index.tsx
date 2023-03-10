@@ -22,9 +22,7 @@ const EmployeeLoginForm = () => {
   const [isInputInFocus, setIsInputInFocus] = useState<boolean>(false);
 
   const dispatch = useAppDispatch();
-  const { isModalOpen, isError, error } = useAppSelector(
-    (store) => store.employee
-  );
+  const { isModalOpen } = useAppSelector((store) => store.employee);
   const navigate = useNavigate();
   const form = useForm({
     initialValues: {
@@ -53,8 +51,14 @@ const EmployeeLoginForm = () => {
   };
 
   const handleAgreementClick = async () => {
-    if (!employee) return;
-    dispatch(loginEmployee(employee.id));
+    try {
+      if (!employee) return;
+      await dispatch(loginEmployee(employee.id)).unwrap();
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
+      dispatch(toggleModal(false));
+      showErrorNotification(err.status, err.error);
+    }
   };
 
   const handleOnKeyboardChange = (pinCode: string) =>
@@ -100,7 +104,6 @@ const EmployeeLoginForm = () => {
         informTitle={`${employee?.firstName} ${employee?.lastName}, <br /> добро пожаловать в Trae <br /> Хорошего рабочего дня
         `}
       />
-      {isError && showErrorNotification(error.status, error.error)}
     </>
   );
 };

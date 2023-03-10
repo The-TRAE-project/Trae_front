@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { logout, logoutEmployee } from '../../store/slices/employee';
 import { useAppDispatch } from '../../helpers/hooks/useAppDispatch';
 import { useAppSelector } from '../../helpers/hooks/useAppSelector';
+import { showErrorNotification } from '../../helpers/showErrorNotification';
 import traeLogo from '../../assets/traeLogo.svg';
 import { Paths } from '../../constants/paths';
 import Button from '../../components/Button';
@@ -30,13 +31,18 @@ const EmployeeMain = () => {
   const handleOpenConfirmModal = () => setIsConfirmModal(true);
   const handleCloseConfirmModal = () => setIsConfirmModal(false);
 
-  const handleCloseInformModal = () => {
-    if (!employee) return;
+  const handleCloseInformModal = async () => {
+    try {
+      if (!employee) return;
 
-    dispatch(logoutEmployee(employee.id));
-
-    dispatch(logout());
-    navigate(Paths.EMPLOYEE_LOGIN);
+      await dispatch(logoutEmployee(employee.id)).unwrap();
+      dispatch(logout());
+      navigate(Paths.EMPLOYEE_LOGIN);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
+      setIsConfirmModal(false);
+      showErrorNotification(err.status, err.error);
+    }
   };
 
   return (

@@ -29,7 +29,7 @@ const Modal = ({
       title={date}
       withCloseButton={withCloseButton}
       classNames={{
-        modal: classes.modal,
+        content: classes.content,
         body: classes.body,
         header: classes.header,
         title: classes.title,

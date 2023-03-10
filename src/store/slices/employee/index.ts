@@ -65,6 +65,8 @@ export const employeeSlice = createSlice({
       .addCase(loginEmployee.pending, (state) => {
         if (state.isLoading === 'idle') {
           state.isLoading = 'pending';
+          state.isError = false;
+          state.error = null;
         }
       })
       .addCase(loginEmployee.fulfilled, (state, action) => {
@@ -72,13 +74,8 @@ export const employeeSlice = createSlice({
           state.isLoading = 'idle';
           state.employee = action.payload;
           state.isLoggedIn = !!action.payload;
-        }
-      })
-      .addCase(loginEmployee.rejected, (state, action) => {
-        if (state.isLoading === 'pending') {
-          state.isLoading = 'idle';
-          state.isError = true;
-          state.error = action.payload;
+          state.isError = false;
+          state.error = null;
         }
       })
       .addCase(logoutEmployee.fulfilled, (state) => {

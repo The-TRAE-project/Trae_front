@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Paths } from '../../../constants/paths';
 import { useAppDispatch } from '../../../helpers/hooks/useAppDispatch';
 import { useAppSelector } from '../../../helpers/hooks/useAppSelector';
+import { showErrorNotification } from '../../../helpers/showErrorNotification';
 import { useReceiveProjectStageMutation } from '../../../store/apis/employee';
 import { ProjectStage } from '../../../store/apis/employee/types';
 import { logout } from '../../../store/slices/employee';
@@ -43,10 +44,17 @@ const StageCard = ({ stage, down }: Props) => {
     try {
       if (!employee) return;
 
-      await receiveProject({ employeeId: employee.id, operationId: stage.id });
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error(error);
+      await receiveProject({
+        employeeId: employee.id,
+        operationId: stage.id,
+      }).unwrap();
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      handleCloseModal();
+      showErrorNotification(
+        error.response.data.status,
+        error.response.data.error
+      );
     }
   };
 

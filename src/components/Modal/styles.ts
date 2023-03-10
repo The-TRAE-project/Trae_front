@@ -15,7 +15,7 @@ export const useModalStyles = createStyles(() => ({
     },
   },
 
-  modal: {
+  content: {
     position: 'relative',
     padding: '30px !important',
     background: '#FFFFFF',
