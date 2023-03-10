@@ -51,8 +51,9 @@ const StageInWorkCard = ({ stage }: Props) => {
   };
 
   const handleCloseInformModal = () => {
-    navigate(Paths.EMPLOYEE_LOGIN);
     dispatch(logout());
+
+    navigate(Paths.EMPLOYEE_LOGIN);
   };
 
   const navigateToProjectStages = () =>

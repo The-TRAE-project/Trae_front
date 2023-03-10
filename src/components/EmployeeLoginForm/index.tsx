@@ -1,10 +1,11 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useForm } from '@mantine/form';
+import { useNavigate } from 'react-router-dom';
 import MaskedInput from 'react-text-mask';
 
 import { useAppDispatch } from '../../helpers/hooks/useAppDispatch';
 import { useAppSelector } from '../../helpers/hooks/useAppSelector';
+import { showErrorNotification } from '../../helpers/showErrorNotification';
 import { login, loginEmployee, toggleModal } from '../../store/slices/employee';
 import { Employee } from '../../store/slices/employee/types';
 import { Paths } from '../../constants/paths';
@@ -21,7 +22,9 @@ const EmployeeLoginForm = () => {
   const [isInputInFocus, setIsInputInFocus] = useState<boolean>(false);
 
   const dispatch = useAppDispatch();
-  const { isModalOpen } = useAppSelector((store) => store.employee);
+  const { isModalOpen, isError, error } = useAppSelector(
+    (store) => store.employee
+  );
   const navigate = useNavigate();
   const form = useForm({
     initialValues: {
@@ -41,13 +44,15 @@ const EmployeeLoginForm = () => {
         dispatch(login(data));
         navigate(Paths.EMPLOYEE_MAIN);
       }
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.log(error);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
+      form.reset();
+      setIsLoading(false);
+      showErrorNotification(err.response.data.status, err.response.data.error);
     }
   };
 
-  const handleAgreementClick = () => {
+  const handleAgreementClick = async () => {
     if (!employee) return;
     dispatch(loginEmployee(employee.id));
   };
@@ -95,6 +100,7 @@ const EmployeeLoginForm = () => {
         informTitle={`${employee?.firstName} ${employee?.lastName}, <br /> добро пожаловать в Trae <br /> Хорошего рабочего дня
         `}
       />
+      {isError && showErrorNotification(error.status, error.error)}
     </>
   );
 };

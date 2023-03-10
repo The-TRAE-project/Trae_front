@@ -3,7 +3,7 @@ export interface InitialState {
   employee: Employee | null;
   isLoading: 'idle' | 'pending';
   isError: boolean;
-  error: any;
+  error: Error | any;
   isModalOpen: boolean;
 }
 
@@ -12,4 +12,10 @@ export interface Employee {
   firstName: string;
   lastName: string;
   onShift: boolean;
+}
+
+export interface Error {
+  error: string;
+  path?: string;
+  status: number | string;
 }

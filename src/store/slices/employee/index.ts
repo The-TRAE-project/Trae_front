@@ -19,13 +19,10 @@ export const loginEmployee = createAsyncThunk(
     try {
       const response = await instance.post(`/employee/checkin/${id}`);
 
-      if (response.status === 404) {
-        throw new Error(response.data.error);
-      }
-
       return response.data;
-    } catch (error) {
-      return rejectWithValue(error);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      return rejectWithValue(error.response.data);
     }
   }
 );
@@ -75,6 +72,13 @@ export const employeeSlice = createSlice({
           state.isLoading = 'idle';
           state.employee = action.payload;
           state.isLoggedIn = !!action.payload;
+        }
+      })
+      .addCase(loginEmployee.rejected, (state, action) => {
+        if (state.isLoading === 'pending') {
+          state.isLoading = 'idle';
+          state.isError = true;
+          state.error = action.payload;
         }
       })
       .addCase(logoutEmployee.fulfilled, (state) => {
