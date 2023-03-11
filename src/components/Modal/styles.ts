@@ -2,7 +2,7 @@ import { createStyles } from '@mantine/core';
 
 export const useModalStyles = createStyles(() => ({
   close: {
-    color: '#2A302B',
+    color: 'var(--white-black)',
     opacity: 0.9,
     height: 30,
     width: 30,
@@ -18,8 +18,8 @@ export const useModalStyles = createStyles(() => ({
   content: {
     position: 'relative',
     padding: '30px !important',
-    background: '#FFFFFF',
-    boxShadow: '0px 6px 9px rgba(0, 0, 0, 0.25)',
+    background: 'var(--white)',
+    boxShadow: '0px 6px 9px var(--black-shadow)',
     borderRadius: 10,
     height: 555,
   },
@@ -29,16 +29,17 @@ export const useModalStyles = createStyles(() => ({
   },
 
   title: {
-    fontFamily: 'Roboto, san-serif',
+    fontFamily: 'var(--font-roboto)',
     fontStyle: 'normal',
     fontWeight: 500,
     fontSize: 48,
     lineHeight: '56px',
-    color: '#2A302B',
+    color: 'var(--white-black)',
     opacity: 0.9,
   },
 
   body: {
-    height: '90%',
+    padding: 0,
+    height: '40.5vh',
   },
 }));
