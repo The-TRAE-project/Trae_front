@@ -3,6 +3,7 @@ import { useLocation, useParams } from 'react-router-dom';
 
 import { divisorByChunk } from '../../helpers/divisorByChunk';
 import { useSlider } from '../../helpers/hooks/useSlider';
+import { showErrorNotification } from '../../helpers/showErrorNotification';
 import { useGetProjectStagesQuery } from '../../store/apis/employee';
 import { ProjectStage } from '../../store/apis/employee/types';
 import ControlButtons from '../ControlButtons';
@@ -15,6 +16,10 @@ import {
   Stack,
   Wrapper,
 } from './styles';
+// TODO:
+interface Error {
+  data: any;
+}
 
 const ProjectStagesListItem = () => {
   const { id } = useParams();
@@ -25,7 +30,9 @@ const ProjectStagesListItem = () => {
   const { quantity, current, slideIndex, prevSlide, nextSlide } =
     useSlider(projectStages);
 
-  const { data, isLoading } = useGetProjectStagesQuery(id as unknown as number);
+  const { data, isLoading, isError, error } = useGetProjectStagesQuery(
+    id as unknown as number
+  );
 
   const dividerByEven = (stagesArr: ProjectStage[]) =>
     stagesArr?.filter((_: ProjectStage, index: number) => index % 2 === 0);
@@ -43,6 +50,17 @@ const ProjectStagesListItem = () => {
 
     dividedProjectStages();
   }, [data]);
+
+  // TODO:
+  useEffect(() => {
+    const showError = () => {
+      const err = error as Error;
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+      isError && showErrorNotification(err?.data?.status, err?.data?.error);
+    };
+
+    showError();
+  }, [isError, error]);
 
   return (
     <Wrapper>

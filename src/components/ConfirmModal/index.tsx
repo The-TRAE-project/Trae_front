@@ -29,8 +29,8 @@ const ConfirmModal = ({
 
   const handleOpenInformModal = () => {
     setIsInform(true);
-    onClose();
     handleAgreementClick?.();
+    onClose();
   };
 
   const handleCloseInformModal = () => {

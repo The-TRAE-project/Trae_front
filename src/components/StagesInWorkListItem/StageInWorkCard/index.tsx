@@ -34,8 +34,8 @@ const StageInWorkCard = ({ stage }: Props) => {
   const dispatch = useAppDispatch();
   const { employee } = useAppSelector((store) => store.employee);
 
-  const handleOpenConfirmModal = () => setIsConfirmModal(true);
-  const handleCloseConfirmModal = () => setIsConfirmModal(false);
+  const handleOpenModal = () => setIsConfirmModal(true);
+  const handleCloseModal = () => setIsConfirmModal(false);
 
   const handleFinishProject = async () => {
     try {
@@ -47,18 +47,13 @@ const StageInWorkCard = ({ stage }: Props) => {
       }
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
-      handleCloseConfirmModal();
-      showErrorNotification(
-        error.response.data.status,
-        error.response.data.error
-      );
+      showErrorNotification(error.data.status, error.data.error);
     }
   };
 
   const handleCloseInformModal = () => {
-    dispatch(logout());
-
     navigate(Paths.EMPLOYEE_LOGIN);
+    dispatch(logout());
   };
 
   const navigateToProjectStages = () =>
@@ -81,14 +76,12 @@ const StageInWorkCard = ({ stage }: Props) => {
               <Vector />
             </NavigateButton>
           </Group>
-          <FinishButton onClick={handleOpenConfirmModal}>
-            Завершить
-          </FinishButton>
+          <FinishButton onClick={handleOpenModal}>Завершить</FinishButton>
         </Group>
       </Wrapper>
       <ConfirmModal
         isOpen={isConfirmModal}
-        onClose={handleCloseConfirmModal}
+        onClose={handleCloseModal}
         onCloseInformModal={handleCloseInformModal}
         isHideHomeBtn={false}
         handleAgreementClick={handleFinishProject}

@@ -51,10 +51,7 @@ const StageCard = ({ stage, down }: Props) => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       handleCloseModal();
-      showErrorNotification(
-        error.response.data.status,
-        error.response.data.error
-      );
+      showErrorNotification(error.data.status, error.data.error);
     }
   };
 
