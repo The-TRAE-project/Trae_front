@@ -13,9 +13,11 @@ import {
 import storage from 'redux-persist/lib/storage';
 
 import { baseApi } from './apis';
+import authReducer from './slices/auth';
 import employeeReducer from './slices/employee';
 
 const rootReducer = combineReducers({
+  auth: authReducer,
   employee: employeeReducer,
   [baseApi.reducerPath]: baseApi.reducer,
 });

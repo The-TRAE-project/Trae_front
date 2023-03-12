@@ -33,10 +33,6 @@ export const logoutEmployee = createAsyncThunk(
     try {
       const response = await instance.post(`/employee/checkout/${id}`);
 
-      if (response.status === 404) {
-        throw new Error(response.data.error);
-      }
-
       return response.data;
     } catch (error) {
       return rejectWithValue(error);

@@ -9,6 +9,7 @@ import EmployeeMain from './pages/EmployeeMain';
 import EmployeeProjects from './pages/EmployeeProjects';
 import EmployeeProjectStages from './pages/EmployeeProjectStages';
 import EmployeeStagesInWork from './pages/EmployeeStagesInWork';
+import Test from './pages/Test';
 
 import { useAppSelector } from './helpers/hooks/useAppSelector';
 
@@ -41,6 +42,7 @@ const App = () => {
             path={Paths.EMPLOYEE_STAGES_IN_WORK}
             element={<EmployeeStagesInWork />}
           />
+          <Route path={Paths.TEST} element={<Test />} />
         </Route>
       </Routes>
     </Layout>

@@ -29,3 +29,20 @@ export interface ReceiveProjectStageValue {
   employeeId: number;
   operationId: number;
 }
+
+export interface EmployeeFormValue {
+  firstName: string;
+  lastName: string;
+  middleName: string;
+  phone: string;
+  typesId: number[];
+}
+
+export interface WorkType {
+  id: number;
+  name: string;
+}
+
+export interface WorkTypeValue {
+  name: string;
+}
