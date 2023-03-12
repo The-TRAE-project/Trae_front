@@ -28,9 +28,9 @@ const ConfirmModal = ({
   const [isInform, setIsInform] = useState<boolean>(false);
 
   const handleOpenInformModal = () => {
-    setIsInform(true);
-    handleAgreementClick?.();
     onClose();
+    handleAgreementClick?.();
+    setIsInform(true);
   };
 
   const handleCloseInformModal = () => {

@@ -12,7 +12,7 @@ const Loader = ({ size, color = '--white', isAbsoluteCentered }: Props) => {
       size={size}
       strokeWidth={2}
       color={`var(${color})`}
-      isAbsoluteCentered={isAbsoluteCentered}
+      $absolute={isAbsoluteCentered}
     />
   );
 };

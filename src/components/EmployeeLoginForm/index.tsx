@@ -12,14 +12,15 @@ import { Paths } from '../../constants/paths';
 import instance from '../../config/axiosConfig';
 import Loader from '../Loader';
 import ConfirmModal from '../ConfirmModal';
-import { Button, GroupForm, Wrapper } from './styles';
-import { LoginFormValues } from './types';
 import NumericKeyboard from './NumericKeyboard';
+import { LoginFormValues } from './types';
+import { Button, GroupForm, Wrapper } from './styles';
 
 const EmployeeLoginForm = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [employee, setEmployee] = useState<Employee>();
   const [isInputInFocus, setIsInputInFocus] = useState<boolean>(false);
+  const [pinCode, setPinCode] = useState<string>('');
 
   const dispatch = useAppDispatch();
   const { isModalOpen } = useAppSelector((store) => store.employee);
@@ -29,6 +30,11 @@ const EmployeeLoginForm = () => {
       pinCode: '',
     },
   });
+
+  const reset = () => {
+    form.reset();
+    setPinCode('');
+  };
 
   const handleSubmit = async (values: LoginFormValues) => {
     setIsLoading(true);
@@ -42,9 +48,10 @@ const EmployeeLoginForm = () => {
         dispatch(login(data));
         navigate(Paths.EMPLOYEE_MAIN);
       }
+      reset();
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
-      form.reset();
+      reset();
       setIsLoading(false);
       showErrorNotification(err.response.data.status, err.response.data.error);
     }
@@ -61,10 +68,8 @@ const EmployeeLoginForm = () => {
     }
   };
 
-  const handleOnKeyboardChange = (pinCode: string) =>
-    form.setFieldValue('pinCode', pinCode);
-
-  const handleKeyboardReset = () => form.reset();
+  const handleOnKeyboardChange = (value: string) =>
+    form.setFieldValue('pinCode', value);
 
   const handleCloseModal = () => dispatch(toggleModal(false));
   const handleCloseInformModal = () => navigate(Paths.EMPLOYEE_MAIN);
@@ -86,10 +91,12 @@ const EmployeeLoginForm = () => {
             {isLoading ? <Loader size={40} /> : 'Подтвердить'}
           </Button>
           <NumericKeyboard
+            pinCode={pinCode}
+            setPinCode={setPinCode}
             isOpen={isInputInFocus}
             onClose={() => setIsInputInFocus(false)}
             handleOnKeyboardChange={handleOnKeyboardChange}
-            reset={handleKeyboardReset}
+            reset={reset}
           />
         </GroupForm>
       </Wrapper>

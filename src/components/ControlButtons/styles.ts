@@ -2,12 +2,12 @@ import { Group as MantineGroup } from '@mantine/core';
 import styled, { css } from 'styled-components';
 
 type VerticalPositionProps = {
-  isVertical?: boolean;
+  $vertical?: boolean;
 };
 
 type BtnProps = {
   color: string;
-  isVertical?: boolean;
+  $vertical?: boolean;
 };
 
 type TitleProps = {
@@ -17,7 +17,7 @@ type TitleProps = {
 export const Wrapper = styled.div`
   ${({ theme }) => theme.mixins.fCenter};
   ${(props: VerticalPositionProps) =>
-    props.isVertical &&
+    props.$vertical &&
     css`
       position: absolute;
       right: 0;
@@ -28,7 +28,7 @@ export const Wrapper = styled.div`
 
 export const Group = styled(MantineGroup)`
   flex-direction: ${(props: VerticalPositionProps) =>
-    props.isVertical ? 'column' : 'row'};
+    props.$vertical ? 'column' : 'row'};
 `;
 
 export const Button = styled.button`
@@ -37,7 +37,7 @@ export const Button = styled.button`
   background: none;
   border: none;
   transform: ${(props: BtnProps) =>
-    props.isVertical ? 'rotate(90deg)' : 'rotate(0deg)'};
+    props.$vertical ? 'rotate(90deg)' : 'rotate(0deg)'};
 
   svg {
     fill: ${(props: BtnProps) => `var(${props.color})`};

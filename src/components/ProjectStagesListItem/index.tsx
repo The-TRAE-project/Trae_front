@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 
 import { divisorByChunk } from '../../helpers/divisorByChunk';
+import { useDisplayError } from '../../helpers/hooks/useDisplayError';
 import { useSlider } from '../../helpers/hooks/useSlider';
-import { showErrorNotification } from '../../helpers/showErrorNotification';
 import { useGetProjectStagesQuery } from '../../store/apis/employee';
 import { ProjectStage } from '../../store/apis/employee/types';
 import ControlButtons from '../ControlButtons';
@@ -16,10 +16,6 @@ import {
   Stack,
   Wrapper,
 } from './styles';
-// TODO:
-interface Error {
-  data: any;
-}
 
 const ProjectStagesListItem = () => {
   const { id } = useParams();
@@ -40,6 +36,8 @@ const ProjectStagesListItem = () => {
   const dividerByOdd = (stagesArr: ProjectStage[]) =>
     stagesArr?.filter((_: ProjectStage, index: number) => !(index % 2 === 0));
 
+  const getLastStage = () => projectStages?.flat().at(-1);
+
   useEffect(() => {
     const dividedProjectStages = async () => {
       if (data) {
@@ -51,16 +49,7 @@ const ProjectStagesListItem = () => {
     dividedProjectStages();
   }, [data]);
 
-  // TODO:
-  useEffect(() => {
-    const showError = () => {
-      const err = error as Error;
-      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-      isError && showErrorNotification(err?.data?.status, err?.data?.error);
-    };
-
-    showError();
-  }, [isError, error]);
+  useDisplayError(error, isError);
 
   return (
     <Wrapper>
@@ -71,14 +60,23 @@ const ProjectStagesListItem = () => {
               <FlexContainer>
                 {dividerByEven(projectStages[slideIndex]).map(
                   (stage: ProjectStage) => (
-                    <StageCard key={stage.id} stage={stage} down />
+                    <StageCard
+                      key={stage.id}
+                      stage={stage}
+                      down
+                      lastStage={getLastStage()}
+                    />
                   )
                 )}
               </FlexContainer>
               <FlexContainer>
                 {dividerByOdd(projectStages[slideIndex]).map(
                   (stage: ProjectStage) => (
-                    <StageCard key={stage.id} stage={stage} />
+                    <StageCard
+                      key={stage.id}
+                      stage={stage}
+                      lastStage={getLastStage()}
+                    />
                   )
                 )}
               </FlexContainer>

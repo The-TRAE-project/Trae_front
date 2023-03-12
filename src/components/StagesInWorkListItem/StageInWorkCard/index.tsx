@@ -26,7 +26,7 @@ interface Props {
 }
 
 const StageInWorkCard = ({ stage }: Props) => {
-  const [isConfirmModal, setIsConfirmModal] = useState<boolean>(false);
+  const [isOpen, setOpened] = useState<boolean>(false);
 
   const [finishProject] = useFinishProjectStageMutation();
 
@@ -34,19 +34,26 @@ const StageInWorkCard = ({ stage }: Props) => {
   const dispatch = useAppDispatch();
   const { employee } = useAppSelector((store) => store.employee);
 
-  const handleOpenModal = () => setIsConfirmModal(true);
-  const handleCloseModal = () => setIsConfirmModal(false);
+  const navigateToProjectStages = () =>
+    navigate(`/employee/project/${stage.projectId}/stages`, {
+      state: { projectNumber: stage.projectNumber },
+    });
+
+  const handleOpenModal = () => setOpened(true);
+  const handleCloseModal = () => setOpened(false);
 
   const handleFinishProject = async () => {
     try {
-      if (employee) {
-        await finishProject({
-          employeeId: employee.id,
-          operationId: stage.operationId,
-        }).unwrap();
-      }
+      if (!employee) return;
+
+      await finishProject({
+        employeeId: employee.id,
+        operationId: stage.operationId,
+      }).unwrap();
+
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
+      handleCloseModal();
       showErrorNotification(error.data.status, error.data.error);
     }
   };
@@ -55,11 +62,6 @@ const StageInWorkCard = ({ stage }: Props) => {
     navigate(Paths.EMPLOYEE_LOGIN);
     dispatch(logout());
   };
-
-  const navigateToProjectStages = () =>
-    navigate(`/employee/project/${stage.projectId}/stages`, {
-      state: { projectNumber: stage.projectNumber },
-    });
 
   return (
     <>
@@ -80,7 +82,7 @@ const StageInWorkCard = ({ stage }: Props) => {
         </Group>
       </Wrapper>
       <ConfirmModal
-        isOpen={isConfirmModal}
+        isOpen={isOpen}
         onClose={handleCloseModal}
         onCloseInformModal={handleCloseInformModal}
         isHideHomeBtn={false}

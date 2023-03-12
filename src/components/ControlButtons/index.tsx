@@ -20,13 +20,13 @@ const ControlButtons = ({
   isVertical,
 }: Props) => {
   return (
-    <Wrapper isVertical={isVertical}>
-      <Group isVertical={isVertical} spacing={44}>
+    <Wrapper $vertical={isVertical}>
+      <Group $vertical={isVertical} spacing={44}>
         <Button
           onClick={prevSlide}
           disabled={current === 1}
           color={color}
-          isVertical={isVertical}
+          $vertical={isVertical}
         >
           <ControlArrowRight color={color} />
         </Button>
@@ -37,7 +37,7 @@ const ControlButtons = ({
           onClick={nextSlide}
           disabled={current === quantity}
           color={color}
-          isVertical={isVertical}
+          $vertical={isVertical}
         >
           <ControlArrowLeft color={color} />
         </Button>

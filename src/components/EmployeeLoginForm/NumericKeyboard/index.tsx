@@ -1,7 +1,9 @@
-import { useEffect, useId, useState } from 'react';
+import { Dispatch, useEffect, useId, SetStateAction } from 'react';
 import { FlexContainer, KeyboardBtn, Wrapper } from './styles';
 
 interface Props {
+  pinCode: string;
+  setPinCode: Dispatch<SetStateAction<string>>;
   isOpen: boolean;
   onClose: () => void;
   handleOnKeyboardChange: (pinCode: string) => void;
@@ -9,13 +11,13 @@ interface Props {
 }
 
 const NumericKeyboard = ({
+  pinCode,
+  setPinCode,
   isOpen,
   onClose,
   handleOnKeyboardChange,
   reset,
 }: Props) => {
-  const [pinCode, setPinCode] = useState<string>('');
-
   const keyboard = [
     {
       id: useId(),
@@ -74,14 +76,9 @@ const NumericKeyboard = ({
     },
   ];
 
-  const handleReset = () => {
-    reset();
-    setPinCode('');
-  };
-
   const handleOnChange = (value: number | string) => {
     if (value === 'Delete') {
-      handleReset();
+      reset();
       return;
     }
     setPinCode((prevPinCode) => prevPinCode + value);

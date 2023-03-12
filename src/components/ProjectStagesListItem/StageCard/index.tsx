@@ -22,9 +22,10 @@ import {
 interface Props {
   stage: ProjectStage;
   down?: boolean;
+  lastStage?: ProjectStage;
 }
 
-const StageCard = ({ stage, down }: Props) => {
+const StageCard = ({ stage, down, lastStage }: Props) => {
   const [opened, setOpened] = useState<boolean>(false);
 
   const navigate = useNavigate();
@@ -75,13 +76,14 @@ const StageCard = ({ stage, down }: Props) => {
             stage.employeeLastName &&
             `${stage.employeeFirstName} ${stage.employeeLastName}`}
         </Employee>
-        {down ? (
+        {down && lastStage?.id !== stage.id && (
           <StatusArrowDown>
             <ArrowDown
               color={stage.isEnded ? 'var(--green)' : 'var(--orange)'}
             />
           </StatusArrowDown>
-        ) : (
+        )}
+        {!down && lastStage?.id !== stage.id && (
           <StatusArrowUp>
             <ArrowUp color={stage.isEnded ? 'var(--green)' : 'var(--orange)'} />
           </StatusArrowUp>

@@ -5,15 +5,11 @@ import { Project } from '../../store/apis/employee/types';
 import { useSlider } from '../../helpers/hooks/useSlider';
 import { useAppSelector } from '../../helpers/hooks/useAppSelector';
 import { divisorByChunk } from '../../helpers/divisorByChunk';
-import { showErrorNotification } from '../../helpers/showErrorNotification';
+import { useDisplayError } from '../../helpers/hooks/useDisplayError';
 import ControlButtons from '../ControlButtons';
 import Loader from '../Loader';
 import ProjectCard from './ProjectCard';
 import { Grid, Wrapper } from './styles';
-// TODO:
-interface Error {
-  data: any;
-}
 
 const EmployeeProjectListItem = () => {
   const [projects, setProjects] = useState<Project[][] | undefined>([]);
@@ -34,17 +30,9 @@ const EmployeeProjectListItem = () => {
     };
 
     dividedProjects();
-  }, [data, employee?.id]);
-  // TODO:
-  useEffect(() => {
-    const showError = () => {
-      const err = error as Error;
-      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-      isError && showErrorNotification(err?.data?.status, err?.data?.error);
-    };
+  }, [data]);
 
-    showError();
-  }, [isError, error]);
+  useDisplayError(error, isError);
 
   return (
     <Wrapper>

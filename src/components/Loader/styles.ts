@@ -2,12 +2,12 @@ import styled, { css } from 'styled-components';
 import { Loader2 } from 'tabler-icons-react';
 
 type Props = {
-  isAbsoluteCentered?: boolean;
+  $absolute?: boolean;
 };
 
 export const LoaderWrapper = styled(Loader2)`
   ${(props: Props) =>
-    props.isAbsoluteCentered &&
+    props.$absolute &&
     css`
       position: absolute;
       top: 50%;

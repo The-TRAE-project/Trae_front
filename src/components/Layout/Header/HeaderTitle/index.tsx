@@ -10,14 +10,14 @@ interface Props {
 const HeaderTitle = ({ findCurrentPath }: Props) => {
   const location = useLocation();
   // TODO:
-  const displayTitleByPath = (path: any) => {
+  const displayTitleByPath = (path: string) => {
     switch (path) {
       case '/employee-projects':
         return 'Выберите проект';
       case '/employee-stages-in-work':
         return 'Этапы в работе';
       default:
-        return 'Выберите этап';
+        return 'Этапы';
     }
   };
 

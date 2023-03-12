@@ -29,7 +29,3 @@ export interface ReceiveProjectStageValue {
   employeeId: number;
   operationId: number;
 }
-
-export interface Error {
-  data: any;
-}
