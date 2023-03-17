@@ -2,15 +2,9 @@ import { Group } from '@mantine/core';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { Paths } from '../../../constants/paths';
-import { useAppDispatch } from '../../../helpers/hooks/useAppDispatch';
-import { useAppSelector } from '../../../helpers/hooks/useAppSelector';
-import { showErrorNotification } from '../../../helpers/showErrorNotification';
-import { useFinishProjectStageMutation } from '../../../store/apis/employee';
 import { StageInWork } from '../../../store/apis/employee/types';
-import { logout } from '../../../store/slices/employee';
-import ConfirmModal from '../../ConfirmModal';
 import Vector from '../../svgs/Vector';
+import ConfirmModal from './ConfirmModal';
 import {
   Customer,
   FinishButton,
@@ -28,11 +22,7 @@ interface Props {
 const StageInWorkCard = ({ stage }: Props) => {
   const [isOpen, setOpened] = useState<boolean>(false);
 
-  const [finishProject] = useFinishProjectStageMutation();
-
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
-  const { employee } = useAppSelector((store) => store.employee);
 
   const navigateToProjectStages = () =>
     navigate(`/employee/project/${stage.projectId}/stages`, {
@@ -41,27 +31,6 @@ const StageInWorkCard = ({ stage }: Props) => {
 
   const handleOpenModal = () => setOpened(true);
   const handleCloseModal = () => setOpened(false);
-
-  const handleFinishProject = async () => {
-    try {
-      if (!employee) return;
-
-      await finishProject({
-        employeeId: employee.id,
-        operationId: stage.operationId,
-      }).unwrap();
-
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
-      handleCloseModal();
-      showErrorNotification(error.data.status, error.data.error);
-    }
-  };
-
-  const handleCloseInformModal = () => {
-    navigate(Paths.EMPLOYEE_LOGIN);
-    dispatch(logout());
-  };
 
   return (
     <>
@@ -81,19 +50,7 @@ const StageInWorkCard = ({ stage }: Props) => {
           <FinishButton onClick={handleOpenModal}>Завершить</FinishButton>
         </Group>
       </Wrapper>
-      <ConfirmModal
-        isOpen={isOpen}
-        onClose={handleCloseModal}
-        onCloseInformModal={handleCloseInformModal}
-        isHideHomeBtn={false}
-        handleAgreementClick={handleFinishProject}
-        questionTitle={`${employee?.firstName} ${
-          employee?.lastName
-        } закончил этап <br /> ${stage.operationName.toLowerCase()}?`}
-        informTitle={`${employee?.firstName} ${
-          employee?.lastName
-        } закончил <br /> этап ${stage.operationName.toLowerCase()}`}
-      />
+      <ConfirmModal isOpen={isOpen} onClose={handleCloseModal} stage={stage} />
     </>
   );
 };

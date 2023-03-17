@@ -11,7 +11,7 @@ import {
 } from './types';
 
 const employeeTags = baseApi.enhanceEndpoints({
-  addTagTypes: ['Employee', 'ProjectStage', 'WorkTypes'],
+  addTagTypes: ['Employee', 'ProjectStage', 'WorkTypes', 'StagesInWork'],
 });
 
 const employeeApi = employeeTags.injectEndpoints({
@@ -19,12 +19,14 @@ const employeeApi = employeeTags.injectEndpoints({
     getAvailableProjectsByEmployeeId: build.query<Project[], number>({
       query: (employeeId) =>
         `/project/employee/available-projects/${employeeId}`,
+      keepUnusedDataFor: 0,
       providesTags: ['ProjectStage'],
     }),
 
     getStagesInWorkByEmployeeId: build.query<StageInWork[], number>({
       query: (employeeId) =>
         `/operation/employee/operations-in-work/${employeeId}`,
+      keepUnusedDataFor: 0,
       providesTags: ['ProjectStage'],
     }),
 
@@ -53,7 +55,6 @@ const employeeApi = employeeTags.injectEndpoints({
           body,
         };
       },
-      invalidatesTags: ['ProjectStage'],
     }),
 
     createEmployee: build.mutation<void, EmployeeFormValue>({
