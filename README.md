@@ -43,7 +43,7 @@ Frontend part of TRAE.
    - In Development Mode:
 
    ```sh
-   npm run dev
+   npm start
    ```
 
    - In Production Mode:

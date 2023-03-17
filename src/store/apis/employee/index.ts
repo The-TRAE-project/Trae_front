@@ -5,10 +5,13 @@ import {
   Project,
   StageInWork,
   ReceiveProjectStageValue,
+  EmployeeFormValue,
+  WorkType,
+  WorkTypeValue,
 } from './types';
 
 const employeeTags = baseApi.enhanceEndpoints({
-  addTagTypes: ['Employee', 'ProjectStage'],
+  addTagTypes: ['Employee', 'ProjectStage', 'WorkTypes', 'StagesInWork'],
 });
 
 const employeeApi = employeeTags.injectEndpoints({
@@ -16,12 +19,14 @@ const employeeApi = employeeTags.injectEndpoints({
     getAvailableProjectsByEmployeeId: build.query<Project[], number>({
       query: (employeeId) =>
         `/project/employee/available-projects/${employeeId}`,
+      keepUnusedDataFor: 0,
       providesTags: ['ProjectStage'],
     }),
 
     getStagesInWorkByEmployeeId: build.query<StageInWork[], number>({
       query: (employeeId) =>
         `/operation/employee/operations-in-work/${employeeId}`,
+      keepUnusedDataFor: 0,
       providesTags: ['ProjectStage'],
     }),
 
@@ -45,12 +50,37 @@ const employeeApi = employeeTags.injectEndpoints({
     finishProjectStage: build.mutation<void, ReceiveProjectStageValue>({
       query(body) {
         return {
-          url: `operation/employee/finish-operation`,
+          url: 'operation/employee/finish-operation',
           method: 'POST',
           body,
         };
       },
-      invalidatesTags: ['ProjectStage'],
+    }),
+
+    createEmployee: build.mutation<void, EmployeeFormValue>({
+      query(body) {
+        return {
+          url: '/employee/register',
+          method: 'POST',
+          body,
+        };
+      },
+    }),
+
+    getAllWorkTypes: build.query<WorkType[], void>({
+      query: () => '/type-work/types',
+      providesTags: ['WorkTypes'],
+    }),
+
+    createWorkType: build.mutation<void, WorkTypeValue>({
+      query(body) {
+        return {
+          url: '/type-work/new',
+          method: 'POST',
+          body,
+        };
+      },
+      invalidatesTags: ['WorkTypes'],
     }),
   }),
 });
@@ -61,4 +91,7 @@ export const {
   useGetProjectStagesQuery,
   useReceiveProjectStageMutation,
   useFinishProjectStageMutation,
+  useCreateEmployeeMutation,
+  useGetAllWorkTypesQuery,
+  useCreateWorkTypeMutation,
 } = employeeApi;

@@ -13,9 +13,11 @@ import {
 import storage from 'redux-persist/lib/storage';
 
 import { baseApi } from './apis';
+import authReducer from './slices/auth';
 import employeeReducer from './slices/employee';
 
 const rootReducer = combineReducers({
+  auth: authReducer,
   employee: employeeReducer,
   [baseApi.reducerPath]: baseApi.reducer,
 });
@@ -33,7 +35,7 @@ const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }).concat(baseApi.middleware),
+    }).concat([baseApi.middleware]),
   devTools: process.env.NODE_ENV !== 'production',
 });
 

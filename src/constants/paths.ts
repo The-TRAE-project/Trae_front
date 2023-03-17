@@ -10,4 +10,5 @@ export const Paths = {
   EMPLOYEE_PROJECT_STAGES: '/employee/project/:id/stages',
   EMPLOYEE_STAGES_IN_WORK: '/employee-stages-in-work',
   STAGES_IN_WORK: '/stages-in-work',
+  TEST: '/test',
 };
