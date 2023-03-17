@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import instance from '../../../config/axiosConfig';
 
-import { InitialState, LoginFormValue, TokenValue } from './types';
+import { InitialState, LoginFormValues, TokenValue } from './types';
 
 const initialState = {
   user: null,
@@ -14,9 +14,9 @@ const initialState = {
 
 export const loginUser = createAsyncThunk(
   'auth/loginUser',
-  async (value: LoginFormValue, { rejectWithValue }) => {
+  async (value: LoginFormValues, { rejectWithValue }) => {
     try {
-      const response = await instance.post('/auth/login', { value });
+      const response = await instance.post('/auth/login', value);
 
       return response.data;
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

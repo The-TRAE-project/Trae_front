@@ -9,6 +9,7 @@ import EmployeeMain from './pages/EmployeeMain';
 import EmployeeProjects from './pages/EmployeeProjects';
 import EmployeeProjectStages from './pages/EmployeeProjectStages';
 import EmployeeStagesInWork from './pages/EmployeeStagesInWork';
+import Login from './pages/Login';
 import Test from './pages/Test';
 
 import { useAppSelector } from './helpers/hooks/useAppSelector';
@@ -20,6 +21,7 @@ const App = () => {
     <Layout>
       <Routes>
         <Route path={Paths.EMPLOYEE_LOGIN} element={<EmployeeLogin />} />
+        <Route path={Paths.LOGIN} element={<Login />} />
         <Route path="*" element={<Navigate to={Paths.EMPLOYEE_LOGIN} />} />
         <Route
           element={
