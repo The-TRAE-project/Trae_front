@@ -1,7 +1,12 @@
 import { z } from 'zod';
 
+export interface Response<T> {
+  data: T;
+}
+
 export interface InitialState {
   user: User | null;
+  permission: Roles | null;
   isLoading: 'idle' | 'pending';
   isLoggedIn: boolean;
   accessToken: string | null;
@@ -9,24 +14,20 @@ export interface InitialState {
 }
 
 export interface User {
-  id: 1;
+  id: number;
   firstName: string;
   middleName: string;
   lastName: string;
   phone: number;
-  role: Roles;
+  role: Roles | string;
   dateOfRegister: Date;
 }
 
 export enum Roles {
   manager = 'Manager',
-  admin = 'Admin',
+  admin = 'Администратор',
+  employee = 'Сотрудник',
 }
-
-// export interface LoginFormValue {
-//   username: string;
-//   password: string;
-// }
 
 export const LoginFormSchema = z.object({
   username: z

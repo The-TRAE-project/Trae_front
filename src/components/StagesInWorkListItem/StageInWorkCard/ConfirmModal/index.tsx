@@ -26,11 +26,13 @@ const ConfirmModal = ({ isOpen, onClose, stage }: Props) => {
   const handleFinishProject = async () => {
     try {
       if (!employee) return;
-
-      await finishProject({
-        employeeId: employee.id,
-        operationId: stage.operationId,
-      }).unwrap();
+      // TODO:
+      setTimeout(async () => {
+        await finishProject({
+          employeeId: employee.id,
+          operationId: stage.operationId,
+        }).unwrap();
+      }, 3000);
 
       onClose();
       setIsInformOpen(true);

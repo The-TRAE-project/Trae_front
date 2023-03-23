@@ -1,11 +1,21 @@
+// TODO:
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+// eslint-disable-next-line import/no-cycle
+import { RootState } from '../..';
 
 import instance from '../../../config/axiosConfig';
 
-import { InitialState, LoginFormValues, TokenValue } from './types';
+import {
+  InitialState,
+  LoginFormValues,
+  Response,
+  Roles,
+  TokenValue,
+} from './types';
 
 const initialState = {
   user: null,
+  permission: null,
   isLoggedIn: false,
   isLoading: 'idle',
   accessToken: null,
@@ -16,7 +26,10 @@ export const loginUser = createAsyncThunk(
   'auth/loginUser',
   async (value: LoginFormValues, { rejectWithValue }) => {
     try {
-      const response = await instance.post('/auth/login', value);
+      const response = await instance.post<
+        LoginFormValues,
+        Response<TokenValue>
+      >('/auth/login', value);
 
       return response.data;
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -28,9 +41,39 @@ export const loginUser = createAsyncThunk(
 
 export const logoutUser = createAsyncThunk(
   'auth/logoutUser',
-  async (name: string, { rejectWithValue }) => {
+  // eslint-disable-next-line consistent-return
+  async (name: string, { rejectWithValue, getState }) => {
     try {
-      const response = await instance.post(`/auth/logout${name}`);
+      const token = (getState() as RootState).auth.accessToken;
+      const config = {
+        headers: { Authorization: `Bearer ${token}` },
+      };
+
+      if (token) {
+        const response = await instance.post(`/auth/logout${name}`, {}, config);
+
+        return response.data;
+      }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const getUserRole = createAsyncThunk(
+  'auth/getUserRole',
+  async (name: string, { rejectWithValue, getState }) => {
+    try {
+      const token = (getState() as RootState).auth.accessToken;
+      const config = {
+        headers: { Authorization: `Bearer ${token}` },
+      };
+
+      const response = await instance.get<string, Response<Roles>>(
+        `/manager/role?name=${name}`,
+        config
+      );
 
       return response.data;
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -66,10 +109,12 @@ export const authSlice = createSlice({
         state.isLoggedIn = false;
         state.accessToken = null;
         state.refreshToken = null;
+      })
+      // TODO:
+      .addCase(getUserRole.fulfilled, (state, action) => {
+        state.permission = action.payload;
       });
   },
 });
 
-// eslint-disable-next-line no-empty-pattern
-export const {} = authSlice.actions;
 export default authSlice.reducer;

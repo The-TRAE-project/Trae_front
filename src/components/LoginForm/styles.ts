@@ -56,6 +56,17 @@ export const useInputStyles = createStyles(() => ({
     },
   },
 
+  label: {
+    fontSize: 24,
+    fontWeight: 400,
+    lineHeight: '28px',
+    letterSpacing: '0em',
+    textAlign: 'left',
+    color: 'var(--white)',
+    paddingLeft: 13,
+    marginBottom: 13,
+  },
+
   input: {
     width: 400,
     height: 90,

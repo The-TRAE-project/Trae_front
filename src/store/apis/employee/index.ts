@@ -20,14 +20,14 @@ const employeeApi = employeeTags.injectEndpoints({
       query: (employeeId) =>
         `/project/employee/available-projects/${employeeId}`,
       keepUnusedDataFor: 0,
-      providesTags: ['ProjectStage'],
+      providesTags: ['ProjectStage', 'StagesInWork'],
     }),
 
     getStagesInWorkByEmployeeId: build.query<StageInWork[], number>({
       query: (employeeId) =>
         `/operation/employee/operations-in-work/${employeeId}`,
       keepUnusedDataFor: 0,
-      providesTags: ['ProjectStage'],
+      providesTags: ['StagesInWork'],
     }),
 
     getProjectStages: build.query<ProjectStage[], number>({
@@ -55,6 +55,7 @@ const employeeApi = employeeTags.injectEndpoints({
           body,
         };
       },
+      invalidatesTags: ['StagesInWork'],
     }),
 
     createEmployee: build.mutation<void, EmployeeFormValue>({

@@ -24,6 +24,7 @@ const EmployeeLoginForm = () => {
 
   const dispatch = useAppDispatch();
   const { isModalOpen } = useAppSelector((store) => store.employee);
+  const { accessToken } = useAppSelector((store) => store.auth);
   const navigate = useNavigate();
   const form = useForm({
     initialValues: {
@@ -39,7 +40,13 @@ const EmployeeLoginForm = () => {
   const handleSubmit = async (values: LoginFormValues) => {
     setIsLoading(true);
     try {
-      const { data } = await instance.get(`/employee/login/${values.pinCode}`);
+      const config = {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      };
+      const { data } = await instance.get(
+        `/employee/login/${values.pinCode}`,
+        config
+      );
       setEmployee(data);
       setIsLoading(false);
       if (!data.onShift) {

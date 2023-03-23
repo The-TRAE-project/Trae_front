@@ -1,4 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+// eslint-disable-next-line import/no-cycle
+import { RootState } from '../..';
 
 import instance from '../../../config/axiosConfig';
 
@@ -15,11 +17,24 @@ const initialState = {
 
 export const loginEmployee = createAsyncThunk(
   'employee/loginEmployee',
-  async (id: number, { rejectWithValue }) => {
+  // eslint-disable-next-line consistent-return
+  async (id: number, { rejectWithValue, getState }) => {
     try {
-      const response = await instance.post(`/employee/checkin/${id}`);
+      const token = (getState() as RootState).auth.accessToken;
 
-      return response.data;
+      const config = {
+        headers: { Authorization: `Bearer ${token}` },
+      };
+
+      if (token) {
+        const response = await instance.post(
+          `/employee/checkin/${id}`,
+          {},
+          config
+        );
+
+        return response.data;
+      }
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       return rejectWithValue(error.response.data);
@@ -29,13 +44,27 @@ export const loginEmployee = createAsyncThunk(
 
 export const logoutEmployee = createAsyncThunk(
   'employee/logoutEmployee',
-  async (id: number, { rejectWithValue }) => {
+  // eslint-disable-next-line consistent-return
+  async (id: number, { rejectWithValue, getState }) => {
     try {
-      const response = await instance.post(`/employee/checkout/${id}`);
+      const token = (getState() as RootState).auth.accessToken;
 
-      return response.data;
-    } catch (error) {
-      return rejectWithValue(error);
+      const config = {
+        headers: { Authorization: `Bearer ${token}` },
+      };
+
+      if (token) {
+        const response = await instance.post(
+          `/employee/checkout/${id}`,
+          {},
+          config
+        );
+
+        return response.data;
+      }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      return rejectWithValue(error.response.data);
     }
   }
 );
