@@ -22,6 +22,7 @@ const InformModal = ({ isOpen, onClose, stage }: Props) => {
   const navigate = useNavigate();
 
   const handleClose = () => {
+    // TODO:
     onClose();
     navigate(Paths.EMPLOYEE_LOGIN);
     dispatch(logout());

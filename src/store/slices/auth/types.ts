@@ -1,5 +1,12 @@
+import { z } from 'zod';
+
+export interface Response<T> {
+  data: T;
+}
+
 export interface InitialState {
   user: User | null;
+  permission: Roles | null;
   isLoading: 'idle' | 'pending';
   isLoggedIn: boolean;
   accessToken: string | null;
@@ -7,25 +14,33 @@ export interface InitialState {
 }
 
 export interface User {
-  id: 1;
+  id: number;
   firstName: string;
   middleName: string;
   lastName: string;
   phone: number;
-  role: Roles;
+  role: Roles | string;
   dateOfRegister: Date;
 }
 
 export enum Roles {
   manager = 'Manager',
-  admin = 'Admin',
+  admin = 'Администратор',
+  employee = 'Сотрудник',
 }
 
-export interface LoginFormValue {
-  username: string;
-  password: string;
-}
+export const LoginFormSchema = z.object({
+  username: z
+    .string()
+    .min(3, { message: 'Логин должен быть не меньше 3 символов' })
+    .max(15, { message: 'Логин должен быть больше 15 символов' }),
+  password: z
+    .string()
+    .min(3, { message: 'Пароль должен быть не меньше 3 символов' })
+    .max(15, { message: 'Пароль должен быть больше 15 символов' }),
+});
 
+export type LoginFormValues = z.infer<typeof LoginFormSchema>;
 export interface TokenValue {
   accessToken: string;
   refreshToken: string;

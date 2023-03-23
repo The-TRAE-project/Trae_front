@@ -11,21 +11,15 @@ import { logout } from '../../../store/slices/employee';
 import ConfirmModal from '../../ConfirmModal';
 import ArrowDown from '../../svgs/ArrowDown';
 import ArrowUp from '../../svgs/ArrowUp';
-import {
-  StageName,
-  Employee,
-  Wrapper,
-  StatusArrowDown,
-  StatusArrowUp,
-} from './styles';
+import { ArrowWrapper, StageName, Employee, Wrapper } from './styles';
 
 interface Props {
   stage: ProjectStage;
-  down?: boolean;
+  index: number;
   lastStage?: ProjectStage;
 }
 
-const StageCard = ({ stage, down, lastStage }: Props) => {
+const StageCard = ({ stage, index, lastStage }: Props) => {
   const [opened, setOpened] = useState<boolean>(false);
 
   const navigate = useNavigate();
@@ -76,18 +70,20 @@ const StageCard = ({ stage, down, lastStage }: Props) => {
             stage.employeeLastName &&
             `${stage.employeeFirstName} ${stage.employeeLastName}`}
         </Employee>
-        {down && lastStage?.id !== stage.id && (
-          <StatusArrowDown>
-            <ArrowDown
-              color={stage.isEnded ? 'var(--green)' : 'var(--orange)'}
-            />
-          </StatusArrowDown>
-        )}
-        {!down && lastStage?.id !== stage.id && (
-          <StatusArrowUp>
-            <ArrowUp color={stage.isEnded ? 'var(--green)' : 'var(--orange)'} />
-          </StatusArrowUp>
-        )}
+        {lastStage?.id !== stage.id &&
+          (!(index % 2) ? (
+            <ArrowWrapper>
+              <ArrowDown
+                color={stage.isEnded ? 'var(--green)' : 'var(--orange)'}
+              />
+            </ArrowWrapper>
+          ) : (
+            <ArrowWrapper $up={!!(index % 2)}>
+              <ArrowUp
+                color={stage.isEnded ? 'var(--green)' : 'var(--orange)'}
+              />
+            </ArrowWrapper>
+          ))}
       </Wrapper>
       <ConfirmModal
         isOpen={opened}

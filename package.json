@@ -29,7 +29,8 @@
     "react-text-mask": "^5.5.0",
     "redux-persist": "^6.0.0",
     "styled-components": "^5.3.6",
-    "tabler-icons-react": "^1.56.0"
+    "tabler-icons-react": "^1.56.0",
+    "zod": "^3.21.4"
   },
   "devDependencies": {
     "@types/node": "^18.14.1",

@@ -9,13 +9,7 @@ import { ProjectStage } from '../../store/apis/employee/types';
 import ControlButtons from '../ControlButtons';
 import Loader from '../Loader';
 import StageCard from './StageCard';
-import {
-  FlexContainer,
-  FooterWrapper,
-  ProjectNumber,
-  Stack,
-  Wrapper,
-} from './styles';
+import { FlexContainer, FooterWrapper, ProjectNumber, Wrapper } from './styles';
 
 const ProjectStagesListItem = () => {
   const { id } = useParams();
@@ -29,12 +23,6 @@ const ProjectStagesListItem = () => {
   const { data, isLoading, isError, error } = useGetProjectStagesQuery(
     id as unknown as number
   );
-
-  const dividerByEven = (stagesArr: ProjectStage[]) =>
-    stagesArr?.filter((_: ProjectStage, index: number) => index % 2 === 0);
-
-  const dividerByOdd = (stagesArr: ProjectStage[]) =>
-    stagesArr?.filter((_: ProjectStage, index: number) => !(index % 2 === 0));
 
   const getLastStage = () => projectStages?.flat().at(-1);
 
@@ -56,31 +44,16 @@ const ProjectStagesListItem = () => {
       {!isLoading ? (
         <>
           {projectStages ? (
-            <Stack>
-              <FlexContainer>
-                {dividerByEven(projectStages[slideIndex]).map(
-                  (stage: ProjectStage) => (
-                    <StageCard
-                      key={stage.id}
-                      stage={stage}
-                      down
-                      lastStage={getLastStage()}
-                    />
-                  )
-                )}
-              </FlexContainer>
-              <FlexContainer>
-                {dividerByOdd(projectStages[slideIndex]).map(
-                  (stage: ProjectStage) => (
-                    <StageCard
-                      key={stage.id}
-                      stage={stage}
-                      lastStage={getLastStage()}
-                    />
-                  )
-                )}
-              </FlexContainer>
-            </Stack>
+            <FlexContainer>
+              {projectStages[slideIndex].map((stage, index) => (
+                <StageCard
+                  key={stage.id}
+                  stage={stage}
+                  index={index}
+                  lastStage={getLastStage()}
+                />
+              ))}
+            </FlexContainer>
           ) : null}
           <FooterWrapper>
             <ControlButtons

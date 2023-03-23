@@ -6,7 +6,7 @@ Frontend part of TRAE.
 
 ## Built With
 
-**Client:** Vite, React, TS, Mantine.
+**Client:** Vite, React, TS, Mantine, styled-components, Docker.
 
 ## Features
 

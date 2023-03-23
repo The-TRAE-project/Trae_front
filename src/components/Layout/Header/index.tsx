@@ -34,20 +34,10 @@ const Header = () => {
   return (
     <Wrapper>
       <Container>
-        <Group position="apart">
-          <DisplayGroup>
-            <DisplayTime
-              isWhiteBlack={
-                !findCurrentPath(
-                  Paths.EMPLOYEE_PROJECTS,
-                  Paths.EMPLOYEE_STAGES_IN_WORK
-                )
-              }
-            >
-              {date}
-            </DisplayTime>
-            {!findCurrentPath(Paths.EMPLOYEE_LOGIN) && (
-              <UserName
+        {!findCurrentPath(Paths.LOGIN) && (
+          <Group position="apart">
+            <DisplayGroup>
+              <DisplayTime
                 isWhiteBlack={
                   !findCurrentPath(
                     Paths.EMPLOYEE_PROJECTS,
@@ -55,41 +45,53 @@ const Header = () => {
                   )
                 }
               >
-                {employee && `${employee.firstName} ${employee.lastName}`}
-              </UserName>
-            )}
-          </DisplayGroup>
-          {!findCurrentPath(Paths.EMPLOYEE_LOGIN) && (
-            <>
-              {!findCurrentPath(Paths.EMPLOYEE_MAIN) && (
-                // eslint-disable-next-line react/jsx-no-bind
-                <HeaderTitle findCurrentPath={findCurrentPath} />
+                {date}
+              </DisplayTime>
+              {!findCurrentPath(Paths.EMPLOYEE_LOGIN) && (
+                <UserName
+                  isWhiteBlack={
+                    !findCurrentPath(
+                      Paths.EMPLOYEE_PROJECTS,
+                      Paths.EMPLOYEE_STAGES_IN_WORK
+                    )
+                  }
+                >
+                  {employee && `${employee.firstName} ${employee.lastName}`}
+                </UserName>
               )}
-
-              <Group spacing={11}>
+            </DisplayGroup>
+            {!findCurrentPath(Paths.EMPLOYEE_LOGIN) && (
+              <>
                 {!findCurrentPath(Paths.EMPLOYEE_MAIN) && (
-                  <Button
-                    onClick={navigateToBack}
-                    type="button"
-                    aria-label="back step button"
-                  >
-                    <ArrowLeft />
-                  </Button>
+                  // eslint-disable-next-line react/jsx-no-bind
+                  <HeaderTitle findCurrentPath={findCurrentPath} />
                 )}
 
-                {!findCurrentPath(Paths.EMPLOYEE_LOGIN) && (
-                  <Button
-                    onClick={navigateToLogin}
-                    type="button"
-                    aria-label="home button"
-                  >
-                    <Home />
-                  </Button>
-                )}
-              </Group>
-            </>
-          )}
-        </Group>
+                <Group spacing={11}>
+                  {!findCurrentPath(Paths.EMPLOYEE_MAIN) && (
+                    <Button
+                      onClick={navigateToBack}
+                      type="button"
+                      aria-label="back step button"
+                    >
+                      <ArrowLeft />
+                    </Button>
+                  )}
+
+                  {!findCurrentPath(Paths.EMPLOYEE_LOGIN) && (
+                    <Button
+                      onClick={navigateToLogin}
+                      type="button"
+                      aria-label="home button"
+                    >
+                      <Home />
+                    </Button>
+                  )}
+                </Group>
+              </>
+            )}
+          </Group>
+        )}
       </Container>
     </Wrapper>
   );

@@ -1,8 +1,9 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 export const Wrapper = styled.div`
-  position: relative;
   min-height: 158px;
+  min-width: 266px;
+  max-width: 266px;
   ${({ theme }) => theme.mixins.column};
   gap: 18px;
   align-items: center;
@@ -10,6 +11,44 @@ export const Wrapper = styled.div`
   border-radius: 10px;
   background: var(--white);
   filter: drop-shadow(0px 4px 8px var(--black-shadow));
+
+  &:nth-child(odd) {
+    position: absolute;
+    top: 0;
+  }
+
+  &:nth-child(even) {
+    position: absolute;
+    bottom: 0;
+  }
+
+  &:nth-child(1) {
+    left: 0;
+  }
+
+  &:nth-child(2) {
+    left: 10rem;
+  }
+
+  &:nth-child(3) {
+    left: 21.3rem;
+  }
+
+  &:nth-child(4) {
+    left: 31.7rem;
+  }
+
+  &:nth-child(5) {
+    right: 21.3rem;
+  }
+
+  &:nth-child(6) {
+    right: 10rem;
+  }
+
+  &:nth-child(7) {
+    right: 0;
+  }
 
   &.completed {
     background: var(--light-green);
@@ -72,12 +111,18 @@ export const Employee = styled.p`
   color: var(--white-black);
 `;
 
-export const StatusArrowDown = styled.div`
-  position: absolute;
-  bottom: -7.4rem;
-`;
+interface ArrowWrapperProps {
+  $up?: boolean;
+}
 
-export const StatusArrowUp = styled.div`
+export const ArrowWrapper = styled.div`
   position: absolute;
-  top: -7.4rem;
+  ${(props: ArrowWrapperProps) =>
+    props.$up
+      ? css`
+          top: -7.4rem;
+        `
+      : css`
+          bottom: -7.4rem;
+        `}
 `;
