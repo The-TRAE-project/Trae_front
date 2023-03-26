@@ -36,6 +36,16 @@ const GlobalStyles = createGlobalStyle`
 
   button {
     cursor: pointer;
+
+    &:disabled {
+      cursor: not-allowed;
+    }
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
   }
 `;
 

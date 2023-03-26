@@ -3,6 +3,7 @@ import { css } from 'styled-components';
 const variables = css`
   :root {
     --white: #ffff;
+    --white2: #fcf8f8;
     --secondary-white: #fafafa;
     --secondary-white2: #fffefe;
     --black: #000000;
@@ -16,6 +17,8 @@ const variables = css`
     --gradient-green3: #367345;
     --light-green: #83cc8c;
     --light-green2: #8fb398;
+    --gray-shadow: rgba(255, 255, 255, 0.2);
+
     --font-roboto: 'Roboto', sans-serif;
     --fz-xxs: 12px;
     --fz-xs: 13px;
