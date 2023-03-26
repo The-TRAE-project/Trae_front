@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/dist/query';
 import {

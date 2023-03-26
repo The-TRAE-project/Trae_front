@@ -83,6 +83,29 @@ export const getUserRole = createAsyncThunk(
   }
 );
 
+export const refresh = createAsyncThunk(
+  'auth/refresh',
+  async (_, { rejectWithValue, getState }) => {
+    try {
+      const { accessToken, refreshToken } = (getState() as RootState).auth;
+      const config = {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      };
+
+      const response = await instance.post(
+        'auth/refresh',
+        { refreshToken },
+        config
+      );
+
+      return response.data;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 export const authSlice = createSlice({
   name: 'auth',
   initialState,
@@ -113,7 +136,15 @@ export const authSlice = createSlice({
       // TODO:
       .addCase(getUserRole.fulfilled, (state, action) => {
         state.permission = action.payload;
-      });
+      })
+      .addCase(
+        refresh.fulfilled,
+        (state, { payload }: PayloadAction<TokenValue>) => {
+          state.isLoggedIn = !!payload.accessToken;
+          state.accessToken = payload.accessToken;
+          state.refreshToken = payload.refreshToken;
+        }
+      );
   },
 });
 
