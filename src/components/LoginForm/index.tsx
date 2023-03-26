@@ -35,10 +35,10 @@ const Login = () => {
       await dispatch(loginUser(values)).unwrap();
       const response = await dispatch(getUserRole(values.username)).unwrap();
 
-      if (response === Roles.employee) {
+      if (response === Roles.EMPLOYEE) {
         navigate(Paths.EMPLOYEE_LOGIN);
-      } else if (response === Roles.admin) {
-        navigate(Paths.DASHBOARD);
+      } else if (response === Roles.ADMIN) {
+        navigate(Paths.PROJECTS);
       }
 
       form.reset();
