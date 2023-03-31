@@ -1,31 +1,30 @@
 import { useState } from 'react';
 import { Group, TextInput, Stack } from '@mantine/core';
 import { useForm, zodResolver } from '@mantine/form';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { DatePickerInput } from '@mantine/dates';
 import { useNavigate } from 'react-router-dom';
 
-import { useCreateConstructorMutation } from '../../../store/apis/user';
 import {
   ConstructorFormSchema,
   ConstructorFormValues,
 } from '../../../store/apis/user/types';
+import { useCreateConstructorMutation } from '../../../store/apis/user';
 import { showErrorNotification } from '../../../helpers/showErrorNotification';
 import { Paths } from '../../../constants/paths';
-import MaskedTextInput from '../../MaskedInput';
 import Loader from '../../Loader';
+import MaskedTextInput from '../../MaskedInput';
 import ArrowLeft from '../../svgs/ArrowLeft';
 import Home from '../../svgs/Home';
 import { OrangeButton, UnstyledButton } from '../../styles';
 import InformModal from '../InformModal';
-import { Form, Grid, useDateInputStyles, useTextInputStyles } from './styles';
-import { InformText } from '../styles';
+import { InformText, useDateInputStyles } from '../styles';
+import { Form, Grid, useTextInputStyles } from './styles';
 
 const CreateForm = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const {
-    classes: { label, input, error, rightSection },
+    classes: { label, input, error },
   } = useTextInputStyles();
   const {
     classes: {
@@ -35,6 +34,7 @@ const CreateForm = () => {
       calendarHeaderLevel,
       weekday,
       day,
+      dataInputRightSection,
     },
   } = useDateInputStyles();
   const navigate = useNavigate();
@@ -61,18 +61,22 @@ const CreateForm = () => {
     try {
       await createConstructor(values).unwrap();
       setIsModalOpen(true);
-      form.reset();
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       showErrorNotification(err.status, err.error);
     }
   };
 
+  const handleCloseModal = () => {
+    form.reset();
+    setIsModalOpen(false);
+  };
+
   return (
     <>
       <InformModal
         isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        onClose={handleCloseModal}
         title={`${form.values.firstName} ${form.values.lastName} успешно добавлен`}
       >
         <Stack spacing={20}>
@@ -163,7 +167,7 @@ const CreateForm = () => {
               label,
               input,
               error,
-              rightSection,
+              rightSection: dataInputRightSection,
             }}
           />
           <TextInput

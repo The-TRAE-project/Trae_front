@@ -3,16 +3,16 @@ import { PasswordInput } from '@mantine/core';
 import { useForm, zodResolver } from '@mantine/form';
 import { useNavigate } from 'react-router-dom';
 
-import { useAppDispatch } from '../../helpers/hooks/useAppDispatch';
-import { showErrorNotification } from '../../helpers/showErrorNotification';
-import { getUserRole, loginUser } from '../../store/slices/auth';
-import { Paths } from '../../constants/paths';
+import { useAppDispatch } from '../../../helpers/hooks/useAppDispatch';
+import { showErrorNotification } from '../../../helpers/showErrorNotification';
+import { getUserRole, loginUser } from '../../../store/slices/auth';
+import { Paths } from '../../../constants/paths';
 import {
   LoginFormSchema,
   LoginFormValues,
   Roles,
-} from '../../store/slices/auth/types';
-import Loader from '../Loader';
+} from '../../../store/slices/auth/types';
+import Loader from '../../Loader';
 import { Button, FormWrapper, Input, useInputStyles, Wrapper } from './styles';
 
 const Login = () => {

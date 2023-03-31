@@ -1,23 +1,23 @@
+import UpdateForm from '../../components/Constructor/UpdateForm';
 import SEO from '../../components/SEO';
-import CreateForm from '../../components/Constructor/CreateForm';
 import { Container, WrapperGradientGreen } from '../../components/styles';
 
-const CreateConstructor = () => {
+const UpdateUser = () => {
   return (
     <>
       <SEO
-        title="TRAE | Создать конструктора"
-        description="Страница создание конструктора."
+        title="TRAE | Обновление конструктора"
+        description="Страница обновление конструктора."
         name="TRAE"
         type="application"
       />
       <WrapperGradientGreen>
         <Container>
-          <CreateForm />
+          <UpdateForm />
         </Container>
       </WrapperGradientGreen>
     </>
   );
 };
 
-export default CreateConstructor;
+export default UpdateUser;

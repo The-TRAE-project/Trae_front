@@ -14,6 +14,7 @@ import Login from './pages/Login';
 import Projects from './pages/Projects';
 import Constructors from './pages/Constructors';
 import CreateConstructor from './pages/CreateConstructor';
+import UpdateUser from './pages/UpdateUser';
 
 import { showErrorNotification } from './helpers/showErrorNotification';
 import { refresh } from './store/slices/auth';
@@ -67,9 +68,10 @@ const App = () => {
           <Route path={Paths.PROJECTS} element={<Projects />} />
           <Route path={Paths.CONSTRUCTORS} element={<Constructors />} />
           <Route
-            path={Paths.CONSTRUCTOR_CREATE}
+            path={Paths.CONSTRUCTORS_CREATE}
             element={<CreateConstructor />}
           />
+          <Route path={Paths.CONSTRUCTORS_EDITING} element={<UpdateUser />} />
         </Route>
 
         {/* Employee routes */}

@@ -19,8 +19,15 @@ const InformModal = ({ isOpen, onClose, children, title }: Props) => {
   const navigate = useNavigate();
   const { classes } = useModalStyles();
 
-  const navigateBack = () => navigate(-1);
-  const navigateToHome = () => navigate(Paths.PROJECTS);
+  const navigateBack = () => {
+    onClose();
+    navigate(-1);
+  };
+
+  const navigateToHome = () => {
+    onClose();
+    navigate(Paths.PROJECTS);
+  };
 
   return (
     <MantineModal

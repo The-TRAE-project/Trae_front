@@ -8,8 +8,8 @@ import { Paths } from '../../constants/paths';
 import SEO from '../../components/SEO';
 import Home from '../../components/svgs/Home';
 import Plus from '../../components/svgs/Plus';
-import UsersListItem from '../../components/UsersListItem';
-import UserFilterMenu from '../../components/UserFilterMenu';
+import UserFilterMenu from '../../components/Users/UserFilterMenu';
+import UsersListItem from '../../components/Users/UsersListItem';
 import {
   Container,
   OrangeButton,
@@ -18,14 +18,14 @@ import {
 } from '../../components/styles';
 
 const Constructors = () => {
-  const [paramRole, setParamRole] = useState<Roles | null>(Roles.CONSTRUCTOR);
+  const [paramRole, setParamRole] = useState<string | null>(Roles.CONSTRUCTOR);
   const [paramActive, setParamActive] = useState<Status | null>(Status.ACTIVE);
 
   const navigate = useNavigate();
 
   const navigateToHome = () => navigate(Paths.PROJECTS);
   const navigateToCreateConstructorPage = () =>
-    navigate(Paths.CONSTRUCTOR_CREATE);
+    navigate(Paths.CONSTRUCTORS_CREATE);
 
   return (
     <>

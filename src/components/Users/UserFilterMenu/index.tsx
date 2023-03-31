@@ -1,42 +1,27 @@
 import { Dispatch, SetStateAction } from 'react';
 import { Menu } from '@mantine/core';
 
-import { Roles } from '../../store/slices/auth/types';
-import { Status } from '../../store/apis/user/types';
-import { UnstyledButton } from '../styles';
-import Filter from '../svgs/Filter';
+import { Roles } from '../../../store/slices/auth/types';
+import { useGetAllRolesQuery } from '../../../store/apis/user';
+import { Status } from '../../../store/apis/user/types';
+import { UnstyledButton } from '../../styles';
+import Filter from '../../svgs/Filter';
 import { MenuItem, useUserFilterStyles } from './styles';
 
-const filterValues = {
-  byStatus: [
-    {
-      value: Status.ACTIVE,
-      title: 'Активный',
-    },
-    {
-      value: Status.NOT_ACTIVE,
-      title: 'Заблокированный',
-    },
-  ],
-  byRole: [
-    {
-      value: Roles.CONSTRUCTOR,
-      title: 'Конструктор',
-    },
-    {
-      value: Roles.EMPLOYEE,
-      title: 'Терминал цех',
-    },
-    {
-      value: Roles.ADMIN,
-      title: 'Администратор',
-    },
-  ],
-};
+const statuses = [
+  {
+    value: Status.ACTIVE,
+    title: 'Активный',
+  },
+  {
+    value: Status.NOT_ACTIVE,
+    title: 'Заблокированный',
+  },
+];
 
 interface Props {
-  role: Roles | null;
-  setRole: Dispatch<SetStateAction<Roles | null>>;
+  role: string | null;
+  setRole: Dispatch<SetStateAction<string | null>>;
   resetRole: () => void;
   status: Status | null;
   setStatus: Dispatch<SetStateAction<Status | null>>;
@@ -52,6 +37,8 @@ const UserFilterMenu = ({
   resetStatus,
 }: Props) => {
   const { classes } = useUserFilterStyles();
+  const { data: roles } = useGetAllRolesQuery();
+
   // TODO:
   return (
     <Menu
@@ -69,7 +56,7 @@ const UserFilterMenu = ({
 
       <Menu.Dropdown>
         <Menu.Label>Статус</Menu.Label>
-        {filterValues.byStatus.map((item) => (
+        {statuses.map((item) => (
           <MenuItem
             key={item.value}
             onClick={() => setStatus(item.value)}
@@ -82,18 +69,17 @@ const UserFilterMenu = ({
           Все
         </MenuItem>
 
-        <Menu.Divider />
-
         <Menu.Label>Категория</Menu.Label>
-        {filterValues.byRole.map((item) => (
-          <MenuItem
-            key={item.value}
-            onClick={() => setRole(item.value)}
-            $active={item.value === role}
-          >
-            {item.title}
-          </MenuItem>
-        ))}
+        {!!roles &&
+          Object.values(roles).map((item) => (
+            <MenuItem
+              key={item}
+              onClick={() => setRole(item)}
+              $active={item === role}
+            >
+              {item}
+            </MenuItem>
+          ))}
         <MenuItem onClick={resetRole} $active={!role}>
           Все
         </MenuItem>
