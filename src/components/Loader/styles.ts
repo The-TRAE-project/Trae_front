@@ -1,11 +1,11 @@
 import styled, { css } from 'styled-components';
-import { Loader2 } from 'tabler-icons-react';
+import { TbLoader3 } from 'react-icons/tb';
 
 type Props = {
   $absolute?: boolean;
 };
 
-export const LoaderWrapper = styled(Loader2)`
+export const LoaderWrapper = styled(TbLoader3)`
   ${(props: Props) =>
     props.$absolute &&
     css`

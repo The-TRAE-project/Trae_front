@@ -47,6 +47,11 @@ const GlobalStyles = createGlobalStyle`
     padding: 0;
     margin: 0;
   }
+
+  a {
+    text-decoration: none;
+  }
+  
 `;
 
 export default GlobalStyles;

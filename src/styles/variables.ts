@@ -7,8 +7,10 @@ const variables = css`
     --secondary-white: #fafafa;
     --secondary-white2: #fffefe;
     --black: #000000;
+    --secondary-black: rgba(0, 0, 0, 0.54);
     --white-black: #2a302b;
     --black-shadow: rgba(0, 0, 0, 0.25);
+    --dark-purple: rgba(27, 31, 59, 0.8);
     --orange: #ff9a4a;
     --green: #42894d;
     --green2: rgba(131, 204, 140, 0.6);

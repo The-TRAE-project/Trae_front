@@ -23,6 +23,7 @@ export const List = styled.ul`
 
 type ActiveItemProps = {
   active: boolean;
+  hideBorder?: boolean;
 };
 
 export const Item = styled.li`
@@ -41,23 +42,14 @@ export const Item = styled.li`
     opacity: ${(props: ActiveItemProps) => (props.active ? '0' : '1')};
   }
 
-  &:nth-child(2) {
-    &::after {
-      right: -24px;
-      display: block;
-    }
-
-    &::before {
-      left: -24px;
-      display: block;
-    }
-  }
-
+  &:nth-child(1),
+  &:nth-child(2),
   &:nth-child(3),
   &:nth-child(4) {
     &::after {
       right: -24px;
-      display: block;
+      display: ${(props: ActiveItemProps) =>
+        props.hideBorder ? 'none' : 'block'};
     }
   }
 `;

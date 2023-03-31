@@ -63,7 +63,7 @@ export const WrapperGradientGreen = styled.section`
   );
 
   @media ${({ theme }) => theme.bp.bpXlarge} {
-    padding: 148px 0;
+    padding: 148px 0 80px;
   }
 `;
 

@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import { useLocation } from 'react-router-dom';
 import { MantineProvider } from '@mantine/core';
 import { Notifications } from '@mantine/notifications';
 import { DatesProvider } from '@mantine/dates';
@@ -7,6 +8,7 @@ import 'dayjs/locale/ru';
 
 import { useAppSelector } from '../../helpers/hooks/useAppSelector';
 import { Roles } from '../../store/slices/auth/types';
+import { Paths } from '../../constants/paths';
 import GlobalStyles from '../../styles/GlobalStyles';
 import theme from '../../styles/theme';
 import EmployeeHeader from './EmployeeHeader';
@@ -18,6 +20,7 @@ type Props = {
 };
 
 const Layout = ({ children }: Props) => {
+  const location = useLocation();
   const { permission, isLoggedIn } = useAppSelector((store) => store.auth);
 
   return (
@@ -33,7 +36,8 @@ const Layout = ({ children }: Props) => {
           <Notifications />
           <GlobalStyles />
           <Wrapper>
-            {isLoggedIn &&
+            {location.pathname !== Paths.LOGIN &&
+              isLoggedIn &&
               (permission === Roles.EMPLOYEE ? <EmployeeHeader /> : <Header />)}
             <ContentWrapper>{children}</ContentWrapper>
           </Wrapper>

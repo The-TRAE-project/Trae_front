@@ -40,12 +40,16 @@ const Header = () => {
       <Container>
         <Navbar>
           <List>
-            {list.map((item) => (
-              <Item key={item.value} active={item.value === location.pathname}>
+            {list.map((item, index) => (
+              <Item
+                key={item.value}
+                active={item.value === location.pathname}
+                hideBorder={!index}
+              >
                 <Button
                   type="button"
                   onClick={() => navigate(item.value)}
-                  active={item.value === location.pathname}
+                  active={location.pathname.includes(item.value)}
                   disabled={
                     item.value === Paths.EMPLOYEES ||
                     item.value === Paths.REPORTS
