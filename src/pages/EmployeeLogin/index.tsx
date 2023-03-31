@@ -1,7 +1,7 @@
 import { Image } from '@mantine/core';
 
 import traeLogo from '../../assets/traeLogo.svg';
-import EmployeeLoginForm from '../../components/EmployeeLoginForm';
+import EmployeeLoginForm from '../../components/Employees/LoginForm';
 import SEO from '../../components/SEO';
 import {
   ApartContainer,

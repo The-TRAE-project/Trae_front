@@ -1,6 +1,6 @@
 import SEO from '../../components/SEO';
-import StagesInWorkListItem from '../../components/StagesInWorkListItem';
 import { Container, WrapperBgGreen } from '../../components/styles';
+import StagesInWorkListItem from '../../components/Employees/StagesInWorkListItem';
 
 const EmployeeStagesInWork = () => {
   return (
