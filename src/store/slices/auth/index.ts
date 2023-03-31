@@ -93,9 +93,9 @@ export const refresh = createAsyncThunk(
       };
 
       const response = await instance.post(
-        'auth/refresh',
-        { refreshToken },
-        config
+        'auth/token',
+        { refreshToken }
+        // config
       );
 
       return response.data;

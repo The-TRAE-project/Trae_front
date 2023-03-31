@@ -1,15 +1,17 @@
 import { baseApi } from '..';
-
+import { Roles } from '../../slices/auth/types';
 import {
   ConstructorFormValues,
-  ManagerLoginValue,
+  User,
+  UserLoginValue,
   ManagerFormValue,
-  ManagerChangeRoleValue,
   ManagerChangePasswordValue,
-  Manager,
   UserShortInfo,
   FilteredResponse,
   UserFilterValues,
+  ResetPasswordReturnType,
+  UserUpdateFormValues,
+  UserUpdateReturnType,
 } from './types';
 
 const constructorTags = baseApi.enhanceEndpoints({
@@ -23,54 +25,58 @@ const managerApi = constructorTags.injectEndpoints({
       UserFilterValues
     >({
       query: (query) =>
-        `/manager/managers?${query.elementPerPage}${query.role}${query.status}`,
+        `/manager/managers?direction=asc${query.elementPerPage}${query.role}${query.status}${query.page}`,
       providesTags: ['Constructor'],
     }),
 
-    createConstructor: build.mutation<ManagerLoginValue, ConstructorFormValues>(
-      {
-        query(body) {
-          return {
-            url: '/manager/register',
-            method: 'POST',
-            body,
-          };
-        },
-        invalidatesTags: ['Constructor'],
-      }
-    ),
+    createConstructor: build.mutation<UserLoginValue, ConstructorFormValues>({
+      query(body) {
+        return {
+          url: '/manager/register',
+          method: 'POST',
+          body,
+        };
+      },
+      invalidatesTags: ['Constructor'],
+    }),
 
-    getManagerById: build.query<Manager, number>({
-      query: (employeeId) => `/manager/${employeeId}`,
-      providesTags: ['Manager'],
+    getUserDetails: build.query<User, number>({
+      query: (managerId) => `/manager/${managerId}`,
+      providesTags: ['Constructor'],
+    }),
+
+    resetUserPassword: build.mutation<ResetPasswordReturnType, string>({
+      query(query) {
+        return {
+          url: `/manager/reset-password?username=${query}`,
+          method: 'POST',
+        };
+      },
+      invalidatesTags: ['Constructor'],
+    }),
+
+    getAllRoles: build.query<Roles, void>({
+      query: () => '/manager/roles',
+    }),
+
+    updateUserSomeFields: build.mutation<
+      UserUpdateReturnType,
+      UserUpdateFormValues
+    >({
+      query(body) {
+        return {
+          url: '/manager/change-role-status',
+          method: 'POST',
+          body,
+        };
+      },
+      invalidatesTags: ['Constructor'],
     }),
 
     updateManager: build.mutation<void, ManagerFormValue>({
       query(body) {
         return {
           url: '/manager/update-data',
-          method: 'POST',
-          body,
-        };
-      },
-      invalidatesTags: ['Manager'],
-    }),
-
-    resetManagerPassword: build.mutation<ManagerLoginValue, ManagerLoginValue>({
-      query(body) {
-        return {
-          url: '/manager/reset-password',
-          method: 'POST',
-          body,
-        };
-      },
-      invalidatesTags: ['Manager'],
-    }),
-
-    changeManagerRole: build.mutation<void, ManagerChangeRoleValue>({
-      query(body) {
-        return {
-          url: '/manager/change-role',
           method: 'POST',
           body,
         };
@@ -113,12 +119,13 @@ const managerApi = constructorTags.injectEndpoints({
 
 export const {
   useGetAllUsersQuery,
-  useGetManagerByIdQuery,
   useCreateConstructorMutation,
+  useGetUserDetailsQuery,
+  useUpdateUserSomeFieldsMutation,
+  useResetUserPasswordMutation,
+  useGetAllRolesQuery,
   useUpdateManagerMutation,
-  useResetManagerPasswordMutation,
   useChangeManagerPasswordMutation,
-  useChangeManagerRoleMutation,
   useActivateManagerAccountMutation,
   useDeactivateManagerAccountMutation,
 } = managerApi;
