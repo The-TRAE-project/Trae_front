@@ -1,6 +1,6 @@
 import SEO from '../../components/SEO';
 import { Container, WrapperBgGreen } from '../../components/styles';
-import EmployeeProjectListItem from '../../components/EmployeeProjectListItem';
+import ProjectsListItem from '../../components/Employees/ProjectsListItem';
 
 const EmployeeProjects = () => {
   return (
@@ -13,7 +13,7 @@ const EmployeeProjects = () => {
       />
       <WrapperBgGreen>
         <Container>
-          <EmployeeProjectListItem />
+          <ProjectsListItem />
         </Container>
       </WrapperBgGreen>
     </>

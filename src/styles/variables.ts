@@ -3,11 +3,14 @@ import { css } from 'styled-components';
 const variables = css`
   :root {
     --white: #ffff;
+    --white2: #fcf8f8;
     --secondary-white: #fafafa;
     --secondary-white2: #fffefe;
     --black: #000000;
+    --secondary-black: rgba(0, 0, 0, 0.54);
     --white-black: #2a302b;
     --black-shadow: rgba(0, 0, 0, 0.25);
+    --dark-purple: rgba(27, 31, 59, 0.8);
     --orange: #ff9a4a;
     --green: #42894d;
     --green2: rgba(131, 204, 140, 0.6);
@@ -16,6 +19,8 @@ const variables = css`
     --gradient-green3: #367345;
     --light-green: #83cc8c;
     --light-green2: #8fb398;
+    --gray-shadow: rgba(255, 255, 255, 0.2);
+
     --font-roboto: 'Roboto', sans-serif;
     --fz-xxs: 12px;
     --fz-xs: 13px;

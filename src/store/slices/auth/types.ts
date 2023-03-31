@@ -24,9 +24,9 @@ export interface User {
 }
 
 export enum Roles {
-  manager = 'Manager',
-  admin = 'Администратор',
-  employee = 'Сотрудник',
+  ADMIN = 'Администратор',
+  EMPLOYEE = 'Сотрудник',
+  CONSTRUCTOR = 'Конструктор',
 }
 
 export const LoginFormSchema = z.object({

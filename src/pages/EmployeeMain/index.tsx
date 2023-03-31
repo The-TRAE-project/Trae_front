@@ -8,9 +8,9 @@ import { useAppSelector } from '../../helpers/hooks/useAppSelector';
 import { showErrorNotification } from '../../helpers/showErrorNotification';
 import traeLogo from '../../assets/traeLogo.svg';
 import { Paths } from '../../constants/paths';
-import Button from '../../components/Button';
 import SEO from '../../components/SEO';
-import ConfirmModal from '../../components/ConfirmModal';
+import ConfirmModal from '../../components/Employees/ConfrimModal';
+import Button from '../../components/Employees/Button';
 import {
   ApartContainer,
   TraeLogoImageWrapper,

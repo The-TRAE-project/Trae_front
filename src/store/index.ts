@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/dist/query';
 import {
@@ -25,6 +26,7 @@ const rootReducer = combineReducers({
 const persistConfig = {
   key: 'root',
   storage,
+  whitelist: ['accessToken', 'user', 'isLoggedIn'],
 };
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 

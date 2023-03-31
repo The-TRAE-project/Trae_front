@@ -1,5 +1,5 @@
 import SEO from '../../components/SEO';
-import ProjectStagesListItem from '../../components/ProjectStagesListItem';
+import ProjectStagesListItem from '../../components/Employees/ProjectStagesListItem';
 import { Container, WrapperBgWhite } from '../../components/styles';
 
 const EmployeeProjectStages = () => {
