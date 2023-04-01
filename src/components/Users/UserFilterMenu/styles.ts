@@ -1,4 +1,4 @@
-import { createStyles, Menu } from '@mantine/core';
+import { createStyles } from '@mantine/core';
 import styled from 'styled-components';
 
 export const useUserFilterStyles = createStyles(() => ({
@@ -29,12 +29,11 @@ export const useUserFilterStyles = createStyles(() => ({
   },
 }));
 
-type MenuItemProps = {
-  $active: boolean;
+type MenuItemTitleProps = {
+  $active?: boolean;
 };
 
-export const MenuItem = styled(Menu.Item)`
-  color: ${(props: MenuItemProps) =>
-    props.$active ? 'var(--orange)' : 'var(--white-black)'};
+export const MenuItemTitle = styled.p<MenuItemTitleProps>`
+  color: ${(props) => (props.$active ? 'var(--orange)' : 'var(--white-black)')};
   transition: var(--transition);
 `;

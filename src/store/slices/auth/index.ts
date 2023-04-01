@@ -88,9 +88,9 @@ export const refresh = createAsyncThunk(
   async (_, { rejectWithValue, getState }) => {
     try {
       const { accessToken, refreshToken } = (getState() as RootState).auth;
-      const config = {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      };
+      // const config = {
+      //   headers: { Authorization: `Bearer ${accessToken}` },
+      // };
 
       const response = await instance.post(
         'auth/token',

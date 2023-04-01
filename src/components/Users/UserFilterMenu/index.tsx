@@ -1,12 +1,11 @@
 import { Dispatch, SetStateAction } from 'react';
 import { Menu } from '@mantine/core';
 
-import { Roles } from '../../../store/slices/auth/types';
 import { useGetAllRolesQuery } from '../../../store/apis/user';
 import { Status } from '../../../store/apis/user/types';
 import { UnstyledButton } from '../../styles';
 import Filter from '../../svgs/Filter';
-import { MenuItem, useUserFilterStyles } from './styles';
+import { MenuItemTitle, useUserFilterStyles } from './styles';
 
 const statuses = [
   {
@@ -39,7 +38,6 @@ const UserFilterMenu = ({
   const { classes } = useUserFilterStyles();
   const { data: roles } = useGetAllRolesQuery();
 
-  // TODO:
   return (
     <Menu
       classNames={{
@@ -57,32 +55,26 @@ const UserFilterMenu = ({
       <Menu.Dropdown>
         <Menu.Label>Статус</Menu.Label>
         {statuses.map((item) => (
-          <MenuItem
-            key={item.value}
-            onClick={() => setStatus(item.value)}
-            $active={item.value === status}
-          >
-            {item.title}
-          </MenuItem>
+          <Menu.Item key={item.value} onClick={() => setStatus(item.value)}>
+            <MenuItemTitle $active={item.value === status}>
+              {item.title}
+            </MenuItemTitle>
+          </Menu.Item>
         ))}
-        <MenuItem onClick={resetStatus} $active={!status}>
-          Все
-        </MenuItem>
+        <Menu.Item onClick={resetStatus}>
+          <MenuItemTitle $active={!status}>Все</MenuItemTitle>
+        </Menu.Item>
 
         <Menu.Label>Категория</Menu.Label>
         {!!roles &&
           Object.values(roles).map((item) => (
-            <MenuItem
-              key={item}
-              onClick={() => setRole(item)}
-              $active={item === role}
-            >
-              {item}
-            </MenuItem>
+            <Menu.Item key={item} onClick={() => setRole(item)}>
+              <MenuItemTitle $active={item === role}>{item}</MenuItemTitle>
+            </Menu.Item>
           ))}
-        <MenuItem onClick={resetRole} $active={!role}>
-          Все
-        </MenuItem>
+        <Menu.Item onClick={resetRole}>
+          <MenuItemTitle $active={!role}> Все</MenuItemTitle>
+        </Menu.Item>
       </Menu.Dropdown>
     </Menu>
   );
