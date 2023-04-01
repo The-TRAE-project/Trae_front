@@ -25,7 +25,7 @@ export interface User {
 
 export enum Roles {
   ADMIN = 'Администратор',
-  EMPLOYEE = 'Сотрудник',
+  EMPLOYEE = 'Терминал цех',
   CONSTRUCTOR = 'Конструктор',
 }
 
