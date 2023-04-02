@@ -98,10 +98,6 @@ export const StageName = styled.button`
     color: var(----white-black);
     background-color: var(--white);
   }
-
-  &:disabled {
-    cursor: not-allowed;
-  }
 `;
 
 export const Employee = styled.p`

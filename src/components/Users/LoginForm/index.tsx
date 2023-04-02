@@ -13,7 +13,7 @@ import {
   Roles,
 } from '../../../store/slices/auth/types';
 import Loader from '../../Loader';
-import { Button, FormWrapper, Input, useInputStyles, Wrapper } from './styles';
+import { Button, FormWrapper, Input, useInputStyles } from './styles';
 
 const Login = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -33,12 +33,14 @@ const Login = () => {
     setIsLoading(true);
     try {
       await dispatch(loginUser(values)).unwrap();
-      const response = await dispatch(getUserRole(values.username)).unwrap();
+      const { permission } = await dispatch(
+        getUserRole(values.username)
+      ).unwrap();
 
-      if (response === Roles.EMPLOYEE) {
-        navigate(Paths.EMPLOYEE_LOGIN);
-      } else if (response === Roles.ADMIN) {
-        navigate(Paths.PROJECTS);
+      if (permission === Roles.EMPLOYEE) {
+        navigate(Paths.EMPLOYEE_LOGIN, { replace: true });
+      } else if (permission === Roles.ADMIN) {
+        navigate(Paths.PROJECTS, { replace: true });
       }
 
       form.reset();
@@ -52,36 +54,34 @@ const Login = () => {
   };
 
   return (
-    <Wrapper>
-      <FormWrapper onSubmit={form.onSubmit(handleSubmit)}>
-        <Input
-          {...form.getInputProps('username')}
-          label="Логин"
-          aria-label="Логин"
-          maxLength={15}
-          classNames={{
-            error: classes.error,
-            label: classes.label,
-          }}
-        />
-        <PasswordInput
-          {...form.getInputProps('password')}
-          label="Пароль"
-          aria-label="Пароль"
-          maxLength={15}
-          classNames={{
-            root: classes.root,
-            wrapper: classes.wrapper,
-            label: classes.label,
-            innerInput: classes.innerInput,
-            input: classes.input,
-            rightSection: classes.rightSection,
-            error: classes.error,
-          }}
-        />
-        <Button>{isLoading ? <Loader size={40} /> : 'Войти'}</Button>
-      </FormWrapper>
-    </Wrapper>
+    <FormWrapper onSubmit={form.onSubmit(handleSubmit)}>
+      <Input
+        {...form.getInputProps('username')}
+        label="Логин"
+        aria-label="Логин"
+        maxLength={15}
+        classNames={{
+          error: classes.error,
+          label: classes.label,
+        }}
+      />
+      <PasswordInput
+        {...form.getInputProps('password')}
+        label="Пароль"
+        aria-label="Пароль"
+        maxLength={15}
+        classNames={{
+          root: classes.root,
+          wrapper: classes.wrapper,
+          label: classes.label,
+          innerInput: classes.innerInput,
+          input: classes.input,
+          rightSection: classes.rightSection,
+          error: classes.error,
+        }}
+      />
+      <Button>{isLoading ? <Loader size={40} /> : 'Войти'}</Button>
+    </FormWrapper>
   );
 };
 

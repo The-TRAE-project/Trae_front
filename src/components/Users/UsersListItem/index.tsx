@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useGetAllUsersQuery } from '../../../store/apis/user';
 import { useDisplayError } from '../../../helpers/hooks/useDisplayError';
 import { Status } from '../../../store/apis/user/types';
-import ControlButtons from '../../ControlButtons';
+import SliderButtons from '../../SliderButtons';
 import Loader from '../../Loader';
 import ConstructorItem from './UserItem';
 import { Grid, Wrapper } from './styles';
@@ -53,7 +53,7 @@ const UsersListItem = ({ paramRole, paramActive }: Props) => {
           </Grid>
 
           {users.totalElements > 10 && (
-            <ControlButtons
+            <SliderButtons
               current={users.currentNumberPage + 1}
               quantity={users.totalPages}
               prevSlide={prevSlide}

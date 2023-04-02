@@ -1,20 +1,18 @@
-// TODO:
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-// eslint-disable-next-line import/no-cycle
+
 import { RootState } from '../..';
-
 import instance from '../../../config/axiosConfig';
-
 import {
   InitialState,
   LoginFormValues,
   Response,
   Roles,
   TokenValue,
+  UserRoleValues,
 } from './types';
 
 const initialState = {
-  user: null,
+  username: null,
   permission: null,
   isLoggedIn: false,
   isLoading: 'idle',
@@ -41,19 +39,20 @@ export const loginUser = createAsyncThunk(
 
 export const logoutUser = createAsyncThunk(
   'auth/logoutUser',
-  // eslint-disable-next-line consistent-return
-  async (name: string, { rejectWithValue, getState }) => {
+  async (_, { rejectWithValue, getState }) => {
     try {
-      const token = (getState() as RootState).auth.accessToken;
+      const { accessToken, username } = (getState() as RootState).auth;
       const config = {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${accessToken}` },
       };
 
-      if (token) {
-        const response = await instance.post(`/auth/logout${name}`, {}, config);
+      const response = await instance.post(
+        `/auth/logout?name=${username}`,
+        {},
+        config
+      );
 
-        return response.data;
-      }
+      return response.data;
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       return rejectWithValue(error.response.data);
@@ -70,35 +69,12 @@ export const getUserRole = createAsyncThunk(
         headers: { Authorization: `Bearer ${token}` },
       };
 
-      const response = await instance.get<string, Response<Roles>>(
+      const { data } = await instance.get<string, Response<Roles>>(
         `/manager/role?name=${name}`,
         config
       );
 
-      return response.data;
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
-      return rejectWithValue(error.response.data);
-    }
-  }
-);
-
-export const refresh = createAsyncThunk(
-  'auth/refresh',
-  async (_, { rejectWithValue, getState }) => {
-    try {
-      const { accessToken, refreshToken } = (getState() as RootState).auth;
-      // const config = {
-      //   headers: { Authorization: `Bearer ${accessToken}` },
-      // };
-
-      const response = await instance.post(
-        'auth/token',
-        { refreshToken }
-        // config
-      );
-
-      return response.data;
+      return { permission: data, username: name };
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       return rejectWithValue(error.response.data);
@@ -109,7 +85,20 @@ export const refresh = createAsyncThunk(
 export const authSlice = createSlice({
   name: 'auth',
   initialState,
-  reducers: {},
+  reducers: {
+    setCredentials: (state, { payload }: PayloadAction<TokenValue>) => {
+      state.isLoggedIn = !!payload.accessToken;
+      state.accessToken = payload.accessToken;
+      state.refreshToken = payload.refreshToken;
+    },
+    logOutUser: (state) => {
+      state.isLoggedIn = false;
+      state.accessToken = null;
+      state.refreshToken = null;
+      state.username = null;
+      state.permission = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(loginUser.pending, (state) => {
@@ -132,20 +121,18 @@ export const authSlice = createSlice({
         state.isLoggedIn = false;
         state.accessToken = null;
         state.refreshToken = null;
+        state.username = null;
       })
       // TODO:
-      .addCase(getUserRole.fulfilled, (state, action) => {
-        state.permission = action.payload;
-      })
       .addCase(
-        refresh.fulfilled,
-        (state, { payload }: PayloadAction<TokenValue>) => {
-          state.isLoggedIn = !!payload.accessToken;
-          state.accessToken = payload.accessToken;
-          state.refreshToken = payload.refreshToken;
+        getUserRole.fulfilled,
+        (state, { payload }: PayloadAction<UserRoleValues>) => {
+          state.permission = payload.permission;
+          state.username = payload.username;
         }
       );
   },
 });
 
+export const { setCredentials, logOutUser } = authSlice.actions;
 export default authSlice.reducer;

@@ -1,5 +1,4 @@
 import { baseApi } from '..';
-
 import {
   ProjectStage,
   Project,
@@ -13,7 +12,7 @@ import {
 const employeeTags = baseApi.enhanceEndpoints({
   addTagTypes: ['Employee', 'ProjectStage', 'WorkTypes', 'StagesInWork'],
 });
-
+// TODO:
 const employeeApi = employeeTags.injectEndpoints({
   endpoints: (build) => ({
     getAvailableProjectsByEmployeeId: build.query<Project[], number>({
@@ -55,7 +54,7 @@ const employeeApi = employeeTags.injectEndpoints({
           body,
         };
       },
-      invalidatesTags: ['StagesInWork'],
+      // invalidatesTags: ['StagesInWork'],
     }),
 
     createEmployee: build.mutation<void, EmployeeFormValue>({

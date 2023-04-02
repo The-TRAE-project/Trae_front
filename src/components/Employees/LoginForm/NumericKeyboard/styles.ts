@@ -6,7 +6,7 @@ type WrapperProps = {
 
 export const Wrapper = styled.div`
   position: absolute;
-  top: 70px;
+  top: 120px;
   right: 0;
   left: 0;
   margin: 0 auto;

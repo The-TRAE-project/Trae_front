@@ -5,22 +5,12 @@ export interface Response<T> {
 }
 
 export interface InitialState {
-  user: User | null;
+  username: string | null;
   permission: Roles | null;
   isLoading: 'idle' | 'pending';
   isLoggedIn: boolean;
   accessToken: string | null;
   refreshToken: string | null;
-}
-
-export interface User {
-  id: number;
-  firstName: string;
-  middleName: string;
-  lastName: string;
-  phone: number;
-  role: Roles | string;
-  dateOfRegister: Date;
 }
 
 export enum Roles {
@@ -44,4 +34,9 @@ export type LoginFormValues = z.infer<typeof LoginFormSchema>;
 export interface TokenValue {
   accessToken: string;
   refreshToken: string;
+}
+
+export interface UserRoleValues {
+  username: string;
+  permission: Roles;
 }

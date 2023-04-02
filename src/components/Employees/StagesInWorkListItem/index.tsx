@@ -6,7 +6,7 @@ import { useDisplayError } from '../../../helpers/hooks/useDisplayError';
 import { useSlider } from '../../../helpers/hooks/useSlider';
 import { useGetStagesInWorkByEmployeeIdQuery } from '../../../store/apis/employee';
 import { StageInWork } from '../../../store/apis/employee/types';
-import ControlButtons from '../../ControlButtons';
+import SliderButtons from '../../SliderButtons';
 import Loader from '../../Loader';
 import StageInWorkCard from './StageInWorkCard';
 import { FlexContainer, Wrapper } from './styles';
@@ -48,7 +48,7 @@ const StagesInWorkListItem = () => {
               : null}
           </FlexContainer>
 
-          <ControlButtons
+          <SliderButtons
             current={current}
             quantity={quantity}
             prevSlide={prevSlide}

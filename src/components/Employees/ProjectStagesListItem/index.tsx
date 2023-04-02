@@ -6,7 +6,7 @@ import { useDisplayError } from '../../../helpers/hooks/useDisplayError';
 import { useSlider } from '../../../helpers/hooks/useSlider';
 import { useGetProjectStagesQuery } from '../../../store/apis/employee';
 import { ProjectStage } from '../../../store/apis/employee/types';
-import ControlButtons from '../../ControlButtons';
+import SliderButtons from '../../SliderButtons';
 import Loader from '../../Loader';
 import StageCard from './StageCard';
 import { FlexContainer, FooterWrapper, ProjectNumber, Wrapper } from './styles';
@@ -56,7 +56,7 @@ const ProjectStagesListItem = () => {
             </FlexContainer>
           ) : null}
           <FooterWrapper>
-            <ControlButtons
+            <SliderButtons
               current={current}
               quantity={quantity}
               prevSlide={prevSlide}

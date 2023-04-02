@@ -5,7 +5,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 import { Paths } from '../../../constants/paths';
 import { useAppDispatch } from '../../../helpers/hooks/useAppDispatch';
-import { logout } from '../../../store/slices/employee';
+import { logOutEmployee } from '../../../store/slices/employee';
 import { Container } from '../../styles';
 import ArrowLeft from '../../svgs/ArrowLeft';
 import Home from '../../svgs/Home';
@@ -21,7 +21,7 @@ const EmployeeHeader = () => {
   const navigateToBack = () => navigate(-1);
 
   const navigateToLogin = () => {
-    dispatch(logout());
+    dispatch(logOutEmployee());
     navigate(Paths.EMPLOYEE_LOGIN);
   };
 

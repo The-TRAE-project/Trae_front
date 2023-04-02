@@ -11,7 +11,7 @@ interface Props {
   isVertical?: boolean;
 }
 
-const ControlButtons = ({
+const SliderButtons = ({
   current,
   quantity,
   prevSlide,
@@ -46,4 +46,4 @@ const ControlButtons = ({
   );
 };
 
-export default ControlButtons;
+export default SliderButtons;

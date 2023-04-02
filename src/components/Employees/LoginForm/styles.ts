@@ -1,7 +1,9 @@
+import { createStyles } from '@mantine/core';
 import styled from 'styled-components';
 
 export const Wrapper = styled.div`
   position: relative;
+  height: 88px;
   width: 463px;
   margin-bottom: 180px;
 `;
@@ -11,29 +13,13 @@ export const GroupForm = styled.form`
   ${({ theme }) => theme.mixins.center};
   width: 100%;
   height: 100%;
-
-  .maskedInput {
-    position: absolute;
-    left: 0;
-    z-index: 1;
-    height: 88px;
-    width: 220px;
-    padding: 27px 30px 28px;
-    border: none;
-    border-radius: 15px 0 0 15px;
-
-    font-weight: 400;
-    ${({ theme }) => theme.mixins.fontSize28};
-    text-align: center;
-    color: var(--white-black);
-  }
 `;
 
 export const Button = styled.button`
   position: absolute;
   right: 0;
   z-index: 2;
-  height: 88px;
+  height: 90px;
   width: 253px;
   width: 253px;
   padding: 25px 30px 28px;
@@ -45,8 +31,31 @@ export const Button = styled.button`
   ${({ theme }) => theme.mixins.fontSize30};
   text-align: center;
   color: var(--white);
-
-  &:disabled {
-    cursor: not-allowed;
-  }
 `;
+
+export const useTextInputStyles = createStyles(() => ({
+  input: {
+    position: 'absolute',
+    top: -44,
+    left: 0,
+    zIndex: 1,
+    minHeight: 88,
+    maxHeight: 88,
+    height: 88,
+    width: 220,
+    padding: '27px 30px 28px',
+    border: 'none',
+    borderRadius: '15px 0 0 15px',
+
+    fontFamily: 'var(--font-roboto)',
+    fontWeight: 400,
+    fontSize: 28,
+    lineHeight: '33px',
+    textAlign: 'center',
+    color: 'var(--white-black)',
+
+    '&::focus': {
+      outline: 'none',
+    },
+  },
+}));

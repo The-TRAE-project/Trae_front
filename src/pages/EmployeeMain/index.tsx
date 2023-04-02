@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Image, Stack } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
 
-import { logout, logoutEmployee } from '../../store/slices/employee';
+import { logOutEmployee, logoutEmployee } from '../../store/slices/employee';
 import { useAppDispatch } from '../../helpers/hooks/useAppDispatch';
 import { useAppSelector } from '../../helpers/hooks/useAppSelector';
 import { showErrorNotification } from '../../helpers/showErrorNotification';
@@ -36,7 +36,7 @@ const EmployeeMain = () => {
       if (!employee) return;
 
       await dispatch(logoutEmployee(employee.id)).unwrap();
-      dispatch(logout());
+      dispatch(logOutEmployee());
       navigate(Paths.EMPLOYEE_LOGIN);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
