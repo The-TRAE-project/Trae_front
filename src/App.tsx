@@ -1,4 +1,4 @@
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 
 import Layout from './components/Layout';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -26,7 +26,7 @@ const App = () => {
     <Layout>
       <Routes>
         <Route path={Paths.LOGIN} element={<Login />} />
-        {/* <Route path="*" element={<Navigate to={Paths.LOGIN} />} /> */}
+        <Route path="*" element={<Navigate to={Paths.LOGIN} replace />} />
 
         {/* Admin routes */}
         <Route
