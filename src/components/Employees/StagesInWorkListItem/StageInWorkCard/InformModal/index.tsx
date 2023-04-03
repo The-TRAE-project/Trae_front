@@ -20,9 +20,9 @@ const InformModal = ({ isOpen, onClose, stage }: Props) => {
   const { employee } = useAppSelector((store) => store.employee);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  console.log(isOpen);
+  // console.log(isOpen);
   const handleClose = () => {
-    console.log('close');
+    // console.log('close');
     // TODO:
     onClose();
     navigate(Paths.EMPLOYEE_LOGIN);
