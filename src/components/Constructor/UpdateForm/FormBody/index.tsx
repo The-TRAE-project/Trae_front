@@ -46,12 +46,12 @@ const FormBody = ({
   ] = useResetUserPasswordMutation();
   const { data: roles } = useGetAllRolesQuery();
 
-  const rolesSelectItems: SelectItem[] = Object.values(
-    roles as Roles
-  ).map<SelectItem>((role) => ({
-    value: role,
-    label: role,
-  }));
+  const rolesSelectItems: SelectItem[] = roles
+    ? Object.values(roles as Roles).map<SelectItem>((role) => ({
+        value: role,
+        label: role,
+      }))
+    : [];
   // TODO:
   const statusesSelectItems: SelectItem[] = [
     {

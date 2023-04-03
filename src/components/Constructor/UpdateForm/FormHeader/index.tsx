@@ -19,6 +19,7 @@ interface Props {
   isOpen: boolean;
   onClose: () => void;
   user: UserUpdateReturnType | undefined;
+  isSubmitBtnDisabled: boolean;
 }
 
 const FormHeader = ({
@@ -28,6 +29,7 @@ const FormHeader = ({
   isOpen,
   onClose,
   user,
+  isSubmitBtnDisabled,
 }: Props) => {
   const navigate = useNavigate();
 
@@ -80,12 +82,16 @@ const FormHeader = ({
         </Group>
 
         {isUpdate && (
-          <OrangeButton disabled={isLoading} $width={171} type="submit">
+          <OrangeButton
+            disabled={isLoading || isSubmitBtnDisabled}
+            $width={171}
+            type="submit"
+          >
             {isLoading ? <Loader size={35} /> : <span>Сохранить</span>}
           </OrangeButton>
         )}
         {!isUpdate && (
-          <OrangeButton onClick={onUpdate} type="button">
+          <OrangeButton onClick={onUpdate} disabled={isLoading} type="button">
             <BsFillPencilFill />
             <span>Редактировать</span>
           </OrangeButton>

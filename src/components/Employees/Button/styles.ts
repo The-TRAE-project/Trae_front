@@ -17,8 +17,4 @@ export const Wrapper = styled.button`
   font-weight: 500;
   color: var(--white-black);
   ${({ theme }) => theme.mixins.fontSize40};
-
-  &:disabled {
-    cursor: not-allowed;
-  }
 `;

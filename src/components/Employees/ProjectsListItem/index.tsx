@@ -6,7 +6,7 @@ import { useSlider } from '../../../helpers/hooks/useSlider';
 import { useAppSelector } from '../../../helpers/hooks/useAppSelector';
 import { divisorByChunk } from '../../../helpers/divisorByChunk';
 import { useDisplayError } from '../../../helpers/hooks/useDisplayError';
-import ControlButtons from '../../ControlButtons';
+import SliderButtons from '../../SliderButtons';
 import Loader from '../../Loader';
 import ProjectCard from './ProjectCard';
 import { Grid, Wrapper } from './styles';
@@ -45,7 +45,7 @@ const ProjectsListItem = () => {
                 ))
               : null}
           </Grid>
-          <ControlButtons
+          <SliderButtons
             current={current}
             quantity={quantity}
             prevSlide={prevSlide}

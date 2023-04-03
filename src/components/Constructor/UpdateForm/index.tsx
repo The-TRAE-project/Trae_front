@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useForm, zodResolver } from '@mantine/form';
-import dayjs from 'dayjs';
 
 import {
   useGetUserDetailsQuery,
@@ -16,7 +15,6 @@ import { useDisplayError } from '../../../helpers/hooks/useDisplayError';
 import FormHeader from './FormHeader';
 import FormBody from './FormBody';
 import { Form } from './styles';
-import { useSetDefaultValue } from './hooks/useSetDefaultValue';
 
 const UpdateForm = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -38,11 +36,9 @@ const UpdateForm = () => {
 
   const form = useForm<Omit<UserUpdateFormValues, 'managerId'>>({
     initialValues: {
-      newRole: user?.role || '',
-      accountStatus: user?.status ? 'Активный' : 'Заблокированный',
-      dateOfDismissal: user?.dateOfDismissal
-        ? dayjs(user?.dateOfDismissal).toDate()
-        : null,
+      newRole: null,
+      accountStatus: null,
+      dateOfDismissal: null,
     },
     validate: (values) => {
       const resolver = zodResolver(UserUpdateSchema.omit({ managerId: true }));
@@ -50,8 +46,6 @@ const UpdateForm = () => {
       return errors;
     },
   });
-
-  useSetDefaultValue(user, form, isUpdate);
 
   useDisplayError(error, isError);
 
@@ -63,11 +57,13 @@ const UpdateForm = () => {
         await updateUserSomeFields({
           managerId: user.id,
           newRole: values.newRole,
-          // eslint-disable-next-line no-unneeded-ternary
-          accountStatus: values.accountStatus === 'Активный' ? true : false,
+          accountStatus: values.accountStatus
+            ? values.accountStatus === 'Активный'
+            : null,
           dateOfDismissal: values.dateOfDismissal,
         }).unwrap();
         setIsModalOpen(true);
+        form.reset();
       }
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
@@ -89,6 +85,11 @@ const UpdateForm = () => {
         isOpen={isModalOpen}
         onClose={handleCloseModal}
         user={updatedUser}
+        isSubmitBtnDisabled={
+          !form.values.newRole &&
+          !form.values.dateOfDismissal &&
+          !form.values.accountStatus
+        }
       />
 
       <FormBody

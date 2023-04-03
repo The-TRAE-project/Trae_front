@@ -131,13 +131,8 @@ export interface ResetPasswordReturnType {
 
 export const UserUpdateSchema = z.object({
   managerId: z.number().min(1, { message: 'Id конструктора не указан!' }),
-  newRole: z.string().min(1, { message: 'Выберите новую роль' }),
-  accountStatus: z
-    .any()
-    // .min(1, {
-    //   message: 'Пожалуйста, выберите статус',
-    // })
-    .nullable(),
+  newRole: z.string().min(1, { message: 'Выберите новую роль' }).nullable(),
+  accountStatus: z.any().nullable(),
   dateOfDismissal: z
     .date({
       required_error: 'Пожалуйста, выберите дату',

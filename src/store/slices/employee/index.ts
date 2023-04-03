@@ -1,17 +1,13 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-// eslint-disable-next-line import/no-cycle
+
 import { RootState } from '../..';
-
 import instance from '../../../config/axiosConfig';
-
 import { InitialState } from './types';
 
 const initialState = {
   isLoggedIn: false,
   employee: null,
   isLoading: 'idle',
-  isError: false,
-  error: null,
   isModalOpen: false,
 } as InitialState;
 
@@ -80,9 +76,10 @@ export const employeeSlice = createSlice({
       state.employee = action.payload;
       state.isLoggedIn = !!action.payload;
     },
-    logout(state) {
+    logOutEmployee(state) {
       state.employee = null;
       state.isLoggedIn = false;
+      state.isModalOpen = false;
     },
   },
   extraReducers: (builder) => {
@@ -90,8 +87,6 @@ export const employeeSlice = createSlice({
       .addCase(loginEmployee.pending, (state) => {
         if (state.isLoading === 'idle') {
           state.isLoading = 'pending';
-          state.isError = false;
-          state.error = null;
         }
       })
       .addCase(loginEmployee.fulfilled, (state, action) => {
@@ -99,8 +94,6 @@ export const employeeSlice = createSlice({
           state.isLoading = 'idle';
           state.employee = action.payload;
           state.isLoggedIn = !!action.payload;
-          state.isError = false;
-          state.error = null;
         }
       })
       .addCase(logoutEmployee.fulfilled, (state) => {
@@ -110,5 +103,5 @@ export const employeeSlice = createSlice({
   },
 });
 
-export const { toggleModal, login, logout } = employeeSlice.actions;
+export const { toggleModal, login, logOutEmployee } = employeeSlice.actions;
 export default employeeSlice.reducer;

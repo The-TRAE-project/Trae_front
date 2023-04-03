@@ -4,7 +4,7 @@ import { Paths } from '../../../../../constants/paths';
 import { useAppDispatch } from '../../../../../helpers/hooks/useAppDispatch';
 import { useAppSelector } from '../../../../../helpers/hooks/useAppSelector';
 import { StageInWork } from '../../../../../store/apis/employee/types';
-import { logout } from '../../../../../store/slices/employee';
+import { logOutEmployee } from '../../../../../store/slices/employee';
 import Modal from '../../../../Modal';
 import Home from '../../../../svgs/Home';
 import Timer from '../Timer';
@@ -20,12 +20,13 @@ const InformModal = ({ isOpen, onClose, stage }: Props) => {
   const { employee } = useAppSelector((store) => store.employee);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-
+  // console.log(isOpen);
   const handleClose = () => {
+    // console.log('close');
     // TODO:
     onClose();
     navigate(Paths.EMPLOYEE_LOGIN);
-    dispatch(logout());
+    dispatch(logOutEmployee());
   };
 
   return (

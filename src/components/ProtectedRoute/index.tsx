@@ -1,23 +1,20 @@
-import { ReactNode } from 'react';
-import { Navigate, Outlet } from 'react-router-dom';
+import { Navigate, Outlet, useLocation } from 'react-router-dom';
+import { useAppSelector } from '../../helpers/hooks/useAppSelector';
 
 interface Props {
   isAllowed: boolean;
   redirectPath: string;
-  children?: ReactNode;
 }
 
-const ProtectedRoute = ({
-  isAllowed,
-  redirectPath,
-  children,
-}: Props): JSX.Element => {
-  if (!isAllowed) {
-    return <Navigate to={redirectPath} replace />;
-  }
+const ProtectedRoute = ({ isAllowed, redirectPath }: Props): JSX.Element => {
+  const location = useLocation();
+  const { accessToken } = useAppSelector((store) => store.auth);
 
-  // eslint-disable-next-line react/jsx-no-useless-fragment
-  return children ? <>{children}</> : <Outlet />;
+  return accessToken && isAllowed ? (
+    <Outlet />
+  ) : (
+    <Navigate to={redirectPath} state={{ from: location }} replace />
+  );
 };
 
 export default ProtectedRoute;

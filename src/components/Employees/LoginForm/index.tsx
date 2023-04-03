@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useForm } from '@mantine/form';
 import { useNavigate } from 'react-router-dom';
-import MaskedInput from 'react-text-mask';
 
 import { useAppDispatch } from '../../../helpers/hooks/useAppDispatch';
 import { useAppSelector } from '../../../helpers/hooks/useAppSelector';
@@ -16,9 +15,13 @@ import { Paths } from '../../../constants/paths';
 import instance from '../../../config/axiosConfig';
 import Loader from '../../Loader';
 import ConfirmModal from '../ConfrimModal';
+import MaskedTextInput from '../../MaskedInput';
 import NumericKeyboard from './NumericKeyboard';
-import { LoginFormValues } from './types';
-import { Button, GroupForm, Wrapper } from './styles';
+import { Button, GroupForm, useTextInputStyles, Wrapper } from './styles';
+
+interface LoginFormValues {
+  pinCode: string;
+}
 
 const EmployeeLoginForm = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -30,6 +33,9 @@ const EmployeeLoginForm = () => {
   const { isModalOpen } = useAppSelector((store) => store.employee);
   const { accessToken } = useAppSelector((store) => store.auth);
   const navigate = useNavigate();
+  const {
+    classes: { input },
+  } = useTextInputStyles();
   const form = useForm({
     initialValues: {
       pinCode: '',
@@ -91,12 +97,13 @@ const EmployeeLoginForm = () => {
     <>
       <Wrapper>
         <GroupForm onSubmit={form.onSubmit(handleSubmit)}>
-          <MaskedInput
-            mask={[/\d/, /\d/, /\d/]}
-            className="maskedInput"
+          <MaskedTextInput
+            mask="000"
             placeholder="Пароль"
+            maxLength={3}
             {...form.getInputProps('pinCode')}
             onFocus={() => setIsInputInFocus(true)}
+            classNames={{ input }}
           />
           <Button type="submit" disabled={!disabled}>
             {isLoading ? <Loader size={40} /> : 'Подтвердить'}

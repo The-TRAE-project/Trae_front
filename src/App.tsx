@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 
 import Layout from './components/Layout';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -16,52 +16,37 @@ import Constructors from './pages/Constructors';
 import CreateConstructor from './pages/CreateConstructor';
 import UpdateUser from './pages/UpdateUser';
 
-import { showErrorNotification } from './helpers/showErrorNotification';
-import { refresh } from './store/slices/auth';
 import { useAppSelector } from './helpers/hooks/useAppSelector';
-import { useAppDispatch } from './helpers/hooks/useAppDispatch';
 import { Roles } from './store/slices/auth/types';
 
 const App = () => {
-  // const navigate = useNavigate();
-  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const { isLoggedIn } = useAppSelector((store) => store.employee);
-  const { accessToken, permission } = useAppSelector((store) => store.auth);
-
+  const { permission, accessToken } = useAppSelector((store) => store.auth);
+  // TODO:
   useEffect(() => {
-    async function autoLogin() {
-      try {
-        await dispatch(refresh());
-        // const response = await dispatch(getUserRole(values.username)).unwrap();
-
-        // if (response === Roles.EMPLOYEE) {
-        //   navigate(Paths.EMPLOYEE_LOGIN);
-        // } else if (response === Roles.ADMIN) {
-        //   navigate(Paths.PROJECTS);
-        // }
-
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      } catch (error: any) {
-        showErrorNotification(error.status, error.error);
+    if (accessToken) {
+      if (permission === Roles.ADMIN) {
+        navigate(Paths.PROJECTS);
+      } else if (permission === Roles.EMPLOYEE) {
+        navigate(Paths.EMPLOYEE_LOGIN);
       }
     }
-
-    autoLogin();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [accessToken, permission]);
 
   return (
     <Layout>
       <Routes>
         <Route path={Paths.LOGIN} element={<Login />} />
-        <Route path="*" element={<Navigate to={Paths.LOGIN} />} />
+        <Route path="*" element={<Navigate to={Paths.LOGIN} replace />} />
 
         {/* Admin routes */}
         <Route
           element={
             <ProtectedRoute
-              isAllowed={!!accessToken && permission === Roles.ADMIN}
-              redirectPath={Paths.EMPLOYEE_LOGIN}
+              isAllowed={permission === Roles.ADMIN}
+              redirectPath={Paths.LOGIN}
             />
           }
         >
@@ -78,7 +63,7 @@ const App = () => {
         <Route
           element={
             <ProtectedRoute
-              isAllowed={!!accessToken && permission === Roles.EMPLOYEE}
+              isAllowed={permission === Roles.EMPLOYEE}
               redirectPath={Paths.LOGIN}
             />
           }

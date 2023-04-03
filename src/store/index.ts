@@ -17,8 +17,14 @@ import { baseApi } from './apis';
 import authReducer from './slices/auth';
 import employeeReducer from './slices/employee';
 
+const authPersistConfig = {
+  key: 'auth',
+  storage,
+  blacklist: ['refreshToken'],
+};
+
 const rootReducer = combineReducers({
-  auth: authReducer,
+  auth: persistReducer(authPersistConfig, authReducer),
   employee: employeeReducer,
   [baseApi.reducerPath]: baseApi.reducer,
 });
@@ -26,8 +32,10 @@ const rootReducer = combineReducers({
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['accessToken', 'user', 'isLoggedIn'],
+  whitelist: ['employee'],
+  blacklist: ['auth'],
 };
+
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 const store = configureStore({
