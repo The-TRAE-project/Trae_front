@@ -6,6 +6,8 @@ export const Paths = {
   CONSTRUCTORS_CREATE: '/constructors/create',
   CONSTRUCTORS_EDITING: '/constructors/editing',
   EMPLOYEES: '/employees',
+  EMPLOYEES_CREATE: '/employees/create',
+  EMPLOYEES_EDITING: '/employees/editing',
   REPORTS: '/reports',
   WORK_TYPES: '/work-types',
   WORK_TYPES_CREATE: '/work-types/create',

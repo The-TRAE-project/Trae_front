@@ -2,12 +2,12 @@ import { Dispatch, SetStateAction } from 'react';
 import { Menu } from '@mantine/core';
 
 import { Status } from '../../../store/apis/user/types';
+import Filter from '../../svgs/Filter';
 import {
   FilterMenuItemTitle,
   UnstyledButton,
   useFilterMenuStyles,
 } from '../../styles';
-import Filter from '../../svgs/Filter';
 
 const statuses = [
   {

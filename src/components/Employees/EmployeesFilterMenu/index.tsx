@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction } from 'react';
 import { Menu } from '@mantine/core';
 
-import { useGetAllRolesQuery } from '../../../store/apis/user';
+import { useGetActiveWorkTypesQuery } from '../../../store/apis/workTypes';
 import { Status } from '../../../store/apis/user/types';
 import Filter from '../../svgs/Filter';
 import {
@@ -9,6 +9,7 @@ import {
   UnstyledButton,
   useFilterMenuStyles,
 } from '../../styles';
+import { OverflowWrapper } from './styles';
 
 const statuses = [
   {
@@ -22,24 +23,24 @@ const statuses = [
 ];
 
 interface Props {
-  role: string | null;
-  setRole: Dispatch<SetStateAction<string | null>>;
-  resetRole: () => void;
+  typeWork: number | null;
+  setTypeWork: Dispatch<SetStateAction<number | null>>;
+  resetTypeWork: () => void;
   status: Status | null;
   setStatus: Dispatch<SetStateAction<Status | null>>;
   resetStatus: () => void;
 }
 
-const UserFilterMenu = ({
-  role,
-  setRole,
-  resetRole,
+const EmployeesFilterMenu = ({
+  typeWork,
+  setTypeWork,
+  resetTypeWork,
   status,
   setStatus,
   resetStatus,
 }: Props) => {
   const { classes } = useFilterMenuStyles();
-  const { data: roles } = useGetAllRolesQuery();
+  const { data: workTypes } = useGetActiveWorkTypesQuery();
 
   return (
     <Menu
@@ -69,20 +70,25 @@ const UserFilterMenu = ({
         </Menu.Item>
 
         <Menu.Label>Категория</Menu.Label>
-        {!!roles &&
-          Object.values(roles).map((item) => (
-            <Menu.Item key={item} onClick={() => setRole(item)}>
-              <FilterMenuItemTitle $active={item === role}>
-                {item}
-              </FilterMenuItemTitle>
-            </Menu.Item>
-          ))}
-        <Menu.Item onClick={resetRole}>
-          <FilterMenuItemTitle $active={!role}> Все</FilterMenuItemTitle>
-        </Menu.Item>
+        <OverflowWrapper>
+          <Menu.Item onClick={resetTypeWork}>
+            <FilterMenuItemTitle $active={!typeWork}> Все</FilterMenuItemTitle>
+          </Menu.Item>
+          {!!workTypes &&
+            workTypes.map((workType) => (
+              <Menu.Item
+                key={workType.id}
+                onClick={() => setTypeWork(workType.id)}
+              >
+                <FilterMenuItemTitle $active={workType.id === typeWork}>
+                  {workType.name}
+                </FilterMenuItemTitle>
+              </Menu.Item>
+            ))}
+        </OverflowWrapper>
       </Menu.Dropdown>
     </Menu>
   );
 };
 
-export default UserFilterMenu;
+export default EmployeesFilterMenu;

@@ -2,14 +2,13 @@ import { useState } from 'react';
 import { Group, Stack } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
 
-import { Roles } from '../../store/slices/auth/types';
 import { Status } from '../../store/apis/user/types';
 import { Paths } from '../../constants/paths';
 import SEO from '../../components/SEO';
 import Home from '../../components/svgs/Home';
 import Plus from '../../components/svgs/Plus';
-import UserFilterMenu from '../../components/Users/UserFilterMenu';
-import UsersListItem from '../../components/Users/UsersListItem';
+import EmployeesFilterMenu from '../../components/Employees/EmployeesFilterMenu';
+import EmployeesListItem from '../../components/Employees/EmployeesListItem';
 import {
   Container,
   OrangeButton,
@@ -18,13 +17,13 @@ import {
 } from '../../components/styles';
 
 const Employees = () => {
-  const [paramRole, setParamRole] = useState<string | null>(Roles.CONSTRUCTOR);
+  const [paramTypeWorkId, setParamTypeWorkId] = useState<number | null>(null);
   const [paramActive, setParamActive] = useState<Status | null>(Status.ACTIVE);
 
   const navigate = useNavigate();
 
   const navigateToHome = () => navigate(Paths.PROJECTS);
-  const navigateToWorkTypesPage = () => navigate(Paths.WORK_TYPES);
+  const navigateToCreateEmployeePage = () => navigate(Paths.EMPLOYEES_CREATE);
 
   return (
     <>
@@ -39,25 +38,32 @@ const Employees = () => {
           <Stack spacing={50}>
             <Group position="apart" spacing={100}>
               <Group spacing={40}>
-                <UserFilterMenu
+                <EmployeesFilterMenu
                   status={paramActive}
                   setStatus={setParamActive}
                   resetStatus={() => setParamActive(null)}
-                  role={paramRole}
-                  setRole={setParamRole}
-                  resetRole={() => setParamRole(null)}
+                  typeWork={paramTypeWorkId}
+                  setTypeWork={setParamTypeWorkId}
+                  resetTypeWork={() => setParamTypeWorkId(null)}
                 />
                 <UnstyledButton onClick={navigateToHome} type="button">
                   <Home />
                 </UnstyledButton>
               </Group>
 
-              <OrangeButton onClick={navigateToWorkTypesPage} type="button">
-                <span>Типы работ</span>
+              <OrangeButton
+                onClick={navigateToCreateEmployeePage}
+                type="button"
+              >
+                <Plus />
+                <span>Добавить</span>
               </OrangeButton>
             </Group>
 
-            <UsersListItem paramRole={paramRole} paramActive={paramActive} />
+            <EmployeesListItem
+              paramTypeWorkId={paramTypeWorkId}
+              paramActive={paramActive}
+            />
           </Stack>
         </Container>
       </WrapperGradientGreen>

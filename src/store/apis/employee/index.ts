@@ -1,10 +1,12 @@
 import { baseApi } from '..';
+import { FilteredResponse, FilterValues } from '../types';
 import {
   ProjectStage,
   Project,
   StageInWork,
   ReceiveProjectStageValue,
   EmployeeFormValue,
+  Employee,
 } from './types';
 
 const employeeTags = baseApi.enhanceEndpoints({
@@ -63,6 +65,13 @@ const employeeApi = employeeTags.injectEndpoints({
           body,
         };
       },
+      invalidatesTags: ['Employee'],
+    }),
+
+    getAllEmployees: build.query<FilteredResponse<Employee[]>, FilterValues>({
+      query: (query) =>
+        `/type-work/types?direction=asc${query.elementPerPage}${query.isActive}${query.page}${query.typeWorkId}`,
+      providesTags: ['Employee'],
     }),
   }),
 });
@@ -74,4 +83,5 @@ export const {
   useReceiveProjectStageMutation,
   useFinishProjectStageMutation,
   useCreateEmployeeMutation,
+  useGetAllEmployeesQuery,
 } = employeeApi;

@@ -1,3 +1,5 @@
+import { WorkType } from '../workTypes/types';
+
 export interface Project {
   id: number;
   projectName: string;
@@ -36,4 +38,17 @@ export interface EmployeeFormValue {
   middleName: string;
   phone: string;
   typesId: number[];
+}
+
+export interface Employee {
+  firstName: string;
+  lastName: string;
+  middleName: string;
+  id: number;
+  isActive: true;
+  phone: string;
+  pinCode: number;
+  types: WorkType[];
+  dateOfRegister: Date;
+  dateOfEmployment: Date;
 }

@@ -1,5 +1,4 @@
-import { useEffect } from 'react';
-import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 
 import Layout from './components/Layout';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -21,23 +20,14 @@ import UpdateWorkType from './pages/UpdateWorkType';
 import CreateWorkType from './pages/CreateWorkType';
 
 import { useAppSelector } from './helpers/hooks/useAppSelector';
+import { useNavigateLoggedInUser } from './helpers/hooks/useNavigateLoggedInUser';
 import { Roles } from './store/slices/auth/types';
 
 const App = () => {
-  const navigate = useNavigate();
   const { isLoggedIn } = useAppSelector((store) => store.employee);
-  const { permission, accessToken } = useAppSelector((store) => store.auth);
+  const { permission } = useAppSelector((store) => store.auth);
   // TODO:
-  useEffect(() => {
-    if (accessToken) {
-      if (permission === Roles.ADMIN) {
-        navigate(Paths.PROJECTS);
-      } else if (permission === Roles.EMPLOYEE) {
-        navigate(Paths.EMPLOYEE_LOGIN);
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [accessToken, permission]);
+  useNavigateLoggedInUser();
 
   return (
     <Layout>

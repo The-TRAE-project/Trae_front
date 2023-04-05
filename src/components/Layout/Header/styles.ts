@@ -80,7 +80,7 @@ export const Item = styled.li`
 export const Button = styled.button`
   height: 88px;
   ${({ theme }) => theme.mixins.fCenter};
-  padding: 25px 35px 28px;
+  padding: 25px 34px 28px;
   border: none;
   border-radius: ${(props: ActiveItemProps) =>
     props.active ? '0px 0px 15px 15px' : '0'};

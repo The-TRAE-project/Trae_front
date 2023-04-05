@@ -11,4 +11,5 @@ export interface FilterValues {
   role?: string;
   status?: string;
   isActive?: string;
+  typeWorkId?: string;
 }
