@@ -15,6 +15,10 @@ import Projects from './pages/Projects';
 import Constructors from './pages/Constructors';
 import CreateConstructor from './pages/CreateConstructor';
 import UpdateUser from './pages/UpdateUser';
+import Employees from './pages/Employees';
+import WorkTypes from './pages/WorkTypes';
+import UpdateWorkType from './pages/UpdateWorkType';
+import CreateWorkType from './pages/CreateWorkType';
 
 import { useAppSelector } from './helpers/hooks/useAppSelector';
 import { Roles } from './store/slices/auth/types';
@@ -57,6 +61,10 @@ const App = () => {
             element={<CreateConstructor />}
           />
           <Route path={Paths.CONSTRUCTORS_EDITING} element={<UpdateUser />} />
+          <Route path={Paths.EMPLOYEES} element={<Employees />} />
+          <Route path={Paths.WORK_TYPES} element={<WorkTypes />} />
+          <Route path={Paths.WORK_TYPES_EDITING} element={<UpdateWorkType />} />
+          <Route path={Paths.WORK_TYPES_CREATE} element={<CreateWorkType />} />
         </Route>
 
         {/* Employee routes */}

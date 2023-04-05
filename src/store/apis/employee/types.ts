@@ -37,12 +37,3 @@ export interface EmployeeFormValue {
   phone: string;
   typesId: number[];
 }
-
-export interface WorkType {
-  id: number;
-  name: string;
-}
-
-export interface WorkTypeValue {
-  name: string;
-}

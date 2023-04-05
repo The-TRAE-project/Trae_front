@@ -11,12 +11,12 @@ import {
 import { UserUpdateFormValues, User } from '../../../../store/apis/user/types';
 import { Roles } from '../../../../store/slices/auth/types';
 import Loader from '../../../Loader';
-import InformModal from '../../InformModal';
-import { InformText } from '../../styles';
-import Select from './Select';
+import Select from '../../../Select';
+import DatePicker from '../../../DatePicker';
+import InformModal from '../../../InformModal';
+import { InformModalText } from '../../../styles';
 import DetailsCard from './DetailsCard';
-import DatePicker from './DatePicker';
-import { Grid, ResetPasswordButton, SelectWrapper, Wrapper } from './styles';
+import { Grid, ResetPasswordButton, Wrapper } from './styles';
 
 type UserWithoutId = Omit<UserUpdateFormValues, 'managerId'>;
 
@@ -88,10 +88,10 @@ const FormBody = ({
         onClose={handleClose}
         title={`${passwordChangedUser?.firstName} ${passwordChangedUser?.lastName} пароль сброшен`}
       >
-        <InformText>
+        <InformModalText>
           Новый пароль:&nbsp;
           <strong>{passwordChangedUser?.newPassword}</strong>
-        </InformText>
+        </InformModalText>
       </InformModal>
 
       {!isLoading && !!user ? (
@@ -102,26 +102,22 @@ const FormBody = ({
             label="Дата регистрации"
           />
           {isUpdate ? (
-            <SelectWrapper>
-              <Select
-                {...form.getInputProps('newRole')}
-                title="Категория"
-                data={rolesSelectItems}
-              />
-            </SelectWrapper>
+            <Select
+              {...form.getInputProps('newRole')}
+              title="Категория"
+              data={rolesSelectItems}
+            />
           ) : (
             <DetailsCard text={user.role} label="Категория" />
           )}
           <DetailsCard text={user.firstName} label="Имя" />
           <DetailsCard text={user.phone} label="Номер телефона" />
           {isUpdate ? (
-            <SelectWrapper>
-              <Select
-                {...form.getInputProps('accountStatus')}
-                title="Статус"
-                data={statusesSelectItems}
-              />
-            </SelectWrapper>
+            <Select
+              {...form.getInputProps('accountStatus')}
+              title="Статус"
+              data={statusesSelectItems}
+            />
           ) : (
             <DetailsCard
               text={user.status ? 'Активный' : 'Заблокированный'}

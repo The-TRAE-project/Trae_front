@@ -1,7 +1,6 @@
 import { Dispatch, SetStateAction } from 'react';
 import { Menu } from '@mantine/core';
 
-import { useGetAllRolesQuery } from '../../../store/apis/user';
 import { Status } from '../../../store/apis/user/types';
 import {
   FilterMenuItemTitle,
@@ -22,24 +21,13 @@ const statuses = [
 ];
 
 interface Props {
-  role: string | null;
-  setRole: Dispatch<SetStateAction<string | null>>;
-  resetRole: () => void;
   status: Status | null;
   setStatus: Dispatch<SetStateAction<Status | null>>;
   resetStatus: () => void;
 }
 
-const UserFilterMenu = ({
-  role,
-  setRole,
-  resetRole,
-  status,
-  setStatus,
-  resetStatus,
-}: Props) => {
+const WorkTypesFilterMenu = ({ status, setStatus, resetStatus }: Props) => {
   const { classes } = useFilterMenuStyles();
-  const { data: roles } = useGetAllRolesQuery();
 
   return (
     <Menu
@@ -67,22 +55,9 @@ const UserFilterMenu = ({
         <Menu.Item onClick={resetStatus}>
           <FilterMenuItemTitle $active={!status}>Все</FilterMenuItemTitle>
         </Menu.Item>
-
-        <Menu.Label>Категория</Menu.Label>
-        {!!roles &&
-          Object.values(roles).map((item) => (
-            <Menu.Item key={item} onClick={() => setRole(item)}>
-              <FilterMenuItemTitle $active={item === role}>
-                {item}
-              </FilterMenuItemTitle>
-            </Menu.Item>
-          ))}
-        <Menu.Item onClick={resetRole}>
-          <FilterMenuItemTitle $active={!role}> Все</FilterMenuItemTitle>
-        </Menu.Item>
       </Menu.Dropdown>
     </Menu>
   );
 };
 
-export default UserFilterMenu;
+export default WorkTypesFilterMenu;

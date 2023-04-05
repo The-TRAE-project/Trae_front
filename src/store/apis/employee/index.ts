@@ -5,14 +5,12 @@ import {
   StageInWork,
   ReceiveProjectStageValue,
   EmployeeFormValue,
-  WorkType,
-  WorkTypeValue,
 } from './types';
 
 const employeeTags = baseApi.enhanceEndpoints({
-  addTagTypes: ['Employee', 'ProjectStage', 'WorkTypes', 'StagesInWork'],
+  addTagTypes: ['Employee', 'ProjectStage', 'StagesInWork'],
 });
-// TODO:
+
 const employeeApi = employeeTags.injectEndpoints({
   endpoints: (build) => ({
     getAvailableProjectsByEmployeeId: build.query<Project[], number>({
@@ -66,22 +64,6 @@ const employeeApi = employeeTags.injectEndpoints({
         };
       },
     }),
-
-    getAllWorkTypes: build.query<WorkType[], void>({
-      query: () => '/type-work/types',
-      providesTags: ['WorkTypes'],
-    }),
-
-    createWorkType: build.mutation<void, WorkTypeValue>({
-      query(body) {
-        return {
-          url: '/type-work/new',
-          method: 'POST',
-          body,
-        };
-      },
-      invalidatesTags: ['WorkTypes'],
-    }),
   }),
 });
 
@@ -92,6 +74,4 @@ export const {
   useReceiveProjectStageMutation,
   useFinishProjectStageMutation,
   useCreateEmployeeMutation,
-  useGetAllWorkTypesQuery,
-  useCreateWorkTypeMutation,
 } = employeeApi;

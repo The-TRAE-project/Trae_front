@@ -1,30 +1,31 @@
 import { DatePickerInput } from '@mantine/dates';
 
-import { useDateInputStyles } from '../../../styles';
-import { useSelectStyles, useTextInputStyles } from '../styles';
+import { useDateInputStyles } from './styles';
 
-const DatePicker = ({ ...props }) => {
-  const {
-    classes: { label, error },
-  } = useTextInputStyles();
-  const {
-    classes: { selectInput },
-  } = useSelectStyles();
+interface Props {
+  defaultValue?: Date;
+}
+
+const DatePicker = ({ defaultValue, ...props }: Props) => {
   const {
     classes: {
+      input,
+      label,
+      error,
       wrapper,
       calendar,
       calendarHeaderControl,
       calendarHeaderLevel,
       weekday,
       day,
-      dataInputRightSection,
+      rightSection,
     },
   } = useDateInputStyles();
 
   return (
     <DatePickerInput
       {...props}
+      defaultValue={defaultValue}
       label="Дата регистрации"
       placeholder="Выберите дату"
       clearable
@@ -37,9 +38,9 @@ const DatePicker = ({ ...props }) => {
         weekday,
         day,
         label,
-        input: selectInput,
+        input,
         error,
-        rightSection: dataInputRightSection,
+        rightSection,
       }}
     />
   );

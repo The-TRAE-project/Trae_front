@@ -1,8 +1,7 @@
 import { useState } from 'react';
-import { Group, TextInput, Stack } from '@mantine/core';
-import { useForm, zodResolver } from '@mantine/form';
-import { DatePickerInput } from '@mantine/dates';
 import { useNavigate } from 'react-router-dom';
+import { Group, Stack } from '@mantine/core';
+import { useForm, zodResolver } from '@mantine/form';
 
 import {
   ConstructorFormSchema,
@@ -13,30 +12,17 @@ import { showErrorNotification } from '../../../helpers/showErrorNotification';
 import { Paths } from '../../../constants/paths';
 import Loader from '../../Loader';
 import MaskedTextInput from '../../MaskedInput';
+import DatePicker from '../../DatePicker';
 import ArrowLeft from '../../svgs/ArrowLeft';
+import TextInput from '../../TextInput';
+import InformModal from '../../InformModal';
 import Home from '../../svgs/Home';
-import { OrangeButton, UnstyledButton } from '../../styles';
-import InformModal from '../InformModal';
-import { InformText, useDateInputStyles } from '../styles';
-import { Form, Grid, useTextInputStyles } from './styles';
+import { InformModalText, OrangeButton, UnstyledButton } from '../../styles';
+import { Form, Grid } from './styles';
 
 const CreateForm = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
-  const {
-    classes: { label, input, error },
-  } = useTextInputStyles();
-  const {
-    classes: {
-      wrapper,
-      calendar,
-      calendarHeaderControl,
-      calendarHeaderLevel,
-      weekday,
-      day,
-      dataInputRightSection,
-    },
-  } = useDateInputStyles();
   const navigate = useNavigate();
   const form = useForm<ConstructorFormValues>({
     initialValues: {
@@ -80,12 +66,12 @@ const CreateForm = () => {
         title={`${form.values.firstName} ${form.values.lastName} успешно добавлен`}
       >
         <Stack spacing={20}>
-          <InformText>
+          <InformModalText>
             Логин: <strong>{data?.username}</strong>
-          </InformText>
-          <InformText>
+          </InformModalText>
+          <InformModalText>
             Пароль: <strong>{data?.password}</strong>
-          </InformText>
+          </InformModalText>
         </Stack>
       </InformModal>
 
@@ -113,72 +99,32 @@ const CreateForm = () => {
             {...form.getInputProps('lastName')}
             label="Фамилия"
             maxLength={15}
-            classNames={{
-              label,
-              input,
-              error,
-            }}
           />
           <TextInput
             {...form.getInputProps('middleName')}
             label="Отчество"
             minLength={2}
             maxLength={15}
-            classNames={{
-              label,
-              input,
-              error,
-            }}
           />
           <MaskedTextInput
             // eslint-disable-next-line react/jsx-curly-brace-presence
             mask={'+7 (000) 000 0000'}
             {...form.getInputProps('phone')}
             label="Номер телефона"
-            classNames={{
-              label,
-              input,
-              error,
-            }}
           />
           <TextInput
             {...form.getInputProps('firstName')}
             label="Имя"
             maxLength={15}
-            classNames={{
-              label,
-              input,
-              error,
-            }}
           />
-          <DatePickerInput
+          <DatePicker
             {...form.getInputProps('dateOfEmployment')}
-            label="Дата регистрации"
             defaultValue={new Date()}
-            clearable
-            valueFormat="DD.MM.YYYY"
-            classNames={{
-              wrapper,
-              calendar,
-              calendarHeaderControl,
-              calendarHeaderLevel,
-              weekday,
-              day,
-              label,
-              input,
-              error,
-              rightSection: dataInputRightSection,
-            }}
           />
           <TextInput
             {...form.getInputProps('username')}
             label="Логин"
             maxLength={15}
-            classNames={{
-              label,
-              input,
-              error,
-            }}
           />
         </Grid>
       </Form>

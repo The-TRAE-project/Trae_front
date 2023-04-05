@@ -1,5 +1,6 @@
 import { baseApi } from '..';
 import { Roles } from '../../slices/auth/types';
+import { FilteredResponse, FilterValues } from '../types';
 import {
   ConstructorFormValues,
   User,
@@ -7,23 +8,18 @@ import {
   ManagerFormValue,
   ManagerChangePasswordValue,
   UserShortInfo,
-  FilteredResponse,
-  UserFilterValues,
   ResetPasswordReturnType,
   UserUpdateFormValues,
   UserUpdateReturnType,
 } from './types';
 
-const constructorTags = baseApi.enhanceEndpoints({
+const UserTags = baseApi.enhanceEndpoints({
   addTagTypes: ['Manager', 'Constructor'],
 });
 
-const managerApi = constructorTags.injectEndpoints({
+const userApi = UserTags.injectEndpoints({
   endpoints: (build) => ({
-    getAllUsers: build.query<
-      FilteredResponse<UserShortInfo[]>,
-      UserFilterValues
-    >({
+    getAllUsers: build.query<FilteredResponse<UserShortInfo[]>, FilterValues>({
       query: (query) =>
         `/manager/managers?direction=asc${query.elementPerPage}${query.role}${query.status}${query.page}`,
       providesTags: ['Constructor'],
@@ -128,4 +124,4 @@ export const {
   useChangeManagerPasswordMutation,
   useActivateManagerAccountMutation,
   useDeactivateManagerAccountMutation,
-} = managerApi;
+} = userApi;

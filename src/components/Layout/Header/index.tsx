@@ -29,6 +29,10 @@ const list = [
     value: Paths.REPORTS,
     title: 'Отчеты',
   },
+  {
+    value: Paths.WORK_TYPES,
+    title: 'Типы работ',
+  },
 ];
 
 const Header = () => {
@@ -40,25 +44,28 @@ const Header = () => {
       <Container>
         <Navbar>
           <List>
-            {list.map((item, index) => (
-              <Item
-                key={item.value}
-                active={item.value === location.pathname}
-                hideBorder={!index}
-              >
-                <Button
-                  type="button"
-                  onClick={() => navigate(item.value)}
-                  active={location.pathname.includes(item.value)}
-                  disabled={
-                    item.value === Paths.EMPLOYEES ||
-                    item.value === Paths.REPORTS
+            {list.map((item, index) => {
+              console.log(location.pathname.includes(item.value) && index);
+              return (
+                <Item
+                  key={item.value}
+                  active={item.value === location.pathname}
+                  hideBorder={
+                    location.pathname.includes(item.value) && !(index - 1)
                   }
+                  index={location.pathname.includes(item.value) ? index : 0}
                 >
-                  {item.title}
-                </Button>
-              </Item>
-            ))}
+                  <Button
+                    type="button"
+                    onClick={() => navigate(item.value)}
+                    active={location.pathname.includes(item.value)}
+                    disabled={item.value === Paths.REPORTS}
+                  >
+                    {item.title}
+                  </Button>
+                </Item>
+              );
+            })}
             <UserProfileButton type="button">
               <User />
             </UserProfileButton>

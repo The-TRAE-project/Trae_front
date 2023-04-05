@@ -1,30 +1,27 @@
 import { useState } from 'react';
-
-import { useGetAllUsersQuery } from '../../../store/apis/user';
-import { useDisplayError } from '../../../helpers/hooks/useDisplayError';
 import { Status } from '../../../store/apis/user/types';
-import SliderButtons from '../../SliderButtons';
+import { useDisplayError } from '../../../helpers/hooks/useDisplayError';
+import { useGetAllWorkTypesQuery } from '../../../store/apis/workTypes';
 import Loader from '../../Loader';
-import UserItem from './UserItem';
+import SliderButtons from '../../SliderButtons';
+import WorkTypeItem from './WorkTypeItem';
 import { Grid, Wrapper } from './styles';
 
 interface Props {
-  paramRole: string | null;
   paramActive: Status | null;
 }
 
-const UsersListItem = ({ paramRole, paramActive }: Props) => {
+const WorkTypesListItem = ({ paramActive }: Props) => {
   const [page, setPage] = useState<number>(0);
 
   const {
-    data: users,
+    data: workTypes,
     error,
     isError,
     isLoading,
-  } = useGetAllUsersQuery({
+  } = useGetAllWorkTypesQuery({
     elementPerPage: `&elementPerPage=${10}`,
-    role: paramRole ? `&role=${paramRole}` : '',
-    status: paramActive ? `&status=${paramActive}` : '',
+    isActive: paramActive ? `&isActive=${paramActive}` : '',
     page: `&page=${page}`,
   });
 
@@ -37,25 +34,25 @@ const UsersListItem = ({ paramRole, paramActive }: Props) => {
   };
 
   const nextSlide = () => {
-    if (page + 1 !== users?.totalPages) {
+    if (page + 1 !== workTypes?.totalPages) {
       setPage((prevPage) => prevPage + 1);
     }
   };
 
   return (
     <Wrapper>
-      {!isLoading && !!users ? (
+      {!isLoading && !!workTypes ? (
         <>
           <Grid>
-            {users.content.map((user) => (
-              <UserItem key={user.managerId} user={user} />
+            {workTypes.content.map((workType) => (
+              <WorkTypeItem key={workType.id} workType={workType} />
             ))}
           </Grid>
 
-          {users.totalElements > 10 && (
+          {workTypes.totalElements > 10 && (
             <SliderButtons
-              current={users.currentNumberPage + 1}
-              quantity={users.totalPages}
+              current={workTypes.currentNumberPage + 1}
+              quantity={workTypes.totalPages}
               prevSlide={prevSlide}
               nextSlide={nextSlide}
               color="--white"
@@ -69,4 +66,4 @@ const UsersListItem = ({ paramRole, paramActive }: Props) => {
   );
 };
 
-export default UsersListItem;
+export default WorkTypesListItem;

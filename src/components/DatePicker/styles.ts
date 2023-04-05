@@ -1,15 +1,39 @@
 import { createStyles } from '@mantine/core';
-import styled from 'styled-components';
-
-export const InformText = styled.p`
-  font-family: var(--font-roboto);
-  font-weight: 400;
-  ${({ theme }) => theme.mixins.fontSize28}
-  text-align: center;
-  color: var(--white-black);
-`;
 
 export const useDateInputStyles = createStyles(() => ({
+  input: {
+    minHeight: 73,
+    height: 73,
+    background: 'var(--white)',
+    border: 'none',
+    borderRadius: 'var(--border-radius)',
+    padding: '20px 12px',
+    fontFamily: 'var(--font-roboto)',
+    fontWeight: 500,
+    fontSize: 28,
+    lineHeight: '33px',
+    color: 'var(--white-black)',
+
+    '&::focus': {
+      outline: 'none',
+    },
+  },
+
+  label: {
+    fontWeight: 400,
+    fontSize: 24,
+    lineHeight: '28px',
+    color: 'var(--white)',
+    marginBottom: 13,
+    paddingLeft: 14,
+  },
+
+  error: {
+    fontSize: 24,
+    lineHeight: '26px',
+    wordBreak: 'break-all',
+  },
+
   wrapper: {
     borderRadius: 40,
 
@@ -69,7 +93,7 @@ export const useDateInputStyles = createStyles(() => ({
     },
   },
 
-  dataInputRightSection: {
+  rightSection: {
     width: '4.5rem',
 
     button: {

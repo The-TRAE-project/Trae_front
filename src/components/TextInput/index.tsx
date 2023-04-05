@@ -1,13 +1,12 @@
-import { Ref } from 'react';
-import { TextInput, TextInputProps } from '@mantine/core';
-import { IMaskMixin } from 'react-imask';
+import { forwardRef, Ref } from 'react';
+import { TextInput as MantineTextInput, TextInputProps } from '@mantine/core';
 
-const MaskedTextInput = IMaskMixin(
+const TextInput = forwardRef(
   ({
     inputRef,
     ...props
   }: TextInputProps & { inputRef?: Ref<HTMLInputElement> }) => (
-    <TextInput
+    <MantineTextInput
       {...props}
       ref={inputRef}
       styles={{
@@ -48,4 +47,6 @@ const MaskedTextInput = IMaskMixin(
   )
 );
 
-export default MaskedTextInput;
+TextInput.displayName = 'TextInput';
+
+export default TextInput;
