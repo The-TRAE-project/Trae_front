@@ -86,13 +86,14 @@ const UpdateWorkTypeForm = () => {
         title="Изменения сохранены"
       >
         <Stack spacing={20}>
-          {editedTypeWork?.name && (
-            <InformModalText>Название: {editedTypeWork.name}</InformModalText>
-          )}
-          {editedTypeWork?.isActive && (
-            <InformModalText>
-              Статус: {editedTypeWork.isActive ? 'Активный' : 'Заблокированный'}
-            </InformModalText>
+          {!!editedTypeWork && (
+            <>
+              <InformModalText>Название: {editedTypeWork.name}</InformModalText>
+              <InformModalText>
+                Статус:&nbsp;
+                {editedTypeWork.isActive ? 'Активный' : 'Заблокированный'}
+              </InformModalText>
+            </>
           )}
         </Stack>
       </InformModal>
@@ -125,7 +126,7 @@ const UpdateWorkTypeForm = () => {
             <TextInput
               {...form.getInputProps('newName')}
               label="Название"
-              maxLength={15}
+              maxLength={30}
             />
             <Select
               {...form.getInputProps('isActive')}

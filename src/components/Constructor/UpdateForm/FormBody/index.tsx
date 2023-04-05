@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { SelectItem } from '@mantine/core';
 import { UseFormReturnType } from '@mantine/form';
+import { DatePickerInput } from '@mantine/dates';
 import dayjs from 'dayjs';
 
 import { showErrorNotification } from '../../../../helpers/showErrorNotification';
@@ -12,7 +13,9 @@ import { UserUpdateFormValues, User } from '../../../../store/apis/user/types';
 import { Roles } from '../../../../store/slices/auth/types';
 import Loader from '../../../Loader';
 import Select from '../../../Select';
-import DatePicker from '../../../DatePicker';
+// TODO:
+// import DatePicker from '../../../DatePicker';
+import { useDateInputStyles } from '../../../DatePicker/styles';
 import InformModal from '../../../InformModal';
 import { InformModalText } from '../../../styles';
 import DetailsCard from './DetailsCard';
@@ -40,6 +43,20 @@ const FormBody = ({
 }: Props) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
+  const {
+    classes: {
+      input,
+      label,
+      error,
+      wrapper,
+      calendar,
+      calendarHeaderControl,
+      calendarHeaderLevel,
+      weekday,
+      day,
+      rightSection,
+    },
+  } = useDateInputStyles();
   const [
     resetPassword,
     { data: passwordChangedUser, isLoading: isResetPasswordLoading },
@@ -127,7 +144,25 @@ const FormBody = ({
           <DetailsCard text={user.middleName} label="Отчество" />
           <DetailsCard text={user.username} label="Логин" />
           {isUpdate ? (
-            <DatePicker {...form.getInputProps('dateOfDismissal')} />
+            <DatePickerInput
+              {...form.getInputProps('dateOfDismissal')}
+              label="Дата увольнения"
+              placeholder="Выберите дату"
+              clearable
+              valueFormat="DD.MM.YYYY"
+              classNames={{
+                wrapper,
+                calendar,
+                calendarHeaderControl,
+                calendarHeaderLevel,
+                weekday,
+                day,
+                label,
+                input,
+                error,
+                rightSection,
+              }}
+            />
           ) : (
             <DetailsCard
               text={
