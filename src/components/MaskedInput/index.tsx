@@ -41,7 +41,7 @@ const MaskedTextInput = IMaskMixin(
         error: {
           fontSize: 24,
           lineHeight: '26px',
-          wordBreak: 'break-all',
+          wordBreak: 'break-word',
         },
       }}
     />

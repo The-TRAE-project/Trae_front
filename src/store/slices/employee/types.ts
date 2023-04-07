@@ -3,6 +3,7 @@ export interface InitialState {
   employee: Employee | null;
   isLoading: 'idle' | 'pending';
   isModalOpen: boolean;
+  employeeToEdit: any;
 }
 
 export interface Employee {

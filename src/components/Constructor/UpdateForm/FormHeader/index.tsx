@@ -38,7 +38,7 @@ const FormHeader = ({
         isOpen={isOpen}
         onClose={onClose}
         title={
-          user ? `${user.firstName} ${user.lastName} успешно добавлен` : ''
+          user ? `${user.firstName} ${user.lastName} изменения сохранены` : ''
         }
       >
         <Stack spacing={20}>

@@ -1,12 +1,14 @@
+import { Indicator } from '@mantine/core';
 import { DatePickerInput } from '@mantine/dates';
+import { FC } from 'react';
 
-import { useDateInputStyles } from './styles';
+import { useDateInputStyles, useIndicatorStyles } from './styles';
 
 interface Props {
   defaultValue?: Date;
 }
 
-const DatePicker = ({ defaultValue, ...props }: Props) => {
+const DatePicker: FC<Props> = ({ defaultValue, ...props }) => {
   const {
     classes: {
       input,
@@ -21,6 +23,9 @@ const DatePicker = ({ defaultValue, ...props }: Props) => {
       rightSection,
     },
   } = useDateInputStyles();
+  const {
+    classes: { indicator },
+  } = useIndicatorStyles();
 
   return (
     <DatePickerInput
@@ -41,6 +46,21 @@ const DatePicker = ({ defaultValue, ...props }: Props) => {
         input,
         error,
         rightSection,
+      }}
+      renderDay={(date) => {
+        const data = date.getDate();
+
+        return (
+          <Indicator
+            size={6}
+            color="red"
+            position="bottom-center"
+            disabled={data !== new Date().getDate()}
+            classNames={{ indicator }}
+          >
+            <div>{data}</div>
+          </Indicator>
+        );
       }}
     />
   );

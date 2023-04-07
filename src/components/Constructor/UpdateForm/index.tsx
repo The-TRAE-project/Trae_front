@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useLocation } from 'react-router-dom';
 import { useForm, zodResolver } from '@mantine/form';
 
 import {
@@ -12,6 +11,7 @@ import {
 } from '../../../store/apis/user/types';
 import { showErrorNotification } from '../../../helpers/showErrorNotification';
 import { useDisplayError } from '../../../helpers/hooks/useDisplayError';
+import { useAppSelector } from '../../../helpers/hooks/useAppSelector';
 import FormHeader from './FormHeader';
 import FormBody from './FormBody';
 import { Form } from './styles';
@@ -20,8 +20,7 @@ const UpdateForm = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isUpdate, setIsUpdate] = useState<boolean>(false);
 
-  const location = useLocation();
-  const constructorId = location.state.id;
+  const { constructorId } = useAppSelector((store) => store.builder);
 
   const [
     updateUserSomeFields,
@@ -32,7 +31,7 @@ const UpdateForm = () => {
     isLoading: isGetLoading,
     error,
     isError,
-  } = useGetUserDetailsQuery(constructorId);
+  } = useGetUserDetailsQuery(constructorId as number);
 
   const form = useForm<Omit<UserUpdateFormValues, 'managerId'>>({
     initialValues: {

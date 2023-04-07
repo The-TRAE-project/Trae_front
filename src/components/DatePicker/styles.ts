@@ -1,6 +1,14 @@
 import { createStyles } from '@mantine/core';
 
 export const useDateInputStyles = createStyles(() => ({
+  wrapper: {
+    borderRadius: 'var(--border-radius)',
+
+    'mantine-Popover-dropdown': {
+      borderRadius: 'var(--border-radius)',
+    },
+  },
+
   input: {
     minHeight: 73,
     height: 73,
@@ -31,15 +39,7 @@ export const useDateInputStyles = createStyles(() => ({
   error: {
     fontSize: 24,
     lineHeight: '26px',
-    wordBreak: 'break-all',
-  },
-
-  wrapper: {
-    borderRadius: 40,
-
-    '.mantine-Popover-dropdown': {
-      borderRadius: 40,
-    },
+    wordBreak: 'break-word',
   },
 
   calendar: {
@@ -107,5 +107,14 @@ export const useDateInputStyles = createStyles(() => ({
         height: 35,
       },
     },
+  },
+}));
+
+export const useIndicatorStyles = createStyles(() => ({
+  indicator: {
+    backgroundColor: 'var(--dark-purple)',
+    width: '12px !important',
+    height: '2px !important',
+    borderRadius: '6px !important',
   },
 }));

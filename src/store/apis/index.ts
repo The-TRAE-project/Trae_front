@@ -10,6 +10,7 @@ import { logOutUser, setCredentials } from '../slices/auth';
 import { logOutEmployee } from '../slices/employee';
 import { TokenValue } from '../slices/auth/types';
 import { RootState } from '..';
+import { clearConstructorState } from '../slices/constructor';
 
 const baseQuery = fetchBaseQuery({
   baseUrl: import.meta.env.PROD
@@ -56,6 +57,8 @@ const baseQueryWithReAuth = async (
     } else {
       api.dispatch(logOutUser());
       api.dispatch(logOutEmployee());
+      api.dispatch(clearConstructorState());
+      localStorage.removeItem('navbar-list');
     }
   }
 

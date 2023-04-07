@@ -5,8 +5,9 @@ import {
   Project,
   StageInWork,
   ReceiveProjectStageValue,
-  EmployeeFormValue,
   Employee,
+  CreateEmployeeReturnType,
+  EmployeeFormValues,
 } from './types';
 
 const employeeTags = baseApi.enhanceEndpoints({
@@ -57,7 +58,10 @@ const employeeApi = employeeTags.injectEndpoints({
       // invalidatesTags: ['StagesInWork'],
     }),
 
-    createEmployee: build.mutation<void, EmployeeFormValue>({
+    createEmployee: build.mutation<
+      CreateEmployeeReturnType,
+      EmployeeFormValues
+    >({
       query(body) {
         return {
           url: '/employee/register',
@@ -70,8 +74,19 @@ const employeeApi = employeeTags.injectEndpoints({
 
     getAllEmployees: build.query<FilteredResponse<Employee[]>, FilterValues>({
       query: (query) =>
-        `/type-work/types?direction=asc${query.elementPerPage}${query.isActive}${query.page}${query.typeWorkId}`,
+        `/employee/employees?direction=asc${query.elementPerPage}${query.isActive}${query.page}${query.typeWorkId}`,
       providesTags: ['Employee'],
+    }),
+
+    editEmployee: build.mutation<CreateEmployeeReturnType, EmployeeFormValues>({
+      query(body) {
+        return {
+          url: '/employee/register',
+          method: 'POST',
+          body,
+        };
+      },
+      invalidatesTags: ['Employee'],
     }),
   }),
 });
@@ -84,4 +99,5 @@ export const {
   useFinishProjectStageMutation,
   useCreateEmployeeMutation,
   useGetAllEmployeesQuery,
+  useEditEmployeeMutation,
 } = employeeApi;
