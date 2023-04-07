@@ -1,5 +1,6 @@
+// TODO:
 import { Dispatch, SetStateAction } from 'react';
-import { Menu } from '@mantine/core';
+import { Menu, Checkbox, Group } from '@mantine/core';
 
 import { useGetAllRolesQuery } from '../../../store/apis/user';
 import { Status } from '../../../store/apis/user/types';
@@ -7,6 +8,7 @@ import Filter from '../../svgs/Filter';
 import {
   FilterMenuItemTitle,
   UnstyledButton,
+  useCheckboxStyles,
   useFilterMenuStyles,
 } from '../../styles';
 
@@ -39,6 +41,9 @@ const UserFilterMenu = ({
   resetStatus,
 }: Props) => {
   const { classes } = useFilterMenuStyles();
+  const {
+    classes: { input, inner, icon },
+  } = useCheckboxStyles();
   const { data: roles } = useGetAllRolesQuery();
 
   return (
@@ -59,26 +64,44 @@ const UserFilterMenu = ({
         <Menu.Label>Статус</Menu.Label>
         {statuses.map((item) => (
           <Menu.Item key={item.value} onClick={() => setStatus(item.value)}>
-            <FilterMenuItemTitle $active={item.value === status}>
-              {item.title}
-            </FilterMenuItemTitle>
+            <Group spacing={12}>
+              <Checkbox
+                checked={item.value === status}
+                classNames={{ input, inner, icon }}
+              />
+              <FilterMenuItemTitle $active={item.value === status}>
+                {item.title}
+              </FilterMenuItemTitle>
+            </Group>
           </Menu.Item>
         ))}
         <Menu.Item onClick={resetStatus}>
-          <FilterMenuItemTitle $active={!status}>Все</FilterMenuItemTitle>
+          <Group spacing={12}>
+            <Checkbox checked={!status} classNames={{ input, inner, icon }} />
+            <FilterMenuItemTitle $active={!status}>Все</FilterMenuItemTitle>
+          </Group>
         </Menu.Item>
 
         <Menu.Label>Категория</Menu.Label>
         {!!roles &&
           Object.values(roles).map((item) => (
             <Menu.Item key={item} onClick={() => setRole(item)}>
-              <FilterMenuItemTitle $active={item === role}>
-                {item}
-              </FilterMenuItemTitle>
+              <Group spacing={12}>
+                <Checkbox
+                  checked={item === role}
+                  classNames={{ input, inner, icon }}
+                />
+                <FilterMenuItemTitle $active={item === role}>
+                  {item}
+                </FilterMenuItemTitle>
+              </Group>
             </Menu.Item>
           ))}
         <Menu.Item onClick={resetRole}>
-          <FilterMenuItemTitle $active={!role}> Все</FilterMenuItemTitle>
+          <Group spacing={12}>
+            <Checkbox checked={!role} classNames={{ input, inner, icon }} />
+            <FilterMenuItemTitle $active={!role}> Все</FilterMenuItemTitle>
+          </Group>
         </Menu.Item>
       </Menu.Dropdown>
     </Menu>

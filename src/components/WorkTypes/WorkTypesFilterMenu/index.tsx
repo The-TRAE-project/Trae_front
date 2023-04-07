@@ -1,11 +1,13 @@
+// TODO:
 import { Dispatch, SetStateAction } from 'react';
-import { Menu } from '@mantine/core';
+import { Menu, Checkbox, Group } from '@mantine/core';
 
 import { Status } from '../../../store/apis/user/types';
 import Filter from '../../svgs/Filter';
 import {
   FilterMenuItemTitle,
   UnstyledButton,
+  useCheckboxStyles,
   useFilterMenuStyles,
 } from '../../styles';
 
@@ -28,6 +30,9 @@ interface Props {
 
 const WorkTypesFilterMenu = ({ status, setStatus, resetStatus }: Props) => {
   const { classes } = useFilterMenuStyles();
+  const {
+    classes: { input, inner, icon },
+  } = useCheckboxStyles();
 
   return (
     <Menu
@@ -47,13 +52,22 @@ const WorkTypesFilterMenu = ({ status, setStatus, resetStatus }: Props) => {
         <Menu.Label>Статус</Menu.Label>
         {statuses.map((item) => (
           <Menu.Item key={item.value} onClick={() => setStatus(item.value)}>
-            <FilterMenuItemTitle $active={item.value === status}>
-              {item.title}
-            </FilterMenuItemTitle>
+            <Group spacing={12}>
+              <Checkbox
+                checked={item.value === status}
+                classNames={{ input, inner, icon }}
+              />
+              <FilterMenuItemTitle $active={item.value === status}>
+                {item.title}
+              </FilterMenuItemTitle>
+            </Group>
           </Menu.Item>
         ))}
         <Menu.Item onClick={resetStatus}>
-          <FilterMenuItemTitle $active={!status}>Все</FilterMenuItemTitle>
+          <Group spacing={12}>
+            <Checkbox checked={!status} classNames={{ input, inner, icon }} />
+            <FilterMenuItemTitle $active={!status}>Все</FilterMenuItemTitle>
+          </Group>
         </Menu.Item>
       </Menu.Dropdown>
     </Menu>

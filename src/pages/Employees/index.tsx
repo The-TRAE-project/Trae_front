@@ -17,7 +17,7 @@ import {
 } from '../../components/styles';
 
 const Employees = () => {
-  const [paramTypeWorkId, setParamTypeWorkId] = useState<number | null>(null);
+  const [paramTypeWorkIds, setParamTypeWorkIds] = useState<number[] | null>([]);
   const [paramActive, setParamActive] = useState<Status | null>(Status.ACTIVE);
 
   const navigate = useNavigate();
@@ -42,9 +42,9 @@ const Employees = () => {
                   status={paramActive}
                   setStatus={setParamActive}
                   resetStatus={() => setParamActive(null)}
-                  typeWork={paramTypeWorkId}
-                  setTypeWork={setParamTypeWorkId}
-                  resetTypeWork={() => setParamTypeWorkId(null)}
+                  typeWorks={paramTypeWorkIds}
+                  setTypeWorks={setParamTypeWorkIds}
+                  resetTypeWork={() => setParamTypeWorkIds(null)}
                 />
                 <UnstyledButton onClick={navigateToHome} type="button">
                   <Home />
@@ -61,7 +61,7 @@ const Employees = () => {
             </Group>
 
             <EmployeesListItem
-              paramTypeWorkId={paramTypeWorkId}
+              paramTypeWorkIds={paramTypeWorkIds}
               paramActive={paramActive}
             />
           </Stack>

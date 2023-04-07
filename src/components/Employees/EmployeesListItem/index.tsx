@@ -9,11 +9,11 @@ import EmployeeItem from './EmployeeItem';
 import { Grid, Wrapper } from './styles';
 
 interface Props {
-  paramTypeWorkId: number | null;
+  paramTypeWorkIds: number[] | null;
   paramActive: Status | null;
 }
 
-const EmployeesListItem = ({ paramTypeWorkId, paramActive }: Props) => {
+const EmployeesListItem = ({ paramTypeWorkIds, paramActive }: Props) => {
   const [page, setPage] = useState<number>(0);
 
   const {
@@ -23,7 +23,8 @@ const EmployeesListItem = ({ paramTypeWorkId, paramActive }: Props) => {
     isLoading,
   } = useGetAllEmployeesQuery({
     elementPerPage: `&elementPerPage=${10}`,
-    typeWorkId: paramTypeWorkId ? `&typeWorkId=${paramTypeWorkId}` : '',
+    typeWorkId:
+      paramTypeWorkIds?.length !== 0 ? `&typeWorkId=${paramTypeWorkIds}` : '',
     isActive: paramActive ? `&isActive=${paramActive}` : '',
     page: `&page=${page}`,
   });

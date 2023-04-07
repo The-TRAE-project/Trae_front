@@ -102,8 +102,8 @@ export const OrangeButton = styled.button`
 export const useFilterMenuStyles = createStyles(() => ({
   dropdown: {
     left: '320px !important',
-    maxWidth: 306,
-    maxHeight: 420,
+    maxWidth: 314,
+    maxHeight: 450,
     border: 'none',
     background: 'var(--white)',
     padding: '24px 30px',
@@ -117,10 +117,11 @@ export const useFilterMenuStyles = createStyles(() => ({
     fontSize: 24,
     lineHeight: '28px',
     color: 'var(--white-black)',
+    marginBottom: 10,
   },
 
   item: {
-    padding: '9px 10px 9px 34px',
+    padding: '9px 0 9px',
     fontWeight: 400,
     fontSize: 24,
     lineHeight: '28px',
@@ -132,6 +133,8 @@ type FilterMenuItemTitleProps = {
 };
 
 export const FilterMenuItemTitle = styled.p<FilterMenuItemTitleProps>`
+  max-width: 208px;
+  word-break: break-word;
   color: ${(props) => (props.$active ? 'var(--orange)' : 'var(--white-black)')};
   transition: var(--transition);
 `;
@@ -165,3 +168,28 @@ export const InformModalText = styled.p`
   text-align: center;
   color: var(--white-black);
 `;
+
+export const useCheckboxStyles = createStyles(() => ({
+  input: {
+    width: 31,
+    height: 31,
+    border: '1.5px solid var(--gray)',
+    borderRadius: '4px',
+
+    '&:checked': {
+      backgroundColor: 'var(--white)',
+      borderColor: 'var(--gray)',
+    },
+  },
+
+  inner: {
+    width: 31,
+    height: 31,
+  },
+
+  icon: {
+    width: 19,
+    height: 19,
+    color: 'var(--orange) !important',
+  },
+}));

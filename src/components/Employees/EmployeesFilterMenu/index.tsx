@@ -1,5 +1,5 @@
-import { Dispatch, SetStateAction } from 'react';
-import { Menu } from '@mantine/core';
+import { Dispatch, SetStateAction, useState, useEffect } from 'react';
+import { Menu, Checkbox, Group } from '@mantine/core';
 
 import { useGetActiveWorkTypesQuery } from '../../../store/apis/workTypes';
 import { Status } from '../../../store/apis/user/types';
@@ -7,9 +7,11 @@ import Filter from '../../svgs/Filter';
 import {
   FilterMenuItemTitle,
   UnstyledButton,
+  useCheckboxStyles,
   useFilterMenuStyles,
 } from '../../styles';
 import { OverflowWrapper } from './styles';
+import EmployeesFilterMenuItem from './EmployeesFilterMenuItem';
 
 const statuses = [
   {
@@ -22,9 +24,14 @@ const statuses = [
   },
 ];
 
+export type ModifiedWorkType = {
+  id: number;
+  isChecked: boolean;
+  workType: string;
+};
 interface Props {
-  typeWork: number | null;
-  setTypeWork: Dispatch<SetStateAction<number | null>>;
+  typeWorks: number[] | null;
+  setTypeWorks: Dispatch<SetStateAction<number[] | null>>;
   resetTypeWork: () => void;
   status: Status | null;
   setStatus: Dispatch<SetStateAction<Status | null>>;
@@ -32,15 +39,30 @@ interface Props {
 }
 
 const EmployeesFilterMenu = ({
-  typeWork,
-  setTypeWork,
+  typeWorks,
+  setTypeWorks,
   resetTypeWork,
   status,
   setStatus,
   resetStatus,
 }: Props) => {
+  const [data, setData] = useState<ModifiedWorkType[]>([]);
+
   const { classes } = useFilterMenuStyles();
+  const {
+    classes: { input, inner, icon },
+  } = useCheckboxStyles();
   const { data: workTypes } = useGetActiveWorkTypesQuery();
+
+  useEffect(() => {
+    const modifiedWorkTypes = workTypes?.map((workType) => ({
+      id: workType.id,
+      workType: workType.name,
+      isChecked: false,
+    }));
+
+    setData(modifiedWorkTypes || []);
+  }, [workTypes]);
 
   return (
     <Menu
@@ -60,30 +82,50 @@ const EmployeesFilterMenu = ({
         <Menu.Label>Статус</Menu.Label>
         {statuses.map((item) => (
           <Menu.Item key={item.value} onClick={() => setStatus(item.value)}>
-            <FilterMenuItemTitle $active={item.value === status}>
-              {item.title}
-            </FilterMenuItemTitle>
+            <Group spacing={12}>
+              <Checkbox
+                defaultChecked={item.value === status}
+                classNames={{ input, inner, icon }}
+              />
+              <FilterMenuItemTitle $active={item.value === status}>
+                {item.title}
+              </FilterMenuItemTitle>
+            </Group>
           </Menu.Item>
         ))}
         <Menu.Item onClick={resetStatus}>
-          <FilterMenuItemTitle $active={!status}>Все</FilterMenuItemTitle>
+          <Group spacing={12}>
+            <Checkbox
+              defaultChecked={!status}
+              classNames={{ input, inner, icon }}
+            />
+            <FilterMenuItemTitle $active={!status}>Все</FilterMenuItemTitle>
+          </Group>
         </Menu.Item>
 
         <Menu.Label>Категория</Menu.Label>
         <OverflowWrapper>
           <Menu.Item onClick={resetTypeWork}>
-            <FilterMenuItemTitle $active={!typeWork}> Все</FilterMenuItemTitle>
+            <Group spacing={12}>
+              <Checkbox
+                defaultChecked={typeWorks?.length === 0}
+                classNames={{ input, inner, icon }}
+              />
+              <FilterMenuItemTitle $active={typeWorks?.length === 0}>
+                Все
+              </FilterMenuItemTitle>
+            </Group>
           </Menu.Item>
-          {!!workTypes &&
-            workTypes.map((workType) => (
-              <Menu.Item
+          {!!data &&
+            data.map((workType) => (
+              <EmployeesFilterMenuItem
                 key={workType.id}
-                onClick={() => setTypeWork(workType.id)}
-              >
-                <FilterMenuItemTitle $active={workType.id === typeWork}>
-                  {workType.name}
-                </FilterMenuItemTitle>
-              </Menu.Item>
+                workType={workType}
+                typeWorks={typeWorks}
+                setTypeWorks={setTypeWorks}
+                data={data}
+                setData={setData}
+              />
             ))}
         </OverflowWrapper>
       </Menu.Dropdown>
