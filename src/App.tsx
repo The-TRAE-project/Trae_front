@@ -1,5 +1,4 @@
-import { useEffect } from 'react';
-import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 
 import Layout from './components/Layout';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -15,25 +14,22 @@ import Projects from './pages/Projects';
 import Constructors from './pages/Constructors';
 import CreateConstructor from './pages/CreateConstructor';
 import UpdateUser from './pages/UpdateUser';
+import Employees from './pages/Employees';
+import CreateEmployee from './pages/CreateEmployee';
+import WorkTypes from './pages/WorkTypes';
+import UpdateWorkType from './pages/UpdateWorkType';
+import CreateWorkType from './pages/CreateWorkType';
+import UpdateEmployee from './pages/UpdateEmployee';
 
 import { useAppSelector } from './helpers/hooks/useAppSelector';
+import { useNavigateLoggedInUser } from './helpers/hooks/useNavigateLoggedInUser';
 import { Roles } from './store/slices/auth/types';
 
 const App = () => {
-  const navigate = useNavigate();
   const { isLoggedIn } = useAppSelector((store) => store.employee);
-  const { permission, accessToken } = useAppSelector((store) => store.auth);
+  const { permission } = useAppSelector((store) => store.auth);
   // TODO:
-  useEffect(() => {
-    if (accessToken) {
-      if (permission === Roles.ADMIN) {
-        navigate(Paths.PROJECTS);
-      } else if (permission === Roles.EMPLOYEE) {
-        navigate(Paths.EMPLOYEE_LOGIN);
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [accessToken, permission]);
+  useNavigateLoggedInUser();
 
   return (
     <Layout>
@@ -57,6 +53,12 @@ const App = () => {
             element={<CreateConstructor />}
           />
           <Route path={Paths.CONSTRUCTORS_EDITING} element={<UpdateUser />} />
+          <Route path={Paths.EMPLOYEES} element={<Employees />} />
+          <Route path={Paths.EMPLOYEES_CREATE} element={<CreateEmployee />} />
+          <Route path={Paths.EMPLOYEES_EDITING} element={<UpdateEmployee />} />
+          <Route path={Paths.WORK_TYPES} element={<WorkTypes />} />
+          <Route path={Paths.WORK_TYPES_EDITING} element={<UpdateWorkType />} />
+          <Route path={Paths.WORK_TYPES_CREATE} element={<CreateWorkType />} />
         </Route>
 
         {/* Employee routes */}

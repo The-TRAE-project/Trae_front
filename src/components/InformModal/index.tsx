@@ -2,26 +2,27 @@ import { ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Group, Modal as MantineModal, Stack } from '@mantine/core';
 
-import { UnstyledButton } from '../../styles';
-import ArrowLeft from '../../svgs/ArrowLeft';
-import Home from '../../svgs/Home';
+import { Paths } from '../../constants/paths';
+import ArrowLeft from '../svgs/ArrowLeft';
+import Home from '../svgs/Home';
+import { UnstyledButton } from '../styles';
 import { Title, useModalStyles } from './styles';
-import { Paths } from '../../../constants/paths';
 
 interface Props {
   isOpen: boolean;
   onClose: () => void;
-  children: ReactNode;
+  children?: ReactNode;
   title: string;
+  backPath: string;
 }
 
-const InformModal = ({ isOpen, onClose, children, title }: Props) => {
+const InformModal = ({ isOpen, onClose, children, title, backPath }: Props) => {
   const navigate = useNavigate();
   const { classes } = useModalStyles();
 
   const navigateBack = () => {
     onClose();
-    navigate(-1);
+    navigate(backPath);
   };
 
   const navigateToHome = () => {

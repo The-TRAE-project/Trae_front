@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Box } from '@mantine/core';
+import { Box, createStyles } from '@mantine/core';
 
 import bg from '../../assets/bg.svg';
 
@@ -98,3 +98,98 @@ export const OrangeButton = styled.button`
     outline: none;
   }
 `;
+
+export const useFilterMenuStyles = createStyles(() => ({
+  dropdown: {
+    left: '320px !important',
+    maxWidth: 314,
+    maxHeight: 450,
+    border: 'none',
+    background: 'var(--white)',
+    padding: '24px 30px',
+    boxShadow: '0px 4px 4px var(--black-shadow)',
+    borderRadius: 'var(--border-radius)',
+  },
+
+  label: {
+    padding: 0,
+    fontWeight: 600,
+    fontSize: 24,
+    lineHeight: '28px',
+    color: 'var(--white-black)',
+    marginBottom: 10,
+  },
+
+  item: {
+    padding: '9px 0 9px',
+    fontWeight: 400,
+    fontSize: 24,
+    lineHeight: '28px',
+  },
+}));
+
+type FilterMenuItemTitleProps = {
+  $active?: boolean;
+};
+
+export const FilterMenuItemTitle = styled.p<FilterMenuItemTitleProps>`
+  max-width: 208px;
+  word-break: break-word;
+  color: ${(props) => (props.$active ? 'var(--orange)' : 'var(--white-black)')};
+  transition: var(--transition);
+`;
+
+export const BgWhiteCard = styled.div`
+  position: relative;
+  ${({ theme }) => theme.mixins.fCenter};
+  padding: 22px 30px;
+  width: 620px;
+  height: 79px;
+  background: var(--white);
+  border-radius: var(--border-radius);
+`;
+
+export const BgWhiteCardLinkBtn = styled.button`
+  background: none;
+  border: none;
+  font-weight: 600;
+  ${({ theme }) => theme.mixins.fontSize30};
+  color: var(--white-black);
+
+  &:is(:focus, :focus-within) {
+    outline: none;
+  }
+`;
+
+export const InformModalText = styled.p`
+  font-family: var(--font-roboto);
+  font-weight: 400;
+  ${({ theme }) => theme.mixins.fontSize28}
+  text-align: center;
+  color: var(--white-black);
+`;
+
+export const useCheckboxStyles = createStyles(() => ({
+  input: {
+    width: 31,
+    height: 31,
+    border: '1.5px solid var(--gray)',
+    borderRadius: '4px',
+
+    '&:checked': {
+      backgroundColor: 'var(--white)',
+      borderColor: 'var(--gray)',
+    },
+  },
+
+  inner: {
+    width: 31,
+    height: 31,
+  },
+
+  icon: {
+    width: 19,
+    height: 19,
+    color: 'var(--orange) !important',
+  },
+}));

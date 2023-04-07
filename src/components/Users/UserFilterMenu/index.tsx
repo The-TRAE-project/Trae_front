@@ -1,11 +1,16 @@
+// TODO:
 import { Dispatch, SetStateAction } from 'react';
-import { Menu } from '@mantine/core';
+import { Menu, Checkbox, Group } from '@mantine/core';
 
 import { useGetAllRolesQuery } from '../../../store/apis/user';
 import { Status } from '../../../store/apis/user/types';
-import { UnstyledButton } from '../../styles';
 import Filter from '../../svgs/Filter';
-import { MenuItemTitle, useUserFilterStyles } from './styles';
+import {
+  FilterMenuItemTitle,
+  UnstyledButton,
+  useCheckboxStyles,
+  useFilterMenuStyles,
+} from '../../styles';
 
 const statuses = [
   {
@@ -35,7 +40,10 @@ const UserFilterMenu = ({
   setStatus,
   resetStatus,
 }: Props) => {
-  const { classes } = useUserFilterStyles();
+  const { classes } = useFilterMenuStyles();
+  const {
+    classes: { input, inner, icon },
+  } = useCheckboxStyles();
   const { data: roles } = useGetAllRolesQuery();
 
   return (
@@ -56,24 +64,44 @@ const UserFilterMenu = ({
         <Menu.Label>Статус</Menu.Label>
         {statuses.map((item) => (
           <Menu.Item key={item.value} onClick={() => setStatus(item.value)}>
-            <MenuItemTitle $active={item.value === status}>
-              {item.title}
-            </MenuItemTitle>
+            <Group spacing={12}>
+              <Checkbox
+                checked={item.value === status}
+                classNames={{ input, inner, icon }}
+              />
+              <FilterMenuItemTitle $active={item.value === status}>
+                {item.title}
+              </FilterMenuItemTitle>
+            </Group>
           </Menu.Item>
         ))}
         <Menu.Item onClick={resetStatus}>
-          <MenuItemTitle $active={!status}>Все</MenuItemTitle>
+          <Group spacing={12}>
+            <Checkbox checked={!status} classNames={{ input, inner, icon }} />
+            <FilterMenuItemTitle $active={!status}>Все</FilterMenuItemTitle>
+          </Group>
         </Menu.Item>
 
         <Menu.Label>Категория</Menu.Label>
         {!!roles &&
           Object.values(roles).map((item) => (
             <Menu.Item key={item} onClick={() => setRole(item)}>
-              <MenuItemTitle $active={item === role}>{item}</MenuItemTitle>
+              <Group spacing={12}>
+                <Checkbox
+                  checked={item === role}
+                  classNames={{ input, inner, icon }}
+                />
+                <FilterMenuItemTitle $active={item === role}>
+                  {item}
+                </FilterMenuItemTitle>
+              </Group>
             </Menu.Item>
           ))}
         <Menu.Item onClick={resetRole}>
-          <MenuItemTitle $active={!role}> Все</MenuItemTitle>
+          <Group spacing={12}>
+            <Checkbox checked={!role} classNames={{ input, inner, icon }} />
+            <FilterMenuItemTitle $active={!role}> Все</FilterMenuItemTitle>
+          </Group>
         </Menu.Item>
       </Menu.Dropdown>
     </Menu>

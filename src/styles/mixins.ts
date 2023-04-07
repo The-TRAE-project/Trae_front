@@ -67,6 +67,15 @@ const mixins = {
     border-radius: 50%;
   `,
 
+  wrapper: css`
+    position: relative;
+    min-height: calc(100vh - 336px);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 3rem;
+  `,
+
   // animations
   loader: keyframes`
     0%{

@@ -26,13 +26,6 @@ export interface ManagerChangePasswordValue {
   oldPassword: string;
 }
 
-export interface FilteredResponse<T> {
-  content: T;
-  currentNumberPage: number;
-  totalElements: number;
-  totalPages: number;
-}
-
 export interface UserLoginValue {
   password: string;
   username: string;
@@ -41,13 +34,6 @@ export interface UserShortInfo {
   firstName: string;
   lastName: string;
   managerId: number;
-}
-
-export interface UserFilterValues {
-  elementPerPage?: string;
-  page?: string;
-  role?: string;
-  status?: string;
 }
 
 export enum Status {

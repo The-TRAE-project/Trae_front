@@ -1,8 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 
 import { Paths } from '../../../../constants/paths';
+import { useAppDispatch } from '../../../../helpers/hooks/useAppDispatch';
 import { UserShortInfo } from '../../../../store/apis/user/types';
-import { LinkBtn, Wrapper } from './styles';
+import { setConstructor } from '../../../../store/slices/constructor';
+import { BgWhiteCard, BgWhiteCardLinkBtn } from '../../../styles';
 
 interface Props {
   user: UserShortInfo;
@@ -10,17 +12,19 @@ interface Props {
 
 const UserItem = ({ user }: Props) => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
-  const navigateToEditing = () => {
-    navigate(Paths.CONSTRUCTORS_EDITING, { state: { id: user.managerId } });
+  const navigateToEditingPage = () => {
+    navigate(Paths.CONSTRUCTORS_EDITING);
+    dispatch(setConstructor(user.managerId));
   };
 
   return (
-    <Wrapper>
-      <LinkBtn onClick={navigateToEditing} type="button">
+    <BgWhiteCard>
+      <BgWhiteCardLinkBtn onClick={navigateToEditingPage} type="button">
         {user.firstName} {user.lastName}
-      </LinkBtn>
-    </Wrapper>
+      </BgWhiteCardLinkBtn>
+    </BgWhiteCard>
   );
 };
 

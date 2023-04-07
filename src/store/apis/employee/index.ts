@@ -1,18 +1,20 @@
 import { baseApi } from '..';
+import { FilteredResponse, FilterValues } from '../types';
 import {
   ProjectStage,
   Project,
   StageInWork,
   ReceiveProjectStageValue,
-  EmployeeFormValue,
-  WorkType,
-  WorkTypeValue,
+  Employee,
+  CreateEmployeeReturnType,
+  EmployeeFormValues,
+  EmployeeUpdateFormValues,
 } from './types';
 
 const employeeTags = baseApi.enhanceEndpoints({
-  addTagTypes: ['Employee', 'ProjectStage', 'WorkTypes', 'StagesInWork'],
+  addTagTypes: ['Employee', 'ProjectStage', 'StagesInWork'],
 });
-// TODO:
+
 const employeeApi = employeeTags.injectEndpoints({
   endpoints: (build) => ({
     getAvailableProjectsByEmployeeId: build.query<Project[], number>({
@@ -57,7 +59,10 @@ const employeeApi = employeeTags.injectEndpoints({
       // invalidatesTags: ['StagesInWork'],
     }),
 
-    createEmployee: build.mutation<void, EmployeeFormValue>({
+    createEmployee: build.mutation<
+      CreateEmployeeReturnType,
+      EmployeeFormValues
+    >({
       query(body) {
         return {
           url: '/employee/register',
@@ -65,22 +70,24 @@ const employeeApi = employeeTags.injectEndpoints({
           body,
         };
       },
+      invalidatesTags: ['Employee'],
     }),
 
-    getAllWorkTypes: build.query<WorkType[], void>({
-      query: () => '/type-work/types',
-      providesTags: ['WorkTypes'],
+    getAllEmployees: build.query<FilteredResponse<Employee[]>, FilterValues>({
+      query: (query) =>
+        `/employee/employees?direction=asc${query.elementPerPage}${query.isActive}${query.page}${query.typeWorkId}`,
+      providesTags: ['Employee'],
     }),
 
-    createWorkType: build.mutation<void, WorkTypeValue>({
+    editEmployee: build.mutation<Employee, EmployeeUpdateFormValues>({
       query(body) {
         return {
-          url: '/type-work/new',
+          url: '/employee/change-data',
           method: 'POST',
           body,
         };
       },
-      invalidatesTags: ['WorkTypes'],
+      invalidatesTags: ['Employee'],
     }),
   }),
 });
@@ -92,6 +99,6 @@ export const {
   useReceiveProjectStageMutation,
   useFinishProjectStageMutation,
   useCreateEmployeeMutation,
-  useGetAllWorkTypesQuery,
-  useCreateWorkTypeMutation,
+  useGetAllEmployeesQuery,
+  useEditEmployeeMutation,
 } = employeeApi;

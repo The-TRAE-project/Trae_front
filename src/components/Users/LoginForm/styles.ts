@@ -3,6 +3,7 @@ import { createStyles, TextInput } from '@mantine/core';
 
 export const FormWrapper = styled.form`
   ${({ theme }) => theme.mixins.column};
+  align-items: flex-start;
   gap: 40px;
 `;
 
@@ -99,7 +100,7 @@ export const Button = styled.button`
   border: none;
   background: var(--orange);
   border-radius: var(--border-radius);
-  font-weight: 600;
+  font-weight: 500;
   ${({ theme }) => theme.mixins.fontSize30};
   text-align: center;
   color: var(--white);

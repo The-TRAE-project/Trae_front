@@ -5,12 +5,11 @@ import dayjs from 'dayjs';
 
 import { Paths } from '../../../../constants/paths';
 import { UserUpdateReturnType } from '../../../../store/apis/user/types';
-import { OrangeButton, UnstyledButton } from '../../../styles';
+import { InformModalText, OrangeButton, UnstyledButton } from '../../../styles';
 import ArrowLeft from '../../../svgs/ArrowLeft';
 import Home from '../../../svgs/Home';
 import Loader from '../../../Loader';
-import InformModal from '../../InformModal';
-import { InformText } from '../../styles';
+import InformModal from '../../../InformModal';
 
 interface Props {
   isLoading: boolean;
@@ -39,30 +38,31 @@ const FormHeader = ({
         isOpen={isOpen}
         onClose={onClose}
         title={
-          user ? `${user.firstName} ${user.lastName} успешно добавлен` : ''
+          user ? `${user.firstName} ${user.lastName} изменения сохранены` : ''
         }
+        backPath={Paths.CONSTRUCTORS}
       >
         <Stack spacing={20}>
           {!!user && (
             <>
-              <InformText>
+              <InformModalText>
                 Роль: <strong>{user.role}</strong>
-              </InformText>
-              <InformText>
+              </InformModalText>
+              <InformModalText>
                 Статус:&nbsp;
                 <strong>
                   {user.accountStatus ? 'Активный' : ' заблокированный'}
                 </strong>
-              </InformText>
+              </InformModalText>
               {!!user.dateOfDismissal && (
-                <InformText>
+                <InformModalText>
                   Дата увольнения:&nbsp;
                   <strong>
                     {dayjs(user?.dateOfDismissal.join('-')).format(
                       'DD.MM.YYYY'
                     )}
                   </strong>
-                </InformText>
+                </InformModalText>
               )}
             </>
           )}
@@ -70,7 +70,10 @@ const FormHeader = ({
       </InformModal>
       <Group position="apart" spacing={100}>
         <Group spacing={42}>
-          <UnstyledButton onClick={() => navigate(-1)} type="button">
+          <UnstyledButton
+            onClick={() => navigate(Paths.CONSTRUCTORS)}
+            type="button"
+          >
             <ArrowLeft />
           </UnstyledButton>
           <UnstyledButton

@@ -5,7 +5,7 @@ import { useDisplayError } from '../../../helpers/hooks/useDisplayError';
 import { Status } from '../../../store/apis/user/types';
 import SliderButtons from '../../SliderButtons';
 import Loader from '../../Loader';
-import ConstructorItem from './UserItem';
+import UserItem from './UserItem';
 import { Grid, Wrapper } from './styles';
 
 interface Props {
@@ -48,7 +48,7 @@ const UsersListItem = ({ paramRole, paramActive }: Props) => {
         <>
           <Grid>
             {users.content.map((user) => (
-              <ConstructorItem key={user.managerId} user={user} />
+              <UserItem key={user.managerId} user={user} />
             ))}
           </Grid>
 

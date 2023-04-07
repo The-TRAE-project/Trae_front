@@ -19,6 +19,7 @@ const variables = css`
     --gradient-green3: #367345;
     --light-green: #83cc8c;
     --light-green2: #8fb398;
+    --gray: #909491;
     --gray-shadow: rgba(255, 255, 255, 0.2);
 
     --font-roboto: 'Roboto', sans-serif;
