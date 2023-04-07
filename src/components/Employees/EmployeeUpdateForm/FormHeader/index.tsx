@@ -4,7 +4,7 @@ import { BsFillPencilFill } from 'react-icons/bs';
 import dayjs from 'dayjs';
 
 import { Paths } from '../../../../constants/paths';
-import { UserUpdateReturnType } from '../../../../store/apis/user/types';
+import { Employee } from '../../../../store/apis/employee/types';
 import { InformModalText, OrangeButton, UnstyledButton } from '../../../styles';
 import ArrowLeft from '../../../svgs/ArrowLeft';
 import Home from '../../../svgs/Home';
@@ -17,8 +17,7 @@ interface Props {
   onUpdate: () => void;
   isOpen: boolean;
   onClose: () => void;
-  user: UserUpdateReturnType | undefined;
-  isSubmitBtnDisabled: boolean;
+  employee: Employee | undefined;
 }
 
 const FormHeader = ({
@@ -27,8 +26,7 @@ const FormHeader = ({
   onUpdate,
   isOpen,
   onClose,
-  user,
-  isSubmitBtnDisabled,
+  employee,
 }: Props) => {
   const navigate = useNavigate();
 
@@ -38,32 +36,31 @@ const FormHeader = ({
         isOpen={isOpen}
         onClose={onClose}
         title={
-          user ? `${user.firstName} ${user.lastName} изменения сохранены` : ''
+          employee
+            ? `${employee.firstName} ${employee.lastName} изменения сохранены`
+            : ''
         }
-        backPath={Paths.CONSTRUCTORS}
+        backPath={Paths.EMPLOYEES}
       >
         <Stack spacing={20}>
-          {!!user && (
+          {!!employee && (
             <>
-              <InformModalText>
-                Роль: <strong>{user.role}</strong>
-              </InformModalText>
               <InformModalText>
                 Статус:&nbsp;
                 <strong>
-                  {user.accountStatus ? 'Активный' : ' заблокированный'}
+                  {employee.isActive ? 'Активный' : ' заблокированный'}
                 </strong>
               </InformModalText>
-              {!!user.dateOfDismissal && (
+              {/* {!!employee.dateOfEmployment && (
                 <InformModalText>
                   Дата увольнения:&nbsp;
                   <strong>
-                    {dayjs(user?.dateOfDismissal.join('-')).format(
+                    {dayjs(employee?.dateOfDismissal.join('-')).format(
                       'DD.MM.YYYY'
                     )}
                   </strong>
                 </InformModalText>
-              )}
+              )} */}
             </>
           )}
         </Stack>
@@ -71,7 +68,7 @@ const FormHeader = ({
       <Group position="apart" spacing={100}>
         <Group spacing={42}>
           <UnstyledButton
-            onClick={() => navigate(Paths.CONSTRUCTORS)}
+            onClick={() => navigate(Paths.EMPLOYEES)}
             type="button"
           >
             <ArrowLeft />
@@ -85,11 +82,7 @@ const FormHeader = ({
         </Group>
 
         {isUpdate && (
-          <OrangeButton
-            disabled={isLoading || isSubmitBtnDisabled}
-            $width={171}
-            type="submit"
-          >
+          <OrangeButton disabled={isLoading} $width={171} type="submit">
             {isLoading ? <Loader size={35} /> : <span>Сохранить</span>}
           </OrangeButton>
         )}

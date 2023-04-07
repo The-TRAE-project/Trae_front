@@ -1,86 +1,90 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Group, Stack } from '@mantine/core';
+import { Group, SelectItem } from '@mantine/core';
 import { useForm, zodResolver } from '@mantine/form';
 
-import {
-  ConstructorFormSchema,
-  ConstructorFormValues,
-} from '../../../store/apis/user/types';
-import { useCreateConstructorMutation } from '../../../store/apis/user';
-import { showErrorNotification } from '../../../helpers/showErrorNotification';
 import { Paths } from '../../../constants/paths';
+import { useCreateEmployeeMutation } from '../../../store/apis/employee';
+import {
+  EmployeeFormSchema,
+  EmployeeFormValues,
+} from '../../../store/apis/employee/types';
+import { useGetActiveWorkTypesQuery } from '../../../store/apis/workTypes';
+import { showErrorNotification } from '../../../helpers/showErrorNotification';
+import DatePicker from '../../DatePicker';
+import InformModal from '../../InformModal';
 import Loader from '../../Loader';
 import MaskedTextInput from '../../MaskedInput';
-import DatePicker from '../../DatePicker';
+import MultiSelect from '../../MultiSelect';
 import ArrowLeft from '../../svgs/ArrowLeft';
-import TextInput from '../../TextInput';
-import InformModal from '../../InformModal';
 import Home from '../../svgs/Home';
+import TextInput from '../../TextInput';
 import { InformModalText, OrangeButton, UnstyledButton } from '../../styles';
 import { Form, Grid } from './styles';
 
-const CreateForm = () => {
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+const EmployeeCreateForm = () => {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const navigate = useNavigate();
-  const form = useForm<ConstructorFormValues>({
+  const form = useForm<EmployeeFormValues>({
     initialValues: {
-      dateOfEmployment: new Date(),
       firstName: '',
       lastName: '',
       middleName: null,
       phone: '',
-      username: '',
+      typesId: [],
+      dateOfEmployment: new Date(),
     },
     validate: (values) => {
-      const resolver = zodResolver(ConstructorFormSchema);
+      const resolver = zodResolver(EmployeeFormSchema);
       const errors = resolver(values);
       return errors;
     },
   });
 
-  const [createConstructor, { isLoading, data }] =
-    useCreateConstructorMutation();
+  const [createEmployee, { data: createdEmployee, isLoading }] =
+    useCreateEmployeeMutation();
+  const { data: workTypes } = useGetActiveWorkTypesQuery();
 
-  const handleSubmit = async (values: ConstructorFormValues) => {
+  const handleSubmit = async (values: EmployeeFormValues) => {
     try {
-      await createConstructor(values).unwrap();
-      setIsModalOpen(true);
+      await createEmployee({
+        ...values,
+        typesId: values.typesId.map((typeId) => +typeId),
+      }).unwrap();
+      setIsOpen(true);
+      form.reset();
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (err: any) {
-      showErrorNotification(err.status, err.error);
+    } catch (error: any) {
+      showErrorNotification(error.status, error.error);
     }
   };
 
-  const handleCloseModal = () => {
-    form.reset();
-    setIsModalOpen(false);
-  };
+  const workTypeSelectItems: SelectItem[] = workTypes
+    ? workTypes.map<SelectItem>((workType) => ({
+        value: String(workType.id),
+        label: workType.name,
+      }))
+    : [];
 
   return (
     <>
       <InformModal
-        isOpen={isModalOpen}
-        onClose={handleCloseModal}
-        title={`${form.values.firstName} ${form.values.lastName} успешно добавлен`}
-        backPath={Paths.CONSTRUCTORS}
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        title={`${createdEmployee?.firstName} ${createdEmployee?.firstName} успешно добавлен`}
+        backPath={Paths.EMPLOYEES}
       >
-        <Stack spacing={20}>
-          <InformModalText>
-            Логин: <strong>{data?.username}</strong>
-          </InformModalText>
-          <InformModalText>
-            Пароль: <strong>{data?.password}</strong>
-          </InformModalText>
-        </Stack>
+        {!!createdEmployee && (
+          <InformModalText>Пароль: {createdEmployee.pinCode}</InformModalText>
+        )}
       </InformModal>
 
       <Form onSubmit={form.onSubmit(handleSubmit)}>
         <Group position="apart" spacing={100}>
           <Group spacing={42}>
             <UnstyledButton
-              onClick={() => navigate(Paths.CONSTRUCTORS)}
+              onClick={() => navigate(Paths.EMPLOYEES)}
               type="button"
             >
               <ArrowLeft />
@@ -111,24 +115,21 @@ const CreateForm = () => {
             maxLength={15}
           />
           <MaskedTextInput
-            // eslint-disable-next-line react/jsx-curly-brace-presence
-            mask={'+7 (000) 000 0000'}
             {...form.getInputProps('phone')}
             label="Номер телефона"
+            // eslint-disable-next-line react/jsx-curly-brace-presence
+            mask={'+7 (000) 000 0000'}
           />
           <TextInput
             {...form.getInputProps('firstName')}
             label="Имя"
             maxLength={15}
           />
-          <DatePicker
-            {...form.getInputProps('dateOfEmployment')}
-            defaultValue={new Date()}
-          />
-          <TextInput
-            {...form.getInputProps('username')}
-            label="Логин"
-            maxLength={15}
+          <DatePicker {...form.getInputProps('dateOfEmployment')} />
+          <MultiSelect
+            data={workTypeSelectItems}
+            label="Типы работ"
+            {...form.getInputProps('typesId')}
           />
         </Grid>
       </Form>
@@ -136,4 +137,4 @@ const CreateForm = () => {
   );
 };
 
-export default CreateForm;
+export default EmployeeCreateForm;

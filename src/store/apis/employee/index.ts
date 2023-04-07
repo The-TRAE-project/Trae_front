@@ -8,6 +8,7 @@ import {
   Employee,
   CreateEmployeeReturnType,
   EmployeeFormValues,
+  EmployeeUpdateFormValues,
 } from './types';
 
 const employeeTags = baseApi.enhanceEndpoints({
@@ -78,10 +79,10 @@ const employeeApi = employeeTags.injectEndpoints({
       providesTags: ['Employee'],
     }),
 
-    editEmployee: build.mutation<CreateEmployeeReturnType, EmployeeFormValues>({
+    editEmployee: build.mutation<Employee, EmployeeUpdateFormValues>({
       query(body) {
         return {
-          url: '/employee/register',
+          url: '/employee/change-data',
           method: 'POST',
           body,
         };

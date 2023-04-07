@@ -94,3 +94,46 @@ export interface CreateEmployeeReturnType {
   lastName: string;
   pinCode: number;
 }
+
+export const EmployeeUpdateFormSchema = z.object({
+  employeeId: z.number(),
+  lastName: z
+    .string()
+    .regex(RegEx.fullName, {
+      message:
+        'Фамилия должно содержать только кириллицу, должно начинаться с заглавной буквы',
+    })
+    .nullable(),
+  firstName: z
+    .string()
+    .regex(RegEx.fullName, {
+      message:
+        'Имя должно содержать только кириллицу, должно начинаться с заглавной буквы',
+    })
+    .nullable(),
+  middleName: z
+    .string()
+    .regex(RegEx.fullName, {
+      message:
+        'Отчество должно содержать только кириллицу, должно начинаться с заглавной буквы',
+    })
+    .nullable(),
+  phone: z.string().nullable(),
+  pinCode: z.number().nullable(),
+  isActive: z.boolean(),
+  changedTypesId: z.any().array().nullable(),
+  dateOfDismissal: z
+    .date({
+      required_error: 'Пожалуйста, выберите дату',
+      invalid_type_error: 'Не правильный формат даты!',
+    })
+    .nullable(),
+  dateOfEmployment: z
+    .date({
+      required_error: 'Пожалуйста, выберите дату',
+      invalid_type_error: 'Не правильный формат даты!',
+    })
+    .nullable(),
+});
+
+export type EmployeeUpdateFormValues = z.infer<typeof EmployeeUpdateFormSchema>;

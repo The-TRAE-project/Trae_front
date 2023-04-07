@@ -15,8 +15,8 @@ const EmployeeItem = ({ employee }: Props) => {
   const dispatch = useAppDispatch();
 
   const navigateToEditingPage = () => {
-    navigate(Paths.EMPLOYEES_EDITING);
-    dispatch(setEmployee(employee));
+    // navigate(Paths.EMPLOYEES_EDITING);
+    // dispatch(setEmployee(employee));
   };
 
   return (

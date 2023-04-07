@@ -15,9 +15,11 @@ import Constructors from './pages/Constructors';
 import CreateConstructor from './pages/CreateConstructor';
 import UpdateUser from './pages/UpdateUser';
 import Employees from './pages/Employees';
+import CreateEmployee from './pages/CreateEmployee';
 import WorkTypes from './pages/WorkTypes';
 import UpdateWorkType from './pages/UpdateWorkType';
 import CreateWorkType from './pages/CreateWorkType';
+import UpdateEmployee from './pages/UpdateEmployee';
 
 import { useAppSelector } from './helpers/hooks/useAppSelector';
 import { useNavigateLoggedInUser } from './helpers/hooks/useNavigateLoggedInUser';
@@ -52,6 +54,8 @@ const App = () => {
           />
           <Route path={Paths.CONSTRUCTORS_EDITING} element={<UpdateUser />} />
           <Route path={Paths.EMPLOYEES} element={<Employees />} />
+          <Route path={Paths.EMPLOYEES_CREATE} element={<CreateEmployee />} />
+          <Route path={Paths.EMPLOYEES_EDITING} element={<UpdateEmployee />} />
           <Route path={Paths.WORK_TYPES} element={<WorkTypes />} />
           <Route path={Paths.WORK_TYPES_EDITING} element={<UpdateWorkType />} />
           <Route path={Paths.WORK_TYPES_CREATE} element={<CreateWorkType />} />

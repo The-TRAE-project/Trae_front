@@ -9,8 +9,9 @@ import { RequestHeader } from '../../constants/requestHeader';
 import { logOutUser, setCredentials } from '../slices/auth';
 import { logOutEmployee } from '../slices/employee';
 import { TokenValue } from '../slices/auth/types';
-import { RootState } from '..';
 import { clearConstructorState } from '../slices/constructor';
+import { clearWorkTypeState } from '../slices/workType';
+import { RootState } from '..';
 
 const baseQuery = fetchBaseQuery({
   baseUrl: import.meta.env.PROD
@@ -58,6 +59,7 @@ const baseQueryWithReAuth = async (
       api.dispatch(logOutUser());
       api.dispatch(logOutEmployee());
       api.dispatch(clearConstructorState());
+      api.dispatch(clearWorkTypeState());
       localStorage.removeItem('navbar-list');
     }
   }

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Group, SelectItem, Stack } from '@mantine/core';
 import { useForm, zodResolver } from '@mantine/form';
 
@@ -8,9 +8,9 @@ import { useEditWorkTypeMutation } from '../../../store/apis/workTypes';
 import {
   EditWorkTypeFormValues,
   EditWorkTypeSchema,
-  WorkType,
 } from '../../../store/apis/workTypes/types';
 import { showErrorNotification } from '../../../helpers/showErrorNotification';
+import { useAppSelector } from '../../../helpers/hooks/useAppSelector';
 import Loader from '../../Loader';
 import Select from '../../Select';
 import ArrowLeft from '../../svgs/ArrowLeft';
@@ -24,9 +24,7 @@ const UpdateWorkTypeForm = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const navigate = useNavigate();
-  const location = useLocation();
-
-  const workType = location.state.workType as WorkType;
+  const { workType } = useAppSelector((store) => store.workType);
 
   const form = useForm<Omit<EditWorkTypeFormValues, 'typeWorkId'>>({
     initialValues: {
@@ -84,6 +82,7 @@ const UpdateWorkTypeForm = () => {
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
         title="Изменения сохранены"
+        backPath={Paths.WORK_TYPES}
       >
         <Stack spacing={20}>
           {!!editedTypeWork && (
@@ -101,7 +100,10 @@ const UpdateWorkTypeForm = () => {
       <Form onSubmit={form.onSubmit(handleSubmit)}>
         <Group position="apart" spacing={100}>
           <Group spacing={42}>
-            <UnstyledButton onClick={() => navigate(-1)} type="button">
+            <UnstyledButton
+              onClick={() => navigate(Paths.WORK_TYPES)}
+              type="button"
+            >
               <ArrowLeft />
             </UnstyledButton>
             <UnstyledButton

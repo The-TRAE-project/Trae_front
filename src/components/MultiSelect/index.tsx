@@ -5,9 +5,10 @@ import { useMultiSelectStyles } from './styles';
 interface Props {
   label: string;
   data: SelectItem[];
+  defaultValue?: string[];
 }
 
-const MultiSelect = ({ label, data, ...props }: Props) => {
+const MultiSelect = ({ label, data, defaultValue, ...props }: Props) => {
   const {
     classes: { dropdown, input, inputLabel, error, item, itemsWrapper, value },
   } = useMultiSelectStyles();
@@ -18,6 +19,7 @@ const MultiSelect = ({ label, data, ...props }: Props) => {
       data={data}
       label={label}
       maxDropdownHeight={284}
+      defaultValue={defaultValue}
       classNames={{
         dropdown,
         input,

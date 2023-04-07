@@ -11,6 +11,7 @@ import {
 } from '../../../../store/apis/user';
 import { UserUpdateFormValues, User } from '../../../../store/apis/user/types';
 import { Roles } from '../../../../store/slices/auth/types';
+import { Paths } from '../../../../constants/paths';
 import Loader from '../../../Loader';
 import Select from '../../../Select';
 // TODO:
@@ -104,6 +105,7 @@ const FormBody = ({
         isOpen={isOpen}
         onClose={handleClose}
         title={`${passwordChangedUser?.firstName} ${passwordChangedUser?.lastName} пароль сброшен`}
+        backPath={Paths.CONSTRUCTORS}
       >
         <InformModalText>
           Новый пароль:&nbsp;

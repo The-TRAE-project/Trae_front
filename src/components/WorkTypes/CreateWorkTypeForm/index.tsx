@@ -57,13 +57,17 @@ const CreateWorkTypeForm = () => {
       <InformModal
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
-        title={`Тип работ ${createdTypeWork?.name} успешно добавлен `}
+        title={`Тип работ ${createdTypeWork?.name} успешно добавлен`}
+        backPath={Paths.WORK_TYPES}
       />
 
       <Form onSubmit={form.onSubmit(handleSubmit)}>
         <Group position="apart" spacing={100}>
           <Group spacing={42}>
-            <UnstyledButton onClick={() => navigate(-1)} type="button">
+            <UnstyledButton
+              onClick={() => navigate(Paths.WORK_TYPES)}
+              type="button"
+            >
               <ArrowLeft />
             </UnstyledButton>
             <UnstyledButton
