@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Group, SelectItem } from '@mantine/core';
 import { useForm, zodResolver } from '@mantine/form';
+import { DatePickerInput } from '@mantine/dates';
 
 import { Paths } from '../../../constants/paths';
 import { useCreateEmployeeMutation } from '../../../store/apis/employee';
@@ -11,7 +12,6 @@ import {
 } from '../../../store/apis/employee/types';
 import { useGetActiveWorkTypesQuery } from '../../../store/apis/workTypes';
 import { showErrorNotification } from '../../../helpers/showErrorNotification';
-import DatePicker from '../../DatePicker';
 import InformModal from '../../InformModal';
 import Loader from '../../Loader';
 import MaskedTextInput from '../../MaskedInput';
@@ -19,12 +19,27 @@ import MultiSelect from '../../MultiSelect';
 import ArrowLeft from '../../svgs/ArrowLeft';
 import Home from '../../svgs/Home';
 import TextInput from '../../TextInput';
+import { useDateInputStyles } from '../../DatePicker/styles';
 import { InformModalText, OrangeButton, UnstyledButton } from '../../styles';
 import { Form, Grid } from './styles';
 
 const EmployeeCreateForm = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
+  const {
+    classes: {
+      input,
+      label,
+      error,
+      wrapper,
+      calendar,
+      calendarHeaderControl,
+      calendarHeaderLevel,
+      weekday,
+      day,
+      rightSection,
+    },
+  } = useDateInputStyles();
   const navigate = useNavigate();
   const form = useForm<EmployeeFormValues>({
     initialValues: {
@@ -55,8 +70,8 @@ const EmployeeCreateForm = () => {
       setIsOpen(true);
       form.reset();
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
-      showErrorNotification(error.status, error.error);
+    } catch (err: any) {
+      showErrorNotification(err.status, err.error);
     }
   };
 
@@ -125,7 +140,25 @@ const EmployeeCreateForm = () => {
             label="Имя"
             maxLength={15}
           />
-          <DatePicker {...form.getInputProps('dateOfEmployment')} />
+          <DatePickerInput
+            {...form.getInputProps('dateOfEmployment')}
+            label="Дата регистрации"
+            placeholder="Выберите дату"
+            clearable
+            valueFormat="DD.MM.YYYY"
+            classNames={{
+              wrapper,
+              calendar,
+              calendarHeaderControl,
+              calendarHeaderLevel,
+              weekday,
+              day,
+              label,
+              input,
+              error,
+              rightSection,
+            }}
+          />
           <MultiSelect
             data={workTypeSelectItems}
             label="Типы работ"
