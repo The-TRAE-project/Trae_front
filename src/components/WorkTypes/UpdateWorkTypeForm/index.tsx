@@ -28,8 +28,8 @@ const UpdateWorkTypeForm = () => {
 
   const form = useForm<Omit<EditWorkTypeFormValues, 'typeWorkId'>>({
     initialValues: {
-      newName: null,
-      isActive: null,
+      newName: workType?.name || null,
+      isActive: workType?.isActive ? 'Активный' : 'Заблокированный' || null,
     },
     validate: (values) => {
       const resolver = zodResolver(

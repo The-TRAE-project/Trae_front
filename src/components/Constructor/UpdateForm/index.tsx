@@ -35,9 +35,9 @@ const UpdateForm = () => {
 
   const form = useForm<Omit<UserUpdateFormValues, 'managerId'>>({
     initialValues: {
-      newRole: null,
-      accountStatus: null,
-      dateOfDismissal: null,
+      newRole: user?.role || null,
+      accountStatus: user?.status ? 'Активный' : 'Заблокированный' || null,
+      dateOfDismissal: user?.dateOfDismissal || null,
     },
     validate: (values) => {
       const resolver = zodResolver(UserUpdateSchema.omit({ managerId: true }));

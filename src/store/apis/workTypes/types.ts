@@ -25,8 +25,10 @@ export const EditWorkTypeSchema = z.object({
   newName: z
     .string()
     .regex(RegEx.cyrillic, {
-      message: 'Название должно содержать только кириллицу!',
+      message: 'Название должно содержать кириллицу!',
     })
+    .min(3, { message: 'Название должо быть не меньше 3 символов!' })
+    .max(30, { message: 'Название должо быть не больше 30 символов!' })
     .nullable(),
   typeWorkId: z
     .number()
