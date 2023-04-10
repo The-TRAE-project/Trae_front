@@ -25,8 +25,8 @@ interface NavbarItem {
 const navbarList: NavbarItem[] = [
   {
     id: 1,
-    value: Paths.PROJECTS,
-    title: 'Проекты',
+    value: Paths.EMPLOYEES,
+    title: 'Сотрудники',
     isShowLine: true,
   },
   {
@@ -37,14 +37,14 @@ const navbarList: NavbarItem[] = [
   },
   {
     id: 3,
-    value: Paths.EMPLOYEES,
-    title: 'Сотрудники',
+    value: Paths.REPORTS,
+    title: 'Отчеты',
     isShowLine: true,
   },
   {
     id: 4,
-    value: Paths.REPORTS,
-    title: 'Отчеты',
+    value: Paths.PROJECTS,
+    title: 'Проекты',
     isShowLine: true,
   },
   {
