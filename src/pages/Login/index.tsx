@@ -4,7 +4,7 @@ import traeLogo from '../../assets/traeLogo.svg';
 import LoginForm from '../../components/Users/LoginForm';
 import SEO from '../../components/SEO';
 import {
-  ApartContainer,
+  TopContainer,
   TraeLogoImageWrapper,
   WrapperWithBgImage,
 } from '../../components/styles';
@@ -19,13 +19,13 @@ const Login = () => {
         type="application"
       />
       <WrapperWithBgImage>
-        <ApartContainer>
+        <TopContainer>
           <TraeLogoImageWrapper>
             <Image src={traeLogo} alt="logo" />
           </TraeLogoImageWrapper>
 
           <LoginForm />
-        </ApartContainer>
+        </TopContainer>
       </WrapperWithBgImage>
     </>
   );

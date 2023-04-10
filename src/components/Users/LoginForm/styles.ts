@@ -2,18 +2,20 @@ import styled from 'styled-components';
 import { createStyles, TextInput } from '@mantine/core';
 
 export const FormWrapper = styled.form`
+  min-height: calc(100vh - 289px);
   ${({ theme }) => theme.mixins.column};
   align-items: flex-start;
-  gap: 40px;
+  gap: 36px;
+  padding: 90px 0px 0px;
 `;
 
 export const Input = styled(TextInput)`
   input {
     width: 400px;
-    height: 90px;
+    min-height: 73px;
     background: var(--white);
     border-radius: var(--border-radius);
-    padding: 28px 50px 29px;
+    padding: 12px 20px;
     font-family: var(--font-roboto);
     ${({ theme }) => theme.mixins.fontSize28};
     font-weight: 400;
@@ -35,7 +37,7 @@ export const useInputStyles = createStyles(() => ({
   },
 
   root: {
-    minHeight: 90,
+    minHeight: 73,
   },
 
   wrapper: {
@@ -44,7 +46,7 @@ export const useInputStyles = createStyles(() => ({
 
   innerInput: {
     height: '100%',
-    padding: '28px 50px 29px',
+    padding: '12px 20px',
     fontFamily: 'var(--font-roboto)',
     fontSize: 28,
     lineHeight: '33px',
@@ -70,7 +72,7 @@ export const useInputStyles = createStyles(() => ({
 
   input: {
     width: 400,
-    height: 90,
+    minHeight: 73,
     background: 'var(--white)',
     borderRadius: 'var(--border-radius)',
   },

@@ -30,6 +30,16 @@ export const ApartContainer = styled(Container)`
   }
 `;
 
+export const TopContainer = styled(Container)`
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  @media ${({ theme }) => theme.bp.bpXlarge} {
+    min-height: calc(100vh - 289px);
+  }
+`;
+
 export const TraeLogoImageWrapper = styled(Box)`
   @media ${({ theme }) => theme.bp.bpXlarge} {
     height: 549px;
@@ -102,7 +112,8 @@ export const OrangeButton = styled.button`
 export const useFilterMenuStyles = createStyles(() => ({
   dropdown: {
     left: '320px !important',
-    maxWidth: 314,
+    width: '324px !important',
+    maxWidth: 324,
     maxHeight: 450,
     border: 'none',
     background: 'var(--white)',
@@ -133,7 +144,7 @@ type FilterMenuItemTitleProps = {
 };
 
 export const FilterMenuItemTitle = styled.p<FilterMenuItemTitleProps>`
-  max-width: 208px;
+  max-width: 216px;
   word-break: break-word;
   color: ${(props) => (props.$active ? 'var(--orange)' : 'var(--white-black)')};
   transition: var(--transition);

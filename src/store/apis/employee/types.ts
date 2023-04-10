@@ -88,6 +88,7 @@ export interface Employee {
   types: WorkType[];
   dateOfRegister: Date;
   dateOfEmployment: Date;
+  dateOfDismissal: Date | null;
 }
 export interface CreateEmployeeReturnType {
   firstName: string;
@@ -118,10 +119,29 @@ export const EmployeeUpdateFormSchema = z.object({
         'Отчество должно содержать только кириллицу, должно начинаться с заглавной буквы',
     })
     .nullable(),
-  phone: z.string().nullable(),
-  pinCode: z.number().nullable(),
-  isActive: z.boolean(),
-  changedTypesId: z.any().array().nullable(),
+  phone: z
+    .string()
+    .min(17, {
+      message: 'Пожалуйста, введите правильный формат телефон номера!',
+    })
+    .max(17, {
+      message: 'Пожалуйста, введите правильный формат телефон номера!',
+    })
+    .nullable(),
+  pinCode: z
+    .number({
+      required_error: 'Пожалуйста, введите правильный формат пин кода',
+      invalid_type_error: 'Не правильный формат пин кода!',
+    })
+    .nullable(),
+  isActive: z.any().nullable(),
+  changedTypesId: z
+    .any()
+    .array()
+    .min(1, {
+      message: 'Пожалуйста, выберите вид работы!',
+    })
+    .nullable(),
   dateOfDismissal: z
     .date({
       required_error: 'Пожалуйста, выберите дату',

@@ -24,6 +24,6 @@ export interface EmployeeToEdit {
   phone: string;
   pinCode: number;
   types: WorkType[];
-  dateOfRegister: Date;
+  dateOfDismissal: Date;
   dateOfEmployment: Date;
 }

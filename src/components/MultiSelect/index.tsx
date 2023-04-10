@@ -16,10 +16,11 @@ const MultiSelect = ({ label, data, defaultValue, ...props }: Props) => {
   return (
     <MantineMultiSelect
       {...props}
-      data={data}
       label={label}
       maxDropdownHeight={284}
-      defaultValue={defaultValue}
+      value={defaultValue}
+      defaultValue={['defaultValue']}
+      data={data}
       classNames={{
         dropdown,
         input,

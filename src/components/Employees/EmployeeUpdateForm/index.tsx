@@ -1,8 +1,7 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable prettier/prettier */
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm, zodResolver } from '@mantine/form';
 import { SelectItem } from '@mantine/core';
+import dayjs from 'dayjs';
 
 import { useEditEmployeeMutation } from '../../../store/apis/employee';
 import {
@@ -10,16 +9,20 @@ import {
   EmployeeUpdateFormValues,
 } from '../../../store/apis/employee/types';
 import { useAppSelector } from '../../../helpers/hooks/useAppSelector';
+import { useAppDispatch } from '../../../helpers/hooks/useAppDispatch';
 import { showErrorNotification } from '../../../helpers/showErrorNotification';
 import FormHeader from './FormHeader';
 import FormBody from './FormBody';
 import { Form } from './styles';
+import { compareValues } from './helpers/compareValues';
+import { setEmployee } from '../../../store/slices/employee';
 
 const EmployeeUpdateForm = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isUpdate, setIsUpdate] = useState<boolean>(false);
 
   const { employeeToEdit } = useAppSelector((store) => store.employee);
+  const dispatch = useAppDispatch();
 
   const workTypesSelectItems: SelectItem[] = employeeToEdit?.types
     ? employeeToEdit.types.map<SelectItem>((workType) => ({
@@ -36,9 +39,12 @@ const EmployeeUpdateForm = () => {
       phone: employeeToEdit?.phone || null,
       changedTypesId: workTypesSelectItems || null,
       pinCode: employeeToEdit?.pinCode || null,
-      isActive: employeeToEdit?.isActive || false,
-      dateOfDismissal: null,
-      dateOfEmployment: employeeToEdit?.dateOfEmployment || null,
+      isActive: employeeToEdit?.isActive ? 'Активный' : 'Заблокированный',
+      dateOfDismissal: employeeToEdit?.dateOfDismissal
+        ? dayjs(employeeToEdit?.dateOfDismissal).toDate()
+        : null,
+      dateOfEmployment:
+        dayjs(employeeToEdit?.dateOfEmployment).toDate() || null,
     },
     validate: (values) => {
       const resolver = zodResolver(
@@ -49,30 +55,37 @@ const EmployeeUpdateForm = () => {
       return errors;
     },
   });
-  console.log(form.values.isActive);
+
   const [editEmployee, { data: updatedEmployee, isLoading }] =
     useEditEmployeeMutation();
 
   const handleSubmit = async (
     values: Omit<EmployeeUpdateFormValues, 'employeeId'>
   ) => {
-    console.log(values);
     try {
       if (employeeToEdit) {
-        await editEmployee({
-          ...values,
-          changedTypesId:
-            values.changedTypesId?.map((typeId) => +typeId) || null,
-          employeeId: employeeToEdit.id,
-        }).unwrap();
+        const comparedValues = compareValues(values, employeeToEdit);
+        await editEmployee(comparedValues).unwrap();
         setIsOpen(true);
         form.reset();
       }
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
-      showErrorNotification(error.status, error.error);
+      showErrorNotification(error?.data?.status, error?.data?.error);
     }
   };
+
+  const handleCloseModal = () => {
+    setIsOpen(false);
+    setIsUpdate(false);
+  };
+
+  useEffect(() => {
+    if (updatedEmployee) {
+      dispatch(setEmployee(updatedEmployee));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isUpdate]);
 
   return (
     <Form onSubmit={form.onSubmit(handleSubmit)}>
@@ -81,7 +94,7 @@ const EmployeeUpdateForm = () => {
         isUpdate={isUpdate}
         onUpdate={() => setIsUpdate(true)}
         isOpen={isOpen}
-        onClose={() => setIsOpen(false)}
+        onClose={handleCloseModal}
         employee={updatedEmployee}
       />
 

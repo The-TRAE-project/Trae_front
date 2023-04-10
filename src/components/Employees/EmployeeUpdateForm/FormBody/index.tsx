@@ -1,4 +1,4 @@
-/* eslint-disable prettier/prettier */
+// TODO:
 import { SelectItem } from '@mantine/core';
 import { UseFormReturnType } from '@mantine/form';
 import { DatePickerInput } from '@mantine/dates';
@@ -10,13 +10,14 @@ import { EmployeeToEdit } from '../../../../store/slices/employee/types';
 import Loader from '../../../Loader';
 import Select from '../../../Select';
 import { useDateInputStyles } from '../../../DatePicker/styles';
-import DetailsCard from './DetailsCard';
-import { Grid, Wrapper } from './styles';
-import WorkTypesDetailsCard from './WorkTypesDetailsCard';
 import TextInput from '../../../TextInput';
 import MaskedTextInput from '../../../MaskedInput';
 import MultiSelect from '../../../MultiSelect';
-import DatePicker from '../../../DatePicker';
+import NumberInput from '../../../NumberInput';
+import DetailsCard from './DetailsCard';
+import { Grid, Wrapper } from './styles';
+import WorkTypesDetailsCard from './WorkTypesDetailsCard';
+// import DatePicker from '../../../DatePicker';
 
 type EmployeeWithoutId = Omit<EmployeeUpdateFormValues, 'employeeId'>;
 
@@ -63,10 +64,6 @@ const FormBody = ({ employee, form, isUpdate }: Props) => {
       label: 'Заблокированный',
     },
   ];
-
-  const defaultWorkTypes: string[] = form.values.changedTypesId
-    ? form.values.changedTypesId?.map((workType) => workType.label)
-    : [];
 
   return (
     <Wrapper>
@@ -124,7 +121,14 @@ const FormBody = ({ employee, form, isUpdate }: Props) => {
               {...form.getInputProps('dateOfDismissal')}
             />
           ) : (
-            <DetailsCard text="" label="Дата увольнения" />
+            <DetailsCard
+              text={
+                employee.dateOfDismissal
+                  ? dayjs(employee.dateOfDismissal).format('DD.MM.YYYY')
+                  : ''
+              }
+              label="Дата увольнения"
+            />
           )}
           {isUpdate ? (
             <TextInput {...form.getInputProps('firstName')} label="Имя" />
@@ -145,6 +149,7 @@ const FormBody = ({ employee, form, isUpdate }: Props) => {
               {...form.getInputProps('isActive')}
               data={statusesSelectItems}
               title="Статус"
+              defaultValue={employee.isActive ? 'Активный' : 'Заблокированный'}
             />
           ) : (
             <DetailsCard
@@ -158,7 +163,7 @@ const FormBody = ({ employee, form, isUpdate }: Props) => {
             <DetailsCard text={employee.middleName} label="Отчество" />
           )}
           {isUpdate ? (
-            <TextInput {...form.getInputProps('pinCode')} label="Пароль" />
+            <NumberInput {...form.getInputProps('pinCode')} label="Пароль" />
           ) : (
             <DetailsCard text={String(employee.pinCode)} label="Пароль" />
           )}
@@ -166,7 +171,7 @@ const FormBody = ({ employee, form, isUpdate }: Props) => {
             <MultiSelect
               {...form.getInputProps('changedTypesId')}
               data={workTypesSelectItems}
-              defaultValue={defaultWorkTypes}
+              // defaultValue={defaultWorkTypes}
               label="Тип работ"
             />
           ) : (
