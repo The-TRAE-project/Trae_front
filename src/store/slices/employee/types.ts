@@ -6,6 +6,7 @@ export interface InitialState {
   isLoading: 'idle' | 'pending';
   isModalOpen: boolean;
   employeeToEdit: EmployeeToEdit | null;
+  projectNumber: number | null;
 }
 
 export interface Employee {

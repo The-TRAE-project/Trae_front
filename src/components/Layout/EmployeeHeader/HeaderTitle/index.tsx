@@ -9,12 +9,12 @@ interface Props {
 
 const HeaderTitle = ({ findCurrentPath }: Props) => {
   const location = useLocation();
-  // TODO:
+
   const displayTitleByPath = (path: string) => {
     switch (path) {
-      case '/employee-projects':
+      case Paths.EMPLOYEE_PROJECTS:
         return 'Выберите проект';
-      case '/employee-stages-in-work':
+      case Paths.EMPLOYEE_STAGES_IN_WORK:
         return 'Этапы в работе';
       default:
         return 'Этапы';
@@ -23,7 +23,7 @@ const HeaderTitle = ({ findCurrentPath }: Props) => {
 
   return (
     <Title
-      isWhite={findCurrentPath(
+      $isWhite={findCurrentPath(
         Paths.EMPLOYEE_PROJECTS,
         Paths.EMPLOYEE_STAGES_IN_WORK
       )}

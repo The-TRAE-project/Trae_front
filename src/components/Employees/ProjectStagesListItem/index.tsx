@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
+import { ProjectStage } from '../../../store/apis/employee/types';
 import { divisorByChunk } from '../../../helpers/divisorByChunk';
 import { useDisplayError } from '../../../helpers/hooks/useDisplayError';
-import { useSlider } from '../../../helpers/hooks/useSlider';
 import { useGetProjectStagesQuery } from '../../../store/apis/employee';
-import { ProjectStage } from '../../../store/apis/employee/types';
+import { useAppSelector } from '../../../helpers/hooks/useAppSelector';
+import { useSlider } from '../../../helpers/hooks/useSlider';
 import SliderButtons from '../../SliderButtons';
 import Loader from '../../Loader';
 import StageCard from './StageCard';
@@ -13,12 +14,12 @@ import { FlexContainer, FooterWrapper, ProjectNumber, Wrapper } from './styles';
 
 const ProjectStagesListItem = () => {
   const { id } = useParams();
-  const location = useLocation();
   const [projectStages, setProjectStages] = useState<ProjectStage[][] | null>(
     null
   );
   const { quantity, current, slideIndex, prevSlide, nextSlide } =
     useSlider(projectStages);
+  const { projectNumber } = useAppSelector((store) => store.employee);
 
   const { data, isLoading, isError, error } = useGetProjectStagesQuery(
     id as unknown as number
@@ -63,9 +64,7 @@ const ProjectStagesListItem = () => {
               nextSlide={nextSlide}
               color="--white-black"
             />
-            {location.state.projectNumber && (
-              <ProjectNumber>{location.state.projectNumber}</ProjectNumber>
-            )}
+            {projectNumber && <ProjectNumber>{projectNumber}</ProjectNumber>}
           </FooterWrapper>
         </>
       ) : (

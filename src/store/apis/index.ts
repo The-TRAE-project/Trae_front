@@ -7,8 +7,8 @@ import {
 
 import { RequestHeader } from '../../constants/requestHeader';
 import { logOutUser, setCredentials } from '../slices/auth';
-import { logOutEmployee } from '../slices/employee';
 import { TokenValue } from '../slices/auth/types';
+import { clearEmployeeState } from '../slices/employee';
 import { clearConstructorState } from '../slices/constructor';
 import { clearWorkTypeState } from '../slices/workType';
 import { RootState } from '..';
@@ -38,8 +38,6 @@ const baseQueryWithReAuth = async (
   let result = await baseQuery(args, api, extraOptions);
 
   if (result?.error?.status === 400) {
-    // eslint-disable-next-line no-console
-    console.log('sending refresh token');
     const { refreshToken } = (api.getState() as RootState).auth;
 
     const refreshResponse = await baseQuery(
@@ -49,15 +47,14 @@ const baseQueryWithReAuth = async (
         refreshToken,
       }
     );
-    // eslint-disable-next-line no-console
-    console.log(refreshResponse);
+
     if (refreshResponse?.data) {
       api.dispatch(setCredentials(refreshResponse.data as TokenValue));
 
       result = await baseQuery(args, api, extraOptions);
     } else {
       api.dispatch(logOutUser());
-      api.dispatch(logOutEmployee());
+      api.dispatch(clearEmployeeState());
       api.dispatch(clearConstructorState());
       api.dispatch(clearWorkTypeState());
       localStorage.removeItem('navbar-list');

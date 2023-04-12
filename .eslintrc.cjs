@@ -30,5 +30,6 @@ module.exports = {
     'no-param-reassign': 0,
     'import/no-extraneous-dependencies': 0,
     'import/no-cycle': 0,
+    'react/jsx-no-bind': 0,
   },
 };

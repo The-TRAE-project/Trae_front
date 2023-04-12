@@ -15,7 +15,7 @@ const HeaderTime = ({ findCurrentPath }: Props) => {
   return (
     <DisplayGroup>
       <DisplayTime
-        isWhiteBlack={
+        $isWhiteBlack={
           !findCurrentPath(
             Paths.EMPLOYEE_PROJECTS,
             Paths.EMPLOYEE_STAGES_IN_WORK
@@ -26,7 +26,7 @@ const HeaderTime = ({ findCurrentPath }: Props) => {
       </DisplayTime>
       {!findCurrentPath(Paths.EMPLOYEE_LOGIN) && (
         <UserName
-          isWhiteBlack={
+          $isWhiteBlack={
             !findCurrentPath(
               Paths.EMPLOYEE_PROJECTS,
               Paths.EMPLOYEE_STAGES_IN_WORK

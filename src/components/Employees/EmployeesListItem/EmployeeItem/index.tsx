@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Paths } from '../../../../constants/paths';
 import { useAppDispatch } from '../../../../helpers/hooks/useAppDispatch';
 import { Employee } from '../../../../store/apis/employee/types';
-import { setEmployee } from '../../../../store/slices/employee';
+import { setEmployeeToEdit } from '../../../../store/slices/employee';
 import { BgWhiteCard, BgWhiteCardLinkBtn } from '../../../styles';
 
 interface Props {
@@ -16,7 +16,7 @@ const EmployeeItem = ({ employee }: Props) => {
 
   const navigateToEditingPage = () => {
     navigate(Paths.EMPLOYEES_EDITING);
-    dispatch(setEmployee(employee));
+    dispatch(setEmployeeToEdit(employee));
   };
 
   return (

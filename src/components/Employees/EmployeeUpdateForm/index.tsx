@@ -10,12 +10,12 @@ import {
 } from '../../../store/apis/employee/types';
 import { useAppSelector } from '../../../helpers/hooks/useAppSelector';
 import { useAppDispatch } from '../../../helpers/hooks/useAppDispatch';
+import { setEmployeeToEdit } from '../../../store/slices/employee';
 import { showErrorNotification } from '../../../helpers/showErrorNotification';
 import FormHeader from './FormHeader';
 import FormBody from './FormBody';
 import { Form } from './styles';
 import { compareValues } from './helpers/compareValues';
-import { setEmployee } from '../../../store/slices/employee';
 
 const EmployeeUpdateForm = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -82,7 +82,7 @@ const EmployeeUpdateForm = () => {
 
   useEffect(() => {
     if (updatedEmployee) {
-      dispatch(setEmployee(updatedEmployee));
+      dispatch(setEmployeeToEdit(updatedEmployee));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isUpdate]);

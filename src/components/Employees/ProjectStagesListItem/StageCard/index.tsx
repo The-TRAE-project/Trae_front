@@ -7,7 +7,7 @@ import { useAppSelector } from '../../../../helpers/hooks/useAppSelector';
 import { showErrorNotification } from '../../../../helpers/showErrorNotification';
 import { useReceiveProjectStageMutation } from '../../../../store/apis/employee';
 import { ProjectStage } from '../../../../store/apis/employee/types';
-import { logOutEmployee } from '../../../../store/slices/employee';
+import { clearEmployeeState } from '../../../../store/slices/employee';
 import ArrowDown from '../../../svgs/ArrowDown';
 import ArrowUp from '../../../svgs/ArrowUp';
 import ConfirmModal from '../../ConfrimModal';
@@ -52,7 +52,7 @@ const StageCard = ({ stage, index, lastStage }: Props) => {
 
   const handleCloseInformModal = () => {
     navigate(Paths.EMPLOYEE_LOGIN);
-    dispatch(logOutEmployee());
+    dispatch(clearEmployeeState());
   };
 
   return (

@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import { useForm } from '@mantine/form';
 import { useNavigate } from 'react-router-dom';
+import { useForm } from '@mantine/form';
 
 import { useAppDispatch } from '../../../helpers/hooks/useAppDispatch';
 import { useAppSelector } from '../../../helpers/hooks/useAppSelector';
 import { showErrorNotification } from '../../../helpers/showErrorNotification';
 import {
-  login,
+  setEmployeeCredentials,
   loginEmployee,
   toggleModal,
 } from '../../../store/slices/employee';
@@ -62,7 +62,7 @@ const EmployeeLoginForm = () => {
       if (!data.onShift) {
         dispatch(toggleModal(true));
       } else {
-        dispatch(login(data));
+        dispatch(setEmployeeCredentials(data));
         navigate(Paths.EMPLOYEE_MAIN);
       }
       reset();

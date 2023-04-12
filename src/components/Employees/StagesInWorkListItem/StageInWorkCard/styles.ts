@@ -43,11 +43,6 @@ export const Furniture = styled.p`
   word-break: break-all;
 `;
 
-export const NavigateButton = styled.button`
-  border: none;
-  background: none;
-`;
-
 export const FinishButton = styled.button`
   width: 222px;
   height: 77px;

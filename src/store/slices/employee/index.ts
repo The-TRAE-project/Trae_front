@@ -10,6 +10,7 @@ const initialState = {
   isLoading: 'idle',
   isModalOpen: false,
   employeeToEdit: null,
+  projectNumber: null,
 } as InitialState;
 
 export const loginEmployee = createAsyncThunk(
@@ -73,18 +74,22 @@ export const employeeSlice = createSlice({
     toggleModal(state, action) {
       state.isModalOpen = action.payload;
     },
-    login(state, action) {
+    setEmployeeCredentials(state, action) {
       state.employee = action.payload;
       state.isLoggedIn = !!action.payload;
     },
-    logOutEmployee(state) {
+    clearEmployeeState(state) {
       state.employee = null;
       state.isLoggedIn = false;
       state.isModalOpen = false;
       state.employeeToEdit = null;
+      state.projectNumber = null;
     },
-    setEmployee(state, action) {
+    setEmployeeToEdit(state, action) {
       state.employeeToEdit = action.payload;
+    },
+    setProjectNumber(state, action) {
+      state.projectNumber = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -108,6 +113,11 @@ export const employeeSlice = createSlice({
   },
 });
 
-export const { toggleModal, login, logOutEmployee, setEmployee } =
-  employeeSlice.actions;
+export const {
+  toggleModal,
+  setEmployeeCredentials,
+  clearEmployeeState,
+  setEmployeeToEdit,
+  setProjectNumber,
+} = employeeSlice.actions;
 export default employeeSlice.reducer;

@@ -1,15 +1,17 @@
-import { Group } from '@mantine/core';
 import { useState } from 'react';
+import { Group } from '@mantine/core';
+import { HiInformationCircle } from 'react-icons/hi';
 import { useNavigate } from 'react-router-dom';
 
+import { useAppDispatch } from '../../../../helpers/hooks/useAppDispatch';
 import { StageInWork } from '../../../../store/apis/employee/types';
-import Vector from '../../../svgs/Vector';
+import { setProjectNumber } from '../../../../store/slices/employee';
+import { UnstyledButton } from '../../../styles';
 import ConfirmModal from './ConfirmModal';
 import {
   Customer,
   FinishButton,
   Furniture,
-  NavigateButton,
   ProjectNumber,
   ProjectOperation,
   Wrapper,
@@ -23,11 +25,12 @@ const StageInWorkCard = ({ stage }: Props) => {
   const [isOpen, setOpened] = useState<boolean>(false);
 
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
-  const navigateToProjectStages = () =>
-    navigate(`/employee/project/${stage.projectId}/stages`, {
-      state: { projectNumber: stage.projectNumber },
-    });
+  const navigateToProjectStages = () => {
+    navigate(`/employee/project/${stage.projectId}/stages`);
+    dispatch(setProjectNumber(stage.projectNumber));
+  };
 
   const handleOpenModal = () => setOpened(true);
   const handleCloseModal = () => setOpened(false);
@@ -43,9 +46,9 @@ const StageInWorkCard = ({ stage }: Props) => {
               <ProjectOperation>{stage.operationName}</ProjectOperation>
               <Furniture>{stage.projectName}</Furniture>
             </Group>
-            <NavigateButton onClick={navigateToProjectStages}>
-              <Vector />
-            </NavigateButton>
+            <UnstyledButton onClick={navigateToProjectStages}>
+              <HiInformationCircle size={50} color="var(--orange)" />
+            </UnstyledButton>
           </Group>
           <FinishButton onClick={handleOpenModal}>Завершить</FinishButton>
         </Group>

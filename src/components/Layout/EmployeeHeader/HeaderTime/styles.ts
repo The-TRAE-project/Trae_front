@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 type DisplayProps = {
-  isWhiteBlack: boolean;
+  $isWhiteBlack: boolean;
 };
 
 export const DisplayGroup = styled.div`
@@ -16,7 +16,7 @@ export const DisplayTime = styled.p`
   font-size: 54px;
   line-height: 63px;
   color: ${(props: DisplayProps) =>
-    props.isWhiteBlack ? 'var(--white-black)' : 'var(--white)'};
+    props.$isWhiteBlack ? 'var(--white-black)' : 'var(--white)'};
   opacity: 0.9;
 `;
 
@@ -26,6 +26,6 @@ export const UserName = styled.p`
   line-height: 63px;
   text-align: center;
   color: ${(props: DisplayProps) =>
-    props.isWhiteBlack ? 'var(--white-black)' : 'var(--white)'};
+    props.$isWhiteBlack ? 'var(--white-black)' : 'var(--white)'};
   opacity: 0.9;
 `;
