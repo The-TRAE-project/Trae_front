@@ -20,6 +20,9 @@ import WorkTypes from './pages/WorkTypes';
 import UpdateWorkType from './pages/UpdateWorkType';
 import CreateWorkType from './pages/CreateWorkType';
 import UpdateEmployee from './pages/UpdateEmployee';
+import PersonalCabinet from './pages/PersonalCabinet';
+import PersonalCabinetEditing from './pages/PersonalCabinetEditing';
+import PersonalCabinetChangePassword from './pages/PersonalCabinetChangePassword';
 
 import { useAppSelector } from './helpers/hooks/useAppSelector';
 import { useNavigateLoggedInUser } from './helpers/hooks/useNavigateLoggedInUser';
@@ -36,6 +39,30 @@ const App = () => {
       <Routes>
         <Route path={Paths.LOGIN} element={<Login />} />
         <Route path="*" element={<Navigate to={Paths.LOGIN} replace />} />
+
+        {/* All users */}
+        <Route
+          element={
+            <ProtectedRoute
+              isAllowed={
+                permission === Roles.ADMIN ||
+                permission === Roles.CONSTRUCTOR ||
+                permission === Roles.EMPLOYEE
+              }
+              redirectPath={Paths.LOGIN}
+            />
+          }
+        >
+          <Route path={Paths.PERSONAL_CABINET} element={<PersonalCabinet />} />
+          <Route
+            path={Paths.PERSONAL_CABINET_EDITING}
+            element={<PersonalCabinetEditing />}
+          />
+          <Route
+            path={Paths.PERSONAL_CABINET_CHANGE_PASSWORD}
+            element={<PersonalCabinetChangePassword />}
+          />
+        </Route>
 
         {/* Admin routes */}
         <Route

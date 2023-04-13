@@ -5,16 +5,16 @@ import {
   ConstructorFormValues,
   User,
   UserLoginValue,
-  ManagerFormValue,
-  ManagerChangePasswordValue,
   UserShortInfo,
   ResetPasswordReturnType,
   UserUpdateFormValues,
   UserUpdateReturnType,
+  UserEditReturnType,
+  UserEditFormValues,
 } from './types';
 
 const UserTags = baseApi.enhanceEndpoints({
-  addTagTypes: ['Manager', 'Constructor'],
+  addTagTypes: ['Manager', 'Constructor', 'User'],
 });
 
 const userApi = UserTags.injectEndpoints({
@@ -38,7 +38,7 @@ const userApi = UserTags.injectEndpoints({
 
     getUserDetails: build.query<User, number>({
       query: (managerId) => `/manager/${managerId}`,
-      providesTags: ['Constructor'],
+      providesTags: ['Constructor', 'User'],
     }),
 
     resetUserPassword: build.mutation<ResetPasswordReturnType, string>({
@@ -69,46 +69,15 @@ const userApi = UserTags.injectEndpoints({
       invalidatesTags: ['Constructor'],
     }),
 
-    updateManager: build.mutation<void, ManagerFormValue>({
+    editUser: build.mutation<UserEditReturnType, UserEditFormValues>({
       query(body) {
         return {
-          url: '/manager/update-data',
+          url: `/manager/update-data?name=${body.username}`,
           method: 'POST',
           body,
         };
       },
-      invalidatesTags: ['Manager'],
-    }),
-
-    changeManagerPassword: build.mutation<void, ManagerChangePasswordValue>({
-      query(body) {
-        return {
-          url: '/manager/change-password',
-          method: 'POST',
-          body,
-        };
-      },
-      invalidatesTags: ['Manager'],
-    }),
-
-    activateManagerAccount: build.mutation<void, number>({
-      query(managerId) {
-        return {
-          url: `/manager/activate-account/${managerId}`,
-          method: 'POST',
-        };
-      },
-      invalidatesTags: ['Manager'],
-    }),
-
-    deactivateManagerAccount: build.mutation<void, number>({
-      query(managerId) {
-        return {
-          url: `/manager/deactivate-account/${managerId}`,
-          method: 'POST',
-        };
-      },
-      invalidatesTags: ['Manager'],
+      invalidatesTags: ['User'],
     }),
   }),
 });
@@ -120,8 +89,5 @@ export const {
   useUpdateUserSomeFieldsMutation,
   useResetUserPasswordMutation,
   useGetAllRolesQuery,
-  useUpdateManagerMutation,
-  useChangeManagerPasswordMutation,
-  useActivateManagerAccountMutation,
-  useDeactivateManagerAccountMutation,
+  useEditUserMutation,
 } = userApi;

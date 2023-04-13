@@ -15,9 +15,9 @@ import Loader from '../../../Loader';
 import Select from '../../../Select';
 import DatePicker from '../../../DatePicker';
 import InformModal from '../../../InformModal';
-import { InformModalText } from '../../../styles';
+import { DashedOrangeButton, InformModalText } from '../../../styles';
 import DetailsCard from './DetailsCard';
-import { Grid, ResetPasswordButton, Wrapper } from './styles';
+import { Grid, Wrapper } from './styles';
 import { Status } from '../../../../store/types';
 
 type UserWithoutId = Omit<UserUpdateFormValues, 'managerId'>;
@@ -145,16 +145,13 @@ const FormBody = ({
             />
           )}
           {isUpdate && (
-            <ResetPasswordButton
-              onClick={handleResetUserPassword}
-              type="button"
-            >
+            <DashedOrangeButton onClick={handleResetUserPassword} type="button">
               {isResetPasswordLoading ? (
                 <Loader size={35} />
               ) : (
                 <span>Сбросить пароль</span>
               )}
-            </ResetPasswordButton>
+            </DashedOrangeButton>
           )}
         </Grid>
       ) : (

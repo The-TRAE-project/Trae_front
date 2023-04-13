@@ -12,6 +12,7 @@ const variables = css`
     --black-shadow: rgba(0, 0, 0, 0.25);
     --dark-purple: rgba(27, 31, 59, 0.8);
     --orange: #ff9a4a;
+    --red: #ff0101;
     --green: #42894d;
     --green2: rgba(131, 204, 140, 0.6);
     --gradient-green1: #508255;

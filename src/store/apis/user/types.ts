@@ -1,30 +1,6 @@
 import { z } from 'zod';
+
 import { RegEx } from '../../../constants/regex';
-
-export interface ManagerFormValue {
-  firstName: string;
-  lastName: string;
-  middleName: string;
-  phone: string;
-  username: string;
-}
-
-export interface ManagerUpdateValue {
-  firstName: string;
-  lastName: string;
-  middleName: string;
-  phone: string;
-}
-
-export interface ManagerChangeRoleValue {
-  managerId: number;
-  newRole: string;
-}
-
-export interface ManagerChangePasswordValue {
-  newPassword: string;
-  oldPassword: string;
-}
 
 export interface UserLoginValue {
   password: string;
@@ -128,3 +104,75 @@ export const UserUpdateSchema = z.object({
 });
 
 export type UserUpdateFormValues = z.infer<typeof UserUpdateSchema>;
+
+export interface UserEditReturnType {
+  firstName: string;
+  lastName: string;
+  middleName: string;
+  phone: string;
+}
+
+export const UserEditSchema = z.object({
+  username: z.string().min(1, { message: 'Имя пользователя не указано!' }),
+  lastName: z
+    .string()
+    .regex(RegEx.fullName, {
+      message:
+        'Фамилия должно содержать только кириллицу, должно начинаться с заглавной буквы',
+    })
+    .min(3, { message: 'Фамилия должен быть не меньше 2 символов' })
+    .max(15, { message: 'Фамилия должен быть не больше 15 символов' })
+    .nullable(),
+  firstName: z
+    .string()
+    .regex(RegEx.fullName, {
+      message:
+        'Имя должно содержать только кириллицу, должно начинаться с заглавной буквы',
+    })
+    .min(3, { message: 'Имя должен быть не меньше 2 символов' })
+    .max(15, { message: 'Имя должен быть не больше 15 символов' })
+    .nullable(),
+  middleName: z
+    .string()
+    .regex(RegEx.fullName, {
+      message:
+        'Отчество должно содержать только кириллицу, должно начинаться с заглавной буквы',
+    })
+    .nullable(),
+  phone: z
+    .string()
+    .min(17, {
+      message: 'Пожалуйста, введите правильный формат телефон номера!',
+    })
+    .max(17, {
+      message: 'Пожалуйста, введите правильный формат телефон номера!',
+    })
+    .nullable(),
+  newPassword: z
+    .string()
+    .min(3, {
+      message: 'Пожалуйста, введите новый пароль!',
+    })
+    .nullable(),
+  oldPassword: z
+    .string()
+    .min(3, {
+      message: 'Пожалуйста, введите старый пароль!',
+    })
+    .nullable(),
+});
+
+export type UserEditFormValues = z.infer<typeof UserEditSchema>;
+
+export const UserChangePasswordSchema = UserEditSchema.extend({
+  oldPassword: z.string().min(3, {
+    message: 'Пожалуйста, введите старый пароль!',
+  }),
+  newPassword: z.string().min(3, {
+    message: 'Пожалуйста, введите новый пароль!',
+  }),
+});
+
+export type UserChangePasswordFormValues = z.infer<
+  typeof UserChangePasswordSchema
+>;

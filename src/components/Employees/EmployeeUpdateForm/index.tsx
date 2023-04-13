@@ -58,6 +58,7 @@ const EmployeeUpdateForm = () => {
     try {
       if (employeeToEdit) {
         const comparedValues = compareValues(values, employeeToEdit);
+        console.log(comparedValues);
         await editEmployee(comparedValues).unwrap();
         setIsOpen(true);
         form.reset();

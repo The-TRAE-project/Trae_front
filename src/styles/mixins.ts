@@ -28,6 +28,11 @@ const mixins = {
     line-height: 28px;
   `,
 
+  fontSize26: css`
+    font-size: 26px;
+    line-height: 30px;
+  `,
+
   fontSize28: css`
     font-size: 28px;
     line-height: 33px;

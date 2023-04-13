@@ -204,3 +204,33 @@ export const useCheckboxStyles = createStyles(() => ({
     color: 'var(--orange) !important',
   },
 }));
+
+export const DashedOrangeButton = styled.button`
+  grid-column-start: 3;
+  ${({ theme }) => theme.mixins.fCenter};
+  padding: 22.5px;
+  max-width: 509px;
+  min-height: 73px;
+  max-height: 73px;
+  background: var(--orange);
+  border: 2px dashed var(--white);
+  border-radius: var(--border-radius);
+  font-weight: 400;
+  ${({ theme }) => theme.mixins.fontSize24};
+  color: var(--white);
+
+  &:is(:focus, :focus-within) {
+    outline: none;
+  }
+`;
+
+export const FormWrapper = styled.form`
+  ${({ theme }) => theme.mixins.column};
+  gap: 3rem;
+`;
+
+export const Grid = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 40px;
+`;
