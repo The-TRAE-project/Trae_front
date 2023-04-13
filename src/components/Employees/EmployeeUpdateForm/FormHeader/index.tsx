@@ -1,15 +1,11 @@
-// TODO:
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useNavigate } from 'react-router-dom';
 import { Group, Stack } from '@mantine/core';
-import { BsFillPencilFill } from 'react-icons/bs';
+import { BsFillPencilFill, BsArrowLeft, BsFillHouseFill } from 'react-icons/bs';
 import dayjs from 'dayjs';
 
 import { Paths } from '../../../../constants/paths';
 import { Employee } from '../../../../store/apis/employee/types';
 import { InformModalText, OrangeButton, UnstyledButton } from '../../../styles';
-import ArrowLeft from '../../../svgs/ArrowLeft';
-import Home from '../../../svgs/Home';
 import Loader from '../../../Loader';
 import InformModal from '../../../InformModal';
 import { useAppSelector } from '../../../../helpers/hooks/useAppSelector';
@@ -34,13 +30,11 @@ const FormHeader = ({
   const navigate = useNavigate();
   const { employeeToEdit } = useAppSelector((store) => store.employee);
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const convertToNumberArray = (data: any) =>
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     data?.map((item: any) => ({ id: Number(item.id || item.value) }));
-  console.log(
-    employee?.dateOfDismissal &&
-      dayjs(employee.dateOfDismissal).toDate().getTime() ===
-        dayjs(employeeToEdit?.dateOfDismissal).toDate().getTime()
-  );
+
   return (
     <>
       <InformModal
@@ -56,49 +50,37 @@ const FormHeader = ({
         <Stack spacing={20}>
           {!!employee && (
             <>
-              {employee.firstName === employeeToEdit?.firstName ? (
-                ''
-              ) : (
+              {employee.firstName === employeeToEdit?.firstName ? null : (
                 <InformModalText>
                   Имя:&nbsp;
                   <strong>{employee.firstName}</strong>
                 </InformModalText>
               )}
-              {employee.lastName === employeeToEdit?.lastName ? (
-                ''
-              ) : (
+              {employee.lastName === employeeToEdit?.lastName ? null : (
                 <InformModalText>
                   Фамилия:&nbsp;
                   <strong>{employee.lastName}</strong>
                 </InformModalText>
               )}
-              {employee.middleName === employeeToEdit?.middleName ? (
-                ''
-              ) : (
+              {employee.middleName === employeeToEdit?.middleName ? null : (
                 <InformModalText>
                   Отчество:&nbsp;
                   <strong>{employee.middleName}</strong>
                 </InformModalText>
               )}
-              {employee.pinCode === employeeToEdit?.pinCode ? (
-                ''
-              ) : (
+              {employee.pinCode === employeeToEdit?.pinCode ? null : (
                 <InformModalText>
                   Пароль:&nbsp;
                   <strong>{employee.pinCode}</strong>
                 </InformModalText>
               )}
-              {employee.phone === employeeToEdit?.phone ? (
-                ''
-              ) : (
+              {employee.phone === employeeToEdit?.phone ? null : (
                 <InformModalText>
                   Номер телефона:&nbsp;
                   <strong>{employee.phone}</strong>
                 </InformModalText>
               )}
-              {employee.isActive === employeeToEdit?.isActive ? (
-                ''
-              ) : (
+              {employee.isActive === employeeToEdit?.isActive ? null : (
                 <InformModalText>
                   Статус:&nbsp;
                   <strong>
@@ -107,9 +89,9 @@ const FormHeader = ({
                 </InformModalText>
               )}
               {dayjs(employee.dateOfEmployment).toDate().getTime() ===
-              dayjs(employeeToEdit?.dateOfEmployment).toDate().getTime() ? (
-                ''
-              ) : (
+              dayjs(employeeToEdit?.dateOfEmployment)
+                .toDate()
+                .getTime() ? null : (
                 <InformModalText>
                   Дата регистрации:&nbsp;
                   <strong>
@@ -126,9 +108,7 @@ const FormHeader = ({
                 </InformModalText>
               ) : null}
               {JSON.stringify(convertToNumberArray(employeeToEdit?.types)) ===
-              JSON.stringify(convertToNumberArray(employee.types)) ? (
-                ''
-              ) : (
+              JSON.stringify(convertToNumberArray(employee.types)) ? null : (
                 <Group spacing={10} position="center">
                   <InformModalText>
                     Типы работ:&nbsp;
@@ -148,13 +128,13 @@ const FormHeader = ({
             onClick={() => navigate(Paths.EMPLOYEES)}
             type="button"
           >
-            <ArrowLeft />
+            <BsArrowLeft size={50} color="var(--orange)" />
           </UnstyledButton>
           <UnstyledButton
             onClick={() => navigate(Paths.PROJECTS)}
             type="button"
           >
-            <Home />
+            <BsFillHouseFill size={44} color="var(--orange)" />
           </UnstyledButton>
         </Group>
 

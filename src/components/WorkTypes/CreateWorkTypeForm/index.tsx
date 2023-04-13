@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Group } from '@mantine/core';
 import { useForm, zodResolver } from '@mantine/form';
+import { BsArrowLeft, BsFillHouseFill } from 'react-icons/bs';
 
 import { Paths } from '../../../constants/paths';
 import { useCreateWorkTypeMutation } from '../../../store/apis/workTypes';
@@ -11,8 +12,6 @@ import {
 } from '../../../store/apis/workTypes/types';
 import { showErrorNotification } from '../../../helpers/showErrorNotification';
 import Loader from '../../Loader';
-import ArrowLeft from '../../svgs/ArrowLeft';
-import Home from '../../svgs/Home';
 import TextInput from '../../TextInput';
 import InformModal from '../../InformModal';
 import { OrangeButton, UnstyledButton } from '../../styles';
@@ -68,13 +67,13 @@ const CreateWorkTypeForm = () => {
               onClick={() => navigate(Paths.WORK_TYPES)}
               type="button"
             >
-              <ArrowLeft />
+              <BsArrowLeft size={50} color="var(--orange)" />
             </UnstyledButton>
             <UnstyledButton
               onClick={() => navigate(Paths.PROJECTS)}
               type="button"
             >
-              <Home />
+              <BsFillHouseFill size={44} color="var(--orange)" />
             </UnstyledButton>
           </Group>
 

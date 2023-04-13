@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Group, Stack } from '@mantine/core';
+import { BsFillHouseFill } from 'react-icons/bs';
+import { AiOutlinePlusCircle } from 'react-icons/ai';
 
 import { Status } from '../../store/apis/user/types';
 import { Paths } from '../../constants/paths';
 import SEO from '../../components/SEO';
-import Home from '../../components/svgs/Home';
-import Plus from '../../components/svgs/Plus';
 import WorkTypesFilterMenu from '../../components/WorkTypes/WorkTypesFilterMenu';
 import {
   Container,
@@ -43,7 +43,7 @@ const WorkTypes = () => {
                   resetStatus={() => setParamActive(null)}
                 />
                 <UnstyledButton onClick={navigateToHome} type="button">
-                  <Home />
+                  <BsFillHouseFill size={44} color="var(--orange)" />
                 </UnstyledButton>
               </Group>
 
@@ -51,7 +51,7 @@ const WorkTypes = () => {
                 onClick={navigateToCreateWorkTypesPage}
                 type="button"
               >
-                <Plus />
+                <AiOutlinePlusCircle size={30} color="var(--white)" />
                 <span>Добавить</span>
               </OrangeButton>
             </Group>

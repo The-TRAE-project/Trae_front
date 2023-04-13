@@ -9,7 +9,7 @@ interface Props {
 
 const Button = ({ title, onClick, disabled, width }: Props) => {
   return (
-    <Wrapper onClick={onClick} disabled={disabled} width={width}>
+    <Wrapper onClick={onClick} disabled={disabled} $width={width}>
       {title}
     </Wrapper>
   );

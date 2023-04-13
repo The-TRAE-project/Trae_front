@@ -1,10 +1,9 @@
 import { ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Group, Modal as MantineModal, Stack } from '@mantine/core';
+import { BsArrowLeft, BsFillHouseFill } from 'react-icons/bs';
 
 import { Paths } from '../../constants/paths';
-import ArrowLeft from '../svgs/ArrowLeft';
-import Home from '../svgs/Home';
 import { UnstyledButton } from '../styles';
 import { Title, useModalStyles } from './styles';
 
@@ -39,10 +38,10 @@ const InformModal = ({ isOpen, onClose, children, title, backPath }: Props) => {
       title={
         <Group spacing={46}>
           <UnstyledButton onClick={navigateBack} type="button">
-            <ArrowLeft />
+            <BsArrowLeft size={50} color="var(--orange)" />
           </UnstyledButton>
           <UnstyledButton onClick={navigateToHome} type="button">
-            <Home />
+            <BsFillHouseFill size={44} color="var(--orange)" />
           </UnstyledButton>
         </Group>
       }

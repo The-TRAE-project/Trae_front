@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { Group, Stack } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
+import { BsFillHouseFill } from 'react-icons/bs';
+import { AiOutlinePlusCircle } from 'react-icons/ai';
 
 import { Status } from '../../store/apis/user/types';
 import { Paths } from '../../constants/paths';
 import SEO from '../../components/SEO';
-import Home from '../../components/svgs/Home';
-import Plus from '../../components/svgs/Plus';
 import EmployeesFilterMenu from '../../components/Employees/EmployeesFilterMenu';
 import EmployeesListItem from '../../components/Employees/EmployeesListItem';
 import {
@@ -47,7 +47,7 @@ const Employees = () => {
                   resetTypeWork={() => setParamTypeWorkIds(null)}
                 />
                 <UnstyledButton onClick={navigateToHome} type="button">
-                  <Home />
+                  <BsFillHouseFill size={44} color="var(--orange)" />
                 </UnstyledButton>
               </Group>
 
@@ -55,7 +55,7 @@ const Employees = () => {
                 onClick={navigateToCreateEmployeePage}
                 type="button"
               >
-                <Plus />
+                <AiOutlinePlusCircle size={30} color="var(--white)" />
                 <span>Добавить</span>
               </OrangeButton>
             </Group>

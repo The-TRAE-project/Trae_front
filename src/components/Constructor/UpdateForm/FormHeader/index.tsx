@@ -1,13 +1,11 @@
 import { useNavigate } from 'react-router-dom';
 import { Group, Stack } from '@mantine/core';
-import { BsFillPencilFill } from 'react-icons/bs';
+import { BsArrowLeft, BsFillPencilFill, BsFillHouseFill } from 'react-icons/bs';
 import dayjs from 'dayjs';
 
 import { Paths } from '../../../../constants/paths';
 import { UserUpdateReturnType } from '../../../../store/apis/user/types';
 import { InformModalText, OrangeButton, UnstyledButton } from '../../../styles';
-import ArrowLeft from '../../../svgs/ArrowLeft';
-import Home from '../../../svgs/Home';
 import Loader from '../../../Loader';
 import InformModal from '../../../InformModal';
 
@@ -74,13 +72,13 @@ const FormHeader = ({
             onClick={() => navigate(Paths.CONSTRUCTORS)}
             type="button"
           >
-            <ArrowLeft />
+            <BsArrowLeft size={50} color="var(--orange)" />
           </UnstyledButton>
           <UnstyledButton
             onClick={() => navigate(Paths.PROJECTS)}
             type="button"
           >
-            <Home />
+            <BsFillHouseFill size={44} color="var(--orange)" />
           </UnstyledButton>
         </Group>
 

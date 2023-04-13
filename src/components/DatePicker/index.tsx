@@ -1,14 +1,15 @@
 import { Indicator } from '@mantine/core';
-import { DatePickerInput } from '@mantine/dates';
+import { DatePickerInput, DateValue } from '@mantine/dates';
 import { FC } from 'react';
 
 import { useDateInputStyles, useIndicatorStyles } from './styles';
 
 interface Props {
-  defaultValue?: Date;
+  defaultValue?: DateValue;
+  title: string;
 }
 
-const DatePicker: FC<Props> = ({ defaultValue, ...props }) => {
+const DatePicker: FC<Props> = ({ defaultValue, title, ...props }) => {
   const {
     classes: {
       input,
@@ -31,7 +32,7 @@ const DatePicker: FC<Props> = ({ defaultValue, ...props }) => {
     <DatePickerInput
       {...props}
       defaultValue={defaultValue}
-      label="Дата регистрации"
+      label={title}
       placeholder="Выберите дату"
       clearable
       valueFormat="DD.MM.YYYY"

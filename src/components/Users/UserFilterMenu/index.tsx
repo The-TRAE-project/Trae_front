@@ -66,7 +66,7 @@ const UserFilterMenu = ({
           <Menu.Item key={item.value} onClick={() => setStatus(item.value)}>
             <Group spacing={12}>
               <Checkbox
-                checked={item.value === status}
+                defaultChecked={item.value === status}
                 classNames={{ input, inner, icon }}
               />
               <FilterMenuItemTitle $active={item.value === status}>
@@ -77,7 +77,10 @@ const UserFilterMenu = ({
         ))}
         <Menu.Item onClick={resetStatus}>
           <Group spacing={12}>
-            <Checkbox checked={!status} classNames={{ input, inner, icon }} />
+            <Checkbox
+              defaultChecked={!status}
+              classNames={{ input, inner, icon }}
+            />
             <FilterMenuItemTitle $active={!status}>Все</FilterMenuItemTitle>
           </Group>
         </Menu.Item>
@@ -88,7 +91,7 @@ const UserFilterMenu = ({
             <Menu.Item key={item} onClick={() => setRole(item)}>
               <Group spacing={12}>
                 <Checkbox
-                  checked={item === role}
+                  defaultChecked={item === role}
                   classNames={{ input, inner, icon }}
                 />
                 <FilterMenuItemTitle $active={item === role}>
@@ -99,7 +102,10 @@ const UserFilterMenu = ({
           ))}
         <Menu.Item onClick={resetRole}>
           <Group spacing={12}>
-            <Checkbox checked={!role} classNames={{ input, inner, icon }} />
+            <Checkbox
+              defaultChecked={!role}
+              classNames={{ input, inner, icon }}
+            />
             <FilterMenuItemTitle $active={!role}> Все</FilterMenuItemTitle>
           </Group>
         </Menu.Item>

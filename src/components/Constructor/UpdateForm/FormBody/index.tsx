@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { SelectItem } from '@mantine/core';
 import { UseFormReturnType } from '@mantine/form';
-import { DatePickerInput } from '@mantine/dates';
 import dayjs from 'dayjs';
 
 import { showErrorNotification } from '../../../../helpers/showErrorNotification';
@@ -14,13 +13,12 @@ import { Roles } from '../../../../store/slices/auth/types';
 import { Paths } from '../../../../constants/paths';
 import Loader from '../../../Loader';
 import Select from '../../../Select';
-// TODO:
-// import DatePicker from '../../../DatePicker';
-import { useDateInputStyles } from '../../../DatePicker/styles';
+import DatePicker from '../../../DatePicker';
 import InformModal from '../../../InformModal';
 import { InformModalText } from '../../../styles';
 import DetailsCard from './DetailsCard';
 import { Grid, ResetPasswordButton, Wrapper } from './styles';
+import { Status } from '../../../../store/types';
 
 type UserWithoutId = Omit<UserUpdateFormValues, 'managerId'>;
 
@@ -44,20 +42,6 @@ const FormBody = ({
 }: Props) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
-  const {
-    classes: {
-      input,
-      label,
-      error,
-      wrapper,
-      calendar,
-      calendarHeaderControl,
-      calendarHeaderLevel,
-      weekday,
-      day,
-      rightSection,
-    },
-  } = useDateInputStyles();
   const [
     resetPassword,
     { data: passwordChangedUser, isLoading: isResetPasswordLoading },
@@ -70,15 +54,15 @@ const FormBody = ({
         label: role,
       }))
     : [];
-  // TODO:
+
   const statusesSelectItems: SelectItem[] = [
     {
-      value: 'Активный',
-      label: 'Активный',
+      value: Status.ACTIVE,
+      label: Status.ACTIVE,
     },
     {
-      value: 'Заблокированный',
-      label: 'Заблокированный',
+      value: Status.BLOCKED,
+      label: Status.BLOCKED,
     },
   ];
 
@@ -146,24 +130,9 @@ const FormBody = ({
           <DetailsCard text={user.middleName} label="Отчество" />
           <DetailsCard text={user.username} label="Логин" />
           {isUpdate ? (
-            <DatePickerInput
+            <DatePicker
               {...form.getInputProps('dateOfDismissal')}
-              label="Дата увольнения"
-              placeholder="Выберите дату"
-              clearable
-              valueFormat="DD.MM.YYYY"
-              classNames={{
-                wrapper,
-                calendar,
-                calendarHeaderControl,
-                calendarHeaderLevel,
-                weekday,
-                day,
-                label,
-                input,
-                error,
-                rightSection,
-              }}
+              title="Дата увольнения"
             />
           ) : (
             <DetailsCard

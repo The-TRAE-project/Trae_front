@@ -12,6 +12,7 @@ import {
 import { showErrorNotification } from '../../../helpers/showErrorNotification';
 import { useDisplayError } from '../../../helpers/hooks/useDisplayError';
 import { useAppSelector } from '../../../helpers/hooks/useAppSelector';
+import { useSetDefaultValues } from './helpers/useSetDefaultValues';
 import FormHeader from './FormHeader';
 import FormBody from './FormBody';
 import { Form } from './styles';
@@ -47,6 +48,8 @@ const UpdateForm = () => {
   });
 
   useDisplayError(error, isError);
+
+  useSetDefaultValues(form, user);
 
   const handleSubmit = async (
     values: Omit<UserUpdateFormValues, 'managerId'>

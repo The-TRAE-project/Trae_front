@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Group, SelectItem } from '@mantine/core';
 import { useForm, zodResolver } from '@mantine/form';
-import { DatePickerInput } from '@mantine/dates';
+import { BsArrowLeft, BsFillHouseFill } from 'react-icons/bs';
 
 import { Paths } from '../../../constants/paths';
 import { useCreateEmployeeMutation } from '../../../store/apis/employee';
@@ -16,30 +16,14 @@ import InformModal from '../../InformModal';
 import Loader from '../../Loader';
 import MaskedTextInput from '../../MaskedInput';
 import MultiSelect from '../../MultiSelect';
-import ArrowLeft from '../../svgs/ArrowLeft';
-import Home from '../../svgs/Home';
 import TextInput from '../../TextInput';
-import { useDateInputStyles } from '../../DatePicker/styles';
+import DatePicker from '../../DatePicker';
 import { InformModalText, OrangeButton, UnstyledButton } from '../../styles';
 import { Form, Grid } from './styles';
 
 const EmployeeCreateForm = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
-  const {
-    classes: {
-      input,
-      label,
-      error,
-      wrapper,
-      calendar,
-      calendarHeaderControl,
-      calendarHeaderLevel,
-      weekday,
-      day,
-      rightSection,
-    },
-  } = useDateInputStyles();
   const navigate = useNavigate();
   const form = useForm<EmployeeFormValues>({
     initialValues: {
@@ -102,13 +86,13 @@ const EmployeeCreateForm = () => {
               onClick={() => navigate(Paths.EMPLOYEES)}
               type="button"
             >
-              <ArrowLeft />
+              <BsArrowLeft size={50} color="var(--orange)" />
             </UnstyledButton>
             <UnstyledButton
               onClick={() => navigate(Paths.PROJECTS)}
               type="button"
             >
-              <Home />
+              <BsFillHouseFill size={44} color="var(--orange)" />
             </UnstyledButton>
           </Group>
 
@@ -132,32 +116,16 @@ const EmployeeCreateForm = () => {
           <MaskedTextInput
             {...form.getInputProps('phone')}
             label="Номер телефона"
-            // eslint-disable-next-line react/jsx-curly-brace-presence
-            mask={'+7 (000) 000 0000'}
+            mask="+7 (000) 000 0000"
           />
           <TextInput
             {...form.getInputProps('firstName')}
             label="Имя"
             maxLength={15}
           />
-          <DatePickerInput
+          <DatePicker
             {...form.getInputProps('dateOfEmployment')}
-            label="Дата регистрации"
-            placeholder="Выберите дату"
-            clearable
-            valueFormat="DD.MM.YYYY"
-            classNames={{
-              wrapper,
-              calendar,
-              calendarHeaderControl,
-              calendarHeaderLevel,
-              weekday,
-              day,
-              label,
-              input,
-              error,
-              rightSection,
-            }}
+            title="Дата регистрации"
           />
           <MultiSelect
             data={workTypeSelectItems}

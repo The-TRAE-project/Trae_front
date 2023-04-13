@@ -2,29 +2,33 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Group, SelectItem, Stack } from '@mantine/core';
 import { useForm, zodResolver } from '@mantine/form';
+import { BsArrowLeft, BsFillHouseFill } from 'react-icons/bs';
 
 import { Paths } from '../../../constants/paths';
+import { Status } from '../../../store/types';
 import { useEditWorkTypeMutation } from '../../../store/apis/workTypes';
 import {
   EditWorkTypeFormValues,
   EditWorkTypeSchema,
 } from '../../../store/apis/workTypes/types';
+import { setWorkType } from '../../../store/slices/workType';
 import { showErrorNotification } from '../../../helpers/showErrorNotification';
 import { useAppSelector } from '../../../helpers/hooks/useAppSelector';
+import { useAppDispatch } from '../../../helpers/hooks/useAppDispatch';
 import Loader from '../../Loader';
 import Select from '../../Select';
-import ArrowLeft from '../../svgs/ArrowLeft';
-import Home from '../../svgs/Home';
 import TextInput from '../../TextInput';
 import InformModal from '../../InformModal';
 import { InformModalText, OrangeButton, UnstyledButton } from '../../styles';
 import { FlexContainer, Form, Grid } from './styles';
+import { useSetDefaultValues } from './helpers/useSetDefaultValues';
 
 const UpdateWorkTypeForm = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const navigate = useNavigate();
   const { workType } = useAppSelector((store) => store.workType);
+  const dispatch = useAppDispatch();
 
   const form = useForm<Omit<EditWorkTypeFormValues, 'typeWorkId'>>({
     initialValues: {
@@ -43,34 +47,37 @@ const UpdateWorkTypeForm = () => {
   const [editWorkType, { isLoading: isEditLoading, data: editedTypeWork }] =
     useEditWorkTypeMutation();
 
+  useSetDefaultValues(form, workType);
+
   const handleSubmit = async (
     values: Omit<EditWorkTypeFormValues, 'typeWorkId'>
   ) => {
     try {
       if (workType?.id) {
-        await editWorkType({
-          typeWorkId: workType?.id,
+        const response = await editWorkType({
+          typeWorkId: workType.id,
           // eslint-disable-next-line prettier/prettier
           isActive: values.isActive ? values.isActive === 'Активный' : null,
-          newName: values.newName,
+          newName: values.newName === workType.name ? null : values.newName,
         }).unwrap();
         setIsOpen(true);
         form.reset();
+        dispatch(setWorkType(response));
       }
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       showErrorNotification(err.data.status, err.data.error);
     }
   };
-  // TODO:
+
   const statusesSelectItems: SelectItem[] = [
     {
-      value: 'Активный',
-      label: 'Активный',
+      value: Status.ACTIVE,
+      label: Status.ACTIVE,
     },
     {
-      value: 'Заблокированный',
-      label: 'Заблокированный',
+      value: Status.BLOCKED,
+      label: Status.BLOCKED,
     },
   ];
 
@@ -104,13 +111,13 @@ const UpdateWorkTypeForm = () => {
               onClick={() => navigate(Paths.WORK_TYPES)}
               type="button"
             >
-              <ArrowLeft />
+              <BsArrowLeft size={50} color="var(--orange)" />
             </UnstyledButton>
             <UnstyledButton
               onClick={() => navigate(Paths.PROJECTS)}
               type="button"
             >
-              <Home />
+              <BsFillHouseFill size={44} color="var(--orange)" />
             </UnstyledButton>
           </Group>
 

@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { Group, Stack } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
+import { BsFillHouseFill } from 'react-icons/bs';
+import { AiOutlinePlusCircle } from 'react-icons/ai';
 
 import { Roles } from '../../store/slices/auth/types';
 import { Status } from '../../store/apis/user/types';
 import { Paths } from '../../constants/paths';
 import SEO from '../../components/SEO';
-import Home from '../../components/svgs/Home';
-import Plus from '../../components/svgs/Plus';
 import UserFilterMenu from '../../components/Users/UserFilterMenu';
 import UsersListItem from '../../components/Users/UsersListItem';
 import {
@@ -49,7 +49,7 @@ const Constructors = () => {
                   resetRole={() => setParamRole(null)}
                 />
                 <UnstyledButton onClick={navigateToHome} type="button">
-                  <Home />
+                  <BsFillHouseFill size={44} color="var(--orange)" />
                 </UnstyledButton>
               </Group>
 
@@ -57,7 +57,7 @@ const Constructors = () => {
                 onClick={navigateToCreateConstructorPage}
                 type="button"
               >
-                <Plus />
+                <AiOutlinePlusCircle size={30} color="var(--white)" />
                 <span>Добавить</span>
               </OrangeButton>
             </Group>

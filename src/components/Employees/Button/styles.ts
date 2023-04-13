@@ -1,11 +1,11 @@
 import styled from 'styled-components';
 
 type WrapperProps = {
-  width: number;
+  $width: number;
 };
 
 export const Wrapper = styled.button`
-  width: ${(props: WrapperProps) => props.width}px;
+  width: ${(props: WrapperProps) => `${props.$width}px`};
   height: 123px;
   padding: 38px 24px;
   border-radius: var(--border-radius);

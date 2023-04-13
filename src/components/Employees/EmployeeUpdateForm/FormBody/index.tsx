@@ -1,23 +1,21 @@
-// TODO:
 import { SelectItem } from '@mantine/core';
 import { UseFormReturnType } from '@mantine/form';
-import { DatePickerInput } from '@mantine/dates';
 import dayjs from 'dayjs';
 
 import { useGetActiveWorkTypesQuery } from '../../../../store/apis/workTypes';
 import { EmployeeUpdateFormValues } from '../../../../store/apis/employee/types';
 import { EmployeeToEdit } from '../../../../store/slices/employee/types';
+import { Status } from '../../../../store/types';
 import Loader from '../../../Loader';
 import Select from '../../../Select';
-import { useDateInputStyles } from '../../../DatePicker/styles';
 import TextInput from '../../../TextInput';
 import MaskedTextInput from '../../../MaskedInput';
 import MultiSelect from '../../../MultiSelect';
 import NumberInput from '../../../NumberInput';
+import DatePicker from '../../../DatePicker';
 import DetailsCard from './DetailsCard';
-import { Grid, Wrapper } from './styles';
 import WorkTypesDetailsCard from './WorkTypesDetailsCard';
-// import DatePicker from '../../../DatePicker';
+import { Grid, Wrapper } from './styles';
 
 type EmployeeWithoutId = Omit<EmployeeUpdateFormValues, 'employeeId'>;
 
@@ -31,20 +29,6 @@ interface Props {
 }
 
 const FormBody = ({ employee, form, isUpdate }: Props) => {
-  const {
-    classes: {
-      input,
-      label,
-      error,
-      wrapper,
-      calendar,
-      calendarHeaderControl,
-      calendarHeaderLevel,
-      weekday,
-      day,
-      rightSection,
-    },
-  } = useDateInputStyles();
   const { data: workTypes } = useGetActiveWorkTypesQuery();
 
   const workTypesSelectItems: SelectItem[] = workTypes
@@ -53,15 +37,15 @@ const FormBody = ({ employee, form, isUpdate }: Props) => {
         label: workType.name,
       }))
     : [];
-  // TODO:
+
   const statusesSelectItems: SelectItem[] = [
     {
-      value: 'Активный',
-      label: 'Активный',
+      value: Status.ACTIVE,
+      label: Status.ACTIVE,
     },
     {
-      value: 'Заблокированный',
-      label: 'Заблокированный',
+      value: Status.BLOCKED,
+      label: Status.BLOCKED,
     },
   ];
 
@@ -75,24 +59,9 @@ const FormBody = ({ employee, form, isUpdate }: Props) => {
             <DetailsCard label="Фамилия" text={employee.lastName} />
           )}
           {isUpdate ? (
-            <DatePickerInput
-              label="Дата регистрации"
-              placeholder="Выберите дату"
-              clearable
-              valueFormat="DD.MM.YYYY"
-              classNames={{
-                wrapper,
-                calendar,
-                calendarHeaderControl,
-                calendarHeaderLevel,
-                weekday,
-                day,
-                label,
-                input,
-                error,
-                rightSection,
-              }}
+            <DatePicker
               {...form.getInputProps('dateOfEmployment')}
+              title="Дата регистрации"
             />
           ) : (
             <DetailsCard
@@ -101,24 +70,9 @@ const FormBody = ({ employee, form, isUpdate }: Props) => {
             />
           )}
           {isUpdate ? (
-            <DatePickerInput
-              label="Дата увольнения"
-              placeholder="Выберите дату"
-              clearable
-              valueFormat="DD.MM.YYYY"
-              classNames={{
-                wrapper,
-                calendar,
-                calendarHeaderControl,
-                calendarHeaderLevel,
-                weekday,
-                day,
-                label,
-                input,
-                error,
-                rightSection,
-              }}
+            <DatePicker
               {...form.getInputProps('dateOfDismissal')}
+              title="Дата увольнения"
             />
           ) : (
             <DetailsCard
@@ -171,7 +125,6 @@ const FormBody = ({ employee, form, isUpdate }: Props) => {
             <MultiSelect
               {...form.getInputProps('changedTypesId')}
               data={workTypesSelectItems}
-              // defaultValue={defaultWorkTypes}
               label="Тип работ"
             />
           ) : (

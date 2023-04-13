@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Group, Stack } from '@mantine/core';
 import { useForm, zodResolver } from '@mantine/form';
+import { BsArrowLeft, BsFillHouseFill } from 'react-icons/bs';
 
 import {
   ConstructorFormSchema,
@@ -13,10 +14,8 @@ import { Paths } from '../../../constants/paths';
 import Loader from '../../Loader';
 import MaskedTextInput from '../../MaskedInput';
 import DatePicker from '../../DatePicker';
-import ArrowLeft from '../../svgs/ArrowLeft';
 import TextInput from '../../TextInput';
 import InformModal from '../../InformModal';
-import Home from '../../svgs/Home';
 import { InformModalText, OrangeButton, UnstyledButton } from '../../styles';
 import { Form, Grid } from './styles';
 
@@ -83,13 +82,13 @@ const CreateForm = () => {
               onClick={() => navigate(Paths.CONSTRUCTORS)}
               type="button"
             >
-              <ArrowLeft />
+              <BsArrowLeft size={50} color="var(--orange)" />
             </UnstyledButton>
             <UnstyledButton
               onClick={() => navigate(Paths.PROJECTS)}
               type="button"
             >
-              <Home />
+              <BsFillHouseFill size={44} color="var(--orange)" />
             </UnstyledButton>
           </Group>
 
@@ -111,8 +110,7 @@ const CreateForm = () => {
             maxLength={15}
           />
           <MaskedTextInput
-            // eslint-disable-next-line react/jsx-curly-brace-presence
-            mask={'+7 (000) 000 0000'}
+            mask="+7 (000) 000 0000"
             {...form.getInputProps('phone')}
             label="Номер телефона"
           />
@@ -123,6 +121,7 @@ const CreateForm = () => {
           />
           <DatePicker
             {...form.getInputProps('dateOfEmployment')}
+            title="Дата регистрации"
             defaultValue={new Date()}
           />
           <TextInput
