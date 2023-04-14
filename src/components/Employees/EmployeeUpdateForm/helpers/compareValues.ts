@@ -4,13 +4,24 @@ import dayjs from 'dayjs';
 import { EmployeeUpdateFormValues } from '../../../../store/apis/employee/types';
 import { EmployeeToEdit } from '../../../../store/slices/employee/types';
 
+export const isObjectsEqual = (leftSide: any, rightSide: any): any => {
+  return typeof leftSide === 'object' && Object.keys(leftSide).length > 0
+    ? Object.keys(leftSide).length === Object.keys(rightSide).length &&
+        Object.keys(leftSide).every((p) =>
+          isObjectsEqual(leftSide[p], rightSide[p])
+        )
+    : leftSide === rightSide;
+};
+
+export const convertToNumberArray = (data: any) =>
+  data.map((item: any) => ({ id: Number(item.id || item) }));
+
+export const convertToDate = (value: any) => dayjs(value).toDate().getTime();
+
 export const compareValues = (
   values: Omit<EmployeeUpdateFormValues, 'employeeId'>,
   employeeToEdit: EmployeeToEdit
 ) => {
-  const convertToNumberArray = (data: any) =>
-    data.map((item: any) => ({ id: Number(item.id || item.value) }));
-
   const findDifference = {
     employeeId: employeeToEdit.id,
     firstName:
@@ -26,21 +37,27 @@ export const compareValues = (
     isActive: values.isActive === 'Активный' ? true : false,
     pinCode: employeeToEdit.pinCode === values.pinCode ? null : values.pinCode,
     dateOfEmployment:
-      dayjs(employeeToEdit?.dateOfEmployment).toDate().getTime() ===
+      convertToDate(employeeToEdit?.dateOfEmployment) ===
       values.dateOfEmployment?.getTime()
         ? null
         : values.dateOfEmployment,
     dateOfDismissal:
-      dayjs(employeeToEdit?.dateOfDismissal).toDate().getTime() ===
+      convertToDate(employeeToEdit?.dateOfDismissal) ===
       values.dateOfDismissal?.getTime()
         ? null
         : values.dateOfDismissal,
-    changedTypesId:
-      JSON.stringify(convertToNumberArray(employeeToEdit.types)) ===
-      JSON.stringify(convertToNumberArray(values.changedTypesId))
-        ? null
-        : (values.changedTypesId?.map((typeId) => +typeId) as any),
+    changedTypesId: isObjectsEqual(
+      convertToNumberArray(employeeToEdit.types),
+      convertToNumberArray(values.changedTypesId)
+    )
+      ? null
+      : (values.changedTypesId?.map((typeId) => +typeId) as any),
   };
   // eslint-disable-next-line consistent-return
   return findDifference;
 };
+
+export const checkValues = (
+  leftSide: string | number | null | undefined,
+  rightSide: string | number | undefined
+) => leftSide === rightSide;

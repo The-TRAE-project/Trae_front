@@ -12,9 +12,10 @@ import {
   EditWorkTypeSchema,
 } from '../../../store/apis/workTypes/types';
 import { setWorkType } from '../../../store/slices/workType';
-import { showErrorNotification } from '../../../helpers/showErrorNotification';
 import { useAppSelector } from '../../../helpers/hooks/useAppSelector';
 import { useAppDispatch } from '../../../helpers/hooks/useAppDispatch';
+import { showErrorNotification } from '../../../helpers/showErrorNotification';
+import { showInformNotification } from '../../../helpers/showInformNotification';
 import Loader from '../../Loader';
 import Select from '../../Select';
 import TextInput from '../../TextInput';
@@ -69,6 +70,10 @@ const UpdateWorkTypeForm = () => {
           checkValues(newName, workType.name) &&
           checkValues(isActive, isWorkTypeActive)
         ) {
+          showInformNotification(
+            'Мы уведомляем вас, что',
+            'вы не сделали никаких изменений.'
+          );
           navigate(Paths.WORK_TYPES);
           return;
         }

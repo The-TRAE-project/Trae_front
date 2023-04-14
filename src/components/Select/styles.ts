@@ -17,8 +17,11 @@ export const useSelectStyles = createStyles(() => ({
 
   error: {
     fontSize: 24,
+    fontWeight: 500,
     lineHeight: '26px',
-    wordBreak: 'break-all',
+    wordBreak: 'break-word',
+    color: 'var(--red)',
+    letterSpacing: '2px',
   },
 
   input: {

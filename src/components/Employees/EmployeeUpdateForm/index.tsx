@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useForm, zodResolver } from '@mantine/form';
 import dayjs from 'dayjs';
 
@@ -7,23 +8,29 @@ import {
   EmployeeUpdateFormSchema,
   EmployeeUpdateFormValues,
 } from '../../../store/apis/employee/types';
+import { Paths } from '../../../constants/paths';
 import { useAppSelector } from '../../../helpers/hooks/useAppSelector';
 import { showErrorNotification } from '../../../helpers/showErrorNotification';
-import { compareValues } from './helpers/compareValues';
+import { showInformNotification } from '../../../helpers/showInformNotification';
+import { FormWrapper } from '../../styles';
+import {
+  checkValues,
+  compareValues,
+  convertToDate,
+  convertToNumberArray,
+  isObjectsEqual,
+} from './helpers/compareValues';
 import { useSetUpdatedValues } from './helpers/useSetUpdatedValues';
+import { useSetMultiSelectDefaultValues } from './helpers/useSetMultiSelectDefaultValues';
 import FormHeader from './FormHeader';
 import FormBody from './FormBody';
-import { Form } from './styles';
 
 const EmployeeUpdateForm = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isUpdate, setIsUpdate] = useState<boolean>(false);
 
+  const navigate = useNavigate();
   const { employeeToEdit } = useAppSelector((store) => store.employee);
-
-  const workTypesSelectItems: string[] = employeeToEdit?.types
-    ? employeeToEdit.types.map<string>((workType) => workType.name)
-    : [];
 
   const form = useForm<Omit<EmployeeUpdateFormValues, 'employeeId'>>({
     initialValues: {
@@ -31,7 +38,7 @@ const EmployeeUpdateForm = () => {
       lastName: employeeToEdit?.lastName || null,
       middleName: employeeToEdit?.middleName || null,
       phone: employeeToEdit?.phone || null,
-      changedTypesId: workTypesSelectItems || null,
+      changedTypesId: null,
       pinCode: employeeToEdit?.pinCode || null,
       isActive: employeeToEdit?.isActive ? 'Активный' : 'Заблокированный',
       dateOfDismissal: employeeToEdit?.dateOfDismissal
@@ -57,8 +64,38 @@ const EmployeeUpdateForm = () => {
   ) => {
     try {
       if (employeeToEdit) {
+        const {
+          firstName,
+          lastName,
+          middleName,
+          phone,
+          pinCode,
+          dateOfEmployment,
+        } = values;
+        if (
+          checkValues(firstName, employeeToEdit.firstName) &&
+          checkValues(lastName, employeeToEdit.lastName) &&
+          checkValues(middleName, employeeToEdit.middleName) &&
+          checkValues(phone, employeeToEdit.phone) &&
+          checkValues(pinCode, employeeToEdit.pinCode) &&
+          isObjectsEqual(
+            convertToNumberArray(employeeToEdit.types),
+            convertToNumberArray(values.changedTypesId)
+          ) &&
+          checkValues(
+            dateOfEmployment?.getTime(),
+            convertToDate(employeeToEdit?.dateOfEmployment)
+          )
+        ) {
+          showInformNotification(
+            'Мы уведомляем вас, что',
+            'вы не сделали никаких изменений.'
+          );
+          navigate(Paths.EMPLOYEES);
+          return;
+        }
+
         const comparedValues = compareValues(values, employeeToEdit);
-        console.log(comparedValues);
         await editEmployee(comparedValues).unwrap();
         setIsOpen(true);
         form.reset();
@@ -76,8 +113,10 @@ const EmployeeUpdateForm = () => {
 
   useSetUpdatedValues(updatedEmployee, isUpdate);
 
+  useSetMultiSelectDefaultValues(form);
+
   return (
-    <Form onSubmit={form.onSubmit(handleSubmit)}>
+    <FormWrapper onSubmit={form.onSubmit(handleSubmit)}>
       <FormHeader
         isLoading={isLoading}
         isUpdate={isUpdate}
@@ -88,7 +127,7 @@ const EmployeeUpdateForm = () => {
       />
 
       <FormBody employee={employeeToEdit} form={form} isUpdate={isUpdate} />
-    </Form>
+    </FormWrapper>
   );
 };
 

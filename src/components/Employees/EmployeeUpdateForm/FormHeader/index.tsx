@@ -5,10 +5,11 @@ import dayjs from 'dayjs';
 
 import { Paths } from '../../../../constants/paths';
 import { Employee } from '../../../../store/apis/employee/types';
-import { InformModalText, OrangeButton, UnstyledButton } from '../../../styles';
+import { useAppSelector } from '../../../../helpers/hooks/useAppSelector';
 import Loader from '../../../Loader';
 import InformModal from '../../../InformModal';
-import { useAppSelector } from '../../../../helpers/hooks/useAppSelector';
+import { InformModalText, OrangeButton, UnstyledButton } from '../../../styles';
+import { convertToNumberArray, isObjectsEqual } from '../helpers/compareValues';
 
 interface Props {
   isLoading: boolean;
@@ -30,11 +31,6 @@ const FormHeader = ({
   const navigate = useNavigate();
   const { employeeToEdit } = useAppSelector((store) => store.employee);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const convertToNumberArray = (data: any) =>
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    data?.map((item: any) => ({ id: Number(item.id || item.value) }));
-
   return (
     <>
       <InformModal
@@ -50,37 +46,37 @@ const FormHeader = ({
         <Stack spacing={20}>
           {!!employee && (
             <>
-              {employee.firstName === employeeToEdit?.firstName ? null : (
+              {employee.firstName !== employeeToEdit?.firstName && (
                 <InformModalText>
                   Имя:&nbsp;
                   <strong>{employee.firstName}</strong>
                 </InformModalText>
               )}
-              {employee.lastName === employeeToEdit?.lastName ? null : (
+              {employee.lastName !== employeeToEdit?.lastName && (
                 <InformModalText>
                   Фамилия:&nbsp;
                   <strong>{employee.lastName}</strong>
                 </InformModalText>
               )}
-              {employee.middleName === employeeToEdit?.middleName ? null : (
+              {employee.middleName !== employeeToEdit?.middleName && (
                 <InformModalText>
                   Отчество:&nbsp;
                   <strong>{employee.middleName}</strong>
                 </InformModalText>
               )}
-              {employee.pinCode === employeeToEdit?.pinCode ? null : (
+              {employee.pinCode !== employeeToEdit?.pinCode && (
                 <InformModalText>
                   Пароль:&nbsp;
                   <strong>{employee.pinCode}</strong>
                 </InformModalText>
               )}
-              {employee.phone === employeeToEdit?.phone ? null : (
+              {employee.phone !== employeeToEdit?.phone && (
                 <InformModalText>
                   Номер телефона:&nbsp;
                   <strong>{employee.phone}</strong>
                 </InformModalText>
               )}
-              {employee.isActive === employeeToEdit?.isActive ? null : (
+              {employee.isActive !== employeeToEdit?.isActive && (
                 <InformModalText>
                   Статус:&nbsp;
                   <strong>
@@ -88,10 +84,8 @@ const FormHeader = ({
                   </strong>
                 </InformModalText>
               )}
-              {dayjs(employee.dateOfEmployment).toDate().getTime() ===
-              dayjs(employeeToEdit?.dateOfEmployment)
-                .toDate()
-                .getTime() ? null : (
+              {dayjs(employee.dateOfEmployment).toDate().getTime() !==
+                dayjs(employeeToEdit?.dateOfEmployment).toDate().getTime() && (
                 <InformModalText>
                   Дата регистрации:&nbsp;
                   <strong>
@@ -99,16 +93,18 @@ const FormHeader = ({
                   </strong>
                 </InformModalText>
               )}
-              {employee?.dateOfDismissal ? (
+              {employee?.dateOfDismissal && (
                 <InformModalText>
                   Дата увольнения:&nbsp;
                   <strong>
                     {dayjs(employee.dateOfDismissal).format('DD.MM.YYYY')}
                   </strong>
                 </InformModalText>
-              ) : null}
-              {JSON.stringify(convertToNumberArray(employeeToEdit?.types)) ===
-              JSON.stringify(convertToNumberArray(employee.types)) ? null : (
+              )}
+              {!isObjectsEqual(
+                convertToNumberArray(employeeToEdit?.types),
+                convertToNumberArray(employee.types)
+              ) && (
                 <Group spacing={10} position="center">
                   <InformModalText>
                     Типы работ:&nbsp;

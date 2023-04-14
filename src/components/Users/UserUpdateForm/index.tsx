@@ -7,6 +7,7 @@ import { BsArrowLeft, BsFillHouseFill } from 'react-icons/bs';
 import { Paths } from '../../../constants/paths';
 import { useAppSelector } from '../../../helpers/hooks/useAppSelector';
 import { showErrorNotification } from '../../../helpers/showErrorNotification';
+import { showInformNotification } from '../../../helpers/showInformNotification';
 import {
   useEditUserMutation,
   useGetUserAdditionalInformationQuery,
@@ -65,6 +66,10 @@ const UserUpdateForm = () => {
           checkValues(middleName, user?.middleName) &&
           checkValues(phone, user?.phone)
         ) {
+          showInformNotification(
+            'Мы уведомляем вас, что',
+            'вы не сделали никаких изменений.'
+          );
           navigate(Paths.PERSONAL_CABINET);
           return;
         }

@@ -1,4 +1,4 @@
-import { SelectItem } from '@mantine/core';
+import { SelectItem, MultiSelect } from '@mantine/core';
 import { UseFormReturnType } from '@mantine/form';
 import dayjs from 'dayjs';
 
@@ -10,12 +10,15 @@ import Loader from '../../../Loader';
 import Select from '../../../Select';
 import TextInput from '../../../TextInput';
 import MaskedTextInput from '../../../MaskedInput';
-import MultiSelect from '../../../MultiSelect';
+// TODO:
+// import MultiSelect from '../../../MultiSelect';
 import NumberInput from '../../../NumberInput';
 import DatePicker from '../../../DatePicker';
+import { useMultiSelectStyles } from '../../../MultiSelect/styles';
+import { Grid } from '../../../styles';
 import DetailsCard from './DetailsCard';
 import WorkTypesDetailsCard from './WorkTypesDetailsCard';
-import { Grid, Wrapper } from './styles';
+import { Wrapper } from './styles';
 
 type EmployeeWithoutId = Omit<EmployeeUpdateFormValues, 'employeeId'>;
 
@@ -30,6 +33,9 @@ interface Props {
 
 const FormBody = ({ employee, form, isUpdate }: Props) => {
   const { data: workTypes } = useGetActiveWorkTypesQuery();
+  const {
+    classes: { dropdown, input, inputLabel, error, item, itemsWrapper, value },
+  } = useMultiSelectStyles();
 
   const workTypesSelectItems: SelectItem[] = workTypes
     ? workTypes.map<SelectItem>((workType) => ({
@@ -126,6 +132,16 @@ const FormBody = ({ employee, form, isUpdate }: Props) => {
               {...form.getInputProps('changedTypesId')}
               data={workTypesSelectItems}
               label="Тип работ"
+              maxDropdownHeight={284}
+              classNames={{
+                dropdown,
+                input,
+                label: inputLabel,
+                error,
+                item,
+                itemsWrapper,
+                value,
+              }}
             />
           ) : (
             <WorkTypesDetailsCard workTypes={employee.types} />

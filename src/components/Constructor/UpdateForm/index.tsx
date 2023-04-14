@@ -10,9 +10,10 @@ import {
   UserUpdateFormValues,
   UserUpdateSchema,
 } from '../../../store/apis/user/types';
-import { showErrorNotification } from '../../../helpers/showErrorNotification';
-import { useDisplayError } from '../../../helpers/hooks/useDisplayError';
 import { useAppSelector } from '../../../helpers/hooks/useAppSelector';
+import { useDisplayError } from '../../../helpers/hooks/useDisplayError';
+import { showErrorNotification } from '../../../helpers/showErrorNotification';
+import { showInformNotification } from '../../../helpers/showInformNotification';
 import { useSetDefaultValues } from './helpers/useSetDefaultValues';
 import FormHeader from './FormHeader';
 import FormBody from './FormBody';
@@ -66,6 +67,10 @@ const UpdateForm = () => {
           checkValues(newRole, user.role) &&
           checkValues(accountStatus, isUserActive)
         ) {
+          showInformNotification(
+            'Мы уведомляем вас, что',
+            'вы не сделали никаких изменений.'
+          );
           navigate(Paths.CONSTRUCTORS);
           return;
         }

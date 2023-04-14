@@ -18,8 +18,13 @@ import MaskedTextInput from '../../MaskedInput';
 import MultiSelect from '../../MultiSelect';
 import TextInput from '../../TextInput';
 import DatePicker from '../../DatePicker';
-import { InformModalText, OrangeButton, UnstyledButton } from '../../styles';
-import { Form, Grid } from './styles';
+import {
+  FormWrapper,
+  Grid,
+  InformModalText,
+  OrangeButton,
+  UnstyledButton,
+} from '../../styles';
 
 const EmployeeCreateForm = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -79,7 +84,7 @@ const EmployeeCreateForm = () => {
         )}
       </InformModal>
 
-      <Form onSubmit={form.onSubmit(handleSubmit)}>
+      <FormWrapper onSubmit={form.onSubmit(handleSubmit)}>
         <Group position="apart" spacing={100}>
           <Group spacing={42}>
             <UnstyledButton
@@ -133,7 +138,7 @@ const EmployeeCreateForm = () => {
             {...form.getInputProps('typesId')}
           />
         </Grid>
-      </Form>
+      </FormWrapper>
     </>
   );
 };

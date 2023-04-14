@@ -32,8 +32,11 @@ export const useInputStyles = createStyles(() => ({
   error: {
     maxWidth: 400,
     fontSize: 28,
+    fontWeight: 500,
     lineHeight: '33px',
     wordBreak: 'break-all',
+    color: 'var(--red)',
+    letterSpacing: '2px',
   },
 
   root: {

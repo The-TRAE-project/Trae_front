@@ -23,8 +23,9 @@ const EmployeesListItem = ({ paramTypeWorkIds, paramActive }: Props) => {
     isLoading,
   } = useGetAllEmployeesQuery({
     elementPerPage: `&elementPerPage=${10}`,
-    typeWorkId:
-      paramTypeWorkIds?.length !== 0 ? `&typeWorkId=${paramTypeWorkIds}` : '',
+    typeWorkId: paramTypeWorkIds?.length
+      ? `&typeWorkId=${paramTypeWorkIds}`
+      : '',
     isActive: paramActive ? `&isActive=${paramActive}` : '',
     page: `&page=${page}`,
   });

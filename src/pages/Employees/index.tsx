@@ -44,7 +44,7 @@ const Employees = () => {
                   resetStatus={() => setParamActive(null)}
                   typeWorks={paramTypeWorkIds}
                   setTypeWorks={setParamTypeWorkIds}
-                  resetTypeWork={() => setParamTypeWorkIds(null)}
+                  resetTypeWork={() => setParamTypeWorkIds([])}
                 />
                 <UnstyledButton onClick={navigateToHome} type="button">
                   <BsFillHouseFill size={44} color="var(--orange)" />

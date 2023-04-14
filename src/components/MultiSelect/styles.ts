@@ -34,8 +34,11 @@ export const useMultiSelectStyles = createStyles(() => ({
 
   error: {
     fontSize: 24,
+    fontWeight: 500,
     lineHeight: '26px',
     wordBreak: 'break-word',
+    color: 'var(--red)',
+    letterSpacing: '2px',
   },
 
   itemsWrapper: {
@@ -58,14 +61,15 @@ export const useMultiSelectStyles = createStyles(() => ({
   value: {
     fontFamily: 'var(--font-roboto)',
     fontWeight: 500,
-    fontSize: 28,
-    lineHeight: '33px',
+    fontSize: 24,
+    lineHeight: '28px',
     color: 'var(--orange)',
-
-    width: 169,
-    height: 53,
+    wordBreak: 'break-word',
+    minWidth: 169,
+    minHeight: 53,
+    height: 'auto',
     background: 'var(--white)',
-    padding: '10px 14px',
+    padding: '10px 12px',
     border: '1px solid var(--gray)',
     borderRadius: 'var(--border-radius)',
     gap: 14,
