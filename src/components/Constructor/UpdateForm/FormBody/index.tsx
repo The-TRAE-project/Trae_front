@@ -4,6 +4,7 @@ import { UseFormReturnType } from '@mantine/form';
 import dayjs from 'dayjs';
 
 import { showErrorNotification } from '../../../../helpers/showErrorNotification';
+import { Status } from '../../../../store/types';
 import {
   useGetAllRolesQuery,
   useResetUserPasswordMutation,
@@ -15,10 +16,9 @@ import Loader from '../../../Loader';
 import Select from '../../../Select';
 import DatePicker from '../../../DatePicker';
 import InformModal from '../../../InformModal';
-import { DashedOrangeButton, InformModalText } from '../../../styles';
+import { DashedOrangeButton, Grid, InformModalText } from '../../../styles';
 import DetailsCard from './DetailsCard';
-import { Grid, Wrapper } from './styles';
-import { Status } from '../../../../store/types';
+import { Wrapper } from './styles';
 
 type UserWithoutId = Omit<UserUpdateFormValues, 'managerId'>;
 

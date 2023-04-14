@@ -149,18 +149,19 @@ const UserUpdateForm = () => {
               <TextInput
                 {...form.getInputProps('lastName')}
                 label="Фамилия"
-                maxLength={30}
+                maxLength={15}
               />
               <TextInput
                 {...form.getInputProps('middleName')}
                 label="Отчество"
-                maxLength={30}
+                minLength={2}
+                maxLength={15}
               />
               <br />
               <TextInput
                 {...form.getInputProps('firstName')}
                 label="Имя"
-                maxLength={30}
+                maxLength={15}
               />
               <MaskedTextInput
                 {...form.getInputProps('phone')}

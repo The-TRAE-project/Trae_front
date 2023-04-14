@@ -16,8 +16,13 @@ import MaskedTextInput from '../../MaskedInput';
 import DatePicker from '../../DatePicker';
 import TextInput from '../../TextInput';
 import InformModal from '../../InformModal';
-import { InformModalText, OrangeButton, UnstyledButton } from '../../styles';
-import { Form, Grid } from './styles';
+import {
+  FormWrapper,
+  Grid,
+  InformModalText,
+  OrangeButton,
+  UnstyledButton,
+} from '../../styles';
 
 const CreateForm = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -75,7 +80,7 @@ const CreateForm = () => {
         </Stack>
       </InformModal>
 
-      <Form onSubmit={form.onSubmit(handleSubmit)}>
+      <FormWrapper onSubmit={form.onSubmit(handleSubmit)}>
         <Group position="apart" spacing={100}>
           <Group spacing={42}>
             <UnstyledButton
@@ -130,7 +135,7 @@ const CreateForm = () => {
             maxLength={15}
           />
         </Grid>
-      </Form>
+      </FormWrapper>
     </>
   );
 };

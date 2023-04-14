@@ -26,8 +26,8 @@ import {
   UnstyledButton,
 } from '../../styles';
 import { useSetDefaultValues } from './helpers/useSetDefaultValues';
+import { checkValues, compareValues } from './helpers/compareValues';
 import { FormFlexContainer } from '../styles';
-import { compareValues } from './helpers/compareValues';
 
 const UpdateWorkTypeForm = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -60,9 +60,14 @@ const UpdateWorkTypeForm = () => {
   ) => {
     try {
       if (workType?.id) {
+        const { newName, isActive } = values;
+        const isWorkTypeActive = workType.isActive
+          ? 'Активный'
+          : 'Заблокированный';
+
         if (
-          values.newName === workType.name ||
-          values.isActive === workType.isActive
+          checkValues(newName, workType.name) &&
+          checkValues(isActive, isWorkTypeActive)
         ) {
           navigate(Paths.WORK_TYPES);
           return;

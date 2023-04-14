@@ -23,3 +23,8 @@ export const compareValues = (
   // eslint-disable-next-line consistent-return
   return findDifference;
 };
+
+export const checkValues = (
+  leftSide: string | null,
+  rightSide: string | undefined
+) => leftSide === rightSide;

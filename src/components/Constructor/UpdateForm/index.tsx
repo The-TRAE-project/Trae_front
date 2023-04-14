@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useForm, zodResolver } from '@mantine/form';
 
 import {
@@ -15,12 +16,15 @@ import { useAppSelector } from '../../../helpers/hooks/useAppSelector';
 import { useSetDefaultValues } from './helpers/useSetDefaultValues';
 import FormHeader from './FormHeader';
 import FormBody from './FormBody';
-import { Form } from './styles';
+import { FormWrapper } from '../../styles';
+import { checkValues, compareValues } from './helpers/compareValues';
+import { Paths } from '../../../constants/paths';
 
 const UpdateForm = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isUpdate, setIsUpdate] = useState<boolean>(false);
 
+  const navigate = useNavigate();
   const { constructorId } = useAppSelector((store) => store.builder);
 
   const [
@@ -56,13 +60,20 @@ const UpdateForm = () => {
   ) => {
     try {
       if (user) {
+        const { newRole, accountStatus } = values;
+        const isUserActive = user.status ? 'Активный' : 'Заблокированный';
+        if (
+          checkValues(newRole, user.role) &&
+          checkValues(accountStatus, isUserActive)
+        ) {
+          navigate(Paths.CONSTRUCTORS);
+          return;
+        }
+
+        const comparedValues = compareValues(values, user);
         await updateUserSomeFields({
           managerId: user.id,
-          newRole: values.newRole,
-          accountStatus: values.accountStatus
-            ? values.accountStatus === 'Активный'
-            : null,
-          dateOfDismissal: values.dateOfDismissal,
+          ...comparedValues,
         }).unwrap();
         setIsModalOpen(true);
         form.reset();
@@ -79,7 +90,7 @@ const UpdateForm = () => {
   };
 
   return (
-    <Form onSubmit={form.onSubmit(handleSubmit)}>
+    <FormWrapper onSubmit={form.onSubmit(handleSubmit)}>
       <FormHeader
         isLoading={isUpdateLoading}
         isUpdate={isUpdate}
@@ -101,7 +112,7 @@ const UpdateForm = () => {
         user={user}
         completeUpdate={() => setIsUpdate(false)}
       />
-    </Form>
+    </FormWrapper>
   );
 };
 
