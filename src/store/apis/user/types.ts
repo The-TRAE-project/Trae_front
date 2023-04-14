@@ -165,14 +165,28 @@ export const UserEditSchema = z.object({
 export type UserEditFormValues = z.infer<typeof UserEditSchema>;
 
 export const UserChangePasswordSchema = UserEditSchema.extend({
-  oldPassword: z.string().min(3, {
-    message: 'Пожалуйста, введите старый пароль!',
-  }),
-  newPassword: z.string().min(3, {
-    message: 'Пожалуйста, введите новый пароль!',
-  }),
+  oldPassword: z
+    .string()
+    .min(3, {
+      message: 'Пароль должен быть не меньше 3 символов!',
+    })
+    .max(30, { message: 'Пароль должен быть не больше 30 символов!' }),
+  newPassword: z
+    .string()
+    .min(3, {
+      message: 'Пароль должен быть не меньше 3 символов!',
+    })
+    .max(30, { message: 'Пароль должен быть не больше 30 символов!' }),
 });
 
 export type UserChangePasswordFormValues = z.infer<
   typeof UserChangePasswordSchema
 >;
+
+export interface UserAdditionalInfo {
+  managerId: number;
+  firstName: string;
+  middleName: string;
+  lastName: string;
+  phone: string;
+}

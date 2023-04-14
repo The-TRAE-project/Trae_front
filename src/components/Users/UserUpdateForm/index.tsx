@@ -9,7 +9,7 @@ import { useAppSelector } from '../../../helpers/hooks/useAppSelector';
 import { showErrorNotification } from '../../../helpers/showErrorNotification';
 import {
   useEditUserMutation,
-  useGetUserDetailsQuery,
+  useGetUserAdditionalInformationQuery,
 } from '../../../store/apis/user';
 import {
   UserEditFormValues,
@@ -26,7 +26,9 @@ import {
   OrangeButton,
   UnstyledButton,
 } from '../../styles';
-import { compareValues } from './helpers/compareValues';
+import { checkValues, compareValues } from './helpers/compareValues';
+import { useSetDefaultValues } from './helpers/useSetDefaultValues';
+import { FormBodyWrapper } from './styles';
 
 const UserUpdateForm = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -34,7 +36,7 @@ const UserUpdateForm = () => {
   const { username } = useAppSelector((store) => store.auth);
   const navigate = useNavigate();
 
-  const { data: user } = useGetUserDetailsQuery(1);
+  const { data: user } = useGetUserAdditionalInformationQuery();
   const [editUser, { data: editedUser, isLoading }] = useEditUserMutation();
 
   const form = useForm<Omit<UserEditFormValues, 'username'>>({
@@ -56,6 +58,16 @@ const UserUpdateForm = () => {
   const handleSubmit = async (values: Omit<UserEditFormValues, 'username'>) => {
     try {
       if (username) {
+        const { firstName, lastName, middleName, phone } = values;
+        if (
+          checkValues(firstName, user?.firstName) &&
+          checkValues(lastName, user?.lastName) &&
+          checkValues(middleName, user?.middleName) &&
+          checkValues(phone, user?.phone)
+        ) {
+          navigate(Paths.PERSONAL_CABINET);
+          return;
+        }
         const comparedValues = compareValues(values, user);
         await editUser({
           ...comparedValues,
@@ -70,6 +82,8 @@ const UserUpdateForm = () => {
     }
   };
 
+  useSetDefaultValues(form, user);
+
   return (
     <>
       <InformModal
@@ -81,19 +95,27 @@ const UserUpdateForm = () => {
         <Stack spacing={20}>
           {!!editedUser && (
             <>
-              <InformModalText>
-                Фамилия: <strong>{editedUser.lastName}</strong>
-              </InformModalText>
-              <InformModalText>
-                Имя: <strong>{editedUser.firstName}</strong>
-              </InformModalText>
-              <InformModalText>
-                Отчество: <strong>{editedUser.middleName}</strong>
-              </InformModalText>
-              <InformModalText>
-                Номер телефона:&nbsp;
-                <strong>{editedUser.phone}</strong>
-              </InformModalText>
+              {editedUser.lastName !== user?.lastName && (
+                <InformModalText>
+                  Фамилия: <strong>{editedUser.lastName}</strong>
+                </InformModalText>
+              )}
+              {editedUser.firstName !== user?.firstName && (
+                <InformModalText>
+                  Имя: <strong>{editedUser.firstName}</strong>
+                </InformModalText>
+              )}
+              {editedUser.middleName !== user?.middleName && (
+                <InformModalText>
+                  Отчество: <strong>{editedUser.middleName}</strong>
+                </InformModalText>
+              )}
+              {editedUser.phone !== user?.phone && (
+                <InformModalText>
+                  Номер телефона:&nbsp;
+                  <strong>{editedUser.phone}</strong>
+                </InformModalText>
+              )}
             </>
           )}
         </Stack>
@@ -121,30 +143,36 @@ const UserUpdateForm = () => {
           </OrangeButton>
         </Group>
 
-        <Grid>
-          <TextInput
-            {...form.getInputProps('lastName')}
-            label="Фамилия"
-            maxLength={30}
-          />
-          <TextInput
-            {...form.getInputProps('middleName')}
-            label="Отчество"
-            maxLength={30}
-          />
-          <br />
-          <TextInput
-            {...form.getInputProps('firstName')}
-            label="Имя"
-            maxLength={30}
-          />
-          <MaskedTextInput
-            {...form.getInputProps('phone')}
-            label="Номер телефона"
-            mask="+7 (000) 000 0000"
-          />
-          <br />
-        </Grid>
+        <FormBodyWrapper>
+          {!isLoading && user ? (
+            <Grid>
+              <TextInput
+                {...form.getInputProps('lastName')}
+                label="Фамилия"
+                maxLength={30}
+              />
+              <TextInput
+                {...form.getInputProps('middleName')}
+                label="Отчество"
+                maxLength={30}
+              />
+              <br />
+              <TextInput
+                {...form.getInputProps('firstName')}
+                label="Имя"
+                maxLength={30}
+              />
+              <MaskedTextInput
+                {...form.getInputProps('phone')}
+                label="Номер телефона"
+                mask="+7 (000) 000 0000"
+              />
+              <br />
+            </Grid>
+          ) : (
+            <Loader size={80} isAbsoluteCentered />
+          )}
+        </FormBodyWrapper>
       </FormWrapper>
     </>
   );

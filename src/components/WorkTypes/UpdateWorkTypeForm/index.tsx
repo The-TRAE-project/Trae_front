@@ -19,9 +19,15 @@ import Loader from '../../Loader';
 import Select from '../../Select';
 import TextInput from '../../TextInput';
 import InformModal from '../../InformModal';
-import { InformModalText, OrangeButton, UnstyledButton } from '../../styles';
-import { FlexContainer, Form, Grid } from './styles';
+import {
+  FormWrapper,
+  InformModalText,
+  OrangeButton,
+  UnstyledButton,
+} from '../../styles';
 import { useSetDefaultValues } from './helpers/useSetDefaultValues';
+import { FormFlexContainer } from '../styles';
+import { compareValues } from './helpers/compareValues';
 
 const UpdateWorkTypeForm = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -54,11 +60,18 @@ const UpdateWorkTypeForm = () => {
   ) => {
     try {
       if (workType?.id) {
+        if (
+          values.newName === workType.name ||
+          values.isActive === workType.isActive
+        ) {
+          navigate(Paths.WORK_TYPES);
+          return;
+        }
+
+        const comparedValues = compareValues(values, workType);
         const response = await editWorkType({
           typeWorkId: workType.id,
-          // eslint-disable-next-line prettier/prettier
-          isActive: values.isActive ? values.isActive === 'Активный' : null,
-          newName: values.newName === workType.name ? null : values.newName,
+          ...comparedValues,
         }).unwrap();
         setIsOpen(true);
         form.reset();
@@ -94,17 +107,21 @@ const UpdateWorkTypeForm = () => {
         <Stack spacing={20}>
           {!!editedTypeWork && (
             <>
-              <InformModalText>Название: {editedTypeWork.name}</InformModalText>
+              <InformModalText>
+                Название: <strong>{editedTypeWork.name}</strong>
+              </InformModalText>
               <InformModalText>
                 Статус:&nbsp;
-                {editedTypeWork.isActive ? 'Активный' : 'Заблокированный'}
+                <strong>
+                  {editedTypeWork.isActive ? 'Активный' : 'Заблокированный'}
+                </strong>
               </InformModalText>
             </>
           )}
         </Stack>
       </InformModal>
 
-      <Form onSubmit={form.onSubmit(handleSubmit)}>
+      <FormWrapper onSubmit={form.onSubmit(handleSubmit)}>
         <Group position="apart" spacing={100}>
           <Group spacing={42}>
             <UnstyledButton
@@ -130,21 +147,19 @@ const UpdateWorkTypeForm = () => {
           </OrangeButton>
         </Group>
 
-        <Grid>
-          <FlexContainer>
-            <TextInput
-              {...form.getInputProps('newName')}
-              label="Название"
-              maxLength={30}
-            />
-            <Select
-              {...form.getInputProps('isActive')}
-              title="Статус"
-              data={statusesSelectItems}
-            />
-          </FlexContainer>
-        </Grid>
-      </Form>
+        <FormFlexContainer>
+          <TextInput
+            {...form.getInputProps('newName')}
+            label="Название"
+            maxLength={30}
+          />
+          <Select
+            {...form.getInputProps('isActive')}
+            title="Статус"
+            data={statusesSelectItems}
+          />
+        </FormFlexContainer>
+      </FormWrapper>
     </>
   );
 };

@@ -11,6 +11,7 @@ import {
   UserUpdateReturnType,
   UserEditReturnType,
   UserEditFormValues,
+  UserAdditionalInfo,
 } from './types';
 
 const UserTags = baseApi.enhanceEndpoints({
@@ -79,6 +80,11 @@ const userApi = UserTags.injectEndpoints({
       },
       invalidatesTags: ['User'],
     }),
+
+    getUserAdditionalInformation: build.query<UserAdditionalInfo, void>({
+      query: () => '/manager/account-info',
+      providesTags: ['User'],
+    }),
   }),
 });
 
@@ -90,4 +96,5 @@ export const {
   useResetUserPasswordMutation,
   useGetAllRolesQuery,
   useEditUserMutation,
+  useGetUserAdditionalInformationQuery,
 } = userApi;

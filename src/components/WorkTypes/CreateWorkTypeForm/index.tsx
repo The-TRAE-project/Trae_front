@@ -14,8 +14,8 @@ import { showErrorNotification } from '../../../helpers/showErrorNotification';
 import Loader from '../../Loader';
 import TextInput from '../../TextInput';
 import InformModal from '../../InformModal';
-import { OrangeButton, UnstyledButton } from '../../styles';
-import { Form, FlexContainer, Grid } from './styles';
+import { FormWrapper, OrangeButton, UnstyledButton } from '../../styles';
+import { FormFlexContainer } from '../styles';
 
 const CreateWorkTypeForm = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -56,11 +56,13 @@ const CreateWorkTypeForm = () => {
       <InformModal
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
-        title={`Тип работ ${createdTypeWork?.name} успешно добавлен`}
+        title={`Тип работ ${(
+          <strong>{createdTypeWork?.name?.toLowerCase()}</strong>
+        )} успешно добавлен`}
         backPath={Paths.WORK_TYPES}
       />
 
-      <Form onSubmit={form.onSubmit(handleSubmit)}>
+      <FormWrapper onSubmit={form.onSubmit(handleSubmit)}>
         <Group position="apart" spacing={100}>
           <Group spacing={42}>
             <UnstyledButton
@@ -82,16 +84,14 @@ const CreateWorkTypeForm = () => {
           </OrangeButton>
         </Group>
 
-        <Grid>
-          <FlexContainer>
-            <TextInput
-              {...form.getInputProps('name')}
-              label="Название"
-              maxLength={30}
-            />
-          </FlexContainer>
-        </Grid>
-      </Form>
+        <FormFlexContainer>
+          <TextInput
+            {...form.getInputProps('name')}
+            label="Название"
+            maxLength={30}
+          />
+        </FormFlexContainer>
+      </FormWrapper>
     </>
   );
 };

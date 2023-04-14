@@ -9,7 +9,7 @@ export const LoaderWrapper = styled(TbLoader3)`
   ${(props: Props) =>
     props.$absolute &&
     css`
-      position: absolute;
+      position: fixed;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);

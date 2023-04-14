@@ -75,7 +75,7 @@ const UserChangePasswordForm = () => {
         backPath={Paths.PERSONAL_CABINET}
       >
         <InformModalText>
-          Новый пароль : <strong>zdfvkrcfd1gf125</strong>
+          Новый пароль : <strong>Пока нету</strong>
         </InformModalText>
       </InformModal>
 

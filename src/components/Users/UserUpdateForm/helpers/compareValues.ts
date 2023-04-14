@@ -1,8 +1,11 @@
-import { User, UserEditFormValues } from '../../../../store/apis/user/types';
+import {
+  UserAdditionalInfo,
+  UserEditFormValues,
+} from '../../../../store/apis/user/types';
 
 export const compareValues = (
   values: Omit<UserEditFormValues, 'username'>,
-  user: User | undefined
+  user: UserAdditionalInfo | undefined
 ) => {
   const findDifference = {
     firstName: values.firstName === user?.firstName ? null : values.firstName,
@@ -16,3 +19,8 @@ export const compareValues = (
 
   return findDifference;
 };
+
+export const checkValues = (
+  leftSide: string | null,
+  rightSide: string | undefined
+) => leftSide === rightSide;

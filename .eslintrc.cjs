@@ -31,5 +31,6 @@ module.exports = {
     'import/no-extraneous-dependencies': 0,
     'import/no-cycle': 0,
     'react/jsx-no-bind': 0,
+    'linebreak-style': 0,
   },
 };
