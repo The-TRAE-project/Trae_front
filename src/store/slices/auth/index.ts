@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { RootState } from '../..';
 import instance from '../../../config/axiosConfig';
+import { RootState } from '../..';
 import {
   InitialState,
   LoginFormValues,
@@ -41,16 +41,12 @@ export const logoutUser = createAsyncThunk(
   'auth/logoutUser',
   async (_, { rejectWithValue, getState }) => {
     try {
-      const { accessToken, username } = (getState() as RootState).auth;
+      const { accessToken } = (getState() as RootState).auth;
       const config = {
         headers: { Authorization: `Bearer ${accessToken}` },
       };
 
-      const response = await instance.post(
-        `/auth/logout?name=${username}`,
-        {},
-        config
-      );
+      const response = await instance.delete('/auth/logout', config);
 
       return response.data;
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -91,7 +87,7 @@ export const authSlice = createSlice({
       state.accessToken = payload.accessToken;
       state.refreshToken = payload.refreshToken;
     },
-    logOutUser: (state) => {
+    clearUserState: (state) => {
       state.isLoggedIn = false;
       state.accessToken = null;
       state.refreshToken = null;
@@ -122,6 +118,7 @@ export const authSlice = createSlice({
         state.accessToken = null;
         state.refreshToken = null;
         state.username = null;
+        state.permission = null;
       })
       // TODO:
       .addCase(
@@ -134,5 +131,5 @@ export const authSlice = createSlice({
   },
 });
 
-export const { setCredentials, logOutUser } = authSlice.actions;
+export const { setCredentials, clearUserState } = authSlice.actions;
 export default authSlice.reducer;

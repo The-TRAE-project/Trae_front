@@ -6,7 +6,7 @@ import {
 } from '@reduxjs/toolkit/query/react';
 
 import { RequestHeader } from '../../constants/requestHeader';
-import { logOutUser, setCredentials } from '../slices/auth';
+import { clearUserState, setCredentials } from '../slices/auth';
 import { TokenValue } from '../slices/auth/types';
 import { clearEmployeeState } from '../slices/employee';
 import { clearConstructorState } from '../slices/constructor';
@@ -53,7 +53,7 @@ const baseQueryWithReAuth = async (
 
       result = await baseQuery(args, api, extraOptions);
     } else {
-      api.dispatch(logOutUser());
+      api.dispatch(clearUserState());
       api.dispatch(clearEmployeeState());
       api.dispatch(clearConstructorState());
       api.dispatch(clearWorkTypeState());

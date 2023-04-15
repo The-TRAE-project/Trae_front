@@ -4,6 +4,11 @@ import { BsFillHouseFill } from 'react-icons/bs';
 import { IoMdExit } from 'react-icons/io';
 
 import { Paths } from '../../constants/paths';
+import { clearUserState, logoutUser } from '../../store/slices/auth';
+import { clearConstructorState } from '../../store/slices/constructor';
+import { clearEmployeeState } from '../../store/slices/employee';
+import { clearWorkTypeState } from '../../store/slices/workType';
+import { useAppDispatch } from '../../helpers/hooks/useAppDispatch';
 import SEO from '../../components/SEO';
 import UserDetails from '../../components/Users/UserDetails';
 import {
@@ -15,9 +20,18 @@ import {
 
 const PersonalCabinet = () => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   const navigateToHome = () => navigate(Paths.PROJECTS);
-  const handleLogout = () => navigate(Paths.PROJECTS);
+  const handleLogout = async () => {
+    await dispatch(logoutUser());
+    dispatch(clearUserState());
+    dispatch(clearEmployeeState());
+    dispatch(clearConstructorState());
+    dispatch(clearWorkTypeState());
+    localStorage.removeItem('navbar-list');
+    navigate(Paths.LOGIN, { replace: true });
+  };
 
   return (
     <>
