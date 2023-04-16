@@ -30,13 +30,14 @@ export const Input = styled(TextInput)`
 
 export const useInputStyles = createStyles(() => ({
   error: {
+    fontFamily: 'var(--font-roboto)',
     maxWidth: 400,
-    fontSize: 28,
+    fontSize: 24,
     fontWeight: 500,
-    lineHeight: '33px',
+    lineHeight: '26px',
     wordBreak: 'break-all',
     color: 'var(--red)',
-    letterSpacing: '2px',
+    letterSpacing: '1px',
   },
 
   root: {

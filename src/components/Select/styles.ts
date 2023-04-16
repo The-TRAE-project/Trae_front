@@ -16,12 +16,13 @@ export const useSelectStyles = createStyles(() => ({
   },
 
   error: {
+    fontFamily: 'var(--font-roboto)',
     fontSize: 24,
     fontWeight: 500,
     lineHeight: '26px',
     wordBreak: 'break-word',
     color: 'var(--red)',
-    letterSpacing: '2px',
+    letterSpacing: '1px',
   },
 
   input: {
