@@ -56,9 +56,7 @@ const CreateWorkTypeForm = () => {
       <InformModal
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
-        title={`Тип работ ${(
-          <strong>{createdTypeWork?.name?.toLowerCase()}</strong>
-        )} успешно добавлен`}
+        title={`Тип работ ${createdTypeWork?.name} успешно добавлен`}
         backPath={Paths.WORK_TYPES}
       />
 

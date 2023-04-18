@@ -11,7 +11,7 @@ export interface WorkType {
 export const WorkTypeSchema = z.object({
   name: z
     .string()
-    .regex(RegEx.cyrillic, {
+    .regex(RegEx.name, {
       message: 'Название должно содержать только кириллицу!',
     })
     .min(3, { message: 'Название должо быть не меньше 3 символов!' })
@@ -24,7 +24,7 @@ export const EditWorkTypeSchema = z.object({
   isActive: z.any().nullable(),
   newName: z
     .string()
-    .regex(RegEx.cyrillic, {
+    .regex(RegEx.name, {
       message: 'Название должно содержать кириллицу!',
     })
     .min(3, { message: 'Название должо быть не меньше 3 символов!' })
