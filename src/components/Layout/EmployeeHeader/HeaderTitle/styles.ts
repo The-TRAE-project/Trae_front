@@ -5,6 +5,7 @@ type TitleProps = {
 };
 
 export const Title = styled.h1`
+  /* position: absolute; */
   font-weight: 600;
   ${({ theme }) => theme.mixins.fontSize48};
   color: ${(props: TitleProps) =>

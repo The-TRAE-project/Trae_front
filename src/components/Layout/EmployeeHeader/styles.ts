@@ -1,3 +1,4 @@
+import { Group as MantineGroup } from '@mantine/core';
 import styled from 'styled-components';
 
 export const Wrapper = styled.header`
@@ -9,4 +10,8 @@ export const Wrapper = styled.header`
     padding: 40px;
     top: 36px;
   }
+`;
+
+export const FlexContainer = styled(MantineGroup)`
+  position: relative;
 `;

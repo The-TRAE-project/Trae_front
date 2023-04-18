@@ -106,22 +106,26 @@ const CreateForm = () => {
           <TextInput
             {...form.getInputProps('lastName')}
             label="Фамилия"
+            placeholder="Фамилия"
             maxLength={15}
           />
           <TextInput
             {...form.getInputProps('middleName')}
             label="Отчество"
+            placeholder="Отчество"
             minLength={2}
             maxLength={15}
           />
           <MaskedTextInput
-            mask="+7 (000) 000 0000"
             {...form.getInputProps('phone')}
+            mask="+7 (000) 000 0000"
             label="Номер телефона"
+            placeholder="+7 (000) 000 0000"
           />
           <TextInput
             {...form.getInputProps('firstName')}
             label="Имя"
+            placeholder="Имя"
             maxLength={15}
           />
           <DatePicker
@@ -132,6 +136,7 @@ const CreateForm = () => {
           <TextInput
             {...form.getInputProps('username')}
             label="Логин"
+            placeholder="Логин"
             maxLength={15}
           />
         </Grid>

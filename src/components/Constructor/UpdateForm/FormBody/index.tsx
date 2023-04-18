@@ -124,6 +124,7 @@ const FormBody = ({
             <Select
               {...form.getInputProps('newRole')}
               title="Категория"
+              placeholder="Категория"
               data={rolesSelectItems}
             />
           ) : (
@@ -135,6 +136,7 @@ const FormBody = ({
             <Select
               {...form.getInputProps('accountStatus')}
               title="Статус"
+              placeholder="Статус"
               data={statusesSelectItems}
             />
           ) : (

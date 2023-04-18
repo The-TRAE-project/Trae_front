@@ -51,18 +51,18 @@ const StageCard = ({ stage, index, lastStage }: Props) => {
   };
 
   const handleCloseInformModal = () => {
-    navigate(Paths.EMPLOYEE_LOGIN);
+    navigate(Paths.EMPLOYEE_LOGIN, { replace: true });
     dispatch(clearEmployeeState());
   };
 
   return (
     <>
-      <Wrapper className={isComplete || isReady || isInWork}>
-        <StageName
-          onClick={handleOpenModal}
-          className={isComplete || isReady || isInWork}
-          disabled={stage.inWork || stage.isEnded || !stage.readyToAcceptance}
-        >
+      <Wrapper
+        onClick={handleOpenModal}
+        disabled={stage.inWork || stage.isEnded || !stage.readyToAcceptance}
+        className={isComplete || isReady || isInWork}
+      >
+        <StageName className={isComplete || isReady || isInWork}>
           {stage.name}
         </StageName>
         <Employee>

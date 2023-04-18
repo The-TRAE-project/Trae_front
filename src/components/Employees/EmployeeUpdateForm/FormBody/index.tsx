@@ -77,7 +77,12 @@ const FormBody = ({ employee, form, isUpdate }: Props) => {
       {employee ? (
         <Grid>
           {isUpdate ? (
-            <TextInput {...form.getInputProps('lastName')} label="Фамилия" />
+            <TextInput
+              {...form.getInputProps('lastName')}
+              label="Фамилия"
+              placeholder="Фамилия"
+              maxLength={15}
+            />
           ) : (
             <DetailsCard label="Фамилия" text={employee.lastName} />
           )}
@@ -109,15 +114,21 @@ const FormBody = ({ employee, form, isUpdate }: Props) => {
             />
           )}
           {isUpdate ? (
-            <TextInput {...form.getInputProps('firstName')} label="Имя" />
+            <TextInput
+              {...form.getInputProps('firstName')}
+              label="Имя"
+              placeholder="Имя"
+              maxLength={15}
+            />
           ) : (
             <DetailsCard text={employee.firstName} label="Имя" />
           )}
           {isUpdate ? (
             <MaskedTextInput
-              mask="+7 (000) 000 0000"
               {...form.getInputProps('phone')}
+              mask="+7 (000) 000 0000"
               label="Номер телефона"
+              placeholder="+7 (000) 000 0000"
             />
           ) : (
             <DetailsCard text={employee.phone} label="Номер телефона" />
@@ -127,6 +138,7 @@ const FormBody = ({ employee, form, isUpdate }: Props) => {
               {...form.getInputProps('isActive')}
               data={statusesSelectItems}
               title="Статус"
+              placeholder="Статус"
               defaultValue={employee.isActive ? 'Активный' : 'Заблокированный'}
             />
           ) : (
@@ -136,12 +148,23 @@ const FormBody = ({ employee, form, isUpdate }: Props) => {
             />
           )}
           {isUpdate ? (
-            <TextInput {...form.getInputProps('middleName')} label="Отчество" />
+            <TextInput
+              {...form.getInputProps('middleName')}
+              label="Отчество"
+              placeholder="Отчество"
+              minLength={2}
+              maxLength={15}
+            />
           ) : (
             <DetailsCard text={employee.middleName} label="Отчество" />
           )}
           {isUpdate ? (
-            <NumberInput {...form.getInputProps('pinCode')} label="Пароль" />
+            <NumberInput
+              {...form.getInputProps('pinCode')}
+              label="Пароль"
+              placeholder="Пароль"
+              maxLength={3}
+            />
           ) : (
             <DetailsCard text={String(employee.pinCode)} label="Пароль" />
           )}

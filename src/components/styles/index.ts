@@ -6,7 +6,7 @@ import bg from '../../assets/bg.svg';
 export const Container = styled.div`
   margin: 0 auto;
   @media ${({ theme }) => theme.bp.bpXlarge} {
-    max-width: calc(100vw - 640px);
+    max-width: 1280px;
   }
 `;
 

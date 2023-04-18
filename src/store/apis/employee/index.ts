@@ -28,13 +28,13 @@ const employeeApi = employeeTags.injectEndpoints({
       query: (employeeId) =>
         `/operation/employee/operations-in-work/${employeeId}`,
       keepUnusedDataFor: 0,
-      providesTags: ['StagesInWork'],
+      providesTags: ['ProjectStage', 'StagesInWork'],
     }),
 
     getProjectStages: build.query<ProjectStage[], number>({
       query: (projectId) =>
         `operation/employee/project-operations/${projectId}`,
-      providesTags: ['ProjectStage'],
+      providesTags: ['ProjectStage', 'StagesInWork'],
     }),
 
     receiveProjectStage: build.mutation<void, ReceiveProjectStageValue>({
@@ -45,7 +45,7 @@ const employeeApi = employeeTags.injectEndpoints({
           body,
         };
       },
-      invalidatesTags: ['ProjectStage'],
+      invalidatesTags: ['ProjectStage', 'StagesInWork'],
     }),
 
     finishProjectStage: build.mutation<void, ReceiveProjectStageValue>({
@@ -56,7 +56,7 @@ const employeeApi = employeeTags.injectEndpoints({
           body,
         };
       },
-      // invalidatesTags: ['StagesInWork'],
+      invalidatesTags: ['ProjectStage', 'StagesInWork'],
     }),
 
     createEmployee: build.mutation<

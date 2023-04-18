@@ -23,9 +23,9 @@ const InformModal = ({ isOpen, onClose, stage }: Props) => {
 
   const handleClose = () => {
     // TODO:
-    onClose();
     navigate(Paths.EMPLOYEE_LOGIN, { replace: true });
     dispatch(clearEmployeeState());
+    onClose();
   };
 
   return (

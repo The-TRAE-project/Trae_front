@@ -8,14 +8,26 @@ import { clearEmployeeState } from '../../../store/slices/employee';
 import { Container, UnstyledButton } from '../../styles';
 import HeaderTime from './HeaderTime';
 import HeaderTitle from './HeaderTitle';
-import { Wrapper } from './styles';
+import { FlexContainer, Wrapper } from './styles';
 
 const EmployeeHeader = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   // TODO:
-  const navigateToBack = () => navigate(-2);
+  const navigateToBack = () => {
+    switch (location.pathname) {
+      case Paths.EMPLOYEE_PROJECTS:
+        navigate(Paths.EMPLOYEE_MAIN);
+        break;
+      case Paths.EMPLOYEE_STAGES_IN_WORK:
+        navigate(Paths.EMPLOYEE_MAIN);
+        break;
+      default:
+        navigate(-2);
+        break;
+    }
+  };
 
   const navigateToLogin = () => {
     dispatch(clearEmployeeState());
@@ -30,7 +42,7 @@ const EmployeeHeader = () => {
     <Wrapper>
       <Container>
         {!findCurrentPath(Paths.LOGIN) && (
-          <Group position="apart">
+          <FlexContainer position="apart">
             <HeaderTime findCurrentPath={findCurrentPath} />
             {!findCurrentPath(Paths.EMPLOYEE_LOGIN) && (
               <>
@@ -65,7 +77,7 @@ const EmployeeHeader = () => {
                 </Group>
               </>
             )}
-          </Group>
+          </FlexContainer>
         )}
       </Container>
     </Wrapper>

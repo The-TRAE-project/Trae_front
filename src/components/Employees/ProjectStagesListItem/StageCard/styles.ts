@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
 
-export const Wrapper = styled.div`
+export const Wrapper = styled.button`
   min-height: 158px;
   min-width: 266px;
   max-width: 266px;
@@ -8,9 +8,15 @@ export const Wrapper = styled.div`
   gap: 18px;
   align-items: center;
   padding: 22px 20px 24px;
+  border: none;
   border-radius: 10px;
   background: var(--white);
   filter: drop-shadow(0px 4px 8px var(--black-shadow));
+  cursor: not-allowed;
+
+  &:is(:focus, :focus-within, :active) {
+    outline: none;
+  }
 
   &:nth-child(odd) {
     position: absolute;
@@ -31,7 +37,7 @@ export const Wrapper = styled.div`
   }
 
   &:nth-child(3) {
-    left: 21.3rem;
+    left: 21.2rem;
   }
 
   &:nth-child(4) {
@@ -39,7 +45,7 @@ export const Wrapper = styled.div`
   }
 
   &:nth-child(5) {
-    right: 21.3rem;
+    right: 21.1rem;
   }
 
   &:nth-child(6) {
@@ -51,10 +57,12 @@ export const Wrapper = styled.div`
   }
 
   &.completed {
+    cursor: not-allowed;
     background: var(--light-green);
   }
 
   &.readyToAcceptance {
+    cursor: pointer;
     background: linear-gradient(
       97.03deg,
       var(--green) 7.5%,
@@ -63,11 +71,12 @@ export const Wrapper = styled.div`
   }
 
   &.inWork {
+    cursor: not-allowed;
     background: var(--orange);
   }
 `;
 
-export const StageName = styled.button`
+export const StageName = styled.p`
   ${({ theme }) => theme.mixins.fCenter}
   padding: 12px 10px;
   width: 226px;
@@ -77,25 +86,20 @@ export const StageName = styled.button`
   text-align: center;
   color: var(--white);
   background-color: var(--orange);
-  border: none;
   border-radius: 10px;
-  cursor: not-allowed;
 
   &.completed {
-    cursor: not-allowed;
     color: var(--white-black);
     background-color: var(--white);
   }
 
   &.readyToAcceptance {
-    cursor: pointer;
-    color: var(----white-black);
+    color: var(--white-black);
     background-color: var(--white);
   }
 
   &.inWork {
-    cursor: not-allowed;
-    color: var(----white-black);
+    color: var(--white-black);
     background-color: var(--white);
   }
 `;

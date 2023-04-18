@@ -109,6 +109,7 @@ export interface UserEditReturnType {
   firstName: string;
   lastName: string;
   middleName: string;
+  password: string;
   phone: string;
 }
 

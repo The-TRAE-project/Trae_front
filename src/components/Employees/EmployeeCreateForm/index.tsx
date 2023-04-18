@@ -122,9 +122,9 @@ const EmployeeCreateForm = () => {
           />
           <MaskedTextInput
             {...form.getInputProps('phone')}
+            mask="+7 (000) 000 0000"
             label="Номер телефона"
             placeholder="+7 (000) 000 0000"
-            mask="+7 (000) 000 0000"
           />
           <TextInput
             {...form.getInputProps('firstName')}

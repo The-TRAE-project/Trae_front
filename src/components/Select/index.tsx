@@ -7,9 +7,16 @@ interface Props {
   title: string;
   data: SelectItem[];
   defaultValue?: string;
+  placeholder?: string;
 }
 
-const Select = ({ title, data, defaultValue, ...props }: Props) => {
+const Select = ({
+  title,
+  data,
+  defaultValue,
+  placeholder,
+  ...props
+}: Props) => {
   const {
     classes: { label, error, input, rightSection, dropdown, item },
   } = useSelectStyles();
@@ -20,6 +27,7 @@ const Select = ({ title, data, defaultValue, ...props }: Props) => {
         {...props}
         label={title}
         defaultValue={defaultValue}
+        placeholder={placeholder}
         data={data}
         limit={10000}
         rightSection={<HiOutlineChevronDown size={30} />}

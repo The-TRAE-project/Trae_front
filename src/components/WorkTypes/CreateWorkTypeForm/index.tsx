@@ -86,6 +86,7 @@ const CreateWorkTypeForm = () => {
           <TextInput
             {...form.getInputProps('name')}
             label="Название"
+            placeholder="Название"
             maxLength={30}
           />
         </FormFlexContainer>

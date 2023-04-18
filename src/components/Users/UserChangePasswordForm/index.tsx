@@ -75,7 +75,7 @@ const UserChangePasswordForm = () => {
         backPath={Paths.PERSONAL_CABINET}
       >
         <InformModalText>
-          Новый пароль : <strong>Пока нету</strong>
+          Новый пароль : <strong>{editedUser?.password}</strong>
         </InformModalText>
       </InformModal>
 
@@ -105,11 +105,13 @@ const UserChangePasswordForm = () => {
           <TextInput
             {...form.getInputProps('oldPassword')}
             label="Старый пароль"
+            placeholder="Старый пароль"
             maxLength={30}
           />
           <TextInput
             {...form.getInputProps('newPassword')}
             label="Новый пароль"
+            placeholder="Новый пароль"
             maxLength={30}
           />
         </Stack>

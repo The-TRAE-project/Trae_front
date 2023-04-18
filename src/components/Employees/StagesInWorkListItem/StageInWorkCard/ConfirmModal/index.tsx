@@ -34,7 +34,7 @@ const ConfirmModal = ({ isOpen, onClose, stage }: Props) => {
         }).unwrap();
       }, 3000);
 
-      // onClose();
+      onClose();
       setIsInformOpen(true);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {

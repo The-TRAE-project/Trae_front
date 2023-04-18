@@ -161,11 +161,13 @@ const UpdateWorkTypeForm = () => {
           <TextInput
             {...form.getInputProps('newName')}
             label="Название"
+            placeholder="Название"
             maxLength={30}
           />
           <Select
             {...form.getInputProps('isActive')}
             title="Статус"
+            placeholder="Статус"
             data={statusesSelectItems}
           />
         </FormFlexContainer>

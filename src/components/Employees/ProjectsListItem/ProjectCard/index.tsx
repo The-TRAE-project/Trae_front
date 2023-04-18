@@ -25,11 +25,11 @@ const ProjectCard = ({ project }: Props) => {
   };
 
   return (
-    <Wrapper>
+    <Wrapper onClick={navigateToProjectStages}>
       <ProjectNumber>{project.number}</ProjectNumber>
       <Customer>{project.customer}</Customer>
       <ProjectName>{project.projectName}</ProjectName>
-      <ProjectOperationName onClick={navigateToProjectStages}>
+      <ProjectOperationName>
         {project.availableOperationName}
       </ProjectOperationName>
     </Wrapper>
