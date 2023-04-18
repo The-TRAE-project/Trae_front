@@ -10,8 +10,8 @@ import {
   useCheckboxStyles,
   useFilterMenuStyles,
 } from '../../styles';
-import { OverflowWrapper } from './styles';
 import EmployeesFilterMenuItem from './EmployeesFilterMenuItem';
+import { OverflowWrapper } from './styles';
 
 const statuses = [
   {
@@ -46,14 +46,17 @@ const EmployeesFilterMenu = ({
   setStatus,
   resetStatus,
 }: Props) => {
-  const [data, setData] = useState<ModifiedWorkType[]>([]);
+  // TODO:
+  const [data, setData] = useState<ModifiedWorkType[]>(
+    JSON.parse(localStorage.getItem('employees-filter') as string) || []
+  );
 
   const { classes } = useFilterMenuStyles();
   const {
     classes: { input, inner, icon },
   } = useCheckboxStyles();
   const { data: workTypes } = useGetActiveWorkTypesQuery();
-
+  // TODO:
   useEffect(() => {
     const modifiedWorkTypes = workTypes?.map((workType) => ({
       id: workType.id,
@@ -61,8 +64,21 @@ const EmployeesFilterMenu = ({
       isChecked: false,
     }));
 
-    setData(modifiedWorkTypes || []);
+    const storedData =
+      JSON.parse(localStorage.getItem('employees-filter') as string) || [];
+    if (storedData?.length) {
+      setData(storedData);
+    } else {
+      setData(modifiedWorkTypes || []);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [workTypes]);
+  // TODO:
+  useEffect(() => {
+    localStorage.setItem('employees-filter', JSON.stringify(data));
+    localStorage.setItem('type-works-ids', JSON.stringify(typeWorks));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data]);
 
   return (
     <Menu

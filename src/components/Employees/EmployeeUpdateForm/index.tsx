@@ -8,6 +8,7 @@ import {
   EmployeeUpdateFormSchema,
   EmployeeUpdateFormValues,
 } from '../../../store/apis/employee/types';
+import { Status } from '../../../store/types';
 import { Paths } from '../../../constants/paths';
 import { useAppSelector } from '../../../helpers/hooks/useAppSelector';
 import { showErrorNotification } from '../../../helpers/showErrorNotification';
@@ -24,6 +25,7 @@ import { useSetUpdatedValues } from './helpers/useSetUpdatedValues';
 import { useSetMultiSelectDefaultValues } from './helpers/useSetMultiSelectDefaultValues';
 import FormHeader from './FormHeader';
 import FormBody from './FormBody';
+import { useSetDefaultValues } from './helpers/useSetDefaultValues';
 
 const EmployeeUpdateForm = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -41,9 +43,10 @@ const EmployeeUpdateForm = () => {
       changedTypesId: null,
       pinCode: employeeToEdit?.pinCode || null,
       isActive: employeeToEdit?.isActive ? 'Активный' : 'Заблокированный',
-      dateOfDismissal: employeeToEdit?.dateOfDismissal
-        ? dayjs(employeeToEdit?.dateOfDismissal).toDate()
-        : null,
+      dateOfDismissal:
+        (employeeToEdit?.dateOfDismissal &&
+          dayjs(employeeToEdit?.dateOfDismissal).toDate()) ||
+        null,
       dateOfEmployment:
         dayjs(employeeToEdit?.dateOfEmployment).toDate() || null,
     },
@@ -58,7 +61,7 @@ const EmployeeUpdateForm = () => {
 
   const [editEmployee, { data: updatedEmployee, isLoading }] =
     useEditEmployeeMutation();
-
+  // TODO:
   const handleSubmit = async (
     values: Omit<EmployeeUpdateFormValues, 'employeeId'>
   ) => {
@@ -71,13 +74,20 @@ const EmployeeUpdateForm = () => {
           phone,
           pinCode,
           dateOfEmployment,
+          isActive,
         } = values;
+
+        const isEmployeeActive = employeeToEdit.isActive
+          ? 'Активный'
+          : 'Заблокированный';
+
         if (
           checkValues(firstName, employeeToEdit.firstName) &&
           checkValues(lastName, employeeToEdit.lastName) &&
           checkValues(middleName, employeeToEdit.middleName) &&
           checkValues(phone, employeeToEdit.phone) &&
           checkValues(pinCode, employeeToEdit.pinCode) &&
+          checkValues(isActive, isEmployeeActive) &&
           isObjectsEqual(
             convertToNumberArray(employeeToEdit.types),
             convertToNumberArray(values.changedTypesId)
@@ -95,6 +105,16 @@ const EmployeeUpdateForm = () => {
           return;
         }
 
+        if (
+          values.isActive === Status.BLOCKED &&
+          !form.values.dateOfDismissal
+        ) {
+          form.setFieldError(
+            'dateOfDismissal',
+            'Пожалуйста, выберите дате увольнения!'
+          );
+          return;
+        }
         const comparedValues = compareValues(values, employeeToEdit);
         await editEmployee(comparedValues).unwrap();
         setIsOpen(true);
@@ -112,6 +132,8 @@ const EmployeeUpdateForm = () => {
   };
 
   useSetUpdatedValues(updatedEmployee, isUpdate);
+
+  useSetDefaultValues(form, employeeToEdit);
 
   useSetMultiSelectDefaultValues(form);
 

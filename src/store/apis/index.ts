@@ -41,7 +41,7 @@ const baseQueryWithReAuth = async (
     const { refreshToken } = (api.getState() as RootState).auth;
 
     const refreshResponse = await baseQuery(
-      { url: '/auth/refresh', method: 'POST' },
+      { url: '/auth/token', method: 'POST' },
       api,
       {
         refreshToken,

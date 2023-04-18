@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm, zodResolver } from '@mantine/form';
+import dayjs from 'dayjs';
 
 import {
   useGetUserDetailsQuery,
@@ -10,16 +11,17 @@ import {
   UserUpdateFormValues,
   UserUpdateSchema,
 } from '../../../store/apis/user/types';
+import { Paths } from '../../../constants/paths';
+import { Status } from '../../../store/types';
 import { useAppSelector } from '../../../helpers/hooks/useAppSelector';
 import { useDisplayError } from '../../../helpers/hooks/useDisplayError';
 import { showErrorNotification } from '../../../helpers/showErrorNotification';
 import { showInformNotification } from '../../../helpers/showInformNotification';
-import { useSetDefaultValues } from './helpers/useSetDefaultValues';
-import FormHeader from './FormHeader';
-import FormBody from './FormBody';
 import { FormWrapper } from '../../styles';
+import { useSetDefaultValues } from './helpers/useSetDefaultValues';
 import { checkValues, compareValues } from './helpers/compareValues';
-import { Paths } from '../../../constants/paths';
+import FormBody from './FormBody';
+import FormHeader from './FormHeader';
 
 const UpdateForm = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -43,7 +45,9 @@ const UpdateForm = () => {
     initialValues: {
       newRole: user?.role || null,
       accountStatus: user?.status ? 'Активный' : 'Заблокированный' || null,
-      dateOfDismissal: user?.dateOfDismissal || null,
+      dateOfDismissal: user?.dateOfDismissal
+        ? dayjs(user?.dateOfDismissal).toDate()
+        : null,
     },
     validate: (values) => {
       const resolver = zodResolver(UserUpdateSchema.omit({ managerId: true }));
@@ -75,6 +79,17 @@ const UpdateForm = () => {
           return;
         }
 
+        if (
+          values.accountStatus === Status.BLOCKED &&
+          !form.values.dateOfDismissal
+        ) {
+          form.setFieldError(
+            'dateOfDismissal',
+            'Пожалуйста, выберите дате увольнения!'
+          );
+          return;
+        }
+
         const comparedValues = compareValues(values, user);
         await updateUserSomeFields({
           managerId: user.id,
@@ -102,7 +117,7 @@ const UpdateForm = () => {
         onUpdate={() => setIsUpdate(true)}
         isOpen={isModalOpen}
         onClose={handleCloseModal}
-        user={updatedUser}
+        updatedUser={updatedUser}
         isSubmitBtnDisabled={
           !form.values.newRole &&
           !form.values.dateOfDismissal &&

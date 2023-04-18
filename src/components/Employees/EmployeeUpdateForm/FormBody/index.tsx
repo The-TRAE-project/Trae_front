@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { SelectItem, MultiSelect } from '@mantine/core';
 import { UseFormReturnType } from '@mantine/form';
 import dayjs from 'dayjs';
@@ -55,6 +56,22 @@ const FormBody = ({ employee, form, isUpdate }: Props) => {
     },
   ];
 
+  useEffect(() => {
+    if (
+      form.values.isActive === Status.BLOCKED &&
+      !form.values.dateOfDismissal
+    ) {
+      form.setFieldError(
+        'dateOfDismissal',
+        'Пожалуйста, выберите дате увольнения!'
+      );
+    } else {
+      form.setFieldValue('dateOfDismissal', null);
+      form.clearFieldError('dateOfDismissal');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [form.values.isActive]);
+
   return (
     <Wrapper>
       {employee ? (
@@ -79,6 +96,7 @@ const FormBody = ({ employee, form, isUpdate }: Props) => {
             <DatePicker
               {...form.getInputProps('dateOfDismissal')}
               title="Дата увольнения"
+              disabled={form.values.isActive === Status.ACTIVE}
             />
           ) : (
             <DetailsCard

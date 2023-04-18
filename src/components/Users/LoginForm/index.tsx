@@ -40,7 +40,7 @@ const Login = () => {
       if (permission === Roles.EMPLOYEE) {
         navigate(Paths.EMPLOYEE_LOGIN, { replace: true });
       } else if (permission === Roles.ADMIN) {
-        navigate(Paths.EMPLOYEES, { replace: true });
+        navigate(Paths.PROJECTS, { replace: true });
       }
 
       form.reset();

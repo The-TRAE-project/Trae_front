@@ -25,14 +25,13 @@ import PersonalCabinetEditing from './pages/PersonalCabinetEditing';
 import PersonalCabinetChangePassword from './pages/PersonalCabinetChangePassword';
 
 import { useAppSelector } from './helpers/hooks/useAppSelector';
-import { useNavigateLoggedInUser } from './helpers/hooks/useNavigateLoggedInUser';
+// import { useNavigateLoggedInUser } from './helpers/hooks/useNavigateLoggedInUser';
 import { Roles } from './store/slices/auth/types';
 
 const App = () => {
   const { isLoggedIn } = useAppSelector((store) => store.employee);
   const { permission } = useAppSelector((store) => store.auth);
   // TODO:
-  useNavigateLoggedInUser();
 
   return (
     <Layout>

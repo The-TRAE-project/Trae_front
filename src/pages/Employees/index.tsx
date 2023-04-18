@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import { Group, Stack } from '@mantine/core';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Group, Stack } from '@mantine/core';
 import { BsFillHouseFill } from 'react-icons/bs';
 import { AiOutlinePlusCircle } from 'react-icons/ai';
 
@@ -17,13 +17,21 @@ import {
 } from '../../components/styles';
 
 const Employees = () => {
-  const [paramTypeWorkIds, setParamTypeWorkIds] = useState<number[] | null>([]);
-  const [paramActive, setParamActive] = useState<Status | null>(Status.ACTIVE);
+  const [paramTypeWorkIds, setParamTypeWorkIds] = useState<number[] | null>(
+    JSON.parse(localStorage.getItem('type-works-ids') as string) || []
+  );
+  const [paramActive, setParamActive] = useState<Status | null>(
+    JSON.parse(localStorage.getItem('status') as string) || Status.ACTIVE
+  );
 
   const navigate = useNavigate();
 
   const navigateToHome = () => navigate(Paths.PROJECTS);
   const navigateToCreateEmployeePage = () => navigate(Paths.EMPLOYEES_CREATE);
+  // TODO:
+  useEffect(() => {
+    localStorage.setItem('status', JSON.stringify(paramActive));
+  }, [paramActive]);
 
   return (
     <>

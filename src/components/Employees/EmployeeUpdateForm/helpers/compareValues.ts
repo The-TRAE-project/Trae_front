@@ -1,4 +1,7 @@
 // TODO:
+/* eslint-disable no-unneeded-ternary */
+/* eslint-disable no-nested-ternary */
+/* eslint-disable prettier/prettier */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import dayjs from 'dayjs';
 import { EmployeeUpdateFormValues } from '../../../../store/apis/employee/types';
@@ -22,6 +25,10 @@ export const compareValues = (
   values: Omit<EmployeeUpdateFormValues, 'employeeId'>,
   employeeToEdit: EmployeeToEdit
 ) => {
+  const isEmployeeActive = employeeToEdit.isActive
+    ? 'Активный'
+    : 'Заблокированный';
+
   const findDifference = {
     employeeId: employeeToEdit.id,
     firstName:
@@ -33,8 +40,12 @@ export const compareValues = (
         ? null
         : values.middleName,
     phone: employeeToEdit.phone === values.phone ? null : values.phone,
-    // eslint-disable-next-line no-unneeded-ternary
-    isActive: values.isActive === 'Активный' ? true : false,
+    isActive:
+      isEmployeeActive === values.isActive
+        ? null
+        : values.isActive === 'Активный'
+        ? true
+        : false,
     pinCode: employeeToEdit.pinCode === values.pinCode ? null : values.pinCode,
     dateOfEmployment:
       convertToDate(employeeToEdit?.dateOfEmployment) ===

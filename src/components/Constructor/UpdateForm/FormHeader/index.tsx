@@ -15,7 +15,7 @@ interface Props {
   onUpdate: () => void;
   isOpen: boolean;
   onClose: () => void;
-  user: UserUpdateReturnType | undefined;
+  updatedUser: UserUpdateReturnType | undefined;
   isSubmitBtnDisabled: boolean;
 }
 
@@ -25,7 +25,7 @@ const FormHeader = ({
   onUpdate,
   isOpen,
   onClose,
-  user,
+  updatedUser,
   isSubmitBtnDisabled,
 }: Props) => {
   const navigate = useNavigate();
@@ -36,27 +36,29 @@ const FormHeader = ({
         isOpen={isOpen}
         onClose={onClose}
         title={
-          user ? `${user.firstName} ${user.lastName} изменения сохранены` : ''
+          updatedUser
+            ? `${updatedUser.firstName} ${updatedUser.lastName} изменения сохранены`
+            : ''
         }
         backPath={Paths.CONSTRUCTORS}
       >
         <Stack spacing={20}>
-          {!!user && (
+          {!!updatedUser && (
             <>
               <InformModalText>
-                Роль: <strong>{user.role}</strong>
+                Роль: <strong>{updatedUser.role}</strong>
               </InformModalText>
               <InformModalText>
                 Статус:&nbsp;
                 <strong>
-                  {user.accountStatus ? 'Активный' : ' заблокированный'}
+                  {updatedUser.accountStatus ? 'Активный' : ' заблокированный'}
                 </strong>
               </InformModalText>
-              {!!user.dateOfDismissal && (
+              {!!updatedUser.dateOfDismissal && (
                 <InformModalText>
                   Дата увольнения:&nbsp;
                   <strong>
-                    {dayjs(user?.dateOfDismissal.join('-')).format(
+                    {dayjs(updatedUser?.dateOfDismissal.join('-')).format(
                       'DD.MM.YYYY'
                     )}
                   </strong>

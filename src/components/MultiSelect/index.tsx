@@ -18,8 +18,7 @@ const MultiSelect = ({ label, data, defaultValue, ...props }: Props) => {
       {...props}
       label={label}
       maxDropdownHeight={284}
-      value={defaultValue}
-      defaultValue={['defaultValue']}
+      // placeholder="Выберите тип работы"
       data={data}
       classNames={{
         dropdown,

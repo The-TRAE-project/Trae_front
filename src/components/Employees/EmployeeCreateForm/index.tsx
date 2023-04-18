@@ -110,22 +110,26 @@ const EmployeeCreateForm = () => {
           <TextInput
             {...form.getInputProps('lastName')}
             label="Фамилия"
+            placeholder="Фамилия"
             maxLength={15}
           />
           <TextInput
             {...form.getInputProps('middleName')}
             label="Отчество"
+            placeholder="Отчество"
             minLength={2}
             maxLength={15}
           />
           <MaskedTextInput
             {...form.getInputProps('phone')}
             label="Номер телефона"
+            placeholder="+7 (000) 000 0000"
             mask="+7 (000) 000 0000"
           />
           <TextInput
             {...form.getInputProps('firstName')}
             label="Имя"
+            placeholder="Имя"
             maxLength={15}
           />
           <DatePicker

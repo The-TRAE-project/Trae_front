@@ -21,6 +21,11 @@ export const useMultiSelectStyles = createStyles(() => ({
     '&:focus': {
       outline: 'none',
     },
+
+    '&::placeholder': {
+      fontSize: 28,
+      lineHeight: '33px',
+    },
   },
 
   inputLabel: {

@@ -78,6 +78,22 @@ export const getUserRole = createAsyncThunk(
   }
 );
 
+export const getNewTokens = createAsyncThunk(
+  'auth/getNewTokens',
+  async (_, { rejectWithValue, getState }) => {
+    try {
+      const { refreshToken } = (getState() as RootState).auth;
+
+      const { data } = await instance.post(`/auth/token`, { refreshToken });
+
+      return data;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 export const authSlice = createSlice({
   name: 'auth',
   initialState,
@@ -126,6 +142,14 @@ export const authSlice = createSlice({
         (state, { payload }: PayloadAction<UserRoleValues>) => {
           state.permission = payload.permission;
           state.username = payload.username;
+        }
+      )
+      .addCase(
+        getNewTokens.fulfilled,
+        (state, { payload }: PayloadAction<TokenValue>) => {
+          state.isLoggedIn = !!payload.accessToken;
+          state.accessToken = payload.accessToken;
+          state.refreshToken = payload.refreshToken;
         }
       );
   },

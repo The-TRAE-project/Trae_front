@@ -5,11 +5,17 @@ import { FC } from 'react';
 import { useDateInputStyles, useIndicatorStyles } from './styles';
 
 interface Props {
-  defaultValue?: DateValue;
   title: string;
+  defaultValue?: DateValue;
+  disabled?: boolean;
 }
 
-const DatePicker: FC<Props> = ({ defaultValue, title, ...props }) => {
+const DatePicker: FC<Props> = ({
+  title,
+  defaultValue,
+  disabled = false,
+  ...props
+}) => {
   const {
     classes: {
       input,
@@ -33,6 +39,7 @@ const DatePicker: FC<Props> = ({ defaultValue, title, ...props }) => {
       {...props}
       defaultValue={defaultValue}
       label={title}
+      disabled={disabled}
       placeholder="Выберите дату"
       clearable
       valueFormat="DD.MM.YYYY"

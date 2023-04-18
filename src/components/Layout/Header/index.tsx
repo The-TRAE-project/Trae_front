@@ -23,7 +23,7 @@ const navbarList: NavbarLink[] = [
     id: 3,
     value: Paths.REPORTS,
     title: 'Отчеты',
-    isShowLine: true,
+    isShowLine: false,
   },
   {
     id: 4,

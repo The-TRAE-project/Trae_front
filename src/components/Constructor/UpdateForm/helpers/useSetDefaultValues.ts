@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { UseFormReturnType } from '@mantine/form';
+import dayjs from 'dayjs';
 
 import { User, UserUpdateFormValues } from '../../../../store/apis/user/types';
 
@@ -18,7 +19,10 @@ export function useSetDefaultValues(
       'accountStatus',
       user?.status ? 'Активный' : 'Заблокированный' || null
     );
-    form.setFieldValue('dateOfDismissal', user?.dateOfDismissal || null);
+    form.setFieldValue(
+      'dateOfDismissal',
+      user?.dateOfDismissal ? dayjs(user?.dateOfDismissal).toDate() : null
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 }
