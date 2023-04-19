@@ -6,6 +6,8 @@ import {
 } from '@reduxjs/toolkit/query/react';
 
 import { RequestHeader } from '../../constants/requestHeader';
+import { removeItem } from '../../helpers/removeItem';
+import { LocalStorage } from '../../constants/localStorage';
 import { clearUserState, setCredentials } from '../slices/auth';
 import { TokenValue } from '../slices/auth/types';
 import { clearEmployeeState } from '../slices/employee';
@@ -57,7 +59,7 @@ const baseQueryWithReAuth = async (
       api.dispatch(clearEmployeeState());
       api.dispatch(clearConstructorState());
       api.dispatch(clearWorkTypeState());
-      localStorage.removeItem('navbar-list');
+      removeItem(LocalStorage.NAVBAR_LIST);
     }
   }
 

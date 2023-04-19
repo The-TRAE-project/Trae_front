@@ -5,6 +5,8 @@ import { useLocalStorage } from '@mantine/hooks';
 import { Status as StatusTitle } from '../../../store/types';
 import { Status } from '../../../store/apis/user/types';
 import { useGetActiveWorkTypesQuery } from '../../../store/apis/workTypes';
+import { LocalStorage } from '../../../constants/localStorage';
+import { getItem } from '../../../helpers/getItem';
 import Filter from '../../svgs/Filter';
 import {
   FilterMenuItemTitle,
@@ -14,7 +16,6 @@ import {
 } from '../../styles';
 import EmployeesFilterMenuItem from './EmployeesFilterMenuItem';
 import { OverflowWrapper } from './styles';
-import { LocalStorage } from '../../../constants/localStorage';
 
 const statuses = [
   {
@@ -67,12 +68,8 @@ const EmployeesFilterMenu = ({
       isChecked: false,
     }));
 
-    const storedData =
-      JSON.parse(
-        localStorage.getItem(
-          LocalStorage.EMPLOYEE_MODIFIED_TYPE_WORKS
-        ) as string
-      ) || [];
+    const storedData = getItem(LocalStorage.EMPLOYEE_MODIFIED_TYPE_WORKS) || [];
+
     if (storedData?.length) {
       setData(storedData);
     } else {

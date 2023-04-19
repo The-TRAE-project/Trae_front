@@ -3,14 +3,11 @@ import { useLocation } from 'react-router-dom';
 
 import { LocalStorage } from '../../constants/localStorage';
 import { Paths } from '../../constants/paths';
+import { getItem } from '../getItem';
+import { removeItem } from '../removeItem';
 
 export function useClearLocalStorageByPath() {
   const location = useLocation();
-
-  const getItem = (key: string) =>
-    JSON.parse(localStorage.getItem(key) as string);
-
-  const removeItem = (key: string) => localStorage.removeItem(key);
 
   useEffect(() => {
     if (!location.pathname.includes(Paths.EMPLOYEES)) {

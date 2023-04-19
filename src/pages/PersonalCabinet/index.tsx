@@ -4,11 +4,13 @@ import { BsFillHouseFill } from 'react-icons/bs';
 import { IoMdExit } from 'react-icons/io';
 
 import { Paths } from '../../constants/paths';
+import { LocalStorage } from '../../constants/localStorage';
 import { clearUserState, logoutUser } from '../../store/slices/auth';
 import { clearConstructorState } from '../../store/slices/constructor';
 import { clearEmployeeState } from '../../store/slices/employee';
 import { clearWorkTypeState } from '../../store/slices/workType';
 import { useAppDispatch } from '../../helpers/hooks/useAppDispatch';
+import { removeItem } from '../../helpers/removeItem';
 import SEO from '../../components/SEO';
 import UserDetails from '../../components/Users/UserDetails';
 import {
@@ -29,7 +31,7 @@ const PersonalCabinet = () => {
     dispatch(clearEmployeeState());
     dispatch(clearConstructorState());
     dispatch(clearWorkTypeState());
-    localStorage.removeItem('navbar-list');
+    removeItem(LocalStorage.NAVBAR_LIST);
     navigate(Paths.LOGIN, { replace: true });
   };
 
