@@ -12,31 +12,20 @@ import {
 
 interface Props {
   navbarLink: NavbarLink;
-  list: NavbarLink[];
-  setList: React.Dispatch<React.SetStateAction<NavbarLink[]>>;
 }
 
-const NavbarItem = ({ navbarLink, list, setList }: Props) => {
+const NavbarItem = ({ navbarLink }: Props) => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const handleNavigate = (itemPath: string, itemIndex: number) => {
-    navigate(itemPath);
-    setList(
-      list.map((item) =>
-        item.id === itemIndex
-          ? { ...item, isShowLine: false }
-          : { ...item, isShowLine: true }
-      )
-    );
-  };
+  const handleNavigate = (itemPath: string) => navigate(itemPath);
 
   return (
     <Wrapper>
       {navbarLink.value === Paths.PERSONAL_CABINET ? (
         <UserProfileButton
           type="button"
-          onClick={() => handleNavigate(navbarLink.value, navbarLink.id - 1)}
+          onClick={() => handleNavigate(navbarLink.value)}
           active={location.pathname.includes(navbarLink.value)}
         >
           <BsPersonLinesFill size={48} />
@@ -45,7 +34,7 @@ const NavbarItem = ({ navbarLink, list, setList }: Props) => {
         <>
           <Button
             type="button"
-            onClick={() => handleNavigate(navbarLink.value, navbarLink.id - 1)}
+            onClick={() => handleNavigate(navbarLink.value)}
             active={location.pathname.includes(navbarLink.value)}
             disabled={navbarLink.value === Paths.REPORTS}
           >

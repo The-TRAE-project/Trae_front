@@ -1,4 +1,6 @@
+import { useEffect } from 'react';
 import { useLocalStorage } from '@mantine/hooks';
+import { useLocation } from 'react-router-dom';
 
 import { LocalStorage } from '../../../constants/localStorage';
 import { Paths } from '../../../constants/paths';
@@ -52,18 +54,30 @@ const Header = () => {
     defaultValue: navbarList,
   });
 
+  const location = useLocation();
+
+  useEffect(() => {
+    const previousItemIndex = list.findIndex((item) =>
+      location.pathname.includes(item.value)
+    );
+
+    setList(
+      list.map((item) =>
+        item.id === previousItemIndex
+          ? { ...item, isShowLine: false }
+          : { ...item, isShowLine: true }
+      )
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location.pathname]);
+
   return (
     <Wrapper>
       <Container>
         <Navbar>
           <List>
             {list.map((navbarLink) => (
-              <NavbarItem
-                key={navbarLink.id}
-                navbarLink={navbarLink}
-                list={list}
-                setList={setList}
-              />
+              <NavbarItem key={navbarLink.id} navbarLink={navbarLink} />
             ))}
           </List>
         </Navbar>
