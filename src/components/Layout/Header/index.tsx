@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useLocalStorage } from '@mantine/hooks';
 
+import { LocalStorage } from '../../../constants/localStorage';
 import { Paths } from '../../../constants/paths';
 import { Container } from '../../styles';
 import NavbarItem from './NavbarItem';
@@ -46,13 +47,10 @@ const navbarList: NavbarLink[] = [
 ];
 
 const Header = () => {
-  const [list, setList] = useState<NavbarLink[]>(
-    JSON.parse(localStorage.getItem('navbar-list') as string) || navbarList
-  );
-
-  useEffect(() => {
-    localStorage.setItem('navbar-list', JSON.stringify(list));
-  }, [list]);
+  const [list, setList] = useLocalStorage<NavbarLink[]>({
+    key: LocalStorage.NAVBAR_LIST,
+    defaultValue: navbarList,
+  });
 
   return (
     <Wrapper>

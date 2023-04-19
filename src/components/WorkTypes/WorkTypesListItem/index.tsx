@@ -1,7 +1,9 @@
-import { useState } from 'react';
+import { useLocalStorage } from '@mantine/hooks';
+
 import { Status } from '../../../store/apis/user/types';
 import { useDisplayError } from '../../../helpers/hooks/useDisplayError';
 import { useGetAllWorkTypesQuery } from '../../../store/apis/workTypes';
+import { LocalStorage } from '../../../constants/localStorage';
 import Loader from '../../Loader';
 import SliderButtons from '../../SliderButtons';
 import WorkTypeItem from './WorkTypeItem';
@@ -12,7 +14,10 @@ interface Props {
 }
 
 const WorkTypesListItem = ({ paramActive }: Props) => {
-  const [page, setPage] = useState<number>(0);
+  const [page, setPage] = useLocalStorage<number>({
+    key: LocalStorage.WORK_TYPE_PAGE,
+    defaultValue: 0,
+  });
 
   const {
     data: workTypes,

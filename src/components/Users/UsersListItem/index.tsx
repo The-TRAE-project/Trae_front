@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useLocalStorage } from '@mantine/hooks';
 
 import { useGetAllUsersQuery } from '../../../store/apis/user';
 import { useDisplayError } from '../../../helpers/hooks/useDisplayError';
 import { Status } from '../../../store/apis/user/types';
+import { LocalStorage } from '../../../constants/localStorage';
 import SliderButtons from '../../SliderButtons';
 import Loader from '../../Loader';
 import UserItem from './UserItem';
@@ -14,7 +15,10 @@ interface Props {
 }
 
 const UsersListItem = ({ paramRole, paramActive }: Props) => {
-  const [page, setPage] = useState<number>(0);
+  const [page, setPage] = useLocalStorage<number>({
+    key: LocalStorage.USER_PAGE,
+    defaultValue: 0,
+  });
 
   const {
     data: users,

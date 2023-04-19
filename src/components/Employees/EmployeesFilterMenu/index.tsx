@@ -1,8 +1,10 @@
-import { Dispatch, SetStateAction, useState, useEffect } from 'react';
+import { Dispatch, SetStateAction, useEffect } from 'react';
 import { Menu, Checkbox, Group } from '@mantine/core';
+import { useLocalStorage } from '@mantine/hooks';
 
-import { useGetActiveWorkTypesQuery } from '../../../store/apis/workTypes';
+import { Status as StatusTitle } from '../../../store/types';
 import { Status } from '../../../store/apis/user/types';
+import { useGetActiveWorkTypesQuery } from '../../../store/apis/workTypes';
 import Filter from '../../svgs/Filter';
 import {
   FilterMenuItemTitle,
@@ -12,15 +14,16 @@ import {
 } from '../../styles';
 import EmployeesFilterMenuItem from './EmployeesFilterMenuItem';
 import { OverflowWrapper } from './styles';
+import { LocalStorage } from '../../../constants/localStorage';
 
 const statuses = [
   {
     value: Status.ACTIVE,
-    title: 'Активный',
+    title: StatusTitle.ACTIVE,
   },
   {
     value: Status.NOT_ACTIVE,
-    title: 'Заблокированный',
+    title: StatusTitle.BLOCKED,
   },
 ];
 
@@ -46,17 +49,17 @@ const EmployeesFilterMenu = ({
   setStatus,
   resetStatus,
 }: Props) => {
-  // TODO:
-  const [data, setData] = useState<ModifiedWorkType[]>(
-    JSON.parse(localStorage.getItem('employees-filter') as string) || []
-  );
+  const [data, setData] = useLocalStorage<ModifiedWorkType[]>({
+    key: LocalStorage.EMPLOYEE_MODIFIED_TYPE_WORKS,
+    defaultValue: [],
+  });
 
   const { classes } = useFilterMenuStyles();
   const {
     classes: { input, inner, icon },
   } = useCheckboxStyles();
   const { data: workTypes } = useGetActiveWorkTypesQuery();
-  // TODO:
+
   useEffect(() => {
     const modifiedWorkTypes = workTypes?.map((workType) => ({
       id: workType.id,
@@ -65,7 +68,11 @@ const EmployeesFilterMenu = ({
     }));
 
     const storedData =
-      JSON.parse(localStorage.getItem('employees-filter') as string) || [];
+      JSON.parse(
+        localStorage.getItem(
+          LocalStorage.EMPLOYEE_MODIFIED_TYPE_WORKS
+        ) as string
+      ) || [];
     if (storedData?.length) {
       setData(storedData);
     } else {
@@ -73,12 +80,6 @@ const EmployeesFilterMenu = ({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [workTypes]);
-  // TODO:
-  useEffect(() => {
-    localStorage.setItem('employees-filter', JSON.stringify(data));
-    localStorage.setItem('type-works-ids', JSON.stringify(typeWorks));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data]);
 
   return (
     <Menu

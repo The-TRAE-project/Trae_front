@@ -1,11 +1,12 @@
-import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Group, Stack } from '@mantine/core';
+import { useLocalStorage } from '@mantine/hooks';
 import { BsFillHouseFill } from 'react-icons/bs';
 import { AiOutlinePlusCircle } from 'react-icons/ai';
 
 import { Status } from '../../store/apis/user/types';
 import { Paths } from '../../constants/paths';
+import { LocalStorage } from '../../constants/localStorage';
 import SEO from '../../components/SEO';
 import EmployeesFilterMenu from '../../components/Employees/EmployeesFilterMenu';
 import EmployeesListItem from '../../components/Employees/EmployeesListItem';
@@ -17,21 +18,21 @@ import {
 } from '../../components/styles';
 
 const Employees = () => {
-  const [paramTypeWorkIds, setParamTypeWorkIds] = useState<number[] | null>(
-    JSON.parse(localStorage.getItem('type-works-ids') as string) || []
-  );
-  const [paramActive, setParamActive] = useState<Status | null>(
-    JSON.parse(localStorage.getItem('status') as string) || Status.ACTIVE
-  );
+  const [paramTypeWorkIds, setParamTypeWorkIds] = useLocalStorage<
+    number[] | null
+  >({
+    key: LocalStorage.EMPLOYEE_TYPE_WORKS,
+    defaultValue: [],
+  });
+  const [paramActive, setParamActive] = useLocalStorage<Status | null>({
+    key: LocalStorage.EMPLOYEE_STATUS,
+    defaultValue: Status.ACTIVE,
+  });
 
   const navigate = useNavigate();
 
   const navigateToHome = () => navigate(Paths.PROJECTS);
   const navigateToCreateEmployeePage = () => navigate(Paths.EMPLOYEES_CREATE);
-  // TODO:
-  useEffect(() => {
-    localStorage.setItem('status', JSON.stringify(paramActive));
-  }, [paramActive]);
 
   return (
     <>

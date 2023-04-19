@@ -1,9 +1,9 @@
-// TODO:
 import { Dispatch, SetStateAction } from 'react';
 import { Menu, Checkbox, Group } from '@mantine/core';
 
-import { useGetAllRolesQuery } from '../../../store/apis/user';
+import { Status as StatusTitle } from '../../../store/types';
 import { Status } from '../../../store/apis/user/types';
+import { useGetAllRolesQuery } from '../../../store/apis/user';
 import Filter from '../../svgs/Filter';
 import {
   FilterMenuItemTitle,
@@ -15,11 +15,11 @@ import {
 const statuses = [
   {
     value: Status.ACTIVE,
-    title: 'Активный',
+    title: StatusTitle.ACTIVE,
   },
   {
     value: Status.NOT_ACTIVE,
-    title: 'Заблокированный',
+    title: StatusTitle.BLOCKED,
   },
 ];
 

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useLocalStorage } from '@mantine/hooks';
 
 import { useGetAllEmployeesQuery } from '../../../store/apis/employee';
 import { useDisplayError } from '../../../helpers/hooks/useDisplayError';
@@ -7,6 +7,7 @@ import SliderButtons from '../../SliderButtons';
 import Loader from '../../Loader';
 import EmployeeItem from './EmployeeItem';
 import { Grid, Wrapper } from './styles';
+import { LocalStorage } from '../../../constants/localStorage';
 
 interface Props {
   paramTypeWorkIds: number[] | null;
@@ -14,7 +15,10 @@ interface Props {
 }
 
 const EmployeesListItem = ({ paramTypeWorkIds, paramActive }: Props) => {
-  const [page, setPage] = useState<number>(0);
+  const [page, setPage] = useLocalStorage<number>({
+    key: LocalStorage.EMPLOYEE_PAGE,
+    defaultValue: 0,
+  });
 
   const {
     data: employees,

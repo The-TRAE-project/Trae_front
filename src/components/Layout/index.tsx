@@ -6,10 +6,10 @@ import { DatesProvider } from '@mantine/dates';
 import { ThemeProvider } from 'styled-components';
 import 'dayjs/locale/ru';
 
+import { Roles } from '../../store/slices/auth/types';
 import { useAppSelector } from '../../helpers/hooks/useAppSelector';
 import { useNavigateLoggedInUser } from '../../helpers/hooks/useNavigateLoggedInUser';
-import { useClearEmployeesFilterValues } from '../../helpers/hooks/useClearEmployeesFilterValues';
-import { Roles } from '../../store/slices/auth/types';
+import { useClearLocalStorageByPath } from '../../helpers/hooks/useClearLocalStorageByPath';
 import { Paths } from '../../constants/paths';
 import GlobalStyles from '../../styles/GlobalStyles';
 import theme from '../../styles/theme';
@@ -26,7 +26,7 @@ const Layout = ({ children }: Props) => {
   const { permission, isLoggedIn } = useAppSelector((store) => store.auth);
 
   useNavigateLoggedInUser();
-  useClearEmployeesFilterValues();
+  useClearLocalStorageByPath();
 
   return (
     <ThemeProvider theme={theme}>

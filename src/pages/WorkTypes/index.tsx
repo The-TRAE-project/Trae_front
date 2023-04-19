@@ -1,12 +1,13 @@
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Group, Stack } from '@mantine/core';
+import { useLocalStorage } from '@mantine/hooks';
 import { BsFillHouseFill } from 'react-icons/bs';
 import { AiOutlinePlusCircle } from 'react-icons/ai';
 
 import { Status } from '../../store/apis/user/types';
 import { Paths } from '../../constants/paths';
 import SEO from '../../components/SEO';
+import { LocalStorage } from '../../constants/localStorage';
 import WorkTypesFilterMenu from '../../components/WorkTypes/WorkTypesFilterMenu';
 import {
   Container,
@@ -17,7 +18,10 @@ import {
 import WorkTypesListItem from '../../components/WorkTypes/WorkTypesListItem';
 
 const WorkTypes = () => {
-  const [paramActive, setParamActive] = useState<Status | null>(Status.ACTIVE);
+  const [paramActive, setParamActive] = useLocalStorage<Status | null>({
+    key: LocalStorage.WORK_TYPE_STATUS,
+    defaultValue: null,
+  });
 
   const navigate = useNavigate();
 

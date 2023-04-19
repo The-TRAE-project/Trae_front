@@ -1,5 +1,5 @@
-import { useState } from 'react';
 import { Group, Stack } from '@mantine/core';
+import { useLocalStorage } from '@mantine/hooks';
 import { useNavigate } from 'react-router-dom';
 import { BsFillHouseFill } from 'react-icons/bs';
 import { AiOutlinePlusCircle } from 'react-icons/ai';
@@ -7,6 +7,7 @@ import { AiOutlinePlusCircle } from 'react-icons/ai';
 import { Roles } from '../../store/slices/auth/types';
 import { Status } from '../../store/apis/user/types';
 import { Paths } from '../../constants/paths';
+import { LocalStorage } from '../../constants/localStorage';
 import SEO from '../../components/SEO';
 import UserFilterMenu from '../../components/Users/UserFilterMenu';
 import UsersListItem from '../../components/Users/UsersListItem';
@@ -18,8 +19,14 @@ import {
 } from '../../components/styles';
 
 const Constructors = () => {
-  const [paramRole, setParamRole] = useState<string | null>(Roles.CONSTRUCTOR);
-  const [paramActive, setParamActive] = useState<Status | null>(Status.ACTIVE);
+  const [paramRole, setParamRole] = useLocalStorage<string | null>({
+    key: LocalStorage.USER_ROLE,
+    defaultValue: Roles.CONSTRUCTOR,
+  });
+  const [paramActive, setParamActive] = useLocalStorage<Status | null>({
+    key: LocalStorage.USER_STATUS,
+    defaultValue: Status.ACTIVE,
+  });
 
   const navigate = useNavigate();
 
