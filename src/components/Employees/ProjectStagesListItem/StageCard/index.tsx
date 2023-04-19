@@ -10,7 +10,7 @@ import { ProjectStage } from '../../../../store/apis/employee/types';
 import { clearEmployeeState } from '../../../../store/slices/employee';
 import ArrowDown from '../../../svgs/ArrowDown';
 import ArrowUp from '../../../svgs/ArrowUp';
-import ConfirmModal from '../../ConfrimModal';
+import ConfirmModal from '../../ConfirmModal';
 import { ArrowWrapper, StageName, Employee, Wrapper } from './styles';
 
 interface Props {
@@ -20,7 +20,7 @@ interface Props {
 }
 
 const StageCard = ({ stage, index, lastStage }: Props) => {
-  const [opened, setOpened] = useState<boolean>(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -32,10 +32,9 @@ const StageCard = ({ stage, index, lastStage }: Props) => {
   const isReady = stage.readyToAcceptance ? 'readyToAcceptance' : '';
   const isInWork = stage.inWork ? 'inWork' : '';
 
-  const handleOpenModal = () => setOpened(true);
-  const handleCloseModal = () => setOpened(false);
+  const handleClose = () => setIsOpen(false);
 
-  const handleReceiveProject = async () => {
+  const handleSubmit = async () => {
     try {
       if (!employee) return;
 
@@ -45,26 +44,34 @@ const StageCard = ({ stage, index, lastStage }: Props) => {
       }).unwrap();
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
-      handleCloseModal();
+      handleClose();
       showErrorNotification(error.data.status, error.data.error);
     }
   };
 
-  const handleCloseInformModal = () => {
+  const handleCallAtEnd = () => {
     navigate(Paths.EMPLOYEE_LOGIN, { replace: true });
     dispatch(clearEmployeeState());
   };
 
+  const confirmTitle = `${
+    employee && `${employee.firstName} ${employee.lastName}`
+  } начинает <br /> этап ${stage.name.toLowerCase()}?`;
+
+  const informTitle = `${
+    employee && `${employee.firstName} ${employee.lastName}`
+  } начал этап ${stage.name.toLowerCase()}`;
+
+  const classes = isComplete || isReady || isInWork;
+
   return (
     <>
       <Wrapper
-        onClick={handleOpenModal}
+        onClick={() => setIsOpen(true)}
         disabled={stage.inWork || stage.isEnded || !stage.readyToAcceptance}
-        className={isComplete || isReady || isInWork}
+        className={classes}
       >
-        <StageName className={isComplete || isReady || isInWork}>
-          {stage.name}
-        </StageName>
+        <StageName className={classes}>{stage.name}</StageName>
         <Employee>
           {stage.employeeFirstName &&
             stage.employeeLastName &&
@@ -86,17 +93,13 @@ const StageCard = ({ stage, index, lastStage }: Props) => {
           ))}
       </Wrapper>
       <ConfirmModal
-        isOpen={opened}
-        onClose={handleCloseModal}
-        onCloseInformModal={handleCloseInformModal}
+        isOpen={isOpen}
+        onClose={handleClose}
+        onSubmit={handleSubmit}
+        onCallAtEnd={handleCallAtEnd}
         isHideHomeBtn={false}
-        handleAgreementClick={handleReceiveProject}
-        questionTitle={`${employee?.firstName} ${
-          employee?.lastName
-        } начинает <br /> этап ${stage.name.toLowerCase()}?`}
-        informTitle={`${employee?.firstName} ${
-          employee?.lastName
-        } начал этап ${stage.name.toLowerCase()}`}
+        confirmTitle={confirmTitle}
+        informTitle={informTitle}
       />
     </>
   );

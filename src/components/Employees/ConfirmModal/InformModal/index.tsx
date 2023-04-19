@@ -1,5 +1,6 @@
-import Modal from '../../../Modal';
-import Home from '../../../svgs/Home';
+import { BsFillHouseFill } from 'react-icons/bs';
+
+import Modal from '../../Modal';
 import Timer from '../Timer';
 import { HomeButton, InformTitle, Stack } from './styles';
 
@@ -20,7 +21,7 @@ const InformModal = ({
     <Modal isOpen={isOpen} onClose={onClose} withCloseButton={false}>
       {!isHideHomeBtn && (
         <HomeButton onClick={onClose}>
-          <Home />
+          <BsFillHouseFill size={44} color="var(--orange)" />
         </HomeButton>
       )}
       <Stack>

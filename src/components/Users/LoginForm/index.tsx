@@ -80,7 +80,9 @@ const Login = () => {
           error: classes.error,
         }}
       />
-      <Button>{isLoading ? <Loader size={40} /> : 'Войти'}</Button>
+      <Button disabled={isLoading}>
+        {isLoading ? <Loader size={40} /> : 'Войти'}
+      </Button>
     </FormWrapper>
   );
 };

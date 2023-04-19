@@ -12,7 +12,7 @@ import { showErrorNotification } from '../../helpers/showErrorNotification';
 import traeLogo from '../../assets/traeLogo.svg';
 import { Paths } from '../../constants/paths';
 import SEO from '../../components/SEO';
-import ConfirmModal from '../../components/Employees/ConfrimModal';
+import ConfirmModal from '../../components/Employees/ConfirmModal';
 import Button from '../../components/Employees/Button';
 import {
   ApartContainer,
@@ -22,7 +22,7 @@ import {
 import { DashedButton } from './styles';
 
 const EmployeeMain = () => {
-  const [isConfirmModal, setIsConfirmModal] = useState<boolean>(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -31,10 +31,9 @@ const EmployeeMain = () => {
   const navigateToProjects = () => navigate(Paths.EMPLOYEE_PROJECTS);
   const navigateToStagesInWork = () => navigate(Paths.EMPLOYEE_STAGES_IN_WORK);
 
-  const handleOpenConfirmModal = () => setIsConfirmModal(true);
-  const handleCloseConfirmModal = () => setIsConfirmModal(false);
-
-  const handleCloseInformModal = async () => {
+  const handleClose = () => setIsOpen(false);
+  // TODO:
+  const handleSubmit = async () => {
     try {
       if (!employee) return;
 
@@ -43,10 +42,19 @@ const EmployeeMain = () => {
       navigate(Paths.EMPLOYEE_LOGIN);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
-      setIsConfirmModal(false);
+      handleClose();
       showErrorNotification(err.status, err.error);
     }
   };
+
+  const confirmTitle = `${
+    employee && `${employee.firstName} ${employee.lastName}`
+  } завершает <br /> рабочую смену?`;
+
+  const informTitle = `${
+    employee && `${employee.firstName} ${employee.lastName}`
+  }, <br /> ждем Вас снова в Trae <br /> До встречи 
+  `;
 
   return (
     <>
@@ -69,20 +77,19 @@ const EmployeeMain = () => {
               onClick={navigateToStagesInWork}
               width={410}
             />
-            <DashedButton onClick={handleOpenConfirmModal}>
+            <DashedButton onClick={() => setIsOpen(true)}>
               Завершить смену
             </DashedButton>
           </Stack>
         </ApartContainer>
 
         <ConfirmModal
-          isOpen={isConfirmModal}
-          onClose={handleCloseConfirmModal}
-          onCloseInformModal={handleCloseInformModal}
+          isOpen={isOpen}
+          onClose={handleClose}
+          onCallAtEnd={handleSubmit}
           isHideHomeBtn
-          questionTitle={`${employee?.firstName} ${employee?.lastName} завершает <br /> рабочую смену?`}
-          informTitle={`${employee?.firstName} ${employee?.lastName}, <br /> ждем Вас снова в Trae <br /> До встречи 
-        `}
+          confirmTitle={confirmTitle}
+          informTitle={informTitle}
         />
       </WrapperWithBgImage>
     </>

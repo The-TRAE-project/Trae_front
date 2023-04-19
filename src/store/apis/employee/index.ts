@@ -12,7 +12,7 @@ import {
 } from './types';
 
 const employeeTags = baseApi.enhanceEndpoints({
-  addTagTypes: ['Employee', 'ProjectStage', 'StagesInWork'],
+  addTagTypes: ['Employee', 'ProjectStage', 'Project'],
 });
 
 const employeeApi = employeeTags.injectEndpoints({
@@ -20,21 +20,21 @@ const employeeApi = employeeTags.injectEndpoints({
     getAvailableProjectsByEmployeeId: build.query<Project[], number>({
       query: (employeeId) =>
         `/project/employee/available-projects/${employeeId}`,
-      keepUnusedDataFor: 0,
-      providesTags: ['ProjectStage', 'StagesInWork'],
+      // keepUnusedDataFor: 0,
+      providesTags: ['Project'],
     }),
 
     getStagesInWorkByEmployeeId: build.query<StageInWork[], number>({
       query: (employeeId) =>
         `/operation/employee/operations-in-work/${employeeId}`,
-      keepUnusedDataFor: 0,
-      providesTags: ['ProjectStage', 'StagesInWork'],
+      // keepUnusedDataFor: 0,
+      providesTags: ['Project'],
     }),
 
     getProjectStages: build.query<ProjectStage[], number>({
       query: (projectId) =>
         `operation/employee/project-operations/${projectId}`,
-      providesTags: ['ProjectStage', 'StagesInWork'],
+      providesTags: ['Project'],
     }),
 
     receiveProjectStage: build.mutation<void, ReceiveProjectStageValue>({
@@ -45,7 +45,7 @@ const employeeApi = employeeTags.injectEndpoints({
           body,
         };
       },
-      invalidatesTags: ['ProjectStage', 'StagesInWork'],
+      invalidatesTags: ['Project'],
     }),
 
     finishProjectStage: build.mutation<void, ReceiveProjectStageValue>({
@@ -56,7 +56,7 @@ const employeeApi = employeeTags.injectEndpoints({
           body,
         };
       },
-      invalidatesTags: ['ProjectStage', 'StagesInWork'],
+      invalidatesTags: ['Project'],
     }),
 
     createEmployee: build.mutation<

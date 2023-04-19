@@ -3,11 +3,18 @@ import { Group } from '@mantine/core';
 import { HiInformationCircle } from 'react-icons/hi';
 import { useNavigate } from 'react-router-dom';
 
-import { useAppDispatch } from '../../../../helpers/hooks/useAppDispatch';
+import { useFinishProjectStageMutation } from '../../../../store/apis/employee';
+import {
+  clearEmployeeState,
+  setProjectNumber,
+} from '../../../../store/slices/employee';
 import { StageInWork } from '../../../../store/apis/employee/types';
-import { setProjectNumber } from '../../../../store/slices/employee';
+import { useAppDispatch } from '../../../../helpers/hooks/useAppDispatch';
+import { useAppSelector } from '../../../../helpers/hooks/useAppSelector';
+import { showErrorNotification } from '../../../../helpers/showErrorNotification';
+import { Paths } from '../../../../constants/paths';
 import { UnstyledButton } from '../../../styles';
-import ConfirmModal from './ConfirmModal';
+import ConfirmModal from '../../ConfirmModal';
 import {
   Customer,
   FinishButton,
@@ -22,18 +29,52 @@ interface Props {
 }
 
 const StageInWorkCard = ({ stage }: Props) => {
-  const [isOpen, setOpened] = useState<boolean>(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const { employee } = useAppSelector((store) => store.employee);
+
+  const [finishProject] = useFinishProjectStageMutation();
 
   const navigateToProjectStages = () => {
     navigate(`/employee/project/${stage.projectId}/stages`);
     dispatch(setProjectNumber(stage.projectNumber));
   };
 
-  const handleOpenModal = () => setOpened(true);
-  const handleCloseModal = () => setOpened(false);
+  const handleClose = () => setIsOpen(false);
+
+  const handleSubmit = async () => {
+    try {
+      if (!employee) return;
+      // TODO:
+      setTimeout(async () => {
+        await finishProject({
+          employeeId: employee.id,
+          operationId: stage.operationId,
+        }).unwrap();
+      }, 3000);
+
+      handleClose();
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      handleClose();
+      showErrorNotification(error.data.status, error.data.error);
+    }
+  };
+
+  const handleCallAtEnd = () => {
+    navigate(Paths.EMPLOYEE_LOGIN, { replace: true });
+    dispatch(clearEmployeeState());
+  };
+
+  const confirmTitle = `${
+    employee && `${employee.firstName} ${employee.lastName}`
+  } закончил этап ${stage.operationName.toLowerCase()}?`;
+
+  const informTitle = `${
+    employee && `${employee.firstName} ${employee.lastName}`
+  } закончил <br /> этап  ${stage.operationName.toLowerCase()}`;
 
   return (
     <>
@@ -50,10 +91,19 @@ const StageInWorkCard = ({ stage }: Props) => {
               <HiInformationCircle size={50} color="var(--orange)" />
             </UnstyledButton>
           </Group>
-          <FinishButton onClick={handleOpenModal}>Завершить</FinishButton>
+          <FinishButton onClick={() => setIsOpen(true)}>Завершить</FinishButton>
         </Group>
       </Wrapper>
-      <ConfirmModal isOpen={isOpen} onClose={handleCloseModal} stage={stage} />
+
+      <ConfirmModal
+        isOpen={isOpen}
+        onClose={handleClose}
+        onSubmit={handleSubmit}
+        onCallAtEnd={handleCallAtEnd}
+        isHideHomeBtn={false}
+        confirmTitle={confirmTitle}
+        informTitle={informTitle}
+      />
     </>
   );
 };

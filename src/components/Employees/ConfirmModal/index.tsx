@@ -1,7 +1,7 @@
 import { Group } from '@mantine/core';
 import { useState } from 'react';
 
-import Modal from '../../Modal';
+import Modal from '../Modal';
 import InformModal from './InformModal';
 import Timer from './Timer';
 import { Button, ConfirmTitle, Stack, TitleStack } from './styles';
@@ -9,9 +9,9 @@ import { Button, ConfirmTitle, Stack, TitleStack } from './styles';
 interface Props {
   isOpen: boolean;
   onClose: () => void;
-  onCloseInformModal: () => void;
-  handleAgreementClick?: () => void;
-  questionTitle: string;
+  onCallAtEnd: () => void;
+  onSubmit?: () => void;
+  confirmTitle: string;
   informTitle: string;
   isHideHomeBtn: boolean;
 }
@@ -19,23 +19,23 @@ interface Props {
 const ConfirmModal = ({
   isOpen,
   onClose,
-  onCloseInformModal,
-  handleAgreementClick,
-  questionTitle,
+  onCallAtEnd,
+  onSubmit,
+  confirmTitle,
   informTitle,
   isHideHomeBtn,
 }: Props) => {
   const [isInform, setIsInform] = useState<boolean>(false);
 
-  const handleOpenInformModal = () => {
+  const handleSubmit = () => {
     onClose();
-    handleAgreementClick?.();
+    onSubmit?.();
     setIsInform(true);
   };
 
-  const handleCloseInformModal = () => {
+  const handleClose = () => {
     setIsInform(false);
-    onCloseInformModal();
+    onCallAtEnd();
   };
 
   return (
@@ -43,9 +43,9 @@ const ConfirmModal = ({
       <Modal isOpen={isOpen} onClose={onClose} withCloseButton={false}>
         <Stack>
           <TitleStack>
-            <ConfirmTitle dangerouslySetInnerHTML={{ __html: questionTitle }} />
+            <ConfirmTitle dangerouslySetInnerHTML={{ __html: confirmTitle }} />
             <Group spacing={40} position="center">
-              <Button onClick={handleOpenInformModal}>Да</Button>
+              <Button onClick={handleSubmit}>Да</Button>
               <Button onClick={onClose}>Нет</Button>
             </Group>
           </TitleStack>
@@ -54,7 +54,7 @@ const ConfirmModal = ({
       </Modal>
       <InformModal
         isOpen={isInform}
-        onClose={handleCloseInformModal}
+        onClose={handleClose}
         informTitle={informTitle}
         isHideHomeBtn={isHideHomeBtn}
       />

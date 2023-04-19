@@ -14,8 +14,8 @@ import { Employee } from '../../../store/slices/employee/types';
 import { Paths } from '../../../constants/paths';
 import instance from '../../../config/axiosConfig';
 import Loader from '../../Loader';
-import ConfirmModal from '../ConfrimModal';
 import MaskedTextInput from '../../MaskedInput';
+import ConfirmModal from '../ConfirmModal';
 import NumericKeyboard from './NumericKeyboard';
 import { Button, GroupForm, useTextInputStyles, Wrapper } from './styles';
 
@@ -74,7 +74,7 @@ const EmployeeLoginForm = () => {
     }
   };
 
-  const handleAgreementClick = async () => {
+  const handleLoginEmployee = async () => {
     try {
       if (!employee) return;
       await dispatch(loginEmployee(employee.id)).unwrap();
@@ -88,10 +88,19 @@ const EmployeeLoginForm = () => {
   const handleOnKeyboardChange = (value: string) =>
     form.setFieldValue('pinCode', value);
 
-  const handleCloseModal = () => dispatch(toggleModal(false));
-  const handleCloseInformModal = () => navigate(Paths.EMPLOYEE_MAIN);
+  const handleClose = () => dispatch(toggleModal(false));
+  const handleCallAtEnd = () => navigate(Paths.EMPLOYEE_MAIN);
 
   const disabled = /^\d{3}$/i.test(form.values.pinCode);
+
+  const confirmTitle = `${
+    employee && `${employee?.firstName} ${employee.lastName}`
+  } начинает <br /> рабочую смену?`;
+
+  const informTitle = `${
+    employee && `${employee?.firstName} ${employee.lastName}`
+  }, <br /> добро пожаловать в Trae <br /> Хорошего рабочего дня
+  `;
 
   return (
     <>
@@ -121,13 +130,12 @@ const EmployeeLoginForm = () => {
 
       <ConfirmModal
         isOpen={isModalOpen}
-        onClose={handleCloseModal}
-        onCloseInformModal={handleCloseInformModal}
-        handleAgreementClick={handleAgreementClick}
+        onClose={handleClose}
+        onSubmit={handleLoginEmployee}
+        onCallAtEnd={handleCallAtEnd}
         isHideHomeBtn={false}
-        questionTitle={`${employee?.firstName} ${employee?.lastName} начинает <br /> рабочую смену?`}
-        informTitle={`${employee?.firstName} ${employee?.lastName}, <br /> добро пожаловать в Trae <br /> Хорошего рабочего дня
-        `}
+        confirmTitle={confirmTitle}
+        informTitle={informTitle}
       />
     </>
   );

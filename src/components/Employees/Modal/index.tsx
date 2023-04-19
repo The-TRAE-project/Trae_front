@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import { Modal as MantineModal } from '@mantine/core';
 
-import { useDate } from '../../helpers/hooks/useDate';
+import { useDate } from '../../../helpers/hooks/useDate';
 import { useModalStyles } from './styles';
 
 interface Props {
