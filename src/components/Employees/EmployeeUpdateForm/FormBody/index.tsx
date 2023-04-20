@@ -63,7 +63,7 @@ const FormBody = ({ employee, form, isUpdate }: Props) => {
     ) {
       form.setFieldError(
         'dateOfDismissal',
-        'Пожалуйста, выберите дате увольнения!'
+        'Пожалуйста, выберите дату увольнения'
       );
     } else {
       form.setFieldValue('dateOfDismissal', null);

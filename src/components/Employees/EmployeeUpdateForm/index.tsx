@@ -111,7 +111,7 @@ const EmployeeUpdateForm = () => {
         ) {
           form.setFieldError(
             'dateOfDismissal',
-            'Пожалуйста, выберите дате увольнения!'
+            'Пожалуйста, выберите дату увольнения'
           );
           return;
         }
