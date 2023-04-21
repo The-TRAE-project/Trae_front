@@ -90,7 +90,7 @@ const CreateForm = () => {
               <BsArrowLeft size={50} color="var(--orange)" />
             </UnstyledButton>
             <UnstyledButton
-              onClick={() => navigate(Paths.PROJECTS)}
+              onClick={() => navigate(Paths.DASHBOARD)}
               type="button"
             >
               <BsFillHouseFill size={44} color="var(--orange)" />

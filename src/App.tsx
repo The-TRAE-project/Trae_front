@@ -10,6 +10,7 @@ import EmployeeProjects from './pages/EmployeeProjects';
 import EmployeeProjectStages from './pages/EmployeeProjectStages';
 import EmployeeStagesInWork from './pages/EmployeeStagesInWork';
 import Login from './pages/Login';
+import Dashboard from './pages/Dashboard';
 import Projects from './pages/Projects';
 import Constructors from './pages/Constructors';
 import CreateConstructor from './pages/CreateConstructor';
@@ -25,13 +26,11 @@ import PersonalCabinetEditing from './pages/PersonalCabinetEditing';
 import PersonalCabinetChangePassword from './pages/PersonalCabinetChangePassword';
 
 import { useAppSelector } from './helpers/hooks/useAppSelector';
-// import { useNavigateLoggedInUser } from './helpers/hooks/useNavigateLoggedInUser';
 import { Roles } from './store/slices/auth/types';
 
 const App = () => {
   const { isLoggedIn } = useAppSelector((store) => store.employee);
   const { permission } = useAppSelector((store) => store.auth);
-  // TODO:
 
   return (
     <Layout>
@@ -72,6 +71,7 @@ const App = () => {
             />
           }
         >
+          <Route path={Paths.DASHBOARD} element={<Dashboard />} />
           <Route path={Paths.PROJECTS} element={<Projects />} />
           <Route path={Paths.CONSTRUCTORS} element={<Constructors />} />
           <Route

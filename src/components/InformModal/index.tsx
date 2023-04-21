@@ -26,7 +26,7 @@ const InformModal = ({ isOpen, onClose, children, title, backPath }: Props) => {
 
   const navigateToHome = () => {
     onClose();
-    navigate(Paths.PROJECTS);
+    navigate(Paths.DASHBOARD);
   };
 
   return (

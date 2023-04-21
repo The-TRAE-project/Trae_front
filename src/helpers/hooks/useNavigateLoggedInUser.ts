@@ -15,7 +15,7 @@ export function useNavigateLoggedInUser() {
     if (accessToken) {
       if (location.pathname === Paths.MAIN) {
         if (permission === Roles.ADMIN) {
-          navigate(Paths.PROJECTS);
+          navigate(Paths.DASHBOARD);
         } else if (permission === Roles.EMPLOYEE) {
           navigate(Paths.EMPLOYEES);
         }

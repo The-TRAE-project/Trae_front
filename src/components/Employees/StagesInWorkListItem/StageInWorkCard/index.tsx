@@ -53,6 +53,8 @@ const StageInWorkCard = ({ stage }: Props) => {
           employeeId: employee.id,
           operationId: stage.operationId,
         }).unwrap();
+        dispatch(clearEmployeeState());
+        navigate(Paths.EMPLOYEE_LOGIN, { replace: true });
       }, 3000);
 
       handleClose();
@@ -64,8 +66,8 @@ const StageInWorkCard = ({ stage }: Props) => {
   };
 
   const handleCallAtEnd = () => {
-    navigate(Paths.EMPLOYEE_LOGIN, { replace: true });
     dispatch(clearEmployeeState());
+    navigate(Paths.EMPLOYEE_LOGIN, { replace: true });
   };
 
   const confirmTitle = `${

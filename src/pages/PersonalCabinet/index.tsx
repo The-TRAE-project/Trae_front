@@ -24,7 +24,7 @@ const PersonalCabinet = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  const navigateToHome = () => navigate(Paths.PROJECTS);
+  const navigateToHome = () => navigate(Paths.DASHBOARD);
   const handleLogout = async () => {
     await dispatch(logoutUser());
     dispatch(clearUserState());
