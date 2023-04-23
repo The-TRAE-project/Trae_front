@@ -234,3 +234,14 @@ export const Grid = styled.div`
   grid-template-columns: 1fr 1fr 1fr;
   gap: 40px;
 `;
+
+export const ErrorMessage = styled.p`
+  display: block;
+  font-family: var(--font-roboto);
+  ${({ theme }) => theme.mixins.fontSize24};
+  font-weight: 500;
+  word-break: break-word;
+  color: var(--red);
+  letter-spacing: 1px;
+  margin-top: -6px;
+`;

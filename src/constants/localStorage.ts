@@ -8,5 +8,6 @@ export enum LocalStorage {
   EMPLOYEE_PAGE = 'employee-page',
   EMPLOYEE_TYPE_WORKS = 'employee-type-works',
   EMPLOYEE_MODIFIED_TYPE_WORKS = 'employee-modified-type-works',
+  PROJECT_STATUS = 'project-status',
   NAVBAR_LIST = 'navbar-list',
 }

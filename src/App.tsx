@@ -24,6 +24,7 @@ import UpdateEmployee from './pages/UpdateEmployee';
 import PersonalCabinet from './pages/PersonalCabinet';
 import PersonalCabinetEditing from './pages/PersonalCabinetEditing';
 import PersonalCabinetChangePassword from './pages/PersonalCabinetChangePassword';
+import CreateProject from './pages/CreateProject';
 
 import { useAppSelector } from './helpers/hooks/useAppSelector';
 import { Roles } from './store/slices/auth/types';
@@ -73,6 +74,7 @@ const App = () => {
         >
           <Route path={Paths.DASHBOARD} element={<Dashboard />} />
           <Route path={Paths.PROJECTS} element={<Projects />} />
+          <Route path={Paths.PROJECTS_CREATE} element={<CreateProject />} />
           <Route path={Paths.CONSTRUCTORS} element={<Constructors />} />
           <Route
             path={Paths.CONSTRUCTORS_CREATE}

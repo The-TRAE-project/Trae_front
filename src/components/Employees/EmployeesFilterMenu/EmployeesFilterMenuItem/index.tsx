@@ -45,8 +45,8 @@ const EmployeesFilterMenuItem = ({
   };
 
   return (
-    <Menu.Item key={workType.id} onClick={() => handleSetTypeWorks(workType)}>
-      <Group spacing={12} key={workType.id}>
+    <Menu.Item onClick={() => handleSetTypeWorks(workType)}>
+      <Group spacing={12}>
         <Checkbox
           defaultChecked={typeWorks?.includes(workType.id)}
           classNames={{ input, inner, icon }}

@@ -32,8 +32,8 @@ export const ConstructorFormSchema = z.object({
       message:
         'Имя должно содержать только кириллицу и начинаться с заглавной буквы',
     })
-    .min(3, { message: 'Имя должен быть не меньше 2 символов' })
-    .max(15, { message: 'Имя должен быть не больше 15 символов' }),
+    .min(3, { message: 'Имя должно быть не меньше 2 символов' })
+    .max(15, { message: 'Имя должно быть не больше 15 символов' }),
   middleName: z
     .string()
     .regex(RegEx.fullName, {

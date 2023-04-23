@@ -11,11 +11,11 @@ export interface WorkType {
 export const WorkTypeSchema = z.object({
   name: z
     .string()
-    .regex(RegEx.name, {
+    .regex(RegEx.cyrillic, {
       message: 'Название должно содержать только кириллицу',
     })
-    .min(3, { message: 'Название должо быть не меньше 3 символов' })
-    .max(30, { message: 'Название должо быть не больше 30 символов' }),
+    .min(3, { message: 'Название должно быть не меньше 3 символов' })
+    .max(30, { message: 'Название должно быть не больше 30 символов' }),
 });
 
 export type CreateWorkTypeFormValues = z.infer<typeof WorkTypeSchema>;
@@ -24,11 +24,11 @@ export const EditWorkTypeSchema = z.object({
   isActive: z.any().nullable(),
   newName: z
     .string()
-    .regex(RegEx.name, {
+    .regex(RegEx.cyrillic, {
       message: 'Название должно содержать кириллицу',
     })
-    .min(3, { message: 'Название должо быть не меньше 3 символов' })
-    .max(30, { message: 'Название должо быть не больше 30 символов' })
+    .min(3, { message: 'Название должно быть не меньше 3 символов' })
+    .max(30, { message: 'Название должно быть не больше 30 символов' })
     .nullable(),
   typeWorkId: z
     .number()
