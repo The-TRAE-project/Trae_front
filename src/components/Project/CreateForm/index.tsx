@@ -18,7 +18,7 @@ import NumberInput from '../../NumberInput';
 import InformModal from '../../InformModal';
 import Textarea from '../../Textarea';
 import { FormWrapper, OrangeButton, UnstyledButton } from '../../styles';
-import OperationsInput from './OperationInput';
+import OperationsInput from './OperationsInput';
 import { Grid } from './styles';
 
 const CreateForm = () => {

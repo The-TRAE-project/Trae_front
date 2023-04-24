@@ -13,7 +13,11 @@ import {
 } from './helpers/useModifyWorkTypes';
 import { useClearStates } from './helpers/useClearStates';
 import { useSetOperations } from './helpers/useSetOperations';
-import AnotherOperation from './AnotherOperation';
+import {
+  AdditionalOperation,
+  setAdditionalOperation,
+} from './helpers/setAdditionalOperation';
+import ExtraOperation from './ExtraOperation';
 import SelectButton from './SelectButton';
 import SelectedOperation from './SelectedOperation';
 import {
@@ -32,11 +36,6 @@ interface Props {
   isSuccess: boolean;
 }
 
-export interface AdditionalOperation {
-  idx: number;
-  isVisible: boolean;
-}
-
 const OperationsInput = ({ form, isSuccess }: Props) => {
   const [ids, setIds] = useState<number[]>([]);
   const [opened, setOpened] = useState<boolean>(false);
@@ -45,7 +44,7 @@ const OperationsInput = ({ form, isSuccess }: Props) => {
   >([]);
   const [additionalOperations, setAdditionalOperations] = useState<
     AdditionalOperation[]
-  >([{ idx: Math.floor(Math.random() * 1000), isVisible: true }]);
+  >([setAdditionalOperation()]);
 
   const {
     classes: { dropdown, divider },
@@ -83,9 +82,7 @@ const OperationsInput = ({ form, isSuccess }: Props) => {
   const handleClearStates = () => {
     setIds([]);
     setSelectedOperations([]);
-    setAdditionalOperations([
-      { idx: Math.floor(Math.random() * 1000), isVisible: true },
-    ]);
+    setAdditionalOperations([setAdditionalOperation()]);
   };
 
   useClearStates(isSuccess, handleClearStates);
@@ -132,12 +129,13 @@ const OperationsInput = ({ form, isSuccess }: Props) => {
           <Stack spacing={20}>
             {additionalOperations &&
               additionalOperations.map((additionalOperation) => (
-                <AnotherOperation
+                <ExtraOperation
                   key={additionalOperation.idx}
                   additionalOperation={additionalOperation}
                   handleSelectOperation={handleSelectOperation}
                   checkIsOperationSelected={checkIsOperationSelected}
                   ids={ids}
+                  additionalOperations={additionalOperations}
                   setAdditionalOperations={setAdditionalOperations}
                 />
               ))}

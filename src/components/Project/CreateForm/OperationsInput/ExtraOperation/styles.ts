@@ -2,7 +2,7 @@ import { createStyles } from '@mantine/core';
 import styled from 'styled-components';
 import { AiOutlinePlusCircle } from 'react-icons/ai';
 
-export const AnotherButton = styled.button`
+export const ExtraOperationButton = styled.button`
   ${({ theme }) => theme.mixins.center};
   gap: 11px;
   border: none;
@@ -56,5 +56,5 @@ export const useInputStyles = createStyles(() => ({
 }));
 
 export const Plus = styled(AiOutlinePlusCircle)`
-  color: #42894d;
+  color: var(--green);
 `;

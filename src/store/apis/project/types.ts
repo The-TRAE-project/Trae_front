@@ -46,7 +46,7 @@ export const CreateProjectSchema = z.object({
     .max(1000, { message: 'Комментарий должен быть не больше 1000 символов' })
     .nullable(),
   operations: OperationSchema.array().min(2, {
-    message: 'Пожалуйста, выберите вид операции',
+    message: 'Пожалуйста, выберите тип работ',
   }),
   plannedEndDate: z.date({
     required_error: 'Пожалуйста, выберите дату',

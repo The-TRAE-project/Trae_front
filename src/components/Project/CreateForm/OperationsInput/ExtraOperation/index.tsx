@@ -10,22 +10,27 @@ import {
 } from '../../../../../store/apis/project/types';
 import { useGetActiveWorkTypesQuery } from '../../../../../store/apis/workTypes';
 import { UnstyledButton } from '../../../../styles';
-import { AnotherButton, Plus, useInputStyles } from './styles';
-import { AdditionalOperation } from '..';
+import {
+  AdditionalOperation,
+  setAdditionalOperation,
+} from '../helpers/setAdditionalOperation';
+import { ExtraOperationButton, Plus, useInputStyles } from './styles';
 
 interface Props {
   additionalOperation: AdditionalOperation;
   handleSelectOperation: (workType: Operation, index: number) => void;
   checkIsOperationSelected: (idx: number) => JSX.Element;
   ids: number[];
+  additionalOperations: AdditionalOperation[];
   setAdditionalOperations: Dispatch<SetStateAction<AdditionalOperation[]>>;
 }
 
-const AnotherOperation = ({
+const ExtraOperation = ({
   additionalOperation,
   handleSelectOperation,
   checkIsOperationSelected,
   ids,
+  additionalOperations,
   setAdditionalOperations,
 }: Props) => {
   const { data: workTypes } = useGetActiveWorkTypesQuery();
@@ -56,40 +61,36 @@ const AnotherOperation = ({
     form.validate();
     if (!form.isValid()) return;
 
+    const { name, typeWorkId } = form.values;
     handleSelectOperation(
-      { name: form.values.name, typeWorkId: Number(form.values.typeWorkId) },
+      { name, typeWorkId: Number(typeWorkId) },
       additionalOperation.idx
     );
   };
 
   const addNewOperation = () => {
-    const newAdditionalOperation = {
-      idx: Math.floor(Number(form.values.typeWorkId) + Math.random() * 1000),
-      isVisible: true,
-    };
+    const changeVisibility = additionalOperations.map((item) =>
+      item.idx === additionalOperation.idx
+        ? { ...item, isVisible: false }
+        : item
+    );
 
-    setAdditionalOperations((prevState) => [
-      ...prevState,
-      newAdditionalOperation,
-    ]);
+    setAdditionalOperations([...changeVisibility, setAdditionalOperation()]);
   };
 
   return (
     <Stack spacing={16}>
       <Group position="apart" spacing={0}>
-        <AnotherButton onClick={handleSubmit} type="button">
+        <ExtraOperationButton onClick={handleSubmit} type="button">
           {checkIsOperationSelected(additionalOperation.idx)}
           <span>Другое</span>
-        </AnotherButton>
-        {ids.includes(additionalOperation.idx) && (
-          <UnstyledButton
-            onClick={addNewOperation}
-            type="button"
-            disabled={!ids.includes(additionalOperation.idx)}
-          >
-            <Plus size={30} />
-          </UnstyledButton>
-        )}
+        </ExtraOperationButton>
+        {ids.includes(additionalOperation.idx) &&
+          additionalOperation.isVisible && (
+            <UnstyledButton onClick={addNewOperation} type="button">
+              <Plus size={30} />
+            </UnstyledButton>
+          )}
       </Group>
 
       <Group spacing={14} position="apart">
@@ -117,4 +118,4 @@ const AnotherOperation = ({
   );
 };
 
-export default AnotherOperation;
+export default ExtraOperation;

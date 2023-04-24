@@ -20,6 +20,7 @@ export function useModifyWorkTypes() {
       const workTypes = data.map<ModifiedWorkType>((workType) => ({
         name: workType.name,
         typeWorkId: workType.id,
+        // idx -> like id to filter array
         idx: Math.floor(workType.id + Math.random() * 1000),
       }));
       setModifiedWorkTypes(workTypes);

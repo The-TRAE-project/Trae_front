@@ -5,6 +5,7 @@ export const Paths = {
   PERSONAL_CABINET_CHANGE_PASSWORD: '/personal-cabinet/change-password',
   DASHBOARD: '/dashboard',
   PROJECTS: '/projects',
+  PROJECT_DETAILS: '/projects/details',
   PROJECTS_CREATE: '/projects/create',
   PROJECTS_EDITING: '/projects/editing',
   CONSTRUCTORS: '/constructors',

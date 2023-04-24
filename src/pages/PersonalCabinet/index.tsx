@@ -9,6 +9,7 @@ import { clearUserState, logoutUser } from '../../store/slices/auth';
 import { clearConstructorState } from '../../store/slices/constructor';
 import { clearEmployeeState } from '../../store/slices/employee';
 import { clearWorkTypeState } from '../../store/slices/workType';
+import { clearProjectState } from '../../store/slices/project';
 import { useAppDispatch } from '../../helpers/hooks/useAppDispatch';
 import { removeItem } from '../../helpers/removeItem';
 import SEO from '../../components/SEO';
@@ -31,6 +32,7 @@ const PersonalCabinet = () => {
     dispatch(clearEmployeeState());
     dispatch(clearConstructorState());
     dispatch(clearWorkTypeState());
+    dispatch(clearProjectState());
     removeItem(LocalStorage.NAVBAR_LIST);
     navigate(Paths.LOGIN, { replace: true });
   };

@@ -17,6 +17,7 @@ import authReducer from './slices/auth';
 import employeeReducer from './slices/employee';
 import constructorReducer from './slices/constructor';
 import workTypeReducer from './slices/workType';
+import projectReducer from './slices/project';
 
 const authPersistConfig = {
   key: 'auth',
@@ -29,13 +30,14 @@ const rootReducer = combineReducers({
   employee: employeeReducer,
   builder: constructorReducer,
   workType: workTypeReducer,
+  project: projectReducer,
   [baseApi.reducerPath]: baseApi.reducer,
 });
 
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['employee', 'builder', 'workType'],
+  whitelist: ['employee', 'builder', 'workType', 'project'],
   blacklist: ['auth'],
 };
 
