@@ -93,7 +93,7 @@ const ExtraOperation = ({
           )}
       </Group>
 
-      <Group spacing={14} position="apart">
+      <Group spacing={0} position="apart">
         <TextInput
           {...form.getInputProps('name')}
           label="Название этапа"

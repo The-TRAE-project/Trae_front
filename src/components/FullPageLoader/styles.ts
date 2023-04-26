@@ -8,4 +8,5 @@ export const Wrapper = styled.div`
     var(--gradient-green1) 2.46%,
     var(--gradient-green2) 70.65%
   );
+  z-index: 1000;
 `;

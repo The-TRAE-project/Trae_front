@@ -35,7 +35,10 @@ const NavbarItem = ({ navbarLink }: Props) => {
           <Button
             type="button"
             onClick={() => handleNavigate(navbarLink.value)}
-            active={location.pathname.includes(navbarLink.value)}
+            active={
+              location.pathname.includes(navbarLink.value) ||
+              navbarLink.value.startsWith(location.pathname)
+            }
             disabled={navbarLink.value === Paths.REPORTS}
           >
             {navbarLink.title}

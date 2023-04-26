@@ -1,5 +1,5 @@
 import { baseApi } from '..';
-import { CreateProjectFormValues } from './types';
+import { CreateProjectFormValues, Project } from './types';
 
 const projectTags = baseApi.enhanceEndpoints({
   addTagTypes: ['Project'],
@@ -27,8 +27,27 @@ const projectApi = projectTags.injectEndpoints({
       },
       invalidatesTags: ['Project'],
     }),
+
+    getProjectById: build.query<Project, number>({
+      query: (projectId) => `/project/${projectId}`,
+      providesTags: ['Project'],
+    }),
+
+    closeProjectOperation: build.mutation<void, number>({
+      query(operationId) {
+        return {
+          url: `/operation/close?operationId=${operationId}`,
+          method: 'POST',
+        };
+      },
+      invalidatesTags: ['Project'],
+    }),
   }),
 });
 
-export const { useCreateProjectMutation, useDeleteProjectMutation } =
-  projectApi;
+export const {
+  useCreateProjectMutation,
+  useDeleteProjectMutation,
+  useGetProjectByIdQuery,
+  useCloseProjectOperationMutation,
+} = projectApi;

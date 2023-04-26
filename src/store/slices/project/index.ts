@@ -3,7 +3,8 @@ import { createSlice } from '@reduxjs/toolkit';
 import { InitialState } from './types';
 
 const initialState = {
-  projectId: 1,
+  projectId: null,
+  projectStage: null,
 } as InitialState;
 
 export const projectSlice = createSlice({
@@ -15,9 +16,14 @@ export const projectSlice = createSlice({
     },
     clearProjectState(state) {
       state.projectId = null;
+      state.projectStage = null;
+    },
+    setProjectStage(state, action) {
+      state.projectStage = action.payload;
     },
   },
 });
 
-export const { setProject, clearProjectState } = projectSlice.actions;
+export const { setProject, clearProjectState, setProjectStage } =
+  projectSlice.actions;
 export default projectSlice.reducer;

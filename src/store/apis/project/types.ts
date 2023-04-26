@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 import { RegEx } from '../../../constants/regex';
+import { Roles } from '../../slices/auth/types';
 
 export const OperationSchema = z.object({
   name: z.string(),
@@ -45,7 +46,7 @@ export const CreateProjectSchema = z.object({
     .string()
     .max(1000, { message: 'Комментарий должен быть не больше 1000 символов' })
     .nullable(),
-  operations: OperationSchema.array().min(2, {
+  operations: OperationSchema.array().min(1, {
     message: 'Пожалуйста, выберите тип работ',
   }),
   plannedEndDate: z.date({
@@ -55,3 +56,70 @@ export const CreateProjectSchema = z.object({
 });
 
 export type CreateProjectFormValues = z.infer<typeof CreateProjectSchema>;
+
+export interface Constructor {
+  id: number;
+  username: string;
+  firstName: string;
+  middleName: string;
+  lastName: string;
+  phone: string;
+  role: Roles;
+  status: boolean;
+  dateOfEmployment: Date;
+  dateOfDismissal: Date | null;
+}
+
+export interface TypeWork {
+  id: number;
+  name: string;
+  isActive: boolean;
+}
+
+export interface ShortProjectInfo {
+  id: number;
+  number: number;
+  name: string;
+}
+
+export interface ShortEmployeeInfo {
+  id: number;
+  firstName: string;
+  lastName: string;
+  onShift: boolean;
+}
+
+export interface ProjectOperation {
+  id: number;
+  priority: number;
+  name: string;
+
+  period: number;
+  actualPeriod: number | null;
+  isEnded: boolean;
+  inWork: boolean;
+  readyToAcceptance: boolean;
+  typeWorkDto: TypeWork;
+  shortProjectDto: ShortProjectInfo;
+  shortEmployeeDto: ShortEmployeeInfo | null;
+  startDate: Date | null;
+  acceptanceDate: Date | null;
+  plannedEndDate: Date | null;
+  realEndDate: Date | null;
+}
+
+export interface Project {
+  id: number;
+  number: number;
+  name: string;
+  comment: string;
+  customer: string;
+  isEnded: boolean;
+  period: number;
+  actualPeriod: number | null;
+  plannedEndDate: Date;
+  realEndDate: Date | null;
+  startDate: Date;
+  managerDto: Constructor;
+  operations: ProjectOperation[];
+}

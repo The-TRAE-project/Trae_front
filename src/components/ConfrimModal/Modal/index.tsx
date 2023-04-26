@@ -1,21 +1,19 @@
 import { ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Group, Modal as MantineModal, Stack } from '@mantine/core';
+import { Group, Modal as MantineModal } from '@mantine/core';
 import { BsArrowLeft, BsFillHouseFill } from 'react-icons/bs';
 
-import { Paths } from '../../constants/paths';
-import { UnstyledButton, useModalStyles } from '../styles';
-import { Title } from './styles';
+import { Paths } from '../../../constants/paths';
+import { UnstyledButton, useModalStyles } from '../../styles';
 
 interface Props {
   isOpen: boolean;
   onClose: () => void;
-  children?: ReactNode;
-  title: string;
+  children: ReactNode;
   backPath: string;
 }
 
-const InformModal = ({ isOpen, onClose, children, title, backPath }: Props) => {
+const Modal = ({ isOpen, onClose, backPath, children }: Props) => {
   const navigate = useNavigate();
   const { classes } = useModalStyles();
 
@@ -54,12 +52,9 @@ const InformModal = ({ isOpen, onClose, children, title, backPath }: Props) => {
         close: classes.close,
       }}
     >
-      <Stack spacing={30}>
-        <Title>{title}</Title>
-        {children}
-      </Stack>
+      {children}
     </MantineModal>
   );
 };
 
-export default InformModal;
+export default Modal;

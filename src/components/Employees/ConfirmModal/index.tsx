@@ -1,7 +1,7 @@
 import { Group } from '@mantine/core';
 import { useState } from 'react';
 
-import Modal from '../Modal';
+import Modal from './Modal';
 import InformModal from './InformModal';
 import Timer from './Timer';
 import { Button, ConfirmTitle, Stack, TitleStack } from './styles';
@@ -14,6 +14,7 @@ interface Props {
   confirmTitle: string;
   informTitle: string;
   isHideHomeBtn: boolean;
+  isWithTimer?: boolean;
 }
 
 const ConfirmModal = ({
@@ -24,6 +25,7 @@ const ConfirmModal = ({
   confirmTitle,
   informTitle,
   isHideHomeBtn,
+  isWithTimer = true,
 }: Props) => {
   const [isInform, setIsInform] = useState<boolean>(false);
 
@@ -49,7 +51,9 @@ const ConfirmModal = ({
               <Button onClick={onClose}>Нет</Button>
             </Group>
           </TitleStack>
-          <Timer isStart={isOpen} onStop={onClose} timer={60 * 1.92} />
+          {isWithTimer && (
+            <Timer isStart={isOpen} onStop={onClose} timer={60 * 1.92} />
+          )}
         </Stack>
       </Modal>
       <InformModal
@@ -57,6 +61,7 @@ const ConfirmModal = ({
         onClose={handleClose}
         informTitle={informTitle}
         isHideHomeBtn={isHideHomeBtn}
+        isWithTimer={isWithTimer}
       />
     </>
   );

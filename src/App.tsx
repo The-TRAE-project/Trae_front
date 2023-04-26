@@ -36,6 +36,7 @@ const PersonalCabinetChangePassword = lazy(
 );
 const CreateProject = lazy(() => import('./pages/CreateProject'));
 const ProjectDetails = lazy(() => import('./pages/ProjectDetails'));
+const ProjectStage = lazy(() => import('./pages/ProjectStage'));
 
 const App = () => {
   const { isLoggedIn } = useAppSelector((store) => store.employee);
@@ -88,6 +89,7 @@ const App = () => {
             <Route path={Paths.PROJECTS} element={<Projects />} />
             <Route path={Paths.PROJECTS_CREATE} element={<CreateProject />} />
             <Route path={Paths.PROJECT_DETAILS} element={<ProjectDetails />} />
+            <Route path={Paths.PROJECT_STAGE} element={<ProjectStage />} />
             <Route path={Paths.CONSTRUCTORS} element={<Constructors />} />
             <Route
               path={Paths.CONSTRUCTORS_CREATE}

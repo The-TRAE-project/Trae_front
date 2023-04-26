@@ -12,6 +12,7 @@ const variables = css`
     --black-shadow: rgba(0, 0, 0, 0.25);
     --dark-purple: rgba(27, 31, 59, 0.8);
     --orange: #ff9a4a;
+    --orange2: rgba(255, 154, 74, 0.8);
     --red: #da1212;
     --green: #42894d;
     --green2: rgba(131, 204, 140, 0.6);
@@ -21,6 +22,7 @@ const variables = css`
     --light-green: #83cc8c;
     --light-green2: #8fb398;
     --gray: #909491;
+    --gray2: rgba(144, 148, 145, 0.5);
     --gray-shadow: rgba(255, 255, 255, 0.2);
 
     --font-roboto: 'Roboto', sans-serif;

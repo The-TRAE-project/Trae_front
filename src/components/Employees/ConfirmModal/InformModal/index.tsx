@@ -1,6 +1,6 @@
 import { BsFillHouseFill } from 'react-icons/bs';
 
-import Modal from '../../Modal';
+import Modal from '../Modal';
 import Timer from '../Timer';
 import { HomeButton, InformTitle, Stack } from './styles';
 
@@ -9,6 +9,7 @@ interface Props {
   onClose: () => void;
   informTitle: string;
   isHideHomeBtn: boolean;
+  isWithTimer: boolean;
 }
 
 const InformModal = ({
@@ -16,6 +17,7 @@ const InformModal = ({
   onClose,
   informTitle,
   isHideHomeBtn,
+  isWithTimer,
 }: Props) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose} withCloseButton={false}>
@@ -26,7 +28,7 @@ const InformModal = ({
       )}
       <Stack>
         <InformTitle dangerouslySetInnerHTML={{ __html: informTitle }} />
-        <Timer isStart={isOpen} onStop={onClose} timer={3} />
+        {isWithTimer && <Timer isStart={isOpen} onStop={onClose} timer={3} />}
       </Stack>
     </Modal>
   );
