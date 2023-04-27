@@ -41,7 +41,7 @@ export const CreateProjectSchema = z.object({
     .max(30, { message: 'Имя проекта должно быть не больше 30 символов' }),
   number: z
     .number()
-    .min(3, { message: 'Номер проекта должен быть не меньше 3 символов' }),
+    .min(1, { message: 'Номер проекта должен быть не меньше 1 символа' }),
   comment: z
     .string()
     .max(1000, { message: 'Комментарий должен быть не больше 1000 символов' })
@@ -70,38 +70,18 @@ export interface Constructor {
   dateOfDismissal: Date | null;
 }
 
-export interface TypeWork {
-  id: number;
-  name: string;
-  isActive: boolean;
-}
-
-export interface ShortProjectInfo {
-  id: number;
-  number: number;
-  name: string;
-}
-
-export interface ShortEmployeeInfo {
-  id: number;
-  firstName: string;
-  lastName: string;
-  onShift: boolean;
-}
-
 export interface ProjectOperation {
   id: number;
   priority: number;
   name: string;
-
   period: number;
   actualPeriod: number | null;
   isEnded: boolean;
   inWork: boolean;
   readyToAcceptance: boolean;
-  typeWorkDto: TypeWork;
-  shortProjectDto: ShortProjectInfo;
-  shortEmployeeDto: ShortEmployeeInfo | null;
+  typeWorkName: string;
+  projectNumber: number;
+  employeeFirstLastNameDto: string | null;
   startDate: Date | null;
   acceptanceDate: Date | null;
   plannedEndDate: Date | null;
@@ -117,9 +97,9 @@ export interface Project {
   isEnded: boolean;
   period: number;
   actualPeriod: number | null;
+  startDate: Date;
   plannedEndDate: Date;
   realEndDate: Date | null;
-  startDate: Date;
   managerDto: Constructor;
   operations: ProjectOperation[];
 }

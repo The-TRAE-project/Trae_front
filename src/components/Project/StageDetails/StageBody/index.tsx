@@ -12,19 +12,19 @@ interface Props {
 }
 
 const StageBody = ({ projectStage }: Props) => {
-  const titleFinished = projectStage?.isEnded && 'Выполнен';
-  const titleInWork = projectStage?.inWork && 'В работе';
-  const takeByEmployeeOrWait = projectStage?.shortEmployeeDto
-    ? `${projectStage.shortEmployeeDto.firstName} ${projectStage.shortEmployeeDto.lastName}`
+  const titleFinished = projectStage.isEnded && 'Выполнен';
+  const titleInWork = projectStage.inWork && 'В работе';
+  const takeByEmployeeOrWait = projectStage.employeeFirstLastNameDto
+    ? `${projectStage.employeeFirstLastNameDto}`
     : 'в ожидании';
 
   return (
-    <DetailsCard projectNumber={projectStage?.shortProjectDto.number}>
+    <DetailsCard projectNumber={projectStage.projectNumber}>
       <Grid>
         <StageCard title="ЭТАП" isWithEditButton={false}>
           <Stack spacing={16}>
             <InfoText label="Этап" text={projectStage.name} />
-            <InfoText label="Тип работ" text={projectStage.typeWorkDto.name} />
+            <InfoText label="Тип работ" text={projectStage.typeWorkName} />
             <InfoText
               label="Статус"
               text={titleFinished || titleInWork || 'Предстоит выполнить'}
@@ -32,7 +32,7 @@ const StageBody = ({ projectStage }: Props) => {
             <InfoText
               label="Сотрудник"
               text={takeByEmployeeOrWait}
-              isColorGreen={!projectStage.shortEmployeeDto}
+              isColorGreen={!projectStage.employeeFirstLastNameDto}
             />
           </Stack>
         </StageCard>

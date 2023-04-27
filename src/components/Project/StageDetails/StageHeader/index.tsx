@@ -35,7 +35,7 @@ const StageHeader = ({ isInWork, isLoading, onOpen }: Props) => {
           type="button"
           $width={148}
         >
-          <span>Сохранить</span>
+          <span>Завершить</span>
         </OrangeButton>
       ) : null}
     </Group>

@@ -2,6 +2,7 @@
 import { Center, Stack } from '@mantine/core';
 
 import { Project } from '../../../../store/apis/project/types';
+import { convertHoursToDays } from '../../../../helpers/convertHoursToDays';
 import { formatDate } from '../../helpers/formatDate';
 import InfoText from '../../InfoText';
 import StageCard from '../../StageCard';
@@ -34,7 +35,9 @@ const Dates = ({ project }: Props) => {
               isWithBorder
             />
           </Stack>
-          <Center>{period && <DateBadge>{period} дня</DateBadge>}</Center>
+          <Center>
+            {period && <DateBadge>{convertHoursToDays(period)} дней</DateBadge>}
+          </Center>
         </Stack>
         <Divider />
         <Stack spacing={20}>
@@ -53,7 +56,9 @@ const Dates = ({ project }: Props) => {
             />
           </Stack>
           <Center>
-            {actualPeriod && <DateBadge>{actualPeriod} дней</DateBadge>}
+            {actualPeriod && (
+              <DateBadge>{convertHoursToDays(actualPeriod)} дней</DateBadge>
+            )}
           </Center>
         </Stack>
       </Group>

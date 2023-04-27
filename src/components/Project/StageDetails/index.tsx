@@ -29,11 +29,11 @@ const StageDetails = () => {
   };
 
   const confirmTitle = `Завершить этап ${projectStage?.name.toLowerCase()} <br /> проект №${
-    projectStage?.shortProjectDto.number
+    projectStage?.projectNumber
   } `;
 
-  const informTitle = `Этап  ${projectStage?.name.toLowerCase()} проект № №${
-    projectStage?.shortProjectDto.number
+  const informTitle = `Этап  ${projectStage?.name.toLowerCase()} проект №${
+    projectStage?.projectNumber
   } <br /> завершен `;
 
   return (

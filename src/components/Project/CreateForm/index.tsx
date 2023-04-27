@@ -92,7 +92,9 @@ const CreateForm = () => {
             {...form.getInputProps('number')}
             label="Номер проекта"
             placeholder="Номер проекта"
-            minLength={3}
+            min={0}
+            max={999}
+            minLength={1}
             maxLength={3}
           />
           <TextInput

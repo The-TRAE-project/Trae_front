@@ -17,7 +17,7 @@ const AdditionalInformation = () => {
     isLoading,
     error,
     isError,
-  } = useGetProjectByIdQuery(3);
+  } = useGetProjectByIdQuery(1);
 
   useDisplayError(error, isError);
 
