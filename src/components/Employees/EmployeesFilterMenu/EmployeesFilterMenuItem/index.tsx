@@ -48,7 +48,8 @@ const EmployeesFilterMenuItem = ({
     <Menu.Item onClick={() => handleSetTypeWorks(workType)}>
       <Group spacing={12}>
         <Checkbox
-          defaultChecked={typeWorks?.includes(workType.id)}
+          readOnly
+          checked={typeWorks?.includes(workType.id)}
           classNames={{ input, inner, icon }}
         />
         <FilterMenuItemTitle $active={typeWorks?.includes(workType.id)}>

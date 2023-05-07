@@ -80,6 +80,7 @@ const EmployeesFilterMenu = ({
 
   return (
     <Menu
+      closeOnItemClick={false}
       classNames={{
         dropdown: classes.dropdown,
         label: classes.label,
@@ -98,7 +99,8 @@ const EmployeesFilterMenu = ({
           <Menu.Item key={item.value} onClick={() => setStatus(item.value)}>
             <Group spacing={12}>
               <Checkbox
-                defaultChecked={item.value === status}
+                readOnly
+                checked={item.value === status}
                 classNames={{ input, inner, icon }}
               />
               <FilterMenuItemTitle $active={item.value === status}>
@@ -110,7 +112,8 @@ const EmployeesFilterMenu = ({
         <Menu.Item onClick={resetStatus}>
           <Group spacing={12}>
             <Checkbox
-              defaultChecked={!status}
+              readOnly
+              checked={!status}
               classNames={{ input, inner, icon }}
             />
             <FilterMenuItemTitle $active={!status}>Все</FilterMenuItemTitle>
@@ -122,7 +125,8 @@ const EmployeesFilterMenu = ({
           <Menu.Item onClick={resetTypeWork}>
             <Group spacing={12}>
               <Checkbox
-                defaultChecked={typeWorks?.length === 0}
+                readOnly
+                checked={typeWorks?.length === 0}
                 classNames={{ input, inner, icon }}
               />
               <FilterMenuItemTitle $active={typeWorks?.length === 0}>

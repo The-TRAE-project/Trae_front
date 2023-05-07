@@ -59,6 +59,7 @@ const Login = () => {
         {...form.getInputProps('username')}
         label="Логин"
         aria-label="Логин"
+        autoComplete="username"
         maxLength={15}
         classNames={{
           error: classes.error,
@@ -69,6 +70,7 @@ const Login = () => {
         {...form.getInputProps('password')}
         label="Пароль"
         aria-label="Пароль"
+        autoComplete="password"
         maxLength={15}
         classNames={{
           root: classes.root,

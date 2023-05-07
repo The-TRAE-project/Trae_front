@@ -9,7 +9,7 @@ import { Button, ConfirmTitle, Stack, TitleStack } from './styles';
 interface Props {
   isOpen: boolean;
   onClose: () => void;
-  onCallAtEnd: () => void;
+  onCallAtEnd?: () => void;
   onSubmit?: () => void;
   confirmTitle: string;
   informTitle: string;
@@ -37,7 +37,7 @@ const ConfirmModal = ({
 
   const handleClose = () => {
     setIsInform(false);
-    onCallAtEnd();
+    onCallAtEnd?.();
   };
 
   return (
@@ -52,7 +52,7 @@ const ConfirmModal = ({
             </Group>
           </TitleStack>
           {isWithTimer && (
-            <Timer isStart={isOpen} onStop={onClose} timer={60 * 1.92} />
+            <Timer isStart={isOpen} onStop={onClose} timer={60 * 2} />
           )}
         </Stack>
       </Modal>

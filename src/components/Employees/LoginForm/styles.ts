@@ -48,7 +48,7 @@ export const useTextInputStyles = createStyles(() => ({
     borderRadius: '15px 0 0 15px',
 
     fontFamily: 'var(--font-roboto)',
-    fontWeight: 400,
+    fontWeight: 500,
     fontSize: 28,
     lineHeight: '33px',
     textAlign: 'center',

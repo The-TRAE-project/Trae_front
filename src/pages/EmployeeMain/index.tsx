@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import {
   clearEmployeeState,
   logoutEmployee,
+  setTimer,
 } from '../../store/slices/employee';
 import { useAppDispatch } from '../../helpers/hooks/useAppDispatch';
 import { useAppSelector } from '../../helpers/hooks/useAppSelector';
@@ -28,12 +29,27 @@ const EmployeeMain = () => {
   const dispatch = useAppDispatch();
   const { employee } = useAppSelector((store) => store.employee);
 
-  const navigateToProjects = () => navigate(Paths.EMPLOYEE_PROJECTS);
-  const navigateToStagesInWork = () => navigate(Paths.EMPLOYEE_STAGES_IN_WORK);
+  const navigateToProjects = () => {
+    dispatch(setTimer(121));
+    navigate(Paths.EMPLOYEE_PROJECTS);
+  };
 
-  const handleClose = () => setIsOpen(false);
+  const navigateToStagesInWork = () => {
+    dispatch(setTimer(121));
+    navigate(Paths.EMPLOYEE_STAGES_IN_WORK);
+  };
+
+  const handleOpen = () => {
+    setIsOpen(true);
+    dispatch(setTimer(121));
+  };
+
+  const handleClose = () => {
+    setIsOpen(false);
+    dispatch(setTimer(121));
+  };
   // TODO:
-  const handleSubmit = async () => {
+  const handleLogOut = async () => {
     try {
       if (!employee) return;
 
@@ -77,16 +93,14 @@ const EmployeeMain = () => {
               onClick={navigateToStagesInWork}
               width={410}
             />
-            <DashedButton onClick={() => setIsOpen(true)}>
-              Завершить смену
-            </DashedButton>
+            <DashedButton onClick={handleOpen}>Завершить смену</DashedButton>
           </Stack>
         </ApartContainer>
 
         <ConfirmModal
           isOpen={isOpen}
           onClose={handleClose}
-          onCallAtEnd={handleSubmit}
+          onCallAtEnd={handleLogOut}
           isHideHomeBtn
           confirmTitle={confirmTitle}
           informTitle={informTitle}

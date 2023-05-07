@@ -18,7 +18,7 @@ export const Input = styled(TextInput)`
     padding: 12px 20px;
     font-family: var(--font-roboto);
     ${({ theme }) => theme.mixins.fontSize28};
-    font-weight: 400;
+    font-weight: 500;
     color: var(--black);
 
     &::placeholder {
@@ -54,7 +54,7 @@ export const useInputStyles = createStyles(() => ({
     fontFamily: 'var(--font-roboto)',
     fontSize: 28,
     lineHeight: '33px',
-    fontWeight: 400,
+    fontWeight: 500,
     color: 'var(--black)',
 
     '&::placeholder': {

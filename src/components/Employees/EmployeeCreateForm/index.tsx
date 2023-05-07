@@ -34,7 +34,7 @@ const EmployeeCreateForm = () => {
     initialValues: {
       firstName: '',
       lastName: '',
-      middleName: null,
+      middleName: null || '',
       phone: '',
       typesId: [],
       dateOfEmployment: new Date(),

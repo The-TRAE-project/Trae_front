@@ -7,6 +7,7 @@ export interface InitialState {
   isModalOpen: boolean;
   employeeToEdit: EmployeeToEdit | null;
   projectNumber: number | null;
+  timer: number;
 }
 
 export interface Employee {

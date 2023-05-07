@@ -4,7 +4,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 import { Paths } from '../../../constants/paths';
 import { useAppDispatch } from '../../../helpers/hooks/useAppDispatch';
-import { clearEmployeeState } from '../../../store/slices/employee';
+import { useCheckEmployeeWithTimer } from '../../../helpers/hooks/useCheckEmployeeWithTimer';
+import { clearEmployeeState, setTimer } from '../../../store/slices/employee';
 import { Container, UnstyledButton } from '../../styles';
 import HeaderTime from './HeaderTime';
 import HeaderTitle from './HeaderTitle';
@@ -19,12 +20,15 @@ const EmployeeHeader = () => {
     switch (location.pathname) {
       case Paths.EMPLOYEE_PROJECTS:
         navigate(Paths.EMPLOYEE_MAIN);
+        dispatch(setTimer(121));
         break;
       case Paths.EMPLOYEE_STAGES_IN_WORK:
         navigate(Paths.EMPLOYEE_MAIN);
+        dispatch(setTimer(121));
         break;
       default:
         navigate(-2);
+        dispatch(setTimer(121));
         break;
     }
   };
@@ -37,6 +41,8 @@ const EmployeeHeader = () => {
   function findCurrentPath(...arg: string[]) {
     return arg.some((path) => path === location.pathname);
   }
+
+  useCheckEmployeeWithTimer();
 
   return (
     <Wrapper>

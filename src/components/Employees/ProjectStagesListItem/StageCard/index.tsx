@@ -7,7 +7,10 @@ import { useAppSelector } from '../../../../helpers/hooks/useAppSelector';
 import { showErrorNotification } from '../../../../helpers/showErrorNotification';
 import { useReceiveProjectStageMutation } from '../../../../store/apis/employee';
 import { ProjectStage } from '../../../../store/apis/employee/types';
-import { clearEmployeeState } from '../../../../store/slices/employee';
+import {
+  clearEmployeeState,
+  setTimer,
+} from '../../../../store/slices/employee';
 import ArrowDown from '../../../svgs/ArrowDown';
 import ArrowUp from '../../../svgs/ArrowUp';
 import ConfirmModal from '../../ConfirmModal';
@@ -32,7 +35,15 @@ const StageCard = ({ stage, index, lastStage }: Props) => {
   const isReady = stage.readyToAcceptance ? 'readyToAcceptance' : '';
   const isInWork = stage.inWork ? 'inWork' : '';
 
-  const handleClose = () => setIsOpen(false);
+  const handleOpen = () => {
+    setIsOpen(true);
+    dispatch(setTimer(121));
+  };
+
+  const handleClose = () => {
+    setIsOpen(false);
+    dispatch(setTimer(121));
+  };
 
   const handleSubmit = async () => {
     try {
@@ -44,7 +55,6 @@ const StageCard = ({ stage, index, lastStage }: Props) => {
       }).unwrap();
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
-      handleClose();
       showErrorNotification(error.data.status, error.data.error);
     }
   };
@@ -67,7 +77,7 @@ const StageCard = ({ stage, index, lastStage }: Props) => {
   return (
     <>
       <Wrapper
-        onClick={() => setIsOpen(true)}
+        onClick={handleOpen}
         disabled={stage.inWork || stage.isEnded || !stage.readyToAcceptance}
         className={classes}
       >
