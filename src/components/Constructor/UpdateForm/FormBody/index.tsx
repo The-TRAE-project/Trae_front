@@ -16,9 +16,13 @@ import Loader from '../../../Loader';
 import Select from '../../../Select';
 import DatePicker from '../../../DatePicker';
 import InformModal from '../../../InformModal';
-import { DashedOrangeButton, Grid, InformModalText } from '../../../styles';
-import DetailsCard from './DetailsCard';
-import { Wrapper } from './styles';
+import DetailsCard from '../../../DetailsCard';
+import {
+  DashedOrangeButton,
+  FormBodyWrapper,
+  Grid,
+  InformModalText,
+} from '../../../styles';
 
 type UserWithoutId = Omit<UserUpdateFormValues, 'managerId'>;
 
@@ -100,7 +104,7 @@ const FormBody = ({
   }, [form.values.accountStatus]);
 
   return (
-    <Wrapper>
+    <FormBodyWrapper>
       <InformModal
         isOpen={isOpen}
         onClose={handleClose}
@@ -176,7 +180,7 @@ const FormBody = ({
       ) : (
         <Loader size={80} isAbsoluteCentered />
       )}
-    </Wrapper>
+    </FormBodyWrapper>
   );
 };
 

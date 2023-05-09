@@ -150,22 +150,18 @@ export const FilterMenuItemTitle = styled.p<FilterMenuItemTitleProps>`
   transition: var(--transition);
 `;
 
-export const BgWhiteCard = styled.div`
+export const BgWhiteCardLinkBtn = styled.button`
   position: relative;
-  ${({ theme }) => theme.mixins.fCenter};
-  padding: 22px 30px;
   width: 620px;
   height: 79px;
-  background: var(--white);
-  border-radius: var(--border-radius);
-`;
-
-export const BgWhiteCardLinkBtn = styled.button`
-  background: none;
-  border: none;
   font-weight: 600;
   ${({ theme }) => theme.mixins.fontSize30};
   color: var(--white-black);
+  border: none;
+  ${({ theme }) => theme.mixins.fCenter};
+  padding: 22px 30px;
+  background: var(--white);
+  border-radius: var(--border-radius);
 
   &:is(:focus, :focus-within) {
     outline: none;
@@ -289,3 +285,8 @@ export const useModalStyles = createStyles(() => ({
     height: '40.5vh',
   },
 }));
+
+export const FormBodyWrapper = styled.div`
+  position: relative;
+  min-height: calc(100vh - 336px);
+`;

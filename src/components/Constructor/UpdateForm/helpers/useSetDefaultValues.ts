@@ -11,7 +11,8 @@ export function useSetDefaultValues(
     UserWithoutId,
     (values: UserWithoutId) => UserWithoutId
   >,
-  user: User | undefined
+  user: User | undefined,
+  setCurrentUser: React.Dispatch<React.SetStateAction<User | undefined>>
 ) {
   useEffect(() => {
     form.setFieldValue('newRole', user?.role || null);
@@ -21,8 +22,14 @@ export function useSetDefaultValues(
     );
     form.setFieldValue(
       'dateOfDismissal',
-      user?.dateOfDismissal ? dayjs(user?.dateOfDismissal).toDate() : null
+      user?.dateOfDismissal ? dayjs(user.dateOfDismissal).toDate() : null
     );
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
+
+  useEffect(() => {
+    setCurrentUser(user);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 }

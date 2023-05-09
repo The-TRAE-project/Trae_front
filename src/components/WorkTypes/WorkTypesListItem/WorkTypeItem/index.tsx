@@ -5,8 +5,7 @@ import { WorkType } from '../../../../store/apis/workTypes/types';
 import { Paths } from '../../../../constants/paths';
 import { useAppDispatch } from '../../../../helpers/hooks/useAppDispatch';
 import { setWorkType } from '../../../../store/slices/workType';
-import { BgWhiteCard } from '../../../styles';
-import { EditButton, Title } from './styles';
+import { BgWhiteCard, EditButton, Title } from './styles';
 
 interface Props {
   workType: WorkType;

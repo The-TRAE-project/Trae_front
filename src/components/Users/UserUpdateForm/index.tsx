@@ -7,7 +7,6 @@ import { BsArrowLeft, BsFillHouseFill } from 'react-icons/bs';
 import { Paths } from '../../../constants/paths';
 import { useAppSelector } from '../../../helpers/hooks/useAppSelector';
 import { showErrorNotification } from '../../../helpers/showErrorNotification';
-import { showInformNotification } from '../../../helpers/showInformNotification';
 import {
   useEditUserMutation,
   useGetUserAdditionalInformationQuery,
@@ -21,6 +20,7 @@ import Loader from '../../Loader';
 import TextInput from '../../TextInput';
 import MaskedTextInput from '../../MaskedInput';
 import {
+  FormBodyWrapper,
   FormWrapper,
   Grid,
   InformModalText,
@@ -29,7 +29,6 @@ import {
 } from '../../styles';
 import { checkValues, compareValues } from './helpers/compareValues';
 import { useSetDefaultValues } from './helpers/useSetDefaultValues';
-import { FormBodyWrapper } from './styles';
 
 const UserUpdateForm = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -55,24 +54,11 @@ const UserUpdateForm = () => {
       return errors;
     },
   });
+  const { firstName, lastName, middleName, phone } = form.values;
 
   const handleSubmit = async (values: Omit<UserEditFormValues, 'username'>) => {
     try {
       if (username) {
-        const { firstName, lastName, middleName, phone } = values;
-        if (
-          checkValues(firstName, user?.firstName) &&
-          checkValues(lastName, user?.lastName) &&
-          checkValues(middleName, user?.middleName) &&
-          checkValues(phone, user?.phone)
-        ) {
-          showInformNotification(
-            'Мы уведомляем вас, что',
-            'вы не сделали никаких изменений.'
-          );
-          navigate(Paths.PERSONAL_CABINET);
-          return;
-        }
         const comparedValues = compareValues(values, user);
         await editUser({
           ...comparedValues,
@@ -88,6 +74,12 @@ const UserUpdateForm = () => {
   };
 
   useSetDefaultValues(form, user);
+
+  const isDisabled =
+    checkValues(firstName, user?.firstName) &&
+    checkValues(lastName, user?.lastName) &&
+    checkValues(middleName, user?.middleName) &&
+    checkValues(phone, user?.phone);
 
   return (
     <>
@@ -143,7 +135,11 @@ const UserUpdateForm = () => {
             </UnstyledButton>
           </Group>
 
-          <OrangeButton disabled={isLoading} $width={171} type="submit">
+          <OrangeButton
+            disabled={isLoading || isDisabled}
+            $width={171}
+            type="submit"
+          >
             {isLoading ? <Loader size={35} /> : <span>Сохранить</span>}
           </OrangeButton>
         </Group>

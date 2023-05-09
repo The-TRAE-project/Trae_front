@@ -4,7 +4,7 @@ import { Paths } from '../../../../constants/paths';
 import { useAppDispatch } from '../../../../helpers/hooks/useAppDispatch';
 import { Employee } from '../../../../store/apis/employee/types';
 import { setEmployeeToEdit } from '../../../../store/slices/employee';
-import { BgWhiteCard, BgWhiteCardLinkBtn } from '../../../styles';
+import { BgWhiteCardLinkBtn } from '../../../styles';
 
 interface Props {
   employee: Employee;
@@ -20,11 +20,9 @@ const EmployeeItem = ({ employee }: Props) => {
   };
 
   return (
-    <BgWhiteCard>
-      <BgWhiteCardLinkBtn onClick={navigateToEditingPage} type="button">
-        {employee.firstName} {employee.lastName}
-      </BgWhiteCardLinkBtn>
-    </BgWhiteCard>
+    <BgWhiteCardLinkBtn onClick={navigateToEditingPage} type="button">
+      {employee.firstName} {employee.lastName}
+    </BgWhiteCardLinkBtn>
   );
 };
 

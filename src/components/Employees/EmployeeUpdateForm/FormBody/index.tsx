@@ -15,11 +15,10 @@ import MaskedTextInput from '../../../MaskedInput';
 // import MultiSelect from '../../../MultiSelect';
 import NumberInput from '../../../NumberInput';
 import DatePicker from '../../../DatePicker';
+import DetailsCard from '../../../DetailsCard';
 import { useMultiSelectStyles } from '../../../MultiSelect/styles';
-import { Grid } from '../../../styles';
-import DetailsCard from './DetailsCard';
+import { FormBodyWrapper, Grid } from '../../../styles';
 import WorkTypesDetailsCard from './WorkTypesDetailsCard';
-import { Wrapper } from './styles';
 
 type EmployeeWithoutId = Omit<EmployeeUpdateFormValues, 'employeeId'>;
 
@@ -73,7 +72,7 @@ const FormBody = ({ employee, form, isUpdate }: Props) => {
   }, [form.values.isActive]);
 
   return (
-    <Wrapper>
+    <FormBodyWrapper>
       {employee ? (
         <Grid>
           {isUpdate ? (
@@ -191,7 +190,7 @@ const FormBody = ({ employee, form, isUpdate }: Props) => {
       ) : (
         <Loader size={80} isAbsoluteCentered />
       )}
-    </Wrapper>
+    </FormBodyWrapper>
   );
 };
 

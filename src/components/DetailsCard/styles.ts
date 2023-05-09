@@ -13,10 +13,22 @@ export const Label = styled.p`
   padding-left: 14px;
 `;
 
-export const Text = styled.p`
+export const TextWrapper = styled.div`
   min-height: 73px;
-  background: var(--gray-shadow);
+  padding: 2px;
   border-radius: var(--border-radius);
+  background: linear-gradient(
+    268.17deg,
+    var(--white-gradient) 0%,
+    var(--black-gradient) 104.24%
+  );
+`;
+
+export const Text = styled.p`
+  height: 100%;
+  ${({ theme }) => theme.mixins.center};
+  border-radius: var(--border-radius);
+  background: var(--green3);
   backdrop-filter: blur(40px);
   padding: 20px 12px;
   font-family: var(--font-roboto);

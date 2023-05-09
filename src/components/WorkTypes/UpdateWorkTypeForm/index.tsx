@@ -10,12 +10,12 @@ import { useEditWorkTypeMutation } from '../../../store/apis/workTypes';
 import {
   EditWorkTypeFormValues,
   EditWorkTypeSchema,
+  WorkType,
 } from '../../../store/apis/workTypes/types';
 import { setWorkType } from '../../../store/slices/workType';
 import { useAppSelector } from '../../../helpers/hooks/useAppSelector';
 import { useAppDispatch } from '../../../helpers/hooks/useAppDispatch';
 import { showErrorNotification } from '../../../helpers/showErrorNotification';
-import { showInformNotification } from '../../../helpers/showInformNotification';
 import Loader from '../../Loader';
 import Select from '../../Select';
 import TextInput from '../../TextInput';
@@ -32,15 +32,18 @@ import { FormFlexContainer } from '../styles';
 
 const UpdateWorkTypeForm = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [currentWorkType, setCurrentWorkType] = useState<WorkType | null>(null);
 
   const navigate = useNavigate();
   const { workType } = useAppSelector((store) => store.workType);
   const dispatch = useAppDispatch();
 
+  const isWorkTypeActive = workType?.isActive ? 'Активный' : 'Заблокированный';
+
   const form = useForm<Omit<EditWorkTypeFormValues, 'typeWorkId'>>({
     initialValues: {
       newName: workType?.name || null,
-      isActive: workType?.isActive ? 'Активный' : 'Заблокированный' || null,
+      isActive: isWorkTypeActive || null,
     },
     validate: (values) => {
       const resolver = zodResolver(
@@ -50,34 +53,18 @@ const UpdateWorkTypeForm = () => {
       return errors;
     },
   });
+  const { newName, isActive } = form.values;
 
   const [editWorkType, { isLoading: isEditLoading, data: editedTypeWork }] =
     useEditWorkTypeMutation();
 
-  useSetDefaultValues(form, workType);
+  useSetDefaultValues(form, workType, setCurrentWorkType);
 
   const handleSubmit = async (
     values: Omit<EditWorkTypeFormValues, 'typeWorkId'>
   ) => {
     try {
       if (workType?.id) {
-        const { newName, isActive } = values;
-        const isWorkTypeActive = workType.isActive
-          ? 'Активный'
-          : 'Заблокированный';
-
-        if (
-          checkValues(newName, workType.name) &&
-          checkValues(isActive, isWorkTypeActive)
-        ) {
-          showInformNotification(
-            'Мы уведомляем вас, что',
-            'вы не сделали никаких изменений.'
-          );
-          navigate(Paths.WORK_TYPES);
-          return;
-        }
-
         const comparedValues = compareValues(values, workType);
         const response = await editWorkType({
           typeWorkId: workType.id,
@@ -104,28 +91,39 @@ const UpdateWorkTypeForm = () => {
     },
   ];
 
-  const isDisabled = !form.values.newName && !form.values.isActive;
+  const handleClose = () => {
+    setIsOpen(false);
+    setCurrentWorkType(workType);
+  };
+
+  const isDisabled =
+    checkValues(newName, workType?.name) &&
+    checkValues(isActive, isWorkTypeActive);
 
   return (
     <>
       <InformModal
         isOpen={isOpen}
-        onClose={() => setIsOpen(false)}
+        onClose={handleClose}
         title="Изменения сохранены"
         backPath={Paths.WORK_TYPES}
       >
         <Stack spacing={20}>
           {!!editedTypeWork && (
             <>
-              <InformModalText>
-                Название: <strong>{editedTypeWork.name}</strong>
-              </InformModalText>
-              <InformModalText>
-                Статус:&nbsp;
-                <strong>
-                  {editedTypeWork.isActive ? 'Активный' : 'Заблокированный'}
-                </strong>
-              </InformModalText>
+              {editedTypeWork.name !== currentWorkType?.name && (
+                <InformModalText>
+                  Название: <strong>{editedTypeWork.name}</strong>
+                </InformModalText>
+              )}
+              {editedTypeWork.isActive !== currentWorkType?.isActive && (
+                <InformModalText>
+                  Статус:&nbsp;
+                  <strong>
+                    {editedTypeWork.isActive ? 'Активный' : 'Заблокированный'}
+                  </strong>
+                </InformModalText>
+              )}
             </>
           )}
         </Stack>

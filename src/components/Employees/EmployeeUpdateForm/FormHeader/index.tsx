@@ -18,6 +18,7 @@ interface Props {
   isOpen: boolean;
   onClose: () => void;
   employee: Employee | undefined;
+  isDisabled: boolean;
 }
 
 const FormHeader = ({
@@ -27,6 +28,7 @@ const FormHeader = ({
   isOpen,
   onClose,
   employee,
+  isDisabled,
 }: Props) => {
   const navigate = useNavigate();
   const { employeeToEdit } = useAppSelector((store) => store.employee);
@@ -135,7 +137,11 @@ const FormHeader = ({
         </Group>
 
         {isUpdate && (
-          <OrangeButton disabled={isLoading} $width={171} type="submit">
+          <OrangeButton
+            disabled={isLoading || isDisabled}
+            $width={171}
+            type="submit"
+          >
             {isLoading ? <Loader size={35} /> : <span>Сохранить</span>}
           </OrangeButton>
         )}

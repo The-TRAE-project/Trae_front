@@ -4,7 +4,7 @@ import { Paths } from '../../../../constants/paths';
 import { useAppDispatch } from '../../../../helpers/hooks/useAppDispatch';
 import { UserShortInfo } from '../../../../store/apis/user/types';
 import { setConstructor } from '../../../../store/slices/constructor';
-import { BgWhiteCard, BgWhiteCardLinkBtn } from '../../../styles';
+import { BgWhiteCardLinkBtn } from '../../../styles';
 
 interface Props {
   user: UserShortInfo;
@@ -20,11 +20,9 @@ const UserItem = ({ user }: Props) => {
   };
 
   return (
-    <BgWhiteCard>
-      <BgWhiteCardLinkBtn onClick={navigateToEditingPage} type="button">
-        {user.firstName} {user.lastName}
-      </BgWhiteCardLinkBtn>
-    </BgWhiteCard>
+    <BgWhiteCardLinkBtn onClick={navigateToEditingPage} type="button">
+      {user.firstName} {user.lastName}
+    </BgWhiteCardLinkBtn>
   );
 };
 

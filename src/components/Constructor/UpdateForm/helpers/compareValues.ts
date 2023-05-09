@@ -16,13 +16,13 @@ export const compareValues = (
         values.accountStatus === 'Активный'
         ? true
         : false,
-    dateOfDismissal: values.dateOfDismissal,
+    dateOfDismissal:
+      values.accountStatus === isUserActive ? null : values.dateOfDismissal,
   };
 
   return findDifference;
 };
 
-export const checkValues = (
-  leftSide: string | null,
-  rightSide: string | undefined
-) => leftSide === rightSide;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const checkValues = (leftSide: any, rightSide: any) =>
+  leftSide === rightSide;

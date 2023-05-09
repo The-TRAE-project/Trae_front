@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useForm, zodResolver } from '@mantine/form';
 import dayjs from 'dayjs';
 
@@ -9,10 +8,8 @@ import {
   EmployeeUpdateFormValues,
 } from '../../../store/apis/employee/types';
 import { Status } from '../../../store/types';
-import { Paths } from '../../../constants/paths';
 import { useAppSelector } from '../../../helpers/hooks/useAppSelector';
 import { showErrorNotification } from '../../../helpers/showErrorNotification';
-import { showInformNotification } from '../../../helpers/showInformNotification';
 import { FormWrapper } from '../../styles';
 import {
   checkValues,
@@ -31,7 +28,6 @@ const EmployeeUpdateForm = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isUpdate, setIsUpdate] = useState<boolean>(false);
 
-  const navigate = useNavigate();
   const { employeeToEdit } = useAppSelector((store) => store.employee);
 
   const form = useForm<Omit<EmployeeUpdateFormValues, 'employeeId'>>({
@@ -58,6 +54,19 @@ const EmployeeUpdateForm = () => {
       return errors;
     },
   });
+  const {
+    firstName,
+    lastName,
+    middleName,
+    phone,
+    pinCode,
+    dateOfEmployment,
+    isActive,
+    changedTypesId,
+  } = form.values;
+  const isEmployeeActive = employeeToEdit?.isActive
+    ? 'Активный'
+    : 'Заблокированный';
 
   const [editEmployee, { data: updatedEmployee, isLoading }] =
     useEditEmployeeMutation();
@@ -67,44 +76,6 @@ const EmployeeUpdateForm = () => {
   ) => {
     try {
       if (employeeToEdit) {
-        const {
-          firstName,
-          lastName,
-          middleName,
-          phone,
-          pinCode,
-          dateOfEmployment,
-          isActive,
-        } = values;
-
-        const isEmployeeActive = employeeToEdit.isActive
-          ? 'Активный'
-          : 'Заблокированный';
-
-        if (
-          checkValues(firstName, employeeToEdit.firstName) &&
-          checkValues(lastName, employeeToEdit.lastName) &&
-          checkValues(middleName, employeeToEdit.middleName) &&
-          checkValues(phone, employeeToEdit.phone) &&
-          checkValues(pinCode, employeeToEdit.pinCode) &&
-          checkValues(isActive, isEmployeeActive) &&
-          isObjectsEqual(
-            convertToNumberArray(employeeToEdit.types),
-            convertToNumberArray(values.changedTypesId)
-          ) &&
-          checkValues(
-            dateOfEmployment?.getTime(),
-            convertToDate(employeeToEdit?.dateOfEmployment)
-          )
-        ) {
-          showInformNotification(
-            'Мы уведомляем вас, что',
-            'вы не сделали никаких изменений.'
-          );
-          navigate(Paths.EMPLOYEES);
-          return;
-        }
-
         if (
           values.isActive === Status.BLOCKED &&
           !form.values.dateOfDismissal
@@ -137,6 +108,26 @@ const EmployeeUpdateForm = () => {
 
   useSetMultiSelectDefaultValues(form);
 
+  const isWorkTypesEqual =
+    changedTypesId &&
+    isObjectsEqual(
+      convertToNumberArray(employeeToEdit?.types),
+      convertToNumberArray(changedTypesId)
+    );
+
+  const isDisabled =
+    checkValues(firstName, employeeToEdit?.firstName) &&
+    checkValues(lastName, employeeToEdit?.lastName) &&
+    checkValues(middleName, employeeToEdit?.middleName) &&
+    checkValues(phone, employeeToEdit?.phone) &&
+    checkValues(pinCode, employeeToEdit?.pinCode) &&
+    checkValues(isActive, isEmployeeActive) &&
+    isWorkTypesEqual &&
+    checkValues(
+      dateOfEmployment?.getTime(),
+      convertToDate(employeeToEdit?.dateOfEmployment)
+    );
+
   return (
     <FormWrapper onSubmit={form.onSubmit(handleSubmit)}>
       <FormHeader
@@ -146,6 +137,7 @@ const EmployeeUpdateForm = () => {
         isOpen={isOpen}
         onClose={handleCloseModal}
         employee={updatedEmployee}
+        isDisabled={isDisabled}
       />
 
       <FormBody employee={employeeToEdit} form={form} isUpdate={isUpdate} />

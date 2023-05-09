@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useForm, zodResolver } from '@mantine/form';
 import dayjs from 'dayjs';
 
@@ -8,15 +7,14 @@ import {
   useUpdateUserSomeFieldsMutation,
 } from '../../../store/apis/user';
 import {
+  User,
   UserUpdateFormValues,
   UserUpdateSchema,
 } from '../../../store/apis/user/types';
-import { Paths } from '../../../constants/paths';
 import { Status } from '../../../store/types';
 import { useAppSelector } from '../../../helpers/hooks/useAppSelector';
 import { useDisplayError } from '../../../helpers/hooks/useDisplayError';
 import { showErrorNotification } from '../../../helpers/showErrorNotification';
-import { showInformNotification } from '../../../helpers/showInformNotification';
 import { FormWrapper } from '../../styles';
 import { useSetDefaultValues } from './helpers/useSetDefaultValues';
 import { checkValues, compareValues } from './helpers/compareValues';
@@ -26,8 +24,8 @@ import FormHeader from './FormHeader';
 const UpdateForm = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isUpdate, setIsUpdate] = useState<boolean>(false);
+  const [currentUser, setCurrentUser] = useState<User | undefined>();
 
-  const navigate = useNavigate();
   const { constructorId } = useAppSelector((store) => store.builder);
 
   const [
@@ -40,11 +38,12 @@ const UpdateForm = () => {
     error,
     isError,
   } = useGetUserDetailsQuery(constructorId as number);
+  const isUserActive = user?.status ? 'Активный' : 'Заблокированный';
 
   const form = useForm<Omit<UserUpdateFormValues, 'managerId'>>({
     initialValues: {
       newRole: user?.role || null,
-      accountStatus: user?.status ? 'Активный' : 'Заблокированный' || null,
+      accountStatus: isUserActive || null,
       dateOfDismissal: user?.dateOfDismissal
         ? dayjs(user?.dateOfDismissal).toDate()
         : null,
@@ -58,27 +57,13 @@ const UpdateForm = () => {
 
   useDisplayError(error, isError);
 
-  useSetDefaultValues(form, user);
+  useSetDefaultValues(form, user, setCurrentUser);
 
   const handleSubmit = async (
     values: Omit<UserUpdateFormValues, 'managerId'>
   ) => {
     try {
       if (user) {
-        const { newRole, accountStatus } = values;
-        const isUserActive = user.status ? 'Активный' : 'Заблокированный';
-        if (
-          checkValues(newRole, user.role) &&
-          checkValues(accountStatus, isUserActive)
-        ) {
-          showInformNotification(
-            'Мы уведомляем вас, что',
-            'вы не сделали никаких изменений.'
-          );
-          navigate(Paths.CONSTRUCTORS);
-          return;
-        }
-
         if (
           values.accountStatus === Status.BLOCKED &&
           !form.values.dateOfDismissal
@@ -107,6 +92,7 @@ const UpdateForm = () => {
   const handleCloseModal = () => {
     setIsUpdate(false);
     setIsModalOpen(false);
+    setCurrentUser(user);
   };
 
   return (
@@ -117,11 +103,11 @@ const UpdateForm = () => {
         onUpdate={() => setIsUpdate(true)}
         isOpen={isModalOpen}
         onClose={handleCloseModal}
+        currentUser={currentUser}
         updatedUser={updatedUser}
-        isSubmitBtnDisabled={
-          !form.values.newRole &&
-          !form.values.dateOfDismissal &&
-          !form.values.accountStatus
+        isDisabled={
+          checkValues(form.values.newRole, user?.role) &&
+          checkValues(form.values.accountStatus, isUserActive)
         }
       />
 

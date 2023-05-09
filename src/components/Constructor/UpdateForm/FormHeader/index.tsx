@@ -4,10 +4,11 @@ import { BsArrowLeft, BsFillPencilFill, BsFillHouseFill } from 'react-icons/bs';
 import dayjs from 'dayjs';
 
 import { Paths } from '../../../../constants/paths';
-import { UserUpdateReturnType } from '../../../../store/apis/user/types';
+import { User, UserUpdateReturnType } from '../../../../store/apis/user/types';
 import { InformModalText, OrangeButton, UnstyledButton } from '../../../styles';
 import Loader from '../../../Loader';
 import InformModal from '../../../InformModal';
+import { checkValues } from '../helpers/compareValues';
 
 interface Props {
   isLoading: boolean;
@@ -15,8 +16,9 @@ interface Props {
   onUpdate: () => void;
   isOpen: boolean;
   onClose: () => void;
+  currentUser: User | undefined;
   updatedUser: UserUpdateReturnType | undefined;
-  isSubmitBtnDisabled: boolean;
+  isDisabled: boolean;
 }
 
 const FormHeader = ({
@@ -25,8 +27,9 @@ const FormHeader = ({
   onUpdate,
   isOpen,
   onClose,
+  currentUser,
   updatedUser,
-  isSubmitBtnDisabled,
+  isDisabled,
 }: Props) => {
   const navigate = useNavigate();
 
@@ -45,25 +48,33 @@ const FormHeader = ({
         <Stack spacing={20}>
           {!!updatedUser && (
             <>
-              <InformModalText>
-                Роль: <strong>{updatedUser.role}</strong>
-              </InformModalText>
-              <InformModalText>
-                Статус:&nbsp;
-                <strong>
-                  {updatedUser.accountStatus ? 'Активный' : ' заблокированный'}
-                </strong>
-              </InformModalText>
-              {!!updatedUser.dateOfDismissal && (
+              {!checkValues(currentUser?.role, updatedUser.role) && (
                 <InformModalText>
-                  Дата увольнения:&nbsp;
+                  Роль: <strong>{updatedUser.role}</strong>
+                </InformModalText>
+              )}
+              {!checkValues(currentUser?.status, updatedUser.accountStatus) && (
+                <InformModalText>
+                  Статус:&nbsp;
                   <strong>
-                    {dayjs(updatedUser?.dateOfDismissal.join('-')).format(
-                      'DD.MM.YYYY'
-                    )}
+                    {updatedUser.accountStatus
+                      ? 'Активный'
+                      : ' заблокированный'}
                   </strong>
                 </InformModalText>
               )}
+              {!checkValues(currentUser?.status, updatedUser.accountStatus)
+                ? !!updatedUser.dateOfDismissal && (
+                    <InformModalText>
+                      Дата увольнения:&nbsp;
+                      <strong>
+                        {dayjs(updatedUser?.dateOfDismissal.join('-')).format(
+                          'DD.MM.YYYY'
+                        )}
+                      </strong>
+                    </InformModalText>
+                  )
+                : null}
             </>
           )}
         </Stack>
@@ -86,7 +97,7 @@ const FormHeader = ({
 
         {isUpdate && (
           <OrangeButton
-            disabled={isLoading || isSubmitBtnDisabled}
+            disabled={isLoading || isDisabled}
             $width={171}
             type="submit"
           >
