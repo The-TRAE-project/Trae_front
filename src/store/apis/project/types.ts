@@ -127,3 +127,22 @@ export interface FilterValues {
   isOnlyLastOpInWork?: string;
   isOverdueCurrentOpInProject?: string;
 }
+
+export interface SearchValues {
+  elementPerPage?: string;
+  page?: string;
+  projectNumberOrCustomer: string;
+}
+
+export interface UpdateProjectFormValues {
+  projectId: number;
+  projectNumber: number | null;
+  projectName: string | null;
+  customer: string | null;
+  commentary: string | null;
+}
+
+export interface UpdateDatesFormValues {
+  projectId: string;
+  newPlannedAndContractEndDate: Date;
+}

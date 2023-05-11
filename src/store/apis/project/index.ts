@@ -5,6 +5,9 @@ import {
   Project,
   ProjectShortInfo,
   FilterValues,
+  SearchValues,
+  UpdateProjectFormValues,
+  UpdateDatesFormValues,
 } from './types';
 
 const projectTags = baseApi.enhanceEndpoints({
@@ -54,6 +57,43 @@ const projectApi = projectTags.injectEndpoints({
         `/project/projects?direction=asc${query.elementPerPage}${query.page}${query.isEnded}${query.isOnlyFirstOpWithoutAcceptance}${query.isOnlyLastOpInWork}`,
       providesTags: ['Project'],
     }),
+
+    searchProjects: build.query<
+      FilteredResponse<ProjectShortInfo>,
+      SearchValues
+    >({
+      query: (query) =>
+        `/project/search?direction=asc${query.elementPerPage}${query.page}${query.projectNumberOrCustomer}`,
+      providesTags: ['Project'],
+    }),
+
+    editProject: build.mutation<
+      UpdateProjectFormValues,
+      UpdateProjectFormValues
+    >({
+      query(body) {
+        return {
+          url: '/projects/update-common-data',
+          method: 'POST',
+          body,
+        };
+      },
+      invalidatesTags: ['Project'],
+    }),
+
+    editProjectDates: build.mutation<
+      UpdateDatesFormValues,
+      UpdateDatesFormValues
+    >({
+      query(body) {
+        return {
+          url: '/projects/update-end-dates',
+          method: 'POST',
+          body,
+        };
+      },
+      invalidatesTags: ['Project'],
+    }),
   }),
 });
 
@@ -63,4 +103,7 @@ export const {
   useGetProjectByIdQuery,
   useCloseProjectOperationMutation,
   useGetProjectsQuery,
+  useSearchProjectsQuery,
+  useEditProjectMutation,
+  useEditProjectDatesMutation,
 } = projectApi;
