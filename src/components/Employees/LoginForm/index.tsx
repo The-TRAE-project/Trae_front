@@ -98,7 +98,7 @@ const EmployeeLoginForm = () => {
 
   const informTitle = `${
     employee && `${employee?.firstName} ${employee.lastName}`
-  }, <br /> добро пожаловать в Trae. <br /> Хорошего рабочего дня
+  }, <br /> добро пожаловать в Trae. <br /> Хорошего рабочего дня!
   `;
 
   const reset = () => {

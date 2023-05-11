@@ -95,12 +95,17 @@ const UpdateForm = () => {
     setCurrentUser(user);
   };
 
+  const handleUpdate = () => {
+    setIsUpdate(true);
+    setCurrentUser(user);
+  };
+
   return (
     <FormWrapper onSubmit={form.onSubmit(handleSubmit)}>
       <FormHeader
         isLoading={isUpdateLoading}
         isUpdate={isUpdate}
-        onUpdate={() => setIsUpdate(true)}
+        onUpdate={handleUpdate}
         isOpen={isModalOpen}
         onClose={handleCloseModal}
         currentUser={currentUser}
