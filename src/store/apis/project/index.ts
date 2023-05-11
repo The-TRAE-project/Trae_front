@@ -1,5 +1,11 @@
 import { baseApi } from '..';
-import { CreateProjectFormValues, Project } from './types';
+import { FilteredResponse } from '../types';
+import {
+  CreateProjectFormValues,
+  Project,
+  ProjectShortInfo,
+  FilterValues,
+} from './types';
 
 const projectTags = baseApi.enhanceEndpoints({
   addTagTypes: ['Project'],
@@ -42,6 +48,12 @@ const projectApi = projectTags.injectEndpoints({
       },
       invalidatesTags: ['Project'],
     }),
+
+    getProjects: build.query<FilteredResponse<ProjectShortInfo>, FilterValues>({
+      query: (query) =>
+        `/project/projects?direction=asc${query.elementPerPage}${query.page}${query.isEnded}${query.isOnlyFirstOpWithoutAcceptance}${query.isOnlyLastOpInWork}`,
+      providesTags: ['Project'],
+    }),
   }),
 });
 
@@ -50,4 +62,5 @@ export const {
   useDeleteProjectMutation,
   useGetProjectByIdQuery,
   useCloseProjectOperationMutation,
+  useGetProjectsQuery,
 } = projectApi;

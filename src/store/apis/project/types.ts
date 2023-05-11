@@ -103,3 +103,27 @@ export interface Project {
   managerDto: Constructor;
   operations: ProjectOperation[];
 }
+
+export interface OperationShortInfo {
+  name: string;
+  isEnded: boolean;
+  inWork: boolean;
+  readyToAcceptance: boolean;
+}
+
+export interface ProjectShortInfo {
+  id: number;
+  number: number;
+  name: string;
+  customer: string;
+  operation: OperationShortInfo;
+}
+
+export interface FilterValues {
+  elementPerPage?: string;
+  page?: string;
+  isEnded?: string;
+  isOnlyFirstOpWithoutAcceptance?: string;
+  isOnlyLastOpInWork?: string;
+  isOverdueCurrentOpInProject?: string;
+}
