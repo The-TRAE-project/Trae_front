@@ -22,11 +22,11 @@ export enum Roles {
 export const LoginFormSchema = z.object({
   username: z
     .string()
-    .min(3, { message: 'Логин должен быть не меньше 3 символов' })
+    .min(3, { message: 'Введите Логин' })
     .max(15, { message: 'Логин должен быть больше 15 символов' }),
   password: z
     .string()
-    .min(3, { message: 'Пароль должен быть не меньше 3 символов' })
+    .min(3, { message: 'Введите пароль' })
     .max(15, { message: 'Пароль должен быть больше 15 символов' }),
 });
 

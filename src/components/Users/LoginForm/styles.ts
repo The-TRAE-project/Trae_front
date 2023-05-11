@@ -25,6 +25,11 @@ export const Input = styled(TextInput)`
       font-weight: 400;
       color: var(--white-black);
     }
+
+    &[data-invalid] {
+      color: var(--red);
+      border-color: var(--red);
+    }
   }
 `;
 
@@ -35,7 +40,7 @@ export const useInputStyles = createStyles(() => ({
     fontSize: 24,
     fontWeight: 500,
     lineHeight: '26px',
-    wordBreak: 'break-all',
+    wordBreak: 'break-word',
     color: 'var(--red)',
     letterSpacing: '1px',
   },
@@ -61,6 +66,10 @@ export const useInputStyles = createStyles(() => ({
       fontWeight: 400,
       color: 'var(--white-black)',
     },
+
+    '&[data-invalid]': {
+      color: 'var(--red)',
+    },
   },
 
   label: {
@@ -79,6 +88,11 @@ export const useInputStyles = createStyles(() => ({
     minHeight: 73,
     background: 'var(--white)',
     borderRadius: 'var(--border-radius)',
+
+    '&[data-invalid]': {
+      color: 'var(--red)',
+      borderColor: 'var(--red)',
+    },
   },
 
   rightSection: {

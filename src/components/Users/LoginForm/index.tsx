@@ -4,7 +4,6 @@ import { useForm, zodResolver } from '@mantine/form';
 import { useNavigate } from 'react-router-dom';
 
 import { useAppDispatch } from '../../../helpers/hooks/useAppDispatch';
-import { showErrorNotification } from '../../../helpers/showErrorNotification';
 import { getUserRole, loginUser } from '../../../store/slices/auth';
 import { Paths } from '../../../constants/paths';
 import {
@@ -13,15 +12,23 @@ import {
   Roles,
 } from '../../../store/slices/auth/types';
 import Loader from '../../Loader';
+import { useDisplayFormErrors } from './helpers/useDisplayFormErrors';
 import { Button, FormWrapper, Input, useInputStyles } from './styles';
+
+export interface Error {
+  error: string;
+  status: string;
+  timestamp: string;
+}
 
 const Login = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<Error | null>(null);
 
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { classes } = useInputStyles();
-  const form = useForm({
+  const form = useForm<LoginFormValues>({
     initialValues: {
       password: '',
       username: '',
@@ -31,7 +38,9 @@ const Login = () => {
 
   const handleSubmit = async (values: LoginFormValues) => {
     setIsLoading(true);
+
     try {
+      setError(null);
       await dispatch(loginUser(values)).unwrap();
       const { permission } = await dispatch(
         getUserRole(values.username)
@@ -46,12 +55,14 @@ const Login = () => {
       form.reset();
       setIsLoading(false);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
+    } catch (err: any) {
       form.reset();
-      showErrorNotification(error.status, error.error);
       setIsLoading(false);
+      setError(err);
     }
   };
+
+  useDisplayFormErrors(form, error);
 
   return (
     <FormWrapper onSubmit={form.onSubmit(handleSubmit)}>
