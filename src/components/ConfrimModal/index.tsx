@@ -1,14 +1,18 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Group, Stack } from '@mantine/core';
 
-import { Button, Title } from './styles';
+import Loader from '../Loader';
 import Modal from './Modal';
 import InformModal from './InformModal';
+import { Button, Title } from './styles';
 
 interface Props {
   isOpen: boolean;
   onClose: () => void;
   onSubmit: () => void;
+  onCallAtTheEnd?: () => void;
+  isSuccess: boolean;
+  isLoading: boolean;
   confirmTitle: string;
   informTitle: string;
   backPath: string;
@@ -18,16 +22,26 @@ const ConfirmModal = ({
   isOpen,
   onClose,
   onSubmit,
+  onCallAtTheEnd,
+  isSuccess,
+  isLoading,
   confirmTitle,
   informTitle,
   backPath,
 }: Props) => {
   const [isInform, setIsInform] = useState<boolean>(false);
 
-  const handleSubmit = () => {
-    onSubmit();
-    onClose();
-    setIsInform(true);
+  useEffect(() => {
+    if (isSuccess) {
+      onClose();
+      setIsInform(true);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isSuccess]);
+
+  const handleClose = () => {
+    setIsInform(false);
+    onCallAtTheEnd?.();
   };
 
   return (
@@ -36,10 +50,20 @@ const ConfirmModal = ({
         <Stack spacing={40} align="center">
           <Title dangerouslySetInnerHTML={{ __html: confirmTitle }} />
           <Group spacing={40}>
-            <Button onClick={handleSubmit} type="button">
-              Да
+            <Button
+              disabled={isLoading}
+              onClick={onSubmit}
+              $width={101}
+              type="button"
+            >
+              {isLoading ? <Loader size={30} /> : 'Да'}
             </Button>
-            <Button onClick={onClose} type="button">
+            <Button
+              disabled={isLoading}
+              onClick={onClose}
+              $width={113}
+              type="button"
+            >
               Нет
             </Button>
           </Group>
@@ -47,7 +71,7 @@ const ConfirmModal = ({
       </Modal>
       <InformModal
         isOpen={isInform}
-        onClose={() => setIsInform(false)}
+        onClose={handleClose}
         informTitle={informTitle}
         backPath={backPath}
       />

@@ -1,12 +1,11 @@
-// TODO:
 import { Center, Stack } from '@mantine/core';
 
 import { ProjectOperation } from '../../../../../store/apis/project/types';
 import { convertHoursToDays } from '../../../../../helpers/convertHoursToDays';
 import { formatDate } from '../../../helpers/formatDate';
-import InfoText from '../../../InfoText';
 import StageCard from '../../../StageCard';
-import { DateBadge, Divider, Group, Title } from '../../../styles';
+import { DateBadge } from '../../../styles';
+import { DateText, DateTitle, Grid } from './styles';
 
 interface Props {
   projectOperation: ProjectOperation;
@@ -39,22 +38,21 @@ const Dates = ({ projectOperation }: Props) => {
 
   return (
     <StageCard title="СРОКИ" isWithEditButton={false}>
-      <Group>
+      <Grid>
         <Stack spacing={20}>
-          <Title>Планируемые</Title>
+          <br />
           <Stack spacing={16}>
-            <InfoText
-              label="Начало"
-              text={formattedStartDate}
-              isApart
-              isColorGreen={!startDate}
-            />
-            <InfoText
-              label="Конец"
-              text={formattedPlannedEndDate}
-              isApart
-              isColorGreen={!plannedEndDate}
-            />
+            <DateText>Начало</DateText>
+            <DateText>Конец</DateText>
+          </Stack>
+        </Stack>
+        <Stack spacing={20}>
+          <DateTitle>План</DateTitle>
+          <Stack spacing={16}>
+            <DateText $isColorGreen={!startDate}>{formattedStartDate}</DateText>
+            <DateText $isColorGreen={!plannedEndDate}>
+              {formattedPlannedEndDate}
+            </DateText>
           </Stack>
           <Center>
             {period ? (
@@ -62,22 +60,15 @@ const Dates = ({ projectOperation }: Props) => {
             ) : null}
           </Center>
         </Stack>
-        <Divider />
         <Stack spacing={20}>
-          <Title>Фактические</Title>
+          <DateTitle>Факт</DateTitle>
           <Stack spacing={16}>
-            <InfoText
-              label="Начало"
-              text={formattedAcceptanceDate}
-              isApart
-              isColorGreen={!acceptanceDate}
-            />
-            <InfoText
-              label="Конец"
-              text={formattedRealEndDate}
-              isApart
-              isColorGreen={!realEndDate}
-            />
+            <DateText $isColorGreen={!acceptanceDate}>
+              {formattedAcceptanceDate}
+            </DateText>
+            <DateText $isColorGreen={!realEndDate}>
+              {formattedRealEndDate}
+            </DateText>
           </Stack>
           <Center>
             {actualPeriod ? (
@@ -85,7 +76,7 @@ const Dates = ({ projectOperation }: Props) => {
             ) : null}
           </Center>
         </Stack>
-      </Group>
+      </Grid>
     </StageCard>
   );
 };

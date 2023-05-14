@@ -50,5 +50,5 @@ export const Button = styled(UnstyledButton)`
 
 export const CardBody = styled.div`
   position: relative;
-  padding: 30px;
+  padding: 30px 18px;
 `;

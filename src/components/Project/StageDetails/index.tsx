@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Stack } from '@mantine/core';
 
 import { useAppSelector } from '../../../helpers/hooks/useAppSelector';
@@ -13,9 +14,11 @@ import StageHeader from './StageHeader';
 const StageDetails = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
+  const navigate = useNavigate();
   const { projectStage } = useAppSelector((store) => store.project);
 
-  const [closeOperation, { isLoading }] = useCloseProjectOperationMutation();
+  const [closeOperation, { isLoading, isSuccess }] =
+    useCloseProjectOperationMutation();
 
   const handleSubmit = async () => {
     try {
@@ -52,10 +55,15 @@ const StageDetails = () => {
           <Loader size={80} isAbsoluteCentered />
         )}
       </Stack>
+
       <ConfirmModal
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
         onSubmit={handleSubmit}
+        // TODO:
+        onCallAtTheEnd={() => navigate(-2)}
+        isSuccess={isSuccess}
+        isLoading={isLoading}
         confirmTitle={confirmTitle}
         informTitle={informTitle}
         backPath={Paths.PROJECT_DETAILS}

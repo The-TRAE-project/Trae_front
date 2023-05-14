@@ -70,6 +70,11 @@ export interface Constructor {
   dateOfDismissal: Date | null;
 }
 
+export interface EmployeeShortInfo {
+  firstName: string;
+  lastName: string;
+}
+
 export interface ProjectOperation {
   id: number;
   priority: number;
@@ -81,7 +86,7 @@ export interface ProjectOperation {
   readyToAcceptance: boolean;
   typeWorkName: string;
   projectNumber: number;
-  employeeFirstLastNameDto: string | null;
+  employeeFirstLastNameDto: EmployeeShortInfo | null;
   startDate: Date | null;
   acceptanceDate: Date | null;
   plannedEndDate: Date | null;
@@ -97,6 +102,8 @@ export interface Project {
   isEnded: boolean;
   period: number;
   actualPeriod: number | null;
+  startFirstOperationDate: Date | null;
+  endDateInContract: Date;
   startDate: Date;
   plannedEndDate: Date;
   realEndDate: Date | null;

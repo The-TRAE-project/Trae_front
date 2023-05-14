@@ -11,7 +11,7 @@ export const projectSlice = createSlice({
   name: 'project',
   initialState,
   reducers: {
-    setProject(state, action) {
+    setProjectId(state, action) {
       state.projectId = action.payload;
     },
     clearProjectState(state) {
@@ -24,6 +24,6 @@ export const projectSlice = createSlice({
   },
 });
 
-export const { setProject, clearProjectState, setProjectStage } =
+export const { setProjectId, clearProjectState, setProjectStage } =
   projectSlice.actions;
 export default projectSlice.reducer;

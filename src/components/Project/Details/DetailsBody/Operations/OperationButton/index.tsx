@@ -8,14 +8,17 @@ import { Button } from './styles';
 
 interface Props {
   projectOperation: ProjectOperation;
+  isEnded: boolean;
 }
 
-const OperationButton = ({ projectOperation }: Props) => {
+const OperationButton = ({ projectOperation, isEnded }: Props) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
   const inWorkClass = projectOperation.inWork && 'inWork';
   const isEndedClass = projectOperation.isEnded && 'isEnded';
+  const readyToAcceptanceClass =
+    projectOperation.readyToAcceptance && 'readyToAcceptance';
 
   const handleNavigateToDetails = () => {
     navigate(Paths.PROJECT_STAGE);
@@ -25,7 +28,14 @@ const OperationButton = ({ projectOperation }: Props) => {
   return (
     <Button
       onClick={handleNavigateToDetails}
-      className={inWorkClass || isEndedClass || ''}
+      className={inWorkClass || isEndedClass || readyToAcceptanceClass || ''}
+      disabled={
+        (!projectOperation.inWork &&
+          !projectOperation.isEnded &&
+          !projectOperation.readyToAcceptance) ||
+        !isEnded
+      }
+      type="button"
     >
       {projectOperation.name}
     </Button>

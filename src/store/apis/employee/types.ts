@@ -23,6 +23,7 @@ export interface ProjectStage {
   id: number;
   name: string;
   readyToAcceptance: boolean;
+  priority: number;
   isEnded: boolean;
   inWork: boolean;
   employeeFirstName: null | string;
@@ -32,6 +33,7 @@ export interface ProjectStage {
 export interface ReceiveProjectStageValue {
   employeeId: number;
   operationId: number;
+  operationPriority: number;
 }
 
 export const EmployeeFormSchema = z.object({

@@ -3,13 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../../../helpers/hooks/useAppDispatch';
 import { Project } from '../../../../store/apis/employee/types';
 import { setProjectNumber } from '../../../../store/slices/employee';
-import {
-  ProjectNumber,
-  ProjectName,
-  Wrapper,
-  ProjectOperationName,
-  Customer,
-} from './styles';
+import { ProjectCustomer, ProjectName, ProjectNumber } from '../../../styles';
+import { Wrapper, ProjectOperationName } from './styles';
 
 interface Props {
   project: Project;
@@ -27,7 +22,7 @@ const ProjectCard = ({ project }: Props) => {
   return (
     <Wrapper onClick={navigateToProjectStages}>
       <ProjectNumber>{project.number}</ProjectNumber>
-      <Customer>{project.customer}</Customer>
+      <ProjectCustomer>{project.customer}</ProjectCustomer>
       <ProjectName>{project.projectName}</ProjectName>
       <ProjectOperationName>
         {project.availableOperationName}

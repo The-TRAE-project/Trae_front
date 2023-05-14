@@ -52,6 +52,7 @@ const StageCard = ({ stage, index, lastStage }: Props) => {
       await receiveProject({
         employeeId: employee.id,
         operationId: stage.id,
+        operationPriority: stage.priority,
       }).unwrap();
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {

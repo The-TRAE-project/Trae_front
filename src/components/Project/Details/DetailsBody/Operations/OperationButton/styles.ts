@@ -10,12 +10,23 @@ export const Button = styled.button`
   border-radius: var(--border-radius);
 
   &.isEnded {
+    font-weight: 500;
+    color: var(--white);
     background: var(--light-green);
     border-color: var(--light-green);
   }
 
   &.inWork {
+    font-weight: 500;
+    color: var(--white);
     background: var(--orange);
     border-color: var(--orange);
+  }
+
+  &.readyToAcceptance {
+    font-weight: 500;
+    color: var(--green);
+    border-color: var(--green);
+    border-width: 3px;
   }
 `;

@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 export const Title = styled.p`
   font-family: var(--font-roboto);
@@ -8,7 +8,19 @@ export const Title = styled.p`
   text-align: center;
 `;
 
+type ButtonProps = {
+  $width?: number;
+};
+
 export const Button = styled.button`
+  position: relative;
+  min-height: 61px;
+  ${(props: ButtonProps) =>
+    props.$width &&
+    css`
+      width: ${props.$width}px;
+    `};
+  ${({ theme }) => theme.mixins.fCenter};
   padding: 14px 32px;
   background: linear-gradient(
     97.03deg,
@@ -26,5 +38,9 @@ export const Button = styled.button`
 
   &:is(:focus, :focus-within, :active) {
     outline: none;
+  }
+
+  &:disabled {
+    padding: 0;
   }
 `;

@@ -8,13 +8,15 @@ import { Status } from '../../store/apis/user/types';
 import { Paths } from '../../constants/paths';
 import { LocalStorage } from '../../constants/localStorage';
 import SEO from '../../components/SEO';
+import ProjectFilterMenu from '../../components/Project/ProjectFilterMenu';
+import ProjectSearchInput from '../../components/Project/ProjectSearchInput';
+import ProjectListItem from '../../components/Project/ProjectListItem';
 import {
   Container,
   OrangeButton,
   UnstyledButton,
   WrapperGradientGreen,
 } from '../../components/styles';
-import ProjectFilterMenu from '../../components/Project/ProjectFilterMenu';
 
 const Projects = () => {
   const [paramActive, setParamActive] = useLocalStorage<Status | null>({
@@ -37,7 +39,7 @@ const Projects = () => {
       />
       <WrapperGradientGreen>
         <Container>
-          <Stack spacing={50}>
+          <Stack spacing={87}>
             <Group position="apart" spacing={100}>
               <Group spacing={40}>
                 <ProjectFilterMenu
@@ -50,11 +52,15 @@ const Projects = () => {
                 </UnstyledButton>
               </Group>
 
+              <ProjectSearchInput />
+
               <OrangeButton onClick={navigateToCreateProjectPage} type="button">
                 <AiOutlinePlusCircle size={30} color="var(--white)" />
                 <span>Добавить</span>
               </OrangeButton>
             </Group>
+
+            <ProjectListItem />
           </Stack>
         </Container>
       </WrapperGradientGreen>

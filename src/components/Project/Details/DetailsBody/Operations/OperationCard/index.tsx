@@ -1,15 +1,16 @@
 import { Stack } from '@mantine/core';
 
-import { ProjectOperation } from '../../../../../store/apis/project/types';
-import { Title } from '../../../styles';
-import OperationButton from './OperationButton';
+import { ProjectOperation } from '../../../../../../store/apis/project/types';
+import { Title } from '../../../../styles';
+import OperationButton from '../OperationButton';
 
 interface Props {
   projectOperations: ProjectOperation[];
   title: string;
+  isEnded: boolean;
 }
 
-const OperationCard = ({ projectOperations, title }: Props) => {
+const OperationCard = ({ projectOperations, title, isEnded }: Props) => {
   return (
     <Stack spacing={20}>
       <Title>{title}</Title>
@@ -18,6 +19,7 @@ const OperationCard = ({ projectOperations, title }: Props) => {
           <OperationButton
             key={projectOperation.id}
             projectOperation={projectOperation}
+            isEnded={isEnded}
           />
         ))}
       </Stack>

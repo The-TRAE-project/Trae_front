@@ -290,3 +290,34 @@ export const FormBodyWrapper = styled.div`
   position: relative;
   min-height: calc(100vh - 336px);
 `;
+
+export const ProjectCustomer = styled.p`
+  font-weight: 400;
+  color: var(--black);
+  ${({ theme }) => theme.mixins.fontSize30};
+  width: 182px;
+  text-align: center;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+`;
+
+export const ProjectName = styled.p`
+  font-weight: 600;
+  color: var(--black);
+  ${({ theme }) => theme.mixins.fontSize30};
+  width: 182px;
+  text-align: center;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+`;
+
+export const ProjectNumber = styled.p`
+  ${({ theme }) => theme.mixins.orangeCircle};
+  position: absolute;
+  top: -16%;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+`;

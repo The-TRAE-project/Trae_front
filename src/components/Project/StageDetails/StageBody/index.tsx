@@ -15,7 +15,7 @@ const StageBody = ({ projectStage }: Props) => {
   const titleFinished = projectStage.isEnded && 'Выполнен';
   const titleInWork = projectStage.inWork && 'В работе';
   const takeByEmployeeOrWait = projectStage.employeeFirstLastNameDto
-    ? `${projectStage.employeeFirstLastNameDto}`
+    ? `${projectStage.employeeFirstLastNameDto.firstName} ${projectStage.employeeFirstLastNameDto.lastName}`
     : 'в ожидании';
 
   return (

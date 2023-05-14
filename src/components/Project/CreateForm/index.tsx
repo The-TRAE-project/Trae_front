@@ -56,11 +56,16 @@ const CreateForm = () => {
     }
   };
 
+  const closeModal = () => {
+    setIsModalOpen(false);
+    navigate(Paths.PROJECTS);
+  };
+
   return (
     <>
       <InformModal
         isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        onClose={closeModal}
         title="Проект успешно добавлен"
         backPath={Paths.PROJECTS}
       />

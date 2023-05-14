@@ -1,8 +1,8 @@
 import { Stack } from '@mantine/core';
 
-import { Project } from '../../../../store/apis/project/types';
-import StageCard from '../../StageCard';
-import InfoText from '../../InfoText';
+import { Project } from '../../../../../store/apis/project/types';
+import InfoText from '../../../InfoText';
+import StageCard from '../../../StageCard';
 
 interface Props {
   project: Project;
@@ -10,8 +10,9 @@ interface Props {
 
 const GeneralInformation = ({ project }: Props) => {
   const constructorFullName = `${project.managerDto.firstName} ${project.managerDto.lastName}`;
+
   return (
-    <StageCard title="ОБЩИЕ СВЕДЕНИЯ">
+    <StageCard title="ОБЩИЕ СВЕДЕНИЯ" isWithEditButton={!project.isEnded}>
       <Stack spacing={16}>
         <InfoText label="Клиент" text={project.customer} />
         <InfoText label="Наименование изделия" text={project.name} />
