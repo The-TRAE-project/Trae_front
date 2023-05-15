@@ -37,6 +37,9 @@ const PersonalCabinetChangePassword = lazy(
 const CreateProject = lazy(() => import('./pages/CreateProject'));
 const ProjectDetails = lazy(() => import('./pages/ProjectDetails'));
 const ProjectStage = lazy(() => import('./pages/ProjectStage'));
+const ProjectUpdateGeneralInfo = lazy(
+  () => import('./pages/ProjectUpdateGeneralInfo')
+);
 
 const App = () => {
   const { isLoggedIn } = useAppSelector((store) => store.employee);
@@ -87,30 +90,28 @@ const App = () => {
           >
             <Route path={Paths.DASHBOARD} element={<Dashboard />} />
             <Route path={Paths.PROJECTS} element={<Projects />} />
-            <Route path={Paths.PROJECTS_CREATE} element={<CreateProject />} />
+            <Route path={Paths.PROJECT_CREATE} element={<CreateProject />} />
             <Route path={Paths.PROJECT_DETAILS} element={<ProjectDetails />} />
             <Route path={Paths.PROJECT_STAGE} element={<ProjectStage />} />
+            <Route
+              path={Paths.PROJECT_EDIT_GENERAL_INFO}
+              element={<ProjectUpdateGeneralInfo />}
+            />
             <Route path={Paths.CONSTRUCTORS} element={<Constructors />} />
             <Route
-              path={Paths.CONSTRUCTORS_CREATE}
+              path={Paths.CONSTRUCTOR_CREATE}
               element={<CreateConstructor />}
             />
-            <Route path={Paths.CONSTRUCTORS_EDITING} element={<UpdateUser />} />
+            <Route path={Paths.CONSTRUCTOR_EDITING} element={<UpdateUser />} />
             <Route path={Paths.EMPLOYEES} element={<Employees />} />
-            <Route path={Paths.EMPLOYEES_CREATE} element={<CreateEmployee />} />
-            <Route
-              path={Paths.EMPLOYEES_EDITING}
-              element={<UpdateEmployee />}
-            />
+            <Route path={Paths.EMPLOYEE_CREATE} element={<CreateEmployee />} />
+            <Route path={Paths.EMPLOYEE_EDITING} element={<UpdateEmployee />} />
             <Route path={Paths.WORK_TYPES} element={<WorkTypes />} />
             <Route
-              path={Paths.WORK_TYPES_EDITING}
+              path={Paths.WORK_TYPE_EDITING}
               element={<UpdateWorkType />}
             />
-            <Route
-              path={Paths.WORK_TYPES_CREATE}
-              element={<CreateWorkType />}
-            />
+            <Route path={Paths.WORK_TYPE_CREATE} element={<CreateWorkType />} />
           </Route>
 
           {/* Employee routes */}

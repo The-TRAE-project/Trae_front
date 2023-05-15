@@ -76,7 +76,7 @@ const projectApi = projectTags.injectEndpoints({
     >({
       query(body) {
         return {
-          url: '/projects/update-common-data',
+          url: '/project/update-common-data',
           method: 'POST',
           body,
         };

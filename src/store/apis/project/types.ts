@@ -141,13 +141,35 @@ export interface SearchValues {
   projectNumberOrCustomer: string;
 }
 
-export interface UpdateProjectFormValues {
-  projectId: number;
-  projectNumber: number | null;
-  projectName: string | null;
-  customer: string | null;
-  commentary: string | null;
-}
+export const UpdateProjectSchema = z.object({
+  projectId: z.number().min(3, { message: 'Укажите id проекта!' }),
+  customer: z
+    .string()
+    .regex(RegEx.name, {
+      message: 'Имя клиента должно быть не больше 30 символов',
+    })
+    .min(3, { message: 'Имя клиента должно быть не меньше 3 символов' })
+    .max(30, { message: 'Имя клиента должно быть не больше 30 символов' })
+    .nullable(),
+  projectName: z
+    .string()
+    .regex(RegEx.name, {
+      message: 'Имя проекта должо быть не больше 30 символов',
+    })
+    .min(3, { message: 'Имя проекта должно быть не меньше 3 символов' })
+    .max(30, { message: 'Имя проекта должно быть не больше 30 символов' })
+    .nullable(),
+  projectNumber: z
+    .number()
+    .min(1, { message: 'Номер проекта должен быть не меньше 1 символа' })
+    .nullable(),
+  commentary: z
+    .string()
+    .max(1000, { message: 'Комментарий должен быть не больше 1000 символов' })
+    .nullable(),
+});
+
+export type UpdateProjectFormValues = z.infer<typeof UpdateProjectSchema>;
 
 export interface UpdateDatesFormValues {
   projectId: string;

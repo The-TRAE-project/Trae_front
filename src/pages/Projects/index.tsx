@@ -27,7 +27,7 @@ const Projects = () => {
   const navigate = useNavigate();
 
   const navigateToHome = () => navigate(Paths.DASHBOARD);
-  const navigateToCreateProjectPage = () => navigate(Paths.PROJECTS_CREATE);
+  const navigateToCreateProjectPage = () => navigate(Paths.PROJECT_CREATE);
 
   return (
     <>

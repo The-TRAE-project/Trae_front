@@ -32,7 +32,7 @@ const Employees = () => {
   const navigate = useNavigate();
 
   const navigateToHome = () => navigate(Paths.DASHBOARD);
-  const navigateToCreateEmployeePage = () => navigate(Paths.EMPLOYEES_CREATE);
+  const navigateToCreateEmployeePage = () => navigate(Paths.EMPLOYEE_CREATE);
 
   return (
     <>

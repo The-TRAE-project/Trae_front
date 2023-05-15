@@ -32,7 +32,7 @@ const Constructors = () => {
 
   const navigateToHome = () => navigate(Paths.DASHBOARD);
   const navigateToCreateConstructorPage = () =>
-    navigate(Paths.CONSTRUCTORS_CREATE);
+    navigate(Paths.CONSTRUCTOR_CREATE);
 
   return (
     <>

@@ -16,7 +16,7 @@ const WorkTypeItem = ({ workType }: Props) => {
   const dispatch = useAppDispatch();
 
   const navigateToEditingPage = () => {
-    navigate(Paths.WORK_TYPES_EDITING);
+    navigate(Paths.WORK_TYPE_EDITING);
     dispatch(setWorkType(workType));
   };
 

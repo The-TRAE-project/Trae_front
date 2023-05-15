@@ -107,14 +107,14 @@ const CreateForm = () => {
             label="Наименование изделия"
             placeholder="Наименование изделия"
             minLength={2}
-            maxLength={15}
+            maxLength={30}
           />
           <TextInput
             {...form.getInputProps('customer')}
             label="Клиент"
             placeholder="Клиент"
             minLength={2}
-            maxLength={15}
+            maxLength={30}
           />
           <DatePicker
             {...form.getInputProps('plannedEndDate')}

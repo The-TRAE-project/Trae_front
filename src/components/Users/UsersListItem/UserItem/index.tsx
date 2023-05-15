@@ -15,7 +15,7 @@ const UserItem = ({ user }: Props) => {
   const dispatch = useAppDispatch();
 
   const navigateToEditingPage = () => {
-    navigate(Paths.CONSTRUCTORS_EDITING);
+    navigate(Paths.CONSTRUCTOR_EDITING);
     dispatch(setConstructor(user.managerId));
   };
 

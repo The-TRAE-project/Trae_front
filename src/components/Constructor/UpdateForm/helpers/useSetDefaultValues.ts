@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { Dispatch, useEffect, SetStateAction } from 'react';
 import { UseFormReturnType } from '@mantine/form';
 import dayjs from 'dayjs';
 
@@ -12,7 +12,7 @@ export function useSetDefaultValues(
     (values: UserWithoutId) => UserWithoutId
   >,
   user: User | undefined,
-  setCurrentUser: React.Dispatch<React.SetStateAction<User | undefined>>
+  setCurrentUser: Dispatch<SetStateAction<User | undefined>>
 ) {
   useEffect(() => {
     form.setFieldValue('newRole', user?.role || null);
