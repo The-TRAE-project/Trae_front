@@ -1,6 +1,6 @@
 import SEO from '../../components/SEO';
 import { Container, WrapperGradientGreen } from '../../components/styles';
-import UpdateGeneralInfo from '../../components/Project/UpdateGeneralInfo';
+import UpdateGeneralInfoForm from '../../components/Project/UpdateGeneralInfoForm';
 
 const ProjectUpdateGeneralInfo = () => {
   return (
@@ -13,7 +13,7 @@ const ProjectUpdateGeneralInfo = () => {
       />
       <WrapperGradientGreen>
         <Container>
-          <UpdateGeneralInfo />
+          <UpdateGeneralInfoForm />
         </Container>
       </WrapperGradientGreen>
     </>

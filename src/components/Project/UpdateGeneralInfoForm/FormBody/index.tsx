@@ -4,7 +4,7 @@ import { UpdateProjectFormValues } from '../../../../store/apis/project/types';
 import NumberInput from '../../../NumberInput';
 import Textarea from '../../../Textarea';
 import TextInput from '../../../TextInput';
-import { Grid } from './styles';
+import { TwoColumnGrid } from '../../../styles';
 
 type ProjectWithoutId = Omit<UpdateProjectFormValues, 'projectId'>;
 
@@ -17,7 +17,7 @@ interface Props {
 
 const FormBody = ({ form }: Props) => {
   return (
-    <Grid>
+    <TwoColumnGrid>
       <NumberInput
         {...form.getInputProps('projectNumber')}
         label="Номер проекта"
@@ -47,7 +47,7 @@ const FormBody = ({ form }: Props) => {
         placeholder="Комментарий"
         maxLength={1000}
       />
-    </Grid>
+    </TwoColumnGrid>
   );
 };
 

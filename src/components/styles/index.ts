@@ -204,7 +204,6 @@ export const useCheckboxStyles = createStyles(() => ({
 export const DashedOrangeButton = styled.button`
   grid-column-start: 3;
   ${({ theme }) => theme.mixins.fCenter};
-  padding: 22.5px;
   max-width: 509px;
   min-height: 73px;
   max-height: 73px;
@@ -214,12 +213,14 @@ export const DashedOrangeButton = styled.button`
   font-weight: 400;
   ${({ theme }) => theme.mixins.fontSize24};
   color: var(--white);
+  padding: 22.5px;
+  margin-top: 10px;
 
   &:is(:focus, :focus-within) {
     outline: none;
   }
 `;
-
+// TODO:
 export const FormWrapper = styled.form`
   ${({ theme }) => theme.mixins.column};
   gap: 3rem;
@@ -285,7 +286,14 @@ export const useModalStyles = createStyles(() => ({
     height: '40.5vh',
   },
 }));
-
+// TODO:
+export const FormStack = styled.form`
+  position: relative;
+  min-height: calc(100vh - 336px);
+  ${({ theme }) => theme.mixins.column};
+  gap: 50px;
+`;
+// TODO:
 export const FormBodyWrapper = styled.div`
   position: relative;
   min-height: calc(100vh - 336px);
@@ -320,4 +328,16 @@ export const ProjectNumber = styled.p`
   left: 0;
   right: 0;
   margin: 0 auto;
+`;
+
+export const TwoColumnGrid = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+`;
+
+export const ThreeColumnGrid = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 40px;
 `;
