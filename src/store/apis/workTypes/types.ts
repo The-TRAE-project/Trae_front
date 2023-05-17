@@ -42,3 +42,7 @@ export interface ResponseWorkTypeValues {
   isActive: boolean | null;
   name: string | null;
 }
+
+export enum WorkTypeStatuses {
+  SHIPMENT = 'Отгрузка',
+}

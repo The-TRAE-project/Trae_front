@@ -40,6 +40,7 @@ const GlobalStyles = createGlobalStyle`
     &:disabled {
       cursor: not-allowed;
     }
+    
   }
 
   ul {

@@ -40,6 +40,12 @@ const ProjectStage = lazy(() => import('./pages/ProjectStage'));
 const ProjectUpdateGeneralInfo = lazy(
   () => import('./pages/ProjectUpdateGeneralInfo')
 );
+const ProjectUpdateEndDate = lazy(() => import('./pages/ProjectUpdateEndDate'));
+const ProjectDelete = lazy(() => import('./pages/ProjectDelete'));
+const ProjectInsertNewStage = lazy(
+  () => import('./pages/ProjectInsertNewStage')
+);
+const ProjectNewStage = lazy(() => import('./pages/ProjectNewStage'));
 
 const App = () => {
   const { isLoggedIn } = useAppSelector((store) => store.employee);
@@ -96,6 +102,19 @@ const App = () => {
             <Route
               path={Paths.PROJECT_EDIT_GENERAL_INFO}
               element={<ProjectUpdateGeneralInfo />}
+            />
+            <Route
+              path={Paths.PROJECT_EDIT_END_DATE}
+              element={<ProjectUpdateEndDate />}
+            />
+            <Route path={Paths.PROJECT_DELETE} element={<ProjectDelete />} />
+            <Route
+              path={Paths.PROJECT_NEW_STAGE}
+              element={<ProjectNewStage />}
+            />
+            <Route
+              path={Paths.PROJECT_INSERT_NEW_STAGE}
+              element={<ProjectInsertNewStage />}
             />
             <Route path={Paths.CONSTRUCTORS} element={<Constructors />} />
             <Route

@@ -48,7 +48,7 @@ const workTypeApi = workTypeTags.injectEndpoints({
     }),
 
     getActiveWorkTypes: build.query<WorkType[], void>({
-      query: () => '/type-work/active-types-list',
+      query: () => '/type-work/active/list',
       providesTags: ['WorkType'],
     }),
   }),

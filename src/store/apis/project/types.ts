@@ -40,7 +40,10 @@ export const CreateProjectSchema = z.object({
     .min(3, { message: 'Имя проекта должно быть не меньше 3 символов' })
     .max(30, { message: 'Имя проекта должно быть не больше 30 символов' }),
   number: z
-    .number()
+    .number({
+      required_error: 'Пожалуйста, заполните номер проекта!',
+      invalid_type_error: 'Не правильный номер проекта!',
+    })
     .min(1, { message: 'Номер проекта должен быть не меньше 1 символа' }),
   comment: z
     .string()
@@ -87,10 +90,10 @@ export interface ProjectOperation {
   typeWorkName: string;
   projectNumber: number;
   employeeFirstLastNameDto: EmployeeShortInfo | null;
-  startDate: Date | null;
-  acceptanceDate: Date | null;
-  plannedEndDate: Date | null;
-  realEndDate: Date | null;
+  startDate: Date | number[] | null;
+  acceptanceDate: Date | number[] | null;
+  plannedEndDate: Date | number[] | null;
+  realEndDate: Date | number[] | null;
 }
 
 export interface Project {
@@ -102,11 +105,11 @@ export interface Project {
   isEnded: boolean;
   period: number;
   actualPeriod: number | null;
-  startFirstOperationDate: Date | null;
-  endDateInContract: Date;
-  startDate: Date;
-  plannedEndDate: Date;
-  realEndDate: Date | null;
+  startFirstOperationDate: Date | number[] | null;
+  endDateInContract: Date | number[];
+  startDate: Date | number[];
+  plannedEndDate: Date | number[];
+  realEndDate: Date | number[] | null;
   managerDto: Constructor;
   operations: ProjectOperation[];
 }
@@ -160,7 +163,10 @@ export const UpdateProjectSchema = z.object({
     .max(30, { message: 'Имя проекта должно быть не больше 30 символов' })
     .nullable(),
   projectNumber: z
-    .number()
+    .number({
+      required_error: 'Пожалуйста, заполните номер проекта!',
+      invalid_type_error: 'Не правильный номер проекта!',
+    })
     .min(1, { message: 'Номер проекта должен быть не меньше 1 символа' })
     .nullable(),
   commentary: z
@@ -171,7 +177,55 @@ export const UpdateProjectSchema = z.object({
 
 export type UpdateProjectFormValues = z.infer<typeof UpdateProjectSchema>;
 
-export interface UpdateDatesFormValues {
+export interface ReturnUpdatedEndDateValues {
   projectId: string;
-  newPlannedAndContractEndDate: Date;
+  updatedPlannedAndContractEndDate: Date | number[];
 }
+
+export const UpdateEndDateSchema = z.object({
+  projectId: z.number().min(3, { message: 'Укажите id проекта!' }),
+  newPlannedAndContractEndDate: z
+    .date({
+      required_error: 'Пожалуйста, выберите дату',
+      invalid_type_error: 'Не правильный формат даты',
+    })
+    .nullable(),
+});
+
+export type UpdateEndDateFormValues = z.infer<typeof UpdateEndDateSchema>;
+
+export const ProjectDeleteSchema = z.object({
+  projectNumber: z
+    .number({
+      required_error: 'Пожалуйста, заполните номер проекта!',
+      invalid_type_error: 'Не правильный номер проекта!',
+    })
+    .min(1, { message: 'Номер проекта должен быть не меньше 1 символа' }),
+});
+
+export type ProjectDeleteFormValues = z.infer<typeof ProjectDeleteSchema>;
+
+export const NewOperationSchema = z.object({
+  projectId: z.number().min(1, {
+    message: 'Поле id проекта не должно быть пустым!',
+  }),
+  priority: z
+    .number({
+      required_error: 'Поле приоритет не должно быть пустым!',
+      invalid_type_error: 'Не правильный приоритета!',
+    })
+    .min(1, {
+      message: 'Пожалуйста, заполните поле приоритет!',
+    }),
+  name: z
+    .string()
+    .regex(RegEx.cyrillic, {
+      message: 'Название этапа должно содержать только кириллицу',
+    })
+    .min(3, { message: 'Пожалуйста, выберите этап!' }),
+  typeWorkId: z.number().min(1, {
+    message: 'Пожалуйста, выберите тип работ',
+  }),
+});
+
+export type NewOperationFormValues = z.infer<typeof NewOperationSchema>;

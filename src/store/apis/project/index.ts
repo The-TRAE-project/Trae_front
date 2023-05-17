@@ -7,7 +7,9 @@ import {
   FilterValues,
   SearchValues,
   UpdateProjectFormValues,
-  UpdateDatesFormValues,
+  ReturnUpdatedEndDateValues,
+  UpdateEndDateFormValues,
+  NewOperationFormValues,
 } from './types';
 
 const projectTags = baseApi.enhanceEndpoints({
@@ -84,13 +86,13 @@ const projectApi = projectTags.injectEndpoints({
       invalidatesTags: ['Project'],
     }),
 
-    editProjectDates: build.mutation<
-      UpdateDatesFormValues,
-      UpdateDatesFormValues
+    editProjectEndDate: build.mutation<
+      ReturnUpdatedEndDateValues,
+      UpdateEndDateFormValues
     >({
       query(body) {
         return {
-          url: '/projects/update-end-dates',
+          url: '/project/update-end-dates',
           method: 'POST',
           body,
         };
@@ -107,6 +109,17 @@ const projectApi = projectTags.injectEndpoints({
       },
       invalidatesTags: ['Project'],
     }),
+
+    insertNewOperation: build.mutation<void, NewOperationFormValues>({
+      query(body) {
+        return {
+          url: '/operation/insert',
+          method: 'POST',
+          body,
+        };
+      },
+      invalidatesTags: ['Project'],
+    }),
   }),
 });
 
@@ -118,6 +131,7 @@ export const {
   useGetProjectsQuery,
   useSearchProjectsQuery,
   useEditProjectMutation,
-  useEditProjectDatesMutation,
+  useEditProjectEndDateMutation,
   useCloseProjectMutation,
+  useInsertNewOperationMutation,
 } = projectApi;
