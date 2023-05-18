@@ -73,7 +73,7 @@ const UpdateGeneralInfo = () => {
       }
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
-      showErrorNotification(err.status, err?.data?.error);
+      showErrorNotification(err?.data?.status, err?.data?.error);
     }
   };
 

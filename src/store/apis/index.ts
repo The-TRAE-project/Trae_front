@@ -40,7 +40,7 @@ const baseQueryWithReAuth = async (
 ) => {
   let result = await baseQuery(args, api, extraOptions);
 
-  if (result?.error?.status === 400) {
+  if (result?.error?.status === 401) {
     const { refreshToken } = (api.getState() as RootState).auth;
 
     const refreshResponse = await baseQuery(

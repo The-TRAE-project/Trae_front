@@ -1,11 +1,8 @@
 import { Center, Stack } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
 
-import { Paths } from '../../../../../constants/paths';
 import { convertHoursToDays } from '../../../../../helpers/convertHoursToDays';
-import { useAppDispatch } from '../../../../../helpers/hooks/useAppDispatch';
 import { Project } from '../../../../../store/apis/project/types';
-import { setProjectId } from '../../../../../store/slices/project';
 import { formatDate } from '../../../helpers/formatDate';
 import StageCard from '../../../StageCard';
 import { DateBadge } from '../../../styles';
@@ -17,7 +14,6 @@ interface Props {
 
 const Dates = ({ project }: Props) => {
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
 
   const {
     id,
@@ -30,10 +26,7 @@ const Dates = ({ project }: Props) => {
     endDateInContract,
   } = project;
 
-  const navigateToEditEndDate = () => {
-    navigate(Paths.PROJECT_EDIT_END_DATE);
-    dispatch(setProjectId(id));
-  };
+  const navigateToEditEndDate = () => navigate(`/project/${id}/edit-end-date`);
 
   return (
     <StageCard
