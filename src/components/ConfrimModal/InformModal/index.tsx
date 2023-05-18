@@ -1,4 +1,3 @@
-import { useNavigate } from 'react-router-dom';
 import Modal from '../Modal';
 import { Title } from '../styles';
 
@@ -6,19 +5,17 @@ interface Props {
   isOpen: boolean;
   onClose: () => void;
   informTitle: string;
-  backPath: string;
+  onBack: () => void;
 }
 
-const InformModal = ({ isOpen, onClose, informTitle, backPath }: Props) => {
-  const navigate = useNavigate();
-
+const InformModal = ({ isOpen, onClose, informTitle, onBack }: Props) => {
   const handleClose = () => {
     onClose();
-    navigate(backPath);
+    onBack();
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={handleClose} backPath={backPath}>
+    <Modal isOpen={isOpen} onClose={handleClose} onBack={onBack}>
       <Title dangerouslySetInnerHTML={{ __html: informTitle }} />
     </Modal>
   );

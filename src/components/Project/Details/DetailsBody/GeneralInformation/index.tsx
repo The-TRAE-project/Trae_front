@@ -2,11 +2,8 @@ import { useNavigate } from 'react-router-dom';
 import { Stack } from '@mantine/core';
 
 import { Project } from '../../../../../store/apis/project/types';
-import { useAppDispatch } from '../../../../../helpers/hooks/useAppDispatch';
 import InfoText from '../../../InfoText';
 import StageCard from '../../../StageCard';
-import { Paths } from '../../../../../constants/paths';
-import { setProjectId } from '../../../../../store/slices/project';
 
 interface Props {
   project: Project;
@@ -14,14 +11,11 @@ interface Props {
 
 const GeneralInformation = ({ project }: Props) => {
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
 
   const constructorFullName = `${project.managerDto.firstName} ${project.managerDto.lastName}`;
 
-  const navigateToEditGeneralInfo = () => {
-    navigate(Paths.PROJECT_EDIT_GENERAL_INFO);
-    dispatch(setProjectId(project.id));
-  };
+  const navigateToEditGeneralInfo = () =>
+    navigate(`/project/${project.id}/edit-general-info`);
 
   return (
     <StageCard

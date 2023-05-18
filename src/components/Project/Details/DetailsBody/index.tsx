@@ -1,6 +1,6 @@
 import { Project } from '../../../../store/apis/project/types';
+import { TwoColumnGrid } from '../../../styles';
 import DetailsCard from '../../DetailsCard';
-import { Grid } from '../../styles';
 import Dates from './Dates';
 import GeneralInformation from './GeneralInformation';
 import Operations from './Operations';
@@ -12,14 +12,16 @@ interface Props {
 const DetailsBody = ({ project }: Props) => {
   return (
     <DetailsCard projectNumber={project.number}>
-      <Grid>
+      <TwoColumnGrid>
         <GeneralInformation project={project} />
         <Dates project={project} />
+        {/* // TODO: */}
         <Operations
+          projectId={project.id}
           projectOperations={project.operations}
           isEnded={!project.isEnded}
         />
-      </Grid>
+      </TwoColumnGrid>
     </DetailsCard>
   );
 };

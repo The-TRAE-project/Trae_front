@@ -1,6 +1,6 @@
 import { Stack } from '@mantine/core';
+import { useParams } from 'react-router-dom';
 
-import { useAppSelector } from '../../../helpers/hooks/useAppSelector';
 import { useDisplayError } from '../../../helpers/hooks/useDisplayError';
 import { useGetProjectByIdQuery } from '../../../store/apis/project';
 import Loader from '../../Loader';
@@ -8,14 +8,14 @@ import DetailsBody from './DetailsBody';
 import DetailsHeader from './DetailsHeader';
 
 const Details = () => {
-  const { projectId } = useAppSelector((store) => store.project);
+  const { id } = useParams();
 
   const {
     data: project,
     isLoading,
     error,
     isError,
-  } = useGetProjectByIdQuery(projectId as number);
+  } = useGetProjectByIdQuery(Number(id as string));
 
   useDisplayError(error, isError);
 

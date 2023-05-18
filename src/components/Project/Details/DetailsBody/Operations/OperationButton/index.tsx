@@ -1,17 +1,17 @@
 import { useNavigate } from 'react-router-dom';
 
-import { Paths } from '../../../../../../constants/paths';
 import { useAppDispatch } from '../../../../../../helpers/hooks/useAppDispatch';
 import { ProjectOperation } from '../../../../../../store/apis/project/types';
 import { setProjectStage } from '../../../../../../store/slices/project';
 import { Button } from './styles';
 
 interface Props {
+  projectId: number;
   projectOperation: ProjectOperation;
   isEnded: boolean;
 }
 
-const OperationButton = ({ projectOperation, isEnded }: Props) => {
+const OperationButton = ({ projectId, projectOperation, isEnded }: Props) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
@@ -21,7 +21,7 @@ const OperationButton = ({ projectOperation, isEnded }: Props) => {
     projectOperation.readyToAcceptance && 'readyToAcceptance';
 
   const handleNavigateToDetails = () => {
-    navigate(Paths.PROJECT_STAGE);
+    navigate(`/project/${projectId}/stage`);
     dispatch(setProjectStage(projectOperation));
   };
 

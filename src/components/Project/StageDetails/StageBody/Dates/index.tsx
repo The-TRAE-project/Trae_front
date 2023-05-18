@@ -56,7 +56,7 @@ const Dates = ({ projectOperation }: Props) => {
           </Stack>
           <Center>
             {period ? (
-              <DateBadge>{convertHoursToDays(period)} дней</DateBadge>
+              <DateBadge>{convertHoursToDays(period)}</DateBadge>
             ) : null}
           </Center>
         </Stack>
@@ -72,7 +72,7 @@ const Dates = ({ projectOperation }: Props) => {
           </Stack>
           <Center>
             {actualPeriod ? (
-              <DateBadge>{convertHoursToDays(actualPeriod)} дней</DateBadge>
+              <DateBadge>{convertHoursToDays(actualPeriod)}</DateBadge>
             ) : null}
           </Center>
         </Stack>

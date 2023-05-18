@@ -1,7 +1,11 @@
 import { Center, Stack } from '@mantine/core';
+import { useNavigate } from 'react-router-dom';
 
+import { Paths } from '../../../../../constants/paths';
 import { convertHoursToDays } from '../../../../../helpers/convertHoursToDays';
+import { useAppDispatch } from '../../../../../helpers/hooks/useAppDispatch';
 import { Project } from '../../../../../store/apis/project/types';
+import { setProjectId } from '../../../../../store/slices/project';
 import { formatDate } from '../../../helpers/formatDate';
 import StageCard from '../../../StageCard';
 import { DateBadge } from '../../../styles';
@@ -12,7 +16,11 @@ interface Props {
 }
 
 const Dates = ({ project }: Props) => {
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
   const {
+    id,
     startDate,
     plannedEndDate,
     period,
@@ -22,8 +30,17 @@ const Dates = ({ project }: Props) => {
     endDateInContract,
   } = project;
 
+  const navigateToEditEndDate = () => {
+    navigate(Paths.PROJECT_EDIT_END_DATE);
+    dispatch(setProjectId(id));
+  };
+
   return (
-    <StageCard title="ДАТЫ" isWithEditButton={!project.isEnded}>
+    <StageCard
+      title="ДАТЫ"
+      isWithEditButton={!project.isEnded}
+      onClick={navigateToEditEndDate}
+    >
       <Grid>
         <Stack spacing={20} align="center">
           <br />
@@ -44,7 +61,7 @@ const Dates = ({ project }: Props) => {
             )}
           </Stack>
           <Center>
-            {period && <DateBadge>{convertHoursToDays(period)} дней</DateBadge>}
+            {period && <DateBadge>{convertHoursToDays(period)}</DateBadge>}
           </Center>
         </Stack>
         <Stack spacing={20}>
@@ -59,7 +76,7 @@ const Dates = ({ project }: Props) => {
           </Stack>
           <Center>
             {actualPeriod && (
-              <DateBadge>{convertHoursToDays(actualPeriod)} дней</DateBadge>
+              <DateBadge>{convertHoursToDays(actualPeriod)}</DateBadge>
             )}
           </Center>
         </Stack>

@@ -10,16 +10,16 @@ interface Props {
   isOpen: boolean;
   onClose: () => void;
   children: ReactNode;
-  backPath: string;
+  onBack: () => void;
 }
 
-const Modal = ({ isOpen, onClose, backPath, children }: Props) => {
+const Modal = ({ isOpen, onClose, onBack, children }: Props) => {
   const navigate = useNavigate();
   const { classes } = useModalStyles();
 
   const navigateBack = () => {
     onClose();
-    navigate(backPath);
+    onBack();
   };
 
   const navigateToHome = () => {

@@ -2,25 +2,25 @@ import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useForm, zodResolver } from '@mantine/form';
 
+import { Paths } from '../../../constants/paths';
 import { useDisplayError } from '../../../helpers/hooks/useDisplayError';
-import { showErrorNotification } from '../../../helpers/showErrorNotification';
 import { useOpenModal } from '../../../helpers/hooks/useOpenModal';
+import { showErrorNotification } from '../../../helpers/showErrorNotification';
 import {
+  useDeleteProjectMutation,
   useGetProjectByIdQuery,
-  useInsertNewOperationMutation,
 } from '../../../store/apis/project';
 import {
-  NewOperationFormValues,
-  NewOperationSchema,
+  ProjectDeleteFormValues,
+  ProjectDeleteSchema,
 } from '../../../store/apis/project/types';
-import FormHeader from '../../FormHeader';
-import Loader from '../../Loader';
 import NumberInput from '../../NumberInput';
+import Loader from '../../Loader';
 import InformModal from '../../InformModal';
-import { FormStack, InformModalText, TwoColumnGrid } from '../../styles';
-import StageSelect from './StageSelect';
+import FormHeader from '../../FormHeader';
+import { FormStack, TwoColumnGrid } from '../../styles';
 
-const NewStageForm = () => {
+const DeleteForm = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const { id } = useParams();
@@ -28,23 +28,19 @@ const NewStageForm = () => {
 
   const {
     data: project,
-    isLoading,
+    isLoading: isGetLoading,
     error,
     isError,
   } = useGetProjectByIdQuery(Number(id as string));
-  const [insertNewOperation, { isLoading: isInsertLoading, isSuccess }] =
-    useInsertNewOperationMutation();
+  const [deleteProject, { isLoading: isDeleteLoading, isSuccess }] =
+    useDeleteProjectMutation();
 
-  const form = useForm<Omit<NewOperationFormValues, 'projectId'>>({
+  const form = useForm<ProjectDeleteFormValues>({
     initialValues: {
-      name: '',
-      priority: 0,
-      typeWorkId: 0,
+      projectNumber: 0,
     },
     validate: (values) => {
-      const resolver = zodResolver(
-        NewOperationSchema.omit({ projectId: true })
-      );
+      const resolver = zodResolver(ProjectDeleteSchema);
       const errors = resolver(values);
       return errors;
     },
@@ -52,29 +48,33 @@ const NewStageForm = () => {
 
   useDisplayError(error, isError);
 
-  const handleSubmit = async (
-    values: Omit<NewOperationFormValues, 'projectId'>
+  const handleUpdateProjectEndDate = async (
+    values: ProjectDeleteFormValues
   ) => {
     try {
       if (!project) return;
 
-      await insertNewOperation({
-        ...values,
-        projectId: project.id,
-      }).unwrap();
+      if (project.number !== values.projectNumber) {
+        form.setFieldError(
+          'projectNumber',
+          'Номер проекта не соответствует текущему номеру!'
+        );
+        return;
+      }
+
+      await deleteProject(project.id).unwrap();
+
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       showErrorNotification(err.status, err?.data?.error);
-      form.reset();
     }
   };
 
   useOpenModal(setIsOpen, isSuccess);
 
-  const navigateBack = () => navigate(`/project/${id}/new-stage`);
+  const navigateBack = () => navigate(Paths.PROJECTS);
 
   const closeModal = () => {
-    form.reset();
     setIsOpen(false);
     navigateBack();
   };
@@ -84,28 +84,25 @@ const NewStageForm = () => {
       <InformModal
         isOpen={isOpen}
         onClose={closeModal}
-        title="Изменения сохранены"
+        title={`Проект №${project?.number} удален`}
         onBack={navigateBack}
-      >
-        <InformModalText>
-          Добавлен этап : <strong>{form.values.name}</strong>
-        </InformModalText>
-      </InformModal>
-      <FormStack onSubmit={form.onSubmit(handleSubmit)}>
-        {!isLoading && !!project ? (
+      />
+
+      <FormStack onSubmit={form.onSubmit(handleUpdateProjectEndDate)}>
+        {!isGetLoading && !!project ? (
           <>
             <FormHeader
-              isSubmitBtnDisabled={isInsertLoading}
-              isSubmitBtnLoading={isInsertLoading}
-              onBack={navigateBack}
+              submitBtnText="Удалить"
+              isSubmitBtnLoading={isDeleteLoading}
+              isSubmitBtnDisabled={isDeleteLoading}
+              onBack={() => navigate(`/project/${id}/details`)}
             />
 
             <TwoColumnGrid>
-              <StageSelect form={form} />
               <NumberInput
-                {...form.getInputProps('priority')}
-                label="Приоритет"
-                placeholder="Приоритет"
+                {...form.getInputProps('projectNumber')}
+                label="Введите номер удаляемого проекта"
+                placeholder="Номер проекта"
                 min={0}
                 max={999}
                 minLength={1}
@@ -121,4 +118,4 @@ const NewStageForm = () => {
   );
 };
 
-export default NewStageForm;
+export default DeleteForm;

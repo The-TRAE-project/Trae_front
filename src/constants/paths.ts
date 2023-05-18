@@ -6,7 +6,7 @@ export const Paths = {
   DASHBOARD: '/dashboard',
   PROJECTS: '/projects',
   PROJECT_DETAILS: '/project/:id/details',
-  PROJECT_STAGE: '/projects/stage',
+  PROJECT_STAGE: '/project/:id/stage',
   PROJECT_CREATE: '/projects/create',
   PROJECT_EDIT_GENERAL_INFO: '/project/:id/edit-general-info',
   PROJECT_EDIT_END_DATE: '/project/:id/edit-end-date',

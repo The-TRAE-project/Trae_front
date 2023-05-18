@@ -12,16 +12,27 @@ interface Props {
   onClose: () => void;
   children?: ReactNode;
   title: string;
-  backPath: string;
+  backPath?: string;
+  onBack?: () => void;
 }
 
-const InformModal = ({ isOpen, onClose, children, title, backPath }: Props) => {
+const InformModal = ({
+  isOpen,
+  onClose,
+  children,
+  title,
+  backPath,
+  onBack,
+}: Props) => {
   const navigate = useNavigate();
   const { classes } = useModalStyles();
 
   const navigateBack = () => {
     onClose();
-    navigate(backPath);
+    if (backPath) {
+      navigate(backPath);
+    }
+    onBack?.();
   };
 
   const navigateToHome = () => {

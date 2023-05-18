@@ -1,10 +1,10 @@
 import { Stack } from '@mantine/core';
 
 import { ProjectOperation } from '../../../../store/apis/project/types';
+import { TwoColumnGrid } from '../../../styles';
 import DetailsCard from '../../DetailsCard';
 import InfoText from '../../InfoText';
 import StageCard from '../../StageCard';
-import { Grid } from '../../styles';
 import Dates from './Dates';
 
 interface Props {
@@ -20,7 +20,7 @@ const StageBody = ({ projectStage }: Props) => {
 
   return (
     <DetailsCard projectNumber={projectStage.projectNumber}>
-      <Grid>
+      <TwoColumnGrid>
         <StageCard title="ЭТАП" isWithEditButton={false}>
           <Stack spacing={16}>
             <InfoText label="Этап" text={projectStage.name} />
@@ -37,7 +37,7 @@ const StageBody = ({ projectStage }: Props) => {
           </Stack>
         </StageCard>
         <Dates projectOperation={projectStage} />
-      </Grid>
+      </TwoColumnGrid>
     </DetailsCard>
   );
 };

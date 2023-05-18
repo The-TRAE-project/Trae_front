@@ -1,23 +1,23 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Stack } from '@mantine/core';
 
 import { useAppSelector } from '../../../helpers/hooks/useAppSelector';
 import { useCloseProjectOperationMutation } from '../../../store/apis/project';
 import Loader from '../../Loader';
 import ConfirmModal from '../../ConfrimModal';
-import { Paths } from '../../../constants/paths';
+import FormHeader from '../../FormHeader';
 import { showErrorNotification } from '../../../helpers/showErrorNotification';
 import StageBody from './StageBody';
-import StageHeader from './StageHeader';
 
 const StageDetails = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
+  const { id } = useParams();
   const navigate = useNavigate();
   const { projectStage } = useAppSelector((store) => store.project);
 
-  const [closeOperation, { isLoading, isSuccess }] =
+  const [closeOperation, { isLoading: isCloseLoading, isSuccess }] =
     useCloseProjectOperationMutation();
 
   const handleSubmit = async () => {
@@ -39,15 +39,18 @@ const StageDetails = () => {
     projectStage?.projectNumber
   } <br /> завершен `;
 
+  const navigateToBack = () => navigate(`/project/${id}/details`);
+
   return (
     <>
       <Stack spacing={99}>
         {projectStage ? (
           <>
-            <StageHeader
-              isInWork={projectStage.inWork}
-              isLoading={isLoading}
-              onOpen={() => setIsOpen(true)}
+            <FormHeader
+              isShowSubmitBtn={false}
+              isShowClickBtn={projectStage.inWork}
+              onClick={() => setIsOpen(true)}
+              onBack={navigateToBack}
             />
             <StageBody projectStage={projectStage} />
           </>
@@ -60,13 +63,12 @@ const StageDetails = () => {
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
         onSubmit={handleSubmit}
-        // TODO:
-        onCallAtTheEnd={() => navigate(-2)}
+        onCallAtTheEnd={navigateToBack}
         isSuccess={isSuccess}
-        isLoading={isLoading}
+        isLoading={isCloseLoading}
         confirmTitle={confirmTitle}
         informTitle={informTitle}
-        backPath={Paths.PROJECT_DETAILS}
+        onBack={navigateToBack}
       />
     </>
   );

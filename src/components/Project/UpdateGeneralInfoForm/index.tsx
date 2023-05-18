@@ -8,7 +8,6 @@ import {
   UpdateProjectFormValues,
   UpdateProjectSchema,
 } from '../../../store/apis/project/types';
-import { Paths } from '../../../constants/paths';
 import { checkForEquality } from '../../../helpers/checkForEquality';
 import { useDisplayError } from '../../../helpers/hooks/useDisplayError';
 import { useOpenModal } from '../../../helpers/hooks/useOpenModal';
@@ -86,9 +85,11 @@ const UpdateGeneralInfo = () => {
     checkForEquality(customer, project?.customer) &&
     checkForEquality(commentary, project?.comment);
 
+  const navigateToBack = () => navigate(`/project/${id}/details`);
+
   const closeModal = () => {
     setIsOpen(false);
-    navigate(`/project/${id}/details`);
+    navigateToBack();
   };
 
   return (
@@ -97,6 +98,7 @@ const UpdateGeneralInfo = () => {
         isOpen={isOpen}
         onClose={closeModal}
         title="Изменения сохранены"
+        onBack={navigateToBack}
       >
         <Stack spacing={20}>
           {!!updatedProject && (
@@ -145,7 +147,7 @@ const UpdateGeneralInfo = () => {
             <FormHeader
               isSubmitBtnLoading={isEditLoading}
               isSubmitBtnDisabled={isEditLoading || isDisabled}
-              onBack={() => navigate(Paths.PROJECT_DETAILS)}
+              onBack={navigateToBack}
             />
 
             <FormBody form={form} />

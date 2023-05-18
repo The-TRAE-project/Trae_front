@@ -15,7 +15,7 @@ interface Props {
   isLoading: boolean;
   confirmTitle: string;
   informTitle: string;
-  backPath: string;
+  onBack: () => void;
 }
 
 const ConfirmModal = ({
@@ -27,7 +27,7 @@ const ConfirmModal = ({
   isLoading,
   confirmTitle,
   informTitle,
-  backPath,
+  onBack,
 }: Props) => {
   const [isInform, setIsInform] = useState<boolean>(false);
 
@@ -46,7 +46,7 @@ const ConfirmModal = ({
 
   return (
     <>
-      <Modal isOpen={isOpen} onClose={onClose} backPath={backPath}>
+      <Modal isOpen={isOpen} onClose={onClose} onBack={onBack}>
         <Stack spacing={40} align="center">
           <Title dangerouslySetInnerHTML={{ __html: confirmTitle }} />
           <Group spacing={40}>
@@ -73,7 +73,7 @@ const ConfirmModal = ({
         isOpen={isInform}
         onClose={handleClose}
         informTitle={informTitle}
-        backPath={backPath}
+        onBack={onBack}
       />
     </>
   );
