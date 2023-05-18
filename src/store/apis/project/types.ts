@@ -41,8 +41,8 @@ export const CreateProjectSchema = z.object({
     .max(30, { message: 'Имя проекта должно быть не больше 30 символов' }),
   number: z
     .number({
-      required_error: 'Пожалуйста, заполните номер проекта!',
-      invalid_type_error: 'Не правильный номер проекта!',
+      required_error: 'Пожалуйста, заполните поле номер проекта!',
+      invalid_type_error: 'Не правильный формат номера проекта!',
     })
     .min(1, { message: 'Номер проекта должен быть не меньше 1 символа' }),
   comment: z
@@ -164,8 +164,8 @@ export const UpdateProjectSchema = z.object({
     .nullable(),
   projectNumber: z
     .number({
-      required_error: 'Пожалуйста, заполните номер проекта!',
-      invalid_type_error: 'Не правильный номер проекта!',
+      required_error: 'Пожалуйста, заполните поле номер проекта!',
+      invalid_type_error: 'Не правильный формат номера проекта!',
     })
     .min(1, { message: 'Номер проекта должен быть не меньше 1 символа' })
     .nullable(),
@@ -197,8 +197,8 @@ export type UpdateEndDateFormValues = z.infer<typeof UpdateEndDateSchema>;
 export const ProjectDeleteSchema = z.object({
   projectNumber: z
     .number({
-      required_error: 'Пожалуйста, заполните номер проекта!',
-      invalid_type_error: 'Не правильный номер проекта!',
+      required_error: 'Пожалуйста, заполните поле номер проекта!',
+      invalid_type_error: 'Не правильный формат номера проекта!',
     })
     .min(1, { message: 'Номер проекта должен быть не меньше 1 символа' }),
 });
@@ -212,7 +212,7 @@ export const NewOperationSchema = z.object({
   priority: z
     .number({
       required_error: 'Поле приоритет не должно быть пустым!',
-      invalid_type_error: 'Не правильный приоритета!',
+      invalid_type_error: 'Не правильный формат приоритета!',
     })
     .min(1, {
       message: 'Пожалуйста, заполните поле приоритет!',

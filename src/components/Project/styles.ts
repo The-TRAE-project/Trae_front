@@ -69,8 +69,8 @@ export const SelectDisplayInput = styled.div`
 
   p {
     font-family: var(--font-roboto);
-    font-weight: 500;
-    ${({ theme }) => theme.mixins.fontSize28};
+    font-weight: 400;
+    ${({ theme }) => theme.mixins.fontSize22};
     color: var(--white-black);
   }
 `;
@@ -93,10 +93,6 @@ export const useSelectMenuStyles = createStyles(() => ({
   },
 
   item: {
-    fontSize: 22,
-    lineHeight: '26px',
-    fontWeight: 400,
-    color: 'var(--white-black)',
     padding: 0,
   },
 
@@ -104,14 +100,18 @@ export const useSelectMenuStyles = createStyles(() => ({
     display: 'flex',
     alignItems: 'center',
     gap: 11,
+    fontSize: 22,
+    lineHeight: '26px',
+    fontWeight: 400,
+    color: 'var(--white-black)',
   },
 }));
 
 export const SelectGrid = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
-  column-gap: 20px;
-  row-gap: 21px;
+  column-gap: 0px;
+  row-gap: 15px;
   max-height: 240px;
   overflow: auto;
 `;
@@ -183,6 +183,12 @@ export const useExtraStageInputStyles = createStyles(() => ({
   itemsWrapper: {
     padding: 24,
     gap: 16,
+  },
+
+  dropdown: {
+    background: 'var(--white)',
+    boxShadow: '2px -1px 4px rgba(0, 0, 0, 0.25)',
+    borderRadius: 'var(--border-radius)',
   },
 
   dropdownItem: {

@@ -4,6 +4,6 @@ export interface AdditionalOperation {
 }
 
 export const setAdditionalOperation = () => ({
-  idx: Math.floor(Math.random() * 1000),
+  idx: Math.floor(Math.random() * 1500),
   isVisible: true,
 });

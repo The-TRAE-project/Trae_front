@@ -8,35 +8,35 @@ import {
 } from '../../../../store/apis/project/types';
 import { ErrorMessage } from '../../../styles';
 import {
+  SelectArrow,
+  SelectDisplayInput,
+  SelectGrid,
+  SelectLabel,
+  SelectWrapper,
+  useSelectMenuStyles,
+} from '../../styles';
+import {
   ModifiedWorkType,
   useModifyWorkTypes,
 } from './helpers/useModifyWorkTypes';
-import { useClearStates } from './helpers/useClearStates';
 import { useSetOperations } from './helpers/useSetOperations';
+import { useSetShipmentOperation } from './helpers/useSetShipmentOperation';
 import {
   AdditionalOperation,
   setAdditionalOperation,
 } from './helpers/setAdditionalOperation';
-import ExtraOperation from './ExtraOperation';
+import { useClearStates } from './helpers/useClearStates';
+import ExtraStages from './ExtraStages';
 import SelectButton from './SelectButton';
-import SelectedOperation from './SelectedOperation';
-import {
-  ActiveCircle,
-  Arrow,
-  DisplayInput,
-  Grid,
-  Label,
-  NotActiveCircle,
-  useMenuStyles,
-  Wrapper,
-} from './styles';
+import SelectedStage from './SelectedStage';
+import { ActiveCircle, NotActiveCircle } from './styles';
 
 interface Props {
   form: UseFormReturnType<CreateProjectFormValues>;
   isSuccess: boolean;
 }
 
-const OperationsInput = ({ form, isSuccess }: Props) => {
+const StageSelect = ({ form, isSuccess }: Props) => {
   const [ids, setIds] = useState<number[]>([]);
   const [opened, setOpened] = useState<boolean>(false);
   const [selectedOperations, setSelectedOperations] = useState<
@@ -47,11 +47,20 @@ const OperationsInput = ({ form, isSuccess }: Props) => {
   >([setAdditionalOperation()]);
 
   const {
-    classes: { dropdown, divider },
-  } = useMenuStyles();
-  const modifiedWorkTypes = useModifyWorkTypes();
+    classes: { dropdown, divider, item, itemLabel },
+  } = useSelectMenuStyles();
+
+  const { modifiedWorkTypes, shipmentOnly } = useModifyWorkTypes();
 
   useSetOperations(form, selectedOperations);
+  useSetShipmentOperation(
+    opened,
+    shipmentOnly,
+    selectedOperations,
+    setSelectedOperations,
+    ids,
+    setIds
+  );
 
   const handleSelectOperation = (workType: Operation, idx: number) => {
     if (!ids.includes(idx)) {
@@ -65,9 +74,9 @@ const OperationsInput = ({ form, isSuccess }: Props) => {
       setIds((prevState) => [...prevState, idx]);
     } else if (ids.includes(idx)) {
       const filteredOperations =
-        selectedOperations?.filter((item) => item.idx !== idx) || [];
+        selectedOperations?.filter((it) => it.idx !== idx) || [];
       setSelectedOperations(filteredOperations);
-      const filteredIds = ids?.filter((item) => item !== idx) || [];
+      const filteredIds = ids?.filter((it) => it !== idx) || [];
       setIds(filteredIds);
     }
   };
@@ -88,33 +97,34 @@ const OperationsInput = ({ form, isSuccess }: Props) => {
   useClearStates(isSuccess, handleClearStates);
 
   return (
-    <Wrapper>
-      <Label>Этапы</Label>
+    <SelectWrapper>
+      <SelectLabel>Этапы</SelectLabel>
       <Menu
         opened={opened}
         onChange={setOpened}
-        classNames={{ dropdown, divider }}
+        closeOnItemClick={false}
+        classNames={{ dropdown, divider, item, itemLabel }}
       >
         <Menu.Target>
-          <DisplayInput>
+          <SelectDisplayInput>
             <input type="text" {...form.getInputProps('operations')} />
             {selectedOperations &&
               selectedOperations.map((selectedOperation) => (
-                <SelectedOperation
+                <SelectedStage
                   key={selectedOperation.idx}
                   selectedOperation={selectedOperation}
                   checkIsOperationSelected={checkIsOperationSelected}
                 />
               ))}
-            <Arrow $isOpen={opened} size={34} />
-          </DisplayInput>
+            <SelectArrow $isOpen={opened} size={34} />
+          </SelectDisplayInput>
         </Menu.Target>
         {form.errors && form.errors.operations && (
           <ErrorMessage>{form.errors.operations}</ErrorMessage>
         )}
 
         <Menu.Dropdown>
-          <Grid>
+          <SelectGrid>
             {modifiedWorkTypes &&
               modifiedWorkTypes.map((modifiedWorkType) => (
                 <SelectButton
@@ -124,12 +134,12 @@ const OperationsInput = ({ form, isSuccess }: Props) => {
                   checkIsOperationSelected={checkIsOperationSelected}
                 />
               ))}
-          </Grid>
+          </SelectGrid>
           <Menu.Divider />
           <Stack spacing={20}>
             {additionalOperations &&
               additionalOperations.map((additionalOperation) => (
-                <ExtraOperation
+                <ExtraStages
                   key={additionalOperation.idx}
                   additionalOperation={additionalOperation}
                   handleSelectOperation={handleSelectOperation}
@@ -142,8 +152,8 @@ const OperationsInput = ({ form, isSuccess }: Props) => {
           </Stack>
         </Menu.Dropdown>
       </Menu>
-    </Wrapper>
+    </SelectWrapper>
   );
 };
 
-export default OperationsInput;
+export default StageSelect;

@@ -1,6 +1,9 @@
+import { Menu } from '@mantine/core';
+
 import { Operation } from '../../../../../store/apis/project/types';
+import { WorkTypeStatuses } from '../../../../../store/apis/workTypes/types';
 import { ModifiedWorkType } from '../helpers/useModifyWorkTypes';
-import { Wrapper } from './styles';
+import { NotActiveCircle } from '../styles';
 
 interface Props {
   workType: ModifiedWorkType;
@@ -16,13 +19,18 @@ const SelectButton = ({
   const { name, typeWorkId, idx } = workType;
 
   return (
-    <Wrapper
+    <Menu.Item
       type="button"
       onClick={() => handleSelectOperation({ name, typeWorkId }, idx)}
+      disabled={name === WorkTypeStatuses.SHIPMENT}
     >
-      {checkIsOperationSelected(idx)}
+      {name === WorkTypeStatuses.SHIPMENT ? (
+        <NotActiveCircle $isActive={name === WorkTypeStatuses.SHIPMENT} />
+      ) : (
+        checkIsOperationSelected(idx)
+      )}
       <span>{name}</span>
-    </Wrapper>
+    </Menu.Item>
   );
 };
 

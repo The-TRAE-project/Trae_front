@@ -58,7 +58,15 @@ const StageSelect = ({ form }: Props) => {
   });
 
   const {
-    classes: { label, input, error, rightSection, dropdownItem, itemsWrapper },
+    classes: {
+      label,
+      input,
+      error,
+      rightSection,
+      dropdown: dropdownWrapper,
+      dropdownItem,
+      itemsWrapper,
+    },
   } = useExtraStageInputStyles();
   const {
     classes: { dropdown, divider, item, itemLabel },
@@ -70,12 +78,10 @@ const StageSelect = ({ form }: Props) => {
       )
     : [];
   const workTypesSelectItems: SelectItem[] = workTypesWithoutShipment
-    ? workTypesWithoutShipment
-        .filter((workType) => workType.name !== WorkTypeStatuses.SHIPMENT)
-        .map<SelectItem>((workType) => ({
-          value: String(workType.id),
-          label: workType.name,
-        }))
+    ? workTypesWithoutShipment.map<SelectItem>((workType) => ({
+        value: String(workType.id),
+        label: workType.name,
+      }))
     : [];
 
   const chooseTypeWork = (name: string, typeWorkId: number) => {
@@ -152,6 +158,7 @@ const StageSelect = ({ form }: Props) => {
                   input,
                   error,
                   rightSection,
+                  dropdown: dropdownWrapper,
                   itemsWrapper,
                   item: dropdownItem,
                 }}

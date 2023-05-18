@@ -27,7 +27,7 @@ const StageDetails = () => {
       await closeOperation(projectStage.id).unwrap();
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
-      showErrorNotification(error.data.status, error.data.error);
+      showErrorNotification(error?.data?.status, error?.data?.error);
     }
   };
 

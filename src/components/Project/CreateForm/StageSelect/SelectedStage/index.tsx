@@ -6,7 +6,7 @@ interface Props {
   checkIsOperationSelected: (idx: number) => JSX.Element;
 }
 
-const SelectedOperation = ({
+const SelectedStage = ({
   selectedOperation,
   checkIsOperationSelected,
 }: Props) => {
@@ -18,4 +18,4 @@ const SelectedOperation = ({
   );
 };
 
-export default SelectedOperation;
+export default SelectedStage;

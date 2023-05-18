@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Group } from '@mantine/core';
 import { useForm, zodResolver } from '@mantine/form';
-import { BsArrowLeft, BsFillHouseFill } from 'react-icons/bs';
+import dayjs from 'dayjs';
 
 import {
   CreateProjectFormValues,
@@ -10,20 +9,19 @@ import {
 } from '../../../store/apis/project/types';
 import { useCreateProjectMutation } from '../../../store/apis/project';
 import { showErrorNotification } from '../../../helpers/showErrorNotification';
+import { useOpenModal } from '../../../helpers/hooks/useOpenModal';
 import { Paths } from '../../../constants/paths';
-import Loader from '../../Loader';
 import DatePicker from '../../DatePicker';
 import TextInput from '../../TextInput';
 import NumberInput from '../../NumberInput';
 import InformModal from '../../InformModal';
 import Textarea from '../../Textarea';
-import { FormWrapper, OrangeButton, UnstyledButton } from '../../styles';
-import OperationsInput from './OperationsInput';
-import { Grid } from './styles';
+import FormHeader from '../../FormHeader';
+import { FormWrapper, TwoColumnGrid } from '../../styles';
+import StageSelect from './StageSelect';
 
 const CreateForm = () => {
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [isSuccess, setIsSuccess] = useState<boolean>(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const navigate = useNavigate();
   const form = useForm<CreateProjectFormValues>({
@@ -33,7 +31,7 @@ const CreateForm = () => {
       number: 0,
       operations: [],
       comment: '',
-      plannedEndDate: new Date(),
+      plannedEndDate: dayjs(new Date()).add(48, 'hour').toDate(),
     },
     validate: (values) => {
       const resolver = zodResolver(CreateProjectSchema);
@@ -42,57 +40,42 @@ const CreateForm = () => {
     },
   });
 
-  const [createProject, { isLoading }] = useCreateProjectMutation();
+  const [createProject, { isLoading, isSuccess }] = useCreateProjectMutation();
 
   const handleSubmit = async (values: CreateProjectFormValues) => {
     try {
       await createProject(values).unwrap();
-      setIsModalOpen(true);
-      setIsSuccess(true);
       form.reset();
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
-      showErrorNotification(err.status, err.error);
+      showErrorNotification(err?.data?.status, err?.data?.error);
     }
   };
 
+  useOpenModal(setIsOpen, isSuccess);
+
   const closeModal = () => {
-    setIsModalOpen(false);
+    setIsOpen(false);
     navigate(Paths.PROJECTS);
   };
 
   return (
     <>
       <InformModal
-        isOpen={isModalOpen}
+        isOpen={isOpen}
         onClose={closeModal}
         title="Проект успешно добавлен"
         backPath={Paths.PROJECTS}
       />
 
       <FormWrapper onSubmit={form.onSubmit(handleSubmit)}>
-        <Group position="apart" spacing={100}>
-          <Group spacing={42}>
-            <UnstyledButton
-              onClick={() => navigate(Paths.PROJECTS)}
-              type="button"
-            >
-              <BsArrowLeft size={50} color="var(--orange)" />
-            </UnstyledButton>
-            <UnstyledButton
-              onClick={() => navigate(Paths.DASHBOARD)}
-              type="button"
-            >
-              <BsFillHouseFill size={44} color="var(--orange)" />
-            </UnstyledButton>
-          </Group>
+        <FormHeader
+          isSubmitBtnDisabled={isLoading}
+          isSubmitBtnLoading={isLoading}
+          onBack={() => navigate(Paths.PROJECTS)}
+        />
 
-          <OrangeButton disabled={isLoading} type="submit" $width={148}>
-            {isLoading ? <Loader size={35} /> : <span>Сохранить</span>}
-          </OrangeButton>
-        </Group>
-
-        <Grid>
+        <TwoColumnGrid>
           <NumberInput
             {...form.getInputProps('number')}
             label="Номер проекта"
@@ -118,8 +101,7 @@ const CreateForm = () => {
           />
           <DatePicker
             {...form.getInputProps('plannedEndDate')}
-            title="Срок изготовления"
-            defaultValue={new Date()}
+            title="Дата окончания проекта (договор)"
           />
           <Textarea
             {...form.getInputProps('comment')}
@@ -127,8 +109,8 @@ const CreateForm = () => {
             placeholder="Комментарий"
             maxLength={1000}
           />
-          <OperationsInput form={form} isSuccess={isSuccess} />
-        </Grid>
+          <StageSelect form={form} isSuccess={isSuccess} />
+        </TwoColumnGrid>
       </FormWrapper>
     </>
   );

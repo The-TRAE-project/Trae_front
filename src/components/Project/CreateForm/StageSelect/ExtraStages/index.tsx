@@ -9,12 +9,14 @@ import {
   OperationCreateSchema,
 } from '../../../../../store/apis/project/types';
 import { useGetActiveWorkTypesQuery } from '../../../../../store/apis/workTypes';
+import { WorkTypeStatuses } from '../../../../../store/apis/workTypes/types';
 import { UnstyledButton } from '../../../../styles';
+import { ExtraStageButton, useExtraStageInputStyles } from '../../../styles';
 import {
   AdditionalOperation,
   setAdditionalOperation,
 } from '../helpers/setAdditionalOperation';
-import { ExtraOperationButton, Plus, useInputStyles } from './styles';
+import { Plus } from './styles';
 
 interface Props {
   additionalOperation: AdditionalOperation;
@@ -25,7 +27,7 @@ interface Props {
   setAdditionalOperations: Dispatch<SetStateAction<AdditionalOperation[]>>;
 }
 
-const ExtraOperation = ({
+const ExtraStages = ({
   additionalOperation,
   handleSelectOperation,
   checkIsOperationSelected,
@@ -34,9 +36,6 @@ const ExtraOperation = ({
   setAdditionalOperations,
 }: Props) => {
   const { data: workTypes } = useGetActiveWorkTypesQuery();
-  const {
-    classes: { label, input, error, rightSection },
-  } = useInputStyles();
 
   const form = useForm<CreateOperationFormValues>({
     initialValues: {
@@ -50,11 +49,25 @@ const ExtraOperation = ({
     },
   });
 
+  const {
+    classes: {
+      label,
+      input,
+      error,
+      rightSection,
+      dropdown,
+      dropdownItem,
+      itemsWrapper,
+    },
+  } = useExtraStageInputStyles();
+
   const workTypesSelectItems: SelectItem[] = workTypes
-    ? workTypes.map<SelectItem>((workType) => ({
-        value: String(workType.id),
-        label: workType.name,
-      }))
+    ? workTypes
+        .filter((workType) => workType.name !== WorkTypeStatuses.SHIPMENT)
+        .map<SelectItem>((workType) => ({
+          value: String(workType.id),
+          label: workType.name,
+        }))
     : [];
 
   const handleSubmit = () => {
@@ -81,10 +94,10 @@ const ExtraOperation = ({
   return (
     <Stack spacing={16}>
       <Group position="apart" spacing={0}>
-        <ExtraOperationButton onClick={handleSubmit} type="button">
+        <ExtraStageButton onClick={handleSubmit} type="button">
           {checkIsOperationSelected(additionalOperation.idx)}
           <span>Другое</span>
-        </ExtraOperationButton>
+        </ExtraStageButton>
         {ids.includes(additionalOperation.idx) &&
           additionalOperation.isVisible && (
             <UnstyledButton onClick={addNewOperation} type="button">
@@ -93,7 +106,7 @@ const ExtraOperation = ({
           )}
       </Group>
 
-      <Group spacing={0} position="apart">
+      <Group spacing={0} position="apart" align="flex-start">
         <TextInput
           {...form.getInputProps('name')}
           label="Название этапа"
@@ -111,6 +124,9 @@ const ExtraOperation = ({
             input,
             error,
             rightSection,
+            dropdown,
+            itemsWrapper,
+            item: dropdownItem,
           }}
         />
       </Group>
@@ -118,4 +134,4 @@ const ExtraOperation = ({
   );
 };
 
-export default ExtraOperation;
+export default ExtraStages;

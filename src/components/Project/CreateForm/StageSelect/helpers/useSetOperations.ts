@@ -5,6 +5,7 @@ import {
   CreateProjectFormValues,
   Operation,
 } from '../../../../../store/apis/project/types';
+import { WorkTypeStatuses } from '../../../../../store/apis/workTypes/types';
 import { ModifiedWorkType } from './useModifyWorkTypes';
 
 export function useSetOperations(
@@ -12,10 +13,12 @@ export function useSetOperations(
   selectedOperations: ModifiedWorkType[]
 ) {
   useEffect(() => {
-    const operations = selectedOperations.map<Operation>((item) => ({
-      name: item.name,
-      typeWorkId: item.typeWorkId,
-    }));
+    const operations = selectedOperations
+      .filter((item) => item.name !== WorkTypeStatuses.SHIPMENT)
+      .map<Operation>((item) => ({
+        name: item.name,
+        typeWorkId: item.typeWorkId,
+      }));
     form.setFieldValue('operations', operations);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedOperations]);
