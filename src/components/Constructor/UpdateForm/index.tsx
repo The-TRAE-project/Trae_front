@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { useForm, zodResolver } from '@mantine/form';
 import dayjs from 'dayjs';
 
@@ -12,7 +13,6 @@ import {
   UserUpdateSchema,
 } from '../../../store/apis/user/types';
 import { Status } from '../../../store/types';
-import { useAppSelector } from '../../../helpers/hooks/useAppSelector';
 import { useDisplayError } from '../../../helpers/hooks/useDisplayError';
 import { showErrorNotification } from '../../../helpers/showErrorNotification';
 import { FormWrapper } from '../../styles';
@@ -26,7 +26,7 @@ const UpdateForm = () => {
   const [isUpdate, setIsUpdate] = useState<boolean>(false);
   const [currentUser, setCurrentUser] = useState<User | undefined>();
 
-  const { constructorId } = useAppSelector((store) => store.builder);
+  const { id } = useParams();
 
   const [
     updateUserSomeFields,
@@ -37,7 +37,7 @@ const UpdateForm = () => {
     isLoading: isGetLoading,
     error,
     isError,
-  } = useGetUserDetailsQuery(constructorId as number);
+  } = useGetUserDetailsQuery(Number(id as string));
   const isUserActive = user?.status ? 'Активный' : 'Заблокированный';
 
   const form = useForm<Omit<UserUpdateFormValues, 'managerId'>>({
@@ -85,7 +85,7 @@ const UpdateForm = () => {
       }
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
-      showErrorNotification(err.data.status, err.data.error);
+      showErrorNotification(err?.data?.status, err?.data?.error);
     }
   };
 

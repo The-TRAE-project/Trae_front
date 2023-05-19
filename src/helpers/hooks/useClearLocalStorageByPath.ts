@@ -45,5 +45,17 @@ export function useClearLocalStorageByPath() {
         removeItem(LocalStorage.USER_ROLE);
       }
     }
+
+    // if (!location.pathname.includes(Paths.PROJECTS)) {
+    //   const userStatus = getItem(LocalStorage.PROJECT_SEARCH_PAGE);
+    //   const userPage = getItem(LocalStorage.PROJECT_FILTER_PAGE);
+    //   const userRole = getItem(LocalStorage.PROJECT_FILTER_IS_ENDED);
+
+    //   if (!userStatus || userStatus || userRole || userPage) {
+    //     removeItem(LocalStorage.USER_STATUS);
+    //     removeItem(LocalStorage.USER_PAGE);
+    //     removeItem(LocalStorage.USER_ROLE);
+    //   }
+    // }
   }, [location.pathname]);
 }

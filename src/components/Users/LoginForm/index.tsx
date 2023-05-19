@@ -41,7 +41,9 @@ const Login = () => {
 
     try {
       setError(null);
-      await dispatch(loginUser(values)).unwrap();
+      const response = await dispatch(loginUser(values)).unwrap();
+
+      if (!response) return;
       const { permission } = await dispatch(
         getUserRole(values.username)
       ).unwrap();

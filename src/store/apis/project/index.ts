@@ -13,7 +13,7 @@ import {
 } from './types';
 
 const projectTags = baseApi.enhanceEndpoints({
-  addTagTypes: ['Project'],
+  addTagTypes: ['Project', 'Projects'],
 });
 
 const projectApi = projectTags.injectEndpoints({
@@ -26,7 +26,7 @@ const projectApi = projectTags.injectEndpoints({
           body,
         };
       },
-      invalidatesTags: ['Project'],
+      invalidatesTags: ['Projects'],
     }),
 
     deleteProject: build.mutation<void, number>({
@@ -41,7 +41,7 @@ const projectApi = projectTags.injectEndpoints({
 
     getProjectById: build.query<Project, number>({
       query: (projectId) => `/project/${projectId}`,
-      providesTags: ['Project'],
+      providesTags: ['Projects'],
     }),
 
     closeProjectOperation: build.mutation<void, number>({
@@ -51,7 +51,7 @@ const projectApi = projectTags.injectEndpoints({
           method: 'POST',
         };
       },
-      invalidatesTags: ['Project'],
+      invalidatesTags: ['Projects'],
     }),
 
     getProjects: build.query<
@@ -60,7 +60,7 @@ const projectApi = projectTags.injectEndpoints({
     >({
       query: (query) =>
         `/project/projects?direction=asc${query.elementPerPage}${query.page}${query.isEnded}${query.isOnlyFirstOpWithoutAcceptance}${query.isOnlyLastOpInWork}`,
-      providesTags: ['Project'],
+      providesTags: ['Projects', 'Project'],
     }),
 
     searchProjects: build.query<
@@ -69,7 +69,7 @@ const projectApi = projectTags.injectEndpoints({
     >({
       query: (query) =>
         `/project/search?direction=asc${query.elementPerPage}${query.page}${query.projectNumberOrCustomer}`,
-      providesTags: ['Project'],
+      providesTags: ['Projects'],
     }),
 
     editProject: build.mutation<
@@ -83,7 +83,7 @@ const projectApi = projectTags.injectEndpoints({
           body,
         };
       },
-      invalidatesTags: ['Project'],
+      invalidatesTags: ['Projects'],
     }),
 
     editProjectEndDate: build.mutation<
@@ -97,7 +97,7 @@ const projectApi = projectTags.injectEndpoints({
           body,
         };
       },
-      invalidatesTags: ['Project'],
+      invalidatesTags: ['Projects'],
     }),
 
     closeProject: build.mutation<void, number>({
@@ -107,7 +107,7 @@ const projectApi = projectTags.injectEndpoints({
           method: 'POST',
         };
       },
-      invalidatesTags: ['Project'],
+      invalidatesTags: ['Projects'],
     }),
 
     insertNewOperation: build.mutation<void, NewOperationFormValues>({
@@ -118,7 +118,7 @@ const projectApi = projectTags.injectEndpoints({
           body,
         };
       },
-      invalidatesTags: ['Project'],
+      invalidatesTags: ['Projects'],
     }),
   }),
 });

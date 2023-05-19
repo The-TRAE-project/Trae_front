@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useForm, zodResolver } from '@mantine/form';
 
+import dayjs from 'dayjs';
 import { convertToDate } from '../../../helpers/convertToDate';
 import { useDisplayError } from '../../../helpers/hooks/useDisplayError';
 import { useOpenModal } from '../../../helpers/hooks/useOpenModal';
@@ -20,7 +21,6 @@ import InformModal from '../../InformModal';
 import FormHeader from '../../FormHeader';
 import { FormStack, InformModalText, TwoColumnGrid } from '../../styles';
 import { formatDate } from '../helpers/formatDate';
-import { useSetDefaultValues } from './helpers/useSetDefaultValues';
 
 const UpdateEndDateForm = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -54,17 +54,24 @@ const UpdateEndDateForm = () => {
     },
   });
 
-  useSetDefaultValues(form, project);
-
   useDisplayError(error, isError);
 
   const handleUpdateProjectEndDate = async (
     values: Omit<UpdateEndDateFormValues, 'projectId'>
   ) => {
     try {
-      if (project) {
-        await editProjectEndDate({ ...values, projectId: project.id }).unwrap();
-      }
+      if (!project) return;
+      // TODO: MUST
+      const newDate = dayjs(
+        values.newPlannedAndContractEndDate?.getTime() as number
+      )
+        .add(24, 'hours')
+        .toDate();
+
+      await editProjectEndDate({
+        newPlannedAndContractEndDate: newDate,
+        projectId: project.id,
+      }).unwrap();
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       showErrorNotification(err?.data?.status, err?.data?.error);

@@ -1,53 +1,19 @@
-import { useLocalStorage } from '@mantine/hooks';
-
-import { useGetProjectsQuery } from '../../../store/apis/project';
-import { LocalStorage } from '../../../constants/localStorage';
-import { useDisplayError } from '../../../helpers/hooks/useDisplayError';
+import { Dispatch, SetStateAction } from 'react';
+import { FilteredResponse } from '../../../store/apis/types';
+import { ProjectShortInfo } from '../../../store/apis/project/types';
 import Loader from '../../Loader';
 import SliderButtons from '../../SliderButtons';
 import ProjectItem from './ProjectItem';
 import { Grid, Wrapper } from './styles';
 
 interface Props {
-  paramIsEnded: any;
-  paramIsOnlyFirstOpWithoutAcceptance: any;
-  paramIsOnlyLastOpInWork: any;
-  paramIsOverdueCurrentOpInProject: any;
+  page: number;
+  setPage: Dispatch<SetStateAction<number>>;
+  isLoading: boolean;
+  projects: FilteredResponse<ProjectShortInfo[]> | undefined;
 }
 
-const ProjectListItem = ({
-  paramIsEnded,
-  paramIsOnlyFirstOpWithoutAcceptance,
-  paramIsOnlyLastOpInWork,
-  paramIsOverdueCurrentOpInProject,
-}: Props) => {
-  const [page, setPage] = useLocalStorage<number>({
-    key: LocalStorage.USER_PAGE,
-    defaultValue: 0,
-  });
-
-  const {
-    data: projects,
-    error,
-    isError,
-    isLoading,
-  } = useGetProjectsQuery({
-    elementPerPage: `&elementPerPage=${10}`,
-    page: `&page=${page}`,
-    isEnded: paramIsEnded ? `&isEnded=${paramIsEnded}` : '',
-    isOnlyFirstOpWithoutAcceptance: paramIsOnlyFirstOpWithoutAcceptance
-      ? `&isOnlyFirstOpWithoutAcceptance=${paramIsOnlyFirstOpWithoutAcceptance}`
-      : '',
-    isOnlyLastOpInWork: paramIsOnlyLastOpInWork
-      ? `&isOnlyLastOpInWork=${paramIsOnlyLastOpInWork}`
-      : '',
-    isOverdueCurrentOpInProject: paramIsOverdueCurrentOpInProject
-      ? `&isOverdueCurrentOpInProject=${paramIsOverdueCurrentOpInProject}`
-      : '',
-  });
-
-  useDisplayError(error, isError);
-
+const ProjectListItem = ({ page, setPage, isLoading, projects }: Props) => {
   const prevSlide = () => {
     if (page !== 0) {
       setPage((prevPage) => prevPage - 1);
@@ -59,6 +25,7 @@ const ProjectListItem = ({
       setPage((prevPage) => prevPage + 1);
     }
   };
+
   return (
     <Wrapper>
       {!isLoading && !!projects ? (

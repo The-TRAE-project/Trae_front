@@ -11,7 +11,6 @@ import { LocalStorage } from '../../constants/localStorage';
 import { clearUserState, setCredentials } from '../slices/auth';
 import { TokenValue } from '../slices/auth/types';
 import { clearEmployeeState } from '../slices/employee';
-import { clearConstructorState } from '../slices/constructor';
 import { clearWorkTypeState } from '../slices/workType';
 import { clearProjectState } from '../slices/project';
 import { RootState } from '..';
@@ -58,7 +57,6 @@ const baseQueryWithReAuth = async (
     } else {
       api.dispatch(clearUserState());
       api.dispatch(clearEmployeeState());
-      api.dispatch(clearConstructorState());
       api.dispatch(clearWorkTypeState());
       api.dispatch(clearProjectState());
       removeItem(LocalStorage.NAVBAR_LIST);

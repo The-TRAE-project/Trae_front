@@ -1,9 +1,20 @@
+import { Dispatch, SetStateAction } from 'react';
+
 import { InputWrapper, Input, SearchIcon } from './styles';
 
-const ProjectSearchInput = () => {
+interface Props {
+  searchValue: string;
+  setSearchValue: Dispatch<SetStateAction<string>>;
+}
+
+const ProjectSearchInput = ({ searchValue, setSearchValue }: Props) => {
   return (
     <InputWrapper>
-      <Input placeholder="№ проекта или фамилия клиента" />
+      <Input
+        value={searchValue}
+        onChange={(event) => setSearchValue(event.currentTarget.value)}
+        placeholder="№ проекта или фамилия клиента"
+      />
       <SearchIcon />
     </InputWrapper>
   );

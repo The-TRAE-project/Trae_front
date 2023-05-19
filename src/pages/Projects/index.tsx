@@ -1,10 +1,14 @@
-import { Group, Stack } from '@mantine/core';
-import { useLocalStorage } from '@mantine/hooks';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Group, Stack } from '@mantine/core';
+import { useLocalStorage, useDebouncedValue } from '@mantine/hooks';
 import { BsFillHouseFill } from 'react-icons/bs';
 import { AiOutlinePlusCircle } from 'react-icons/ai';
 
-import { Status } from '../../store/apis/user/types';
+import {
+  useGetProjectsQuery,
+  useSearchProjectsQuery,
+} from '../../store/apis/project';
 import { Paths } from '../../constants/paths';
 import { LocalStorage } from '../../constants/localStorage';
 import SEO from '../../components/SEO';
@@ -19,12 +23,71 @@ import {
 } from '../../components/styles';
 
 const Projects = () => {
-  const [paramActive, setParamActive] = useLocalStorage<Status | null>({
-    key: LocalStorage.PROJECT_STATUS,
-    defaultValue: Status.ACTIVE,
+  const [searchValue, setSearchValue] = useState<string>('');
+  const [debounced] = useDebouncedValue(searchValue, 200);
+  const navigate = useNavigate();
+  const [searchPage, setSearchPage] = useLocalStorage<number>({
+    key: LocalStorage.PROJECT_SEARCH_PAGE,
+    defaultValue: 0,
   });
 
-  const navigate = useNavigate();
+  const [filterPage, setFilterPage] = useLocalStorage<number>({
+    key: LocalStorage.PROJECT_FILTER_PAGE,
+    defaultValue: 0,
+  });
+  const [paramIsEnded, setParamIsEnded] = useLocalStorage<boolean>({
+    key: LocalStorage.PROJECT_FILTER_IS_ENDED,
+    defaultValue: false,
+  });
+  const [paramIsFirstNoAcceptance, setParamIsFirstNoAcceptance] =
+    useLocalStorage<boolean>({
+      key: LocalStorage.PROJECT_FILTER_IS_NOT_ACCEPTANCE,
+      defaultValue: false,
+    });
+  const [paramIsLastInWork, setParamIsLastInWork] = useLocalStorage<boolean>({
+    key: LocalStorage.PROJECT_FILTER_IS_LAST_IN_WORK,
+    defaultValue: false,
+  });
+  const [paramIsCurrentOverdue, setParamIsCurrentOverdue] =
+    useLocalStorage<boolean>({
+      key: LocalStorage.PROJECT_FILTER_IS_CURRENT_OVERDUE,
+      defaultValue: false,
+    });
+
+  const { data: findProjectsBySearch, isLoading: isSearchLoading } =
+    useSearchProjectsQuery(
+      {
+        elementPerPage: `&elementPerPage=${10}`,
+        page: `&page=${searchPage}`,
+        projectNumberOrCustomer: `&projectNumberOrCustomer=${debounced}`,
+      },
+      {
+        skip: !debounced,
+      }
+    );
+
+  const { data: findProjectsByFilter, isLoading: isFilterLoading } =
+    useGetProjectsQuery({
+      elementPerPage: `&elementPerPage=${10}`,
+      page: `&page=${searchPage}`,
+      isEnded: paramIsEnded ? `&isEnded=${paramIsEnded}` : '',
+      isOnlyFirstOpWithoutAcceptance: paramIsFirstNoAcceptance
+        ? `&isOnlyFirstOpWithoutAcceptance=${paramIsFirstNoAcceptance}`
+        : '',
+      isOnlyLastOpInWork: paramIsLastInWork
+        ? `&isOnlyLastOpInWork=${paramIsLastInWork}`
+        : '',
+      isOverdueCurrentOpInProject: paramIsCurrentOverdue
+        ? `&isOverdueCurrentOpInProject=${paramIsCurrentOverdue}`
+        : '',
+    });
+
+  const resetFilterParams = () => {
+    setParamIsEnded(false);
+    setParamIsFirstNoAcceptance(false);
+    setParamIsLastInWork(false);
+    setParamIsCurrentOverdue(false);
+  };
 
   const navigateToHome = () => navigate(Paths.DASHBOARD);
   const navigateToCreateProjectPage = () => navigate(Paths.PROJECT_CREATE);
@@ -43,16 +106,25 @@ const Projects = () => {
             <Group position="apart" spacing={100}>
               <Group spacing={40}>
                 <ProjectFilterMenu
-                  status={paramActive}
-                  setStatus={setParamActive}
-                  resetStatus={() => setParamActive(null)}
+                  isEnded={paramIsEnded}
+                  setIsEnded={setParamIsEnded}
+                  isFirstNoAcceptance={paramIsLastInWork}
+                  setIsFirstNoAcceptance={setParamIsFirstNoAcceptance}
+                  isLastInWork={paramIsLastInWork}
+                  setIsLastInWork={setParamIsLastInWork}
+                  isCurrentOverdue={paramIsCurrentOverdue}
+                  setParamIsCurrentOverdue={setParamIsCurrentOverdue}
+                  reset={resetFilterParams}
                 />
                 <UnstyledButton onClick={navigateToHome} type="button">
                   <BsFillHouseFill size={44} color="var(--orange)" />
                 </UnstyledButton>
               </Group>
 
-              <ProjectSearchInput />
+              <ProjectSearchInput
+                searchValue={searchValue}
+                setSearchValue={setSearchValue}
+              />
 
               <OrangeButton onClick={navigateToCreateProjectPage} type="button">
                 <AiOutlinePlusCircle size={30} color="var(--white)" />
@@ -60,7 +132,21 @@ const Projects = () => {
               </OrangeButton>
             </Group>
 
-            <ProjectListItem />
+            {debounced ? (
+              <ProjectListItem
+                page={searchPage}
+                setPage={setSearchPage}
+                isLoading={isSearchLoading}
+                projects={findProjectsBySearch}
+              />
+            ) : (
+              <ProjectListItem
+                page={filterPage}
+                setPage={setFilterPage}
+                isLoading={isFilterLoading}
+                projects={findProjectsByFilter}
+              />
+            )}
           </Stack>
         </Container>
       </WrapperGradientGreen>

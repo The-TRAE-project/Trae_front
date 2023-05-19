@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm, zodResolver } from '@mantine/form';
-import dayjs from 'dayjs';
 
 import {
   CreateProjectFormValues,
@@ -31,7 +30,7 @@ const CreateForm = () => {
       number: 0,
       operations: [],
       comment: '',
-      plannedEndDate: dayjs(new Date()).add(48, 'hour').toDate(),
+      plannedEndDate: new Date(),
     },
     validate: (values) => {
       const resolver = zodResolver(CreateProjectSchema);
@@ -45,7 +44,6 @@ const CreateForm = () => {
   const handleSubmit = async (values: CreateProjectFormValues) => {
     try {
       await createProject(values).unwrap();
-      form.reset();
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       showErrorNotification(err?.data?.status, err?.data?.error);
@@ -57,6 +55,7 @@ const CreateForm = () => {
   const closeModal = () => {
     setIsOpen(false);
     navigate(Paths.PROJECTS);
+    form.reset();
   };
 
   return (
@@ -64,7 +63,7 @@ const CreateForm = () => {
       <InformModal
         isOpen={isOpen}
         onClose={closeModal}
-        title="Проект успешно добавлен"
+        title={`Проект №${form.values.number} успешно добавлен`}
         backPath={Paths.PROJECTS}
       />
 

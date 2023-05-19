@@ -20,13 +20,18 @@ const NavbarItem = ({ navbarLink }: Props) => {
 
   const handleNavigate = (itemPath: string) => navigate(itemPath);
 
+  const definePathIsActive = (link: string, path: string) => {
+    const splicedPath = path.split('/');
+    return link.includes(splicedPath[1]);
+  };
+
   return (
     <Wrapper>
       {navbarLink.value === Paths.PERSONAL_CABINET ? (
         <UserProfileButton
           type="button"
           onClick={() => handleNavigate(navbarLink.value)}
-          active={location.pathname.includes(navbarLink.value)}
+          $isActive={definePathIsActive(navbarLink.value, location.pathname)}
         >
           <BsPersonLinesFill size={48} />
         </UserProfileButton>
@@ -35,10 +40,7 @@ const NavbarItem = ({ navbarLink }: Props) => {
           <Button
             type="button"
             onClick={() => handleNavigate(navbarLink.value)}
-            active={
-              location.pathname.includes(navbarLink.value) ||
-              navbarLink.value.startsWith(location.pathname)
-            }
+            $isActive={definePathIsActive(navbarLink.value, location.pathname)}
             disabled={navbarLink.value === Paths.REPORTS}
           >
             {navbarLink.title}

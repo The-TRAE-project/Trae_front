@@ -1,8 +1,6 @@
 import { Dispatch, SetStateAction } from 'react';
 import { Menu, Checkbox, Group } from '@mantine/core';
 
-import { Status as StatusTitle } from '../../../store/types';
-import { Status } from '../../../store/apis/user/types';
 import Filter from '../../svgs/Filter';
 import {
   FilterMenuItemTitle,
@@ -11,24 +9,40 @@ import {
   useFilterMenuStyles,
 } from '../../styles';
 
-const statuses = [
+const inWorkStatuses = [
   {
-    value: Status.ACTIVE,
-    title: StatusTitle.ACTIVE,
+    value: true,
+    title: 'Новые',
   },
   {
-    value: Status.NOT_ACTIVE,
-    title: StatusTitle.BLOCKED,
+    value: true,
+    title: 'Новые',
   },
 ];
 
 interface Props {
-  status: Status | null;
-  setStatus: Dispatch<SetStateAction<Status | null>>;
-  resetStatus: () => void;
+  isEnded: boolean;
+  setIsEnded: Dispatch<SetStateAction<boolean>>;
+  isFirstNoAcceptance: boolean;
+  setIsFirstNoAcceptance: Dispatch<SetStateAction<boolean>>;
+  isLastInWork: boolean;
+  setIsLastInWork: Dispatch<SetStateAction<boolean>>;
+  isCurrentOverdue: boolean;
+  setParamIsCurrentOverdue: Dispatch<SetStateAction<boolean>>;
+  reset: () => void;
 }
 
-const ProjectFilterMenu = ({ status, setStatus, resetStatus }: Props) => {
+const ProjectFilterMenu = ({
+  isEnded,
+  setIsEnded,
+  isFirstNoAcceptance,
+  setIsFirstNoAcceptance,
+  isLastInWork,
+  setIsLastInWork,
+  isCurrentOverdue,
+  setParamIsCurrentOverdue,
+  reset,
+}: Props) => {
   const { classes } = useFilterMenuStyles();
   const {
     classes: { input, inner, icon },
@@ -50,28 +64,26 @@ const ProjectFilterMenu = ({ status, setStatus, resetStatus }: Props) => {
       </Menu.Target>
 
       <Menu.Dropdown>
-        {statuses.map((item) => (
-          <Menu.Item key={item.value} onClick={() => setStatus(item.value)}>
-            <Group spacing={12}>
-              <Checkbox
-                readOnly
-                checked={item.value === status}
-                classNames={{ input, inner, icon }}
-              />
-              <FilterMenuItemTitle $active={item.value === status}>
-                {item.title}
-              </FilterMenuItemTitle>
-            </Group>
-          </Menu.Item>
-        ))}
-        <Menu.Item onClick={resetStatus}>
+        <Menu.Item onClick={() => setIsEnded(true)}>
           <Group spacing={12}>
             <Checkbox
               readOnly
-              checked={!status}
+              checked={isEnded}
               classNames={{ input, inner, icon }}
             />
-            <FilterMenuItemTitle $active={!status}>Все</FilterMenuItemTitle>
+            <FilterMenuItemTitle $active={isEnded}>
+              Выполнены
+            </FilterMenuItemTitle>
+          </Group>
+        </Menu.Item>
+        <Menu.Item onClick={reset}>
+          <Group spacing={12}>
+            <Checkbox
+              readOnly
+              checked={!isEnded}
+              classNames={{ input, inner, icon }}
+            />
+            <FilterMenuItemTitle $active={!isEnded}>Все</FilterMenuItemTitle>
           </Group>
         </Menu.Item>
       </Menu.Dropdown>
