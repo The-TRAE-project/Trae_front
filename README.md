@@ -44,6 +44,14 @@ Frontend part of TRAE.
 
 ### Running the app
 
+##### Environment Variables
+
+To run this project, you will need to add the following environment variables to your .env file
+
+`VITE_BACK_API_URL`
+`VITE_A_TOKEN`
+`VITE_A_TOKEN_EXPIRATION`
+
 ##### In development mode
 
 - After installing all packages, run locally
