@@ -57,9 +57,10 @@ const Header = () => {
   const location = useLocation();
 
   useEffect(() => {
-    const previousItemIndex = list.findIndex((item) =>
-      location.pathname.includes(item.value)
-    );
+    const previousItemIndex = list.findIndex((item) => {
+      const slicedPath = location.pathname.split('/');
+      return item.value.includes(slicedPath[1]);
+    });
 
     setList(
       list.map((item) =>

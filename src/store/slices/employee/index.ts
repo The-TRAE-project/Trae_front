@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-import { RootState } from '../..';
 import instance from '../../../config/axiosConfig';
+import { RootState } from '../..';
 import { InitialState } from './types';
 
 const initialState = {
@@ -11,6 +11,7 @@ const initialState = {
   isModalOpen: false,
   employeeToEdit: null,
   projectNumber: null,
+  timer: 60 * 2,
 } as InitialState;
 
 export const loginEmployee = createAsyncThunk(
@@ -77,8 +78,10 @@ export const employeeSlice = createSlice({
     setEmployeeCredentials(state, action) {
       state.employee = action.payload;
       state.isLoggedIn = !!action.payload;
+      state.timer = 121;
     },
     clearEmployeeState(state) {
+      state.timer = 0;
       state.employee = null;
       state.isLoggedIn = false;
       state.isModalOpen = false;
@@ -89,7 +92,11 @@ export const employeeSlice = createSlice({
       state.employeeToEdit = action.payload;
     },
     setProjectNumber(state, action) {
+      state.timer = 121;
       state.projectNumber = action.payload;
+    },
+    setTimer(state, action) {
+      state.timer = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -99,11 +106,9 @@ export const employeeSlice = createSlice({
           state.isLoading = 'pending';
         }
       })
-      .addCase(loginEmployee.fulfilled, (state, action) => {
+      .addCase(loginEmployee.fulfilled, (state) => {
         if (state.isLoading === 'pending') {
           state.isLoading = 'idle';
-          state.employee = action.payload;
-          state.isLoggedIn = !!action.payload;
         }
       })
       .addCase(logoutEmployee.fulfilled, (state) => {
@@ -119,5 +124,6 @@ export const {
   clearEmployeeState,
   setEmployeeToEdit,
   setProjectNumber,
+  setTimer,
 } = employeeSlice.actions;
 export default employeeSlice.reducer;

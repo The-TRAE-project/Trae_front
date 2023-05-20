@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useForm, zodResolver } from '@mantine/form';
 import dayjs from 'dayjs';
 
@@ -8,43 +8,44 @@ import {
   useUpdateUserSomeFieldsMutation,
 } from '../../../store/apis/user';
 import {
+  User,
   UserUpdateFormValues,
   UserUpdateSchema,
 } from '../../../store/apis/user/types';
-import { Paths } from '../../../constants/paths';
 import { Status } from '../../../store/types';
-import { useAppSelector } from '../../../helpers/hooks/useAppSelector';
 import { useDisplayError } from '../../../helpers/hooks/useDisplayError';
 import { showErrorNotification } from '../../../helpers/showErrorNotification';
-import { showInformNotification } from '../../../helpers/showInformNotification';
+import { checkForEquality } from '../../../helpers/checkForEquality';
+import { useOpenModal } from '../../../helpers/hooks/useOpenModal';
 import { FormWrapper } from '../../styles';
 import { useSetDefaultValues } from './helpers/useSetDefaultValues';
-import { checkValues, compareValues } from './helpers/compareValues';
+import { compareValues } from './helpers/compareValues';
 import FormBody from './FormBody';
 import FormHeader from './FormHeader';
 
 const UpdateForm = () => {
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isUpdate, setIsUpdate] = useState<boolean>(false);
+  const [currentUser, setCurrentUser] = useState<User | undefined>();
 
-  const navigate = useNavigate();
-  const { constructorId } = useAppSelector((store) => store.builder);
+  const { id } = useParams();
 
   const [
     updateUserSomeFields,
-    { isLoading: isUpdateLoading, data: updatedUser },
+    { isLoading: isUpdateLoading, data: updatedUser, isSuccess },
   ] = useUpdateUserSomeFieldsMutation();
   const {
     data: user,
     isLoading: isGetLoading,
     error,
     isError,
-  } = useGetUserDetailsQuery(constructorId as number);
+  } = useGetUserDetailsQuery(Number(id as string));
+  const isUserActive = user?.status ? 'Активный' : 'Заблокированный';
 
   const form = useForm<Omit<UserUpdateFormValues, 'managerId'>>({
     initialValues: {
       newRole: user?.role || null,
-      accountStatus: user?.status ? 'Активный' : 'Заблокированный' || null,
+      accountStatus: isUserActive || null,
       dateOfDismissal: user?.dateOfDismissal
         ? dayjs(user?.dateOfDismissal).toDate()
         : null,
@@ -58,34 +59,20 @@ const UpdateForm = () => {
 
   useDisplayError(error, isError);
 
-  useSetDefaultValues(form, user);
+  useSetDefaultValues(form, user, setCurrentUser);
 
   const handleSubmit = async (
     values: Omit<UserUpdateFormValues, 'managerId'>
   ) => {
     try {
       if (user) {
-        const { newRole, accountStatus } = values;
-        const isUserActive = user.status ? 'Активный' : 'Заблокированный';
-        if (
-          checkValues(newRole, user.role) &&
-          checkValues(accountStatus, isUserActive)
-        ) {
-          showInformNotification(
-            'Мы уведомляем вас, что',
-            'вы не сделали никаких изменений.'
-          );
-          navigate(Paths.CONSTRUCTORS);
-          return;
-        }
-
         if (
           values.accountStatus === Status.BLOCKED &&
           !form.values.dateOfDismissal
         ) {
           form.setFieldError(
             'dateOfDismissal',
-            'Пожалуйста, выберите дате увольнения!'
+            'Пожалуйста, выберите дату увольнения'
           );
           return;
         }
@@ -95,18 +82,26 @@ const UpdateForm = () => {
           managerId: user.id,
           ...comparedValues,
         }).unwrap();
-        setIsModalOpen(true);
         form.reset();
       }
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
-      showErrorNotification(err.data.status, err.data.error);
+      form.reset();
+      showErrorNotification(err?.data?.status, err?.data?.error);
     }
   };
 
-  const handleCloseModal = () => {
+  useOpenModal(setIsOpen, isSuccess);
+
+  const closeModal = () => {
     setIsUpdate(false);
-    setIsModalOpen(false);
+    setIsOpen(false);
+    setCurrentUser(user);
+  };
+
+  const handleUpdate = () => {
+    setIsUpdate(true);
+    setCurrentUser(user);
   };
 
   return (
@@ -114,14 +109,14 @@ const UpdateForm = () => {
       <FormHeader
         isLoading={isUpdateLoading}
         isUpdate={isUpdate}
-        onUpdate={() => setIsUpdate(true)}
-        isOpen={isModalOpen}
-        onClose={handleCloseModal}
+        onUpdate={handleUpdate}
+        isOpen={isOpen}
+        onClose={closeModal}
+        currentUser={currentUser}
         updatedUser={updatedUser}
-        isSubmitBtnDisabled={
-          !form.values.newRole &&
-          !form.values.dateOfDismissal &&
-          !form.values.accountStatus
+        isDisabled={
+          checkForEquality(form.values.newRole, user?.role) &&
+          checkForEquality(form.values.accountStatus, isUserActive)
         }
       />
 

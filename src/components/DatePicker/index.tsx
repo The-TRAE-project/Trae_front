@@ -1,28 +1,22 @@
 import { Indicator } from '@mantine/core';
-import { DatePickerInput, DateValue } from '@mantine/dates';
+import { DatePickerInput } from '@mantine/dates';
 import { FC } from 'react';
 
 import { useDateInputStyles, useIndicatorStyles } from './styles';
 
 interface Props {
   title: string;
-  defaultValue?: DateValue;
   disabled?: boolean;
 }
 
-const DatePicker: FC<Props> = ({
-  title,
-  defaultValue,
-  disabled = false,
-  ...props
-}) => {
+const DatePicker: FC<Props> = ({ title, disabled = false, ...props }) => {
   const {
     classes: {
+      root,
       input,
       label,
       error,
-      wrapper,
-      calendar,
+
       calendarHeaderControl,
       calendarHeaderLevel,
       weekday,
@@ -37,15 +31,13 @@ const DatePicker: FC<Props> = ({
   return (
     <DatePickerInput
       {...props}
-      defaultValue={defaultValue}
       label={title}
       disabled={disabled}
       placeholder="Выберите дату"
       clearable
       valueFormat="DD.MM.YYYY"
       classNames={{
-        wrapper,
-        calendar,
+        root,
         calendarHeaderControl,
         calendarHeaderLevel,
         weekday,

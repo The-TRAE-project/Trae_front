@@ -23,6 +23,7 @@ export interface ProjectStage {
   id: number;
   name: string;
   readyToAcceptance: boolean;
+  priority: number;
   isEnded: boolean;
   inWork: boolean;
   employeeFirstName: null | string;
@@ -32,6 +33,7 @@ export interface ProjectStage {
 export interface ReceiveProjectStageValue {
   employeeId: number;
   operationId: number;
+  operationPriority: number;
 }
 
 export const EmployeeFormSchema = z.object({
@@ -39,39 +41,39 @@ export const EmployeeFormSchema = z.object({
     .string()
     .regex(RegEx.fullName, {
       message:
-        'Фамилия должно содержать только кириллицу, должно начинаться с заглавной буквы',
+        'Фамилия должно содержать только кириллицу и начинаться с заглавной буквы',
     })
-    .min(3, { message: 'Фамилия должен быть не меньше 2 символов' })
-    .max(15, { message: 'Фамилия должен быть не больше 15 символов' }),
+    .min(3, { message: 'Фамилия должно быть не меньше 2 символов' })
+    .max(15, { message: 'Фамилия должно быть не больше 15 символов' }),
   firstName: z
     .string()
     .regex(RegEx.fullName, {
       message:
-        'Имя должно содержать только кириллицу, должно начинаться с заглавной буквы',
+        'Имя должно содержать только кириллицу и начинаться с заглавной буквы',
     })
-    .min(3, { message: 'Имя должен быть не меньше 2 символов' })
-    .max(15, { message: 'Имя должен быть не больше 15 символов' }),
+    .min(3, { message: 'Имя должно быть не меньше 2 символов' })
+    .max(15, { message: 'Имя должно быть не больше 15 символов' }),
   middleName: z
     .string()
     .regex(RegEx.fullName, {
       message:
-        'Отчество должно содержать только кириллицу, должно начинаться с заглавной буквы',
+        'Отчество должно содержать только кириллицу и начинаться с заглавной буквы',
     })
     .nullable(),
   phone: z
     .string()
     .min(17, {
-      message: 'Пожалуйста, введите правильный формат телефон номера!',
+      message: 'Пожалуйста, введите номер в правильном формате',
     })
     .max(17, {
-      message: 'Пожалуйста, введите правильный формат телефон номера!',
+      message: 'Пожалуйста, введите номер в правильном формате',
     }),
   dateOfEmployment: z.date({
     required_error: 'Пожалуйста, выберите дату',
     invalid_type_error: 'Не правильный формат даты!',
   }),
   typesId: z.any().array().min(1, {
-    message: 'Пожалуйста, выберите вид работы!',
+    message: 'Пожалуйста, выберите тип работ!',
   }),
 });
 
@@ -102,35 +104,35 @@ export const EmployeeUpdateFormSchema = z.object({
     .string()
     .regex(RegEx.fullName, {
       message:
-        'Фамилия должно содержать только кириллицу, должно начинаться с заглавной буквы',
+        'Фамилия должно содержать только кириллицу и начинаться с заглавной буквы',
     })
     .nullable(),
   firstName: z
     .string()
     .regex(RegEx.fullName, {
       message:
-        'Имя должно содержать только кириллицу, должно начинаться с заглавной буквы',
+        'Имя должно содержать только кириллицу и начинаться с заглавной буквы',
     })
     .nullable(),
   middleName: z
     .string()
     .regex(RegEx.fullName, {
       message:
-        'Отчество должно содержать только кириллицу, должно начинаться с заглавной буквы',
+        'Отчество должно содержать только кириллицу и начинаться с заглавной буквы',
     })
     .nullable(),
   phone: z
     .string()
     .min(17, {
-      message: 'Пожалуйста, введите правильный формат телефон номера!',
+      message: 'Пожалуйста, введите номер в правильном формате',
     })
     .max(17, {
-      message: 'Пожалуйста, введите правильный формат телефон номера!',
+      message: 'Пожалуйста, введите номер в правильном формате',
     })
     .nullable(),
   pinCode: z
     .number({
-      required_error: 'Пожалуйста, введите правильный формат пин кода',
+      required_error: 'Пожалуйста, введите пин кода в правильном формате',
       invalid_type_error: 'Не правильный формат пин кода!',
     })
     .nullable(),
@@ -139,7 +141,7 @@ export const EmployeeUpdateFormSchema = z.object({
     .any()
     .array()
     .min(1, {
-      message: 'Пожалуйста, выберите вид работы!',
+      message: 'Пожалуйста, выберите тип работ!',
     })
     .nullable(),
   dateOfDismissal: z

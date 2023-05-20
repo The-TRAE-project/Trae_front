@@ -7,6 +7,7 @@ import { useFinishProjectStageMutation } from '../../../../store/apis/employee';
 import {
   clearEmployeeState,
   setProjectNumber,
+  setTimer,
 } from '../../../../store/slices/employee';
 import { StageInWork } from '../../../../store/apis/employee/types';
 import { useAppDispatch } from '../../../../helpers/hooks/useAppDispatch';
@@ -42,7 +43,15 @@ const StageInWorkCard = ({ stage }: Props) => {
     dispatch(setProjectNumber(stage.projectNumber));
   };
 
-  const handleClose = () => setIsOpen(false);
+  const handleOpen = () => {
+    setIsOpen(true);
+    dispatch(setTimer(121));
+  };
+
+  const handleClose = () => {
+    setIsOpen(false);
+    dispatch(setTimer(121));
+  };
 
   const handleSubmit = async () => {
     try {
@@ -53,19 +62,19 @@ const StageInWorkCard = ({ stage }: Props) => {
           employeeId: employee.id,
           operationId: stage.operationId,
         }).unwrap();
+        dispatch(clearEmployeeState());
+        navigate(Paths.EMPLOYEE_LOGIN, { replace: true });
       }, 3000);
 
-      handleClose();
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
-      handleClose();
       showErrorNotification(error.data.status, error.data.error);
     }
   };
 
   const handleCallAtEnd = () => {
-    navigate(Paths.EMPLOYEE_LOGIN, { replace: true });
     dispatch(clearEmployeeState());
+    navigate(Paths.EMPLOYEE_LOGIN, { replace: true });
   };
 
   const confirmTitle = `${
@@ -91,7 +100,7 @@ const StageInWorkCard = ({ stage }: Props) => {
               <HiInformationCircle size={50} color="var(--orange)" />
             </UnstyledButton>
           </Group>
-          <FinishButton onClick={() => setIsOpen(true)}>Завершить</FinishButton>
+          <FinishButton onClick={handleOpen}>Завершить</FinishButton>
         </Group>
       </Wrapper>
 

@@ -1,14 +1,22 @@
 import styled from 'styled-components';
 
+import { TextWrapper } from '../../../../DetailsCard/styles';
+
+export const WorkTypeWrapper = styled(TextWrapper)`
+  min-height: initial;
+`;
+
+export const GroupWrapper = styled.div`
+  background: var(--green3);
+  border-radius: var(--border-radius);
+`;
+
 export const Group = styled.div`
-  min-height: 73px;
   max-width: 400px;
   ${({ theme }) => theme.mixins.center};
   flex-wrap: wrap;
   gap: 20px;
   padding: 10px 12px;
-  background: var(--gray-shadow);
-  border-radius: var(--border-radius);
 `;
 
 export const WorkTypeCard = styled.p`

@@ -1,6 +1,11 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import Cookies from 'js-cookie';
 
 import instance from '../../../config/axiosConfig';
+import {
+  A_TOKEN_EXPIRATION,
+  TokenTypes,
+} from '../../../helpers/hooks/useCookies';
 import { RootState } from '../..';
 import {
   InitialState,
@@ -14,9 +19,9 @@ import {
 const initialState = {
   username: null,
   permission: null,
-  isLoggedIn: false,
+  isLoggedIn: !!Cookies.get(TokenTypes.A_TOKEN),
   isLoading: 'idle',
-  accessToken: null,
+  accessToken: Cookies.get(TokenTypes.A_TOKEN),
   refreshToken: null,
 } as InitialState;
 
@@ -61,6 +66,7 @@ export const getUserRole = createAsyncThunk(
   async (name: string, { rejectWithValue, getState }) => {
     try {
       const token = (getState() as RootState).auth.accessToken;
+
       const config = {
         headers: { Authorization: `Bearer ${token}` },
       };
@@ -99,8 +105,8 @@ export const authSlice = createSlice({
   initialState,
   reducers: {
     setCredentials: (state, { payload }: PayloadAction<TokenValue>) => {
-      state.isLoggedIn = !!payload.accessToken;
-      state.accessToken = payload.accessToken;
+      // state.isLoggedIn = !!payload.accessToken;
+      // state.accessToken = payload.accessToken;
       state.refreshToken = payload.refreshToken;
     },
     clearUserState: (state) => {
@@ -123,8 +129,11 @@ export const authSlice = createSlice({
         (state, { payload }: PayloadAction<TokenValue>) => {
           if (state.isLoading === 'pending') {
             state.isLoading = 'idle';
-            state.isLoggedIn = !!payload.accessToken;
-            state.accessToken = payload.accessToken;
+            Cookies.set(TokenTypes.A_TOKEN, payload.accessToken, {
+              expires: A_TOKEN_EXPIRATION,
+            });
+            state.accessToken = Cookies.get(TokenTypes.A_TOKEN) as string;
+            state.isLoggedIn = !!Cookies.get(TokenTypes.A_TOKEN);
             state.refreshToken = payload.refreshToken;
           }
         }

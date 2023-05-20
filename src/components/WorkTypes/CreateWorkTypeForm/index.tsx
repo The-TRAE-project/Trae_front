@@ -1,8 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Group } from '@mantine/core';
 import { useForm, zodResolver } from '@mantine/form';
-import { BsArrowLeft, BsFillHouseFill } from 'react-icons/bs';
 
 import { Paths } from '../../../constants/paths';
 import { useCreateWorkTypeMutation } from '../../../store/apis/workTypes';
@@ -11,10 +9,11 @@ import {
   WorkTypeSchema,
 } from '../../../store/apis/workTypes/types';
 import { showErrorNotification } from '../../../helpers/showErrorNotification';
-import Loader from '../../Loader';
+import { useOpenModal } from '../../../helpers/hooks/useOpenModal';
+import FormHeader from '../../FormHeader';
 import TextInput from '../../TextInput';
 import InformModal from '../../InformModal';
-import { FormWrapper, OrangeButton, UnstyledButton } from '../../styles';
+import { FormWrapper } from '../../styles';
 import { FormFlexContainer } from '../styles';
 
 const CreateWorkTypeForm = () => {
@@ -35,7 +34,7 @@ const CreateWorkTypeForm = () => {
 
   const [
     createWorkType,
-    { isLoading: isCreateLoading, data: createdTypeWork },
+    { isLoading: isCreateLoading, data: createdTypeWork, isSuccess },
   ] = useCreateWorkTypeMutation();
 
   const handleSubmit = async (values: CreateWorkTypeFormValues) => {
@@ -43,44 +42,38 @@ const CreateWorkTypeForm = () => {
       await createWorkType({
         name: values.name,
       }).unwrap();
-      setIsOpen(true);
       form.reset();
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
-      showErrorNotification(err.data.status, err.data.error);
+      form.reset();
+      showErrorNotification(err?.data?.status, err?.data?.error);
     }
+  };
+
+  useOpenModal(setIsOpen, isSuccess);
+
+  const navigateBack = () => navigate(Paths.WORK_TYPES);
+
+  const closeModal = () => {
+    setIsOpen(false);
+    navigateBack();
   };
 
   return (
     <>
       <InformModal
         isOpen={isOpen}
-        onClose={() => setIsOpen(false)}
+        onClose={closeModal}
         title={`Тип работ ${createdTypeWork?.name} успешно добавлен`}
         backPath={Paths.WORK_TYPES}
       />
 
       <FormWrapper onSubmit={form.onSubmit(handleSubmit)}>
-        <Group position="apart" spacing={100}>
-          <Group spacing={42}>
-            <UnstyledButton
-              onClick={() => navigate(Paths.WORK_TYPES)}
-              type="button"
-            >
-              <BsArrowLeft size={50} color="var(--orange)" />
-            </UnstyledButton>
-            <UnstyledButton
-              onClick={() => navigate(Paths.PROJECTS)}
-              type="button"
-            >
-              <BsFillHouseFill size={44} color="var(--orange)" />
-            </UnstyledButton>
-          </Group>
-
-          <OrangeButton disabled={isCreateLoading} $width={171} type="submit">
-            {isCreateLoading ? <Loader size={35} /> : <span>Сохранить</span>}
-          </OrangeButton>
-        </Group>
+        <FormHeader
+          isSubmitBtnDisabled={isCreateLoading}
+          isSubmitBtnLoading={isCreateLoading}
+          onBack={navigateBack}
+        />
 
         <FormFlexContainer>
           <TextInput

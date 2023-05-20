@@ -18,12 +18,17 @@ export const Input = styled(TextInput)`
     padding: 12px 20px;
     font-family: var(--font-roboto);
     ${({ theme }) => theme.mixins.fontSize28};
-    font-weight: 400;
+    font-weight: 500;
     color: var(--black);
 
     &::placeholder {
       font-weight: 400;
       color: var(--white-black);
+    }
+
+    &[data-invalid] {
+      color: var(--red);
+      border-color: var(--red);
     }
   }
 `;
@@ -35,7 +40,7 @@ export const useInputStyles = createStyles(() => ({
     fontSize: 24,
     fontWeight: 500,
     lineHeight: '26px',
-    wordBreak: 'break-all',
+    wordBreak: 'break-word',
     color: 'var(--red)',
     letterSpacing: '1px',
   },
@@ -54,12 +59,16 @@ export const useInputStyles = createStyles(() => ({
     fontFamily: 'var(--font-roboto)',
     fontSize: 28,
     lineHeight: '33px',
-    fontWeight: 400,
+    fontWeight: 500,
     color: 'var(--black)',
 
     '&::placeholder': {
       fontWeight: 400,
       color: 'var(--white-black)',
+    },
+
+    '&[data-invalid]': {
+      color: 'var(--red)',
     },
   },
 
@@ -79,6 +88,11 @@ export const useInputStyles = createStyles(() => ({
     minHeight: 73,
     background: 'var(--white)',
     borderRadius: 'var(--border-radius)',
+
+    '&[data-invalid]': {
+      color: 'var(--red)',
+      borderColor: 'var(--red)',
+    },
   },
 
   rightSection: {

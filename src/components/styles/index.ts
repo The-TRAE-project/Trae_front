@@ -150,22 +150,18 @@ export const FilterMenuItemTitle = styled.p<FilterMenuItemTitleProps>`
   transition: var(--transition);
 `;
 
-export const BgWhiteCard = styled.div`
+export const BgWhiteCardLinkBtn = styled.button`
   position: relative;
-  ${({ theme }) => theme.mixins.fCenter};
-  padding: 22px 30px;
   width: 620px;
   height: 79px;
-  background: var(--white);
-  border-radius: var(--border-radius);
-`;
-
-export const BgWhiteCardLinkBtn = styled.button`
-  background: none;
-  border: none;
   font-weight: 600;
   ${({ theme }) => theme.mixins.fontSize30};
   color: var(--white-black);
+  border: none;
+  ${({ theme }) => theme.mixins.fCenter};
+  padding: 22px 30px;
+  background: var(--white);
+  border-radius: var(--border-radius);
 
   &:is(:focus, :focus-within) {
     outline: none;
@@ -208,7 +204,6 @@ export const useCheckboxStyles = createStyles(() => ({
 export const DashedOrangeButton = styled.button`
   grid-column-start: 3;
   ${({ theme }) => theme.mixins.fCenter};
-  padding: 22.5px;
   max-width: 509px;
   min-height: 73px;
   max-height: 73px;
@@ -218,19 +213,133 @@ export const DashedOrangeButton = styled.button`
   font-weight: 400;
   ${({ theme }) => theme.mixins.fontSize24};
   color: var(--white);
+  padding: 22.5px;
+  margin-top: 10px;
 
   &:is(:focus, :focus-within) {
     outline: none;
   }
 `;
-
+// TODO:
 export const FormWrapper = styled.form`
   ${({ theme }) => theme.mixins.column};
   gap: 3rem;
 `;
 
-export const Grid = styled.div`
+export const ErrorMessage = styled.p`
+  display: block;
+  font-family: var(--font-roboto);
+  ${({ theme }) => theme.mixins.fontSize24};
+  font-weight: 500;
+  word-break: break-word;
+  color: var(--red);
+  letter-spacing: 1px;
+  margin-top: -6px;
+`;
+
+export const useModalStyles = createStyles(() => ({
+  close: {
+    color: 'var(--white-black)',
+    opacity: 0.9,
+    height: 30,
+    width: 30,
+    fontSize: 30,
+    padding: 0,
+
+    svg: {
+      width: 30,
+      height: 30,
+    },
+  },
+
+  content: {
+    position: 'relative',
+    padding: '30px !important',
+    background: 'var(--white)',
+    boxShadow: '0px 6px 9px var(--black-shadow)',
+    borderRadius: 10,
+    height: 555,
+  },
+
+  header: {
+    marginBottom: 4,
+  },
+
+  title: {
+    fontFamily: 'var(--font-roboto)',
+    fontStyle: 'normal',
+    fontWeight: 500,
+    fontSize: 48,
+    lineHeight: '56px',
+    color: 'var(--white-black)',
+    opacity: 0.9,
+  },
+
+  body: {
+    padding: '32px 0 !important',
+    height: '40.5vh',
+  },
+}));
+// TODO:
+export const FormStack = styled.form`
+  position: relative;
+  min-height: calc(100vh - 336px);
+  ${({ theme }) => theme.mixins.column};
+  gap: 50px;
+`;
+// TODO:
+export const FormBodyWrapper = styled.div`
+  position: relative;
+  min-height: calc(100vh - 336px);
+`;
+
+export const ProjectCustomer = styled.p`
+  font-weight: 400;
+  color: var(--black);
+  ${({ theme }) => theme.mixins.fontSize30};
+  width: 182px;
+  text-align: center;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+`;
+
+export const ProjectName = styled.p`
+  font-weight: 600;
+  color: var(--black);
+  ${({ theme }) => theme.mixins.fontSize30};
+  width: 182px;
+  text-align: center;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+`;
+
+export const ProjectNumber = styled.p`
+  ${({ theme }) => theme.mixins.orangeCircle};
+  position: absolute;
+  top: -16%;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+`;
+
+export const TwoColumnGrid = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+`;
+
+export const ThreeColumnGrid = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   gap: 40px;
+`;
+
+export const ListItemWrapper = styled.div`
+  position: relative;
+  min-height: calc(100vh - 336px);
+  ${({ theme }) => theme.mixins.column};
+  justify-content: space-between;
+  gap: 3rem;
 `;

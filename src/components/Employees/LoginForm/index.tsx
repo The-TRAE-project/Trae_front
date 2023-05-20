@@ -42,9 +42,9 @@ const EmployeeLoginForm = () => {
     },
   });
 
-  const reset = () => {
-    form.reset();
+  const resetAll = () => {
     setPinCode('');
+    form.reset();
   };
 
   const handleSubmit = async (values: LoginFormValues) => {
@@ -65,10 +65,10 @@ const EmployeeLoginForm = () => {
         dispatch(setEmployeeCredentials(data));
         navigate(Paths.EMPLOYEE_MAIN);
       }
-      reset();
+      resetAll();
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
-      reset();
+      resetAll();
       setIsLoading(false);
       showErrorNotification(err.response.data.status, err.response.data.error);
     }
@@ -89,7 +89,6 @@ const EmployeeLoginForm = () => {
     form.setFieldValue('pinCode', value);
 
   const handleClose = () => dispatch(toggleModal(false));
-  const handleCallAtEnd = () => navigate(Paths.EMPLOYEE_MAIN);
 
   const disabled = /^\d{3}$/i.test(form.values.pinCode);
 
@@ -99,8 +98,14 @@ const EmployeeLoginForm = () => {
 
   const informTitle = `${
     employee && `${employee?.firstName} ${employee.lastName}`
-  }, <br /> добро пожаловать в Trae <br /> Хорошего рабочего дня
+  }, <br /> добро пожаловать в Trae. <br /> Хорошего рабочего дня!
   `;
+
+  const reset = () => {
+    if (!pinCode || !form.values.pinCode) return;
+    const splicedPinCode = pinCode.replace(/\d$/, '');
+    setPinCode(splicedPinCode);
+  };
 
   return (
     <>
@@ -132,7 +137,6 @@ const EmployeeLoginForm = () => {
         isOpen={isModalOpen}
         onClose={handleClose}
         onSubmit={handleLoginEmployee}
-        onCallAtEnd={handleCallAtEnd}
         isHideHomeBtn={false}
         confirmTitle={confirmTitle}
         informTitle={informTitle}

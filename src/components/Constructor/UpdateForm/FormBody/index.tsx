@@ -16,9 +16,13 @@ import Loader from '../../../Loader';
 import Select from '../../../Select';
 import DatePicker from '../../../DatePicker';
 import InformModal from '../../../InformModal';
-import { DashedOrangeButton, Grid, InformModalText } from '../../../styles';
-import DetailsCard from './DetailsCard';
-import { Wrapper } from './styles';
+import DetailsCard from '../../../DetailsCard';
+import {
+  DashedOrangeButton,
+  FormBodyWrapper,
+  ThreeColumnGrid,
+  InformModalText,
+} from '../../../styles';
 
 type UserWithoutId = Omit<UserUpdateFormValues, 'managerId'>;
 
@@ -74,11 +78,11 @@ const FormBody = ({
       }
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
-      showErrorNotification(err.data.status, err.data.error);
+      showErrorNotification(err?.data?.status, err?.data?.error);
     }
   };
 
-  const handleClose = () => {
+  const closeModal = () => {
     setIsOpen(false);
     completeUpdate();
   };
@@ -90,7 +94,7 @@ const FormBody = ({
     ) {
       form.setFieldError(
         'dateOfDismissal',
-        'Пожалуйста, выберите дате увольнения!'
+        'Пожалуйста, выберите дату увольнения'
       );
     } else {
       form.setFieldValue('dateOfDismissal', null);
@@ -100,10 +104,10 @@ const FormBody = ({
   }, [form.values.accountStatus]);
 
   return (
-    <Wrapper>
+    <FormBodyWrapper>
       <InformModal
         isOpen={isOpen}
-        onClose={handleClose}
+        onClose={closeModal}
         title={`${passwordChangedUser?.firstName} ${passwordChangedUser?.lastName} пароль сброшен`}
         backPath={Paths.CONSTRUCTORS}
       >
@@ -114,7 +118,7 @@ const FormBody = ({
       </InformModal>
 
       {!isLoading && !!user ? (
-        <Grid>
+        <ThreeColumnGrid>
           <DetailsCard label="Фамилия" text={user.lastName} />
           <DetailsCard
             text={dayjs(user.dateOfEmployment).format('DD.MM.YYYY')}
@@ -172,11 +176,11 @@ const FormBody = ({
               )}
             </DashedOrangeButton>
           )}
-        </Grid>
+        </ThreeColumnGrid>
       ) : (
         <Loader size={80} isAbsoluteCentered />
       )}
-    </Wrapper>
+    </FormBodyWrapper>
   );
 };
 

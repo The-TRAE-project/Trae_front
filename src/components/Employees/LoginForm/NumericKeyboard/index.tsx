@@ -86,7 +86,6 @@ const NumericKeyboard = ({
 
   useEffect(() => {
     handleOnKeyboardChange(String(pinCode));
-
     if (pinCode.length === 3) {
       onClose();
     }

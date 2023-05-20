@@ -36,6 +36,7 @@ const WorkTypesFilterMenu = ({ status, setStatus, resetStatus }: Props) => {
 
   return (
     <Menu
+      closeOnItemClick={false}
       classNames={{
         dropdown: classes.dropdown,
         label: classes.label,
@@ -54,7 +55,8 @@ const WorkTypesFilterMenu = ({ status, setStatus, resetStatus }: Props) => {
           <Menu.Item key={item.value} onClick={() => setStatus(item.value)}>
             <Group spacing={12}>
               <Checkbox
-                defaultChecked={item.value === status}
+                readOnly
+                checked={item.value === status}
                 classNames={{ input, inner, icon }}
               />
               <FilterMenuItemTitle $active={item.value === status}>
@@ -66,7 +68,8 @@ const WorkTypesFilterMenu = ({ status, setStatus, resetStatus }: Props) => {
         <Menu.Item onClick={resetStatus}>
           <Group spacing={12}>
             <Checkbox
-              defaultChecked={!status}
+              readOnly
+              checked={!status}
               classNames={{ input, inner, icon }}
             />
             <FilterMenuItemTitle $active={!status}>Все</FilterMenuItemTitle>

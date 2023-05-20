@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Group, Stack } from '@mantine/core';
+import { Stack } from '@mantine/core';
 import { useForm, zodResolver } from '@mantine/form';
-import { BsArrowLeft, BsFillHouseFill } from 'react-icons/bs';
 
 import {
   ConstructorFormSchema,
@@ -10,22 +9,17 @@ import {
 } from '../../../store/apis/user/types';
 import { useCreateConstructorMutation } from '../../../store/apis/user';
 import { showErrorNotification } from '../../../helpers/showErrorNotification';
+import { useOpenModal } from '../../../helpers/hooks/useOpenModal';
 import { Paths } from '../../../constants/paths';
-import Loader from '../../Loader';
 import MaskedTextInput from '../../MaskedInput';
 import DatePicker from '../../DatePicker';
 import TextInput from '../../TextInput';
 import InformModal from '../../InformModal';
-import {
-  FormWrapper,
-  Grid,
-  InformModalText,
-  OrangeButton,
-  UnstyledButton,
-} from '../../styles';
+import FormHeader from '../../FormHeader';
+import { FormWrapper, ThreeColumnGrid, InformModalText } from '../../styles';
 
 const CreateForm = () => {
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const navigate = useNavigate();
   const form = useForm<ConstructorFormValues>({
@@ -44,65 +38,60 @@ const CreateForm = () => {
     },
   });
 
-  const [createConstructor, { isLoading, data }] =
-    useCreateConstructorMutation();
+  const [
+    createConstructor,
+    { isLoading: isCreateLoading, data: newConstructor, isSuccess },
+  ] = useCreateConstructorMutation();
 
   const handleSubmit = async (values: ConstructorFormValues) => {
     try {
       await createConstructor(values).unwrap();
-      setIsModalOpen(true);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
-      showErrorNotification(err.status, err.error);
+      showErrorNotification(err?.data?.status, err?.data?.error);
     }
   };
 
-  const handleCloseModal = () => {
+  useOpenModal(setIsOpen, isSuccess);
+
+  const navigateBack = () => navigate(Paths.CONSTRUCTORS);
+
+  const closeModal = () => {
     form.reset();
-    setIsModalOpen(false);
+    setIsOpen(false);
+    navigateBack();
   };
 
   return (
     <>
       <InformModal
-        isOpen={isModalOpen}
-        onClose={handleCloseModal}
+        isOpen={isOpen}
+        onClose={closeModal}
         title={`${form.values.firstName} ${form.values.lastName} успешно добавлен`}
         backPath={Paths.CONSTRUCTORS}
       >
         <Stack spacing={20}>
-          <InformModalText>
-            Логин: <strong>{data?.username}</strong>
-          </InformModalText>
-          <InformModalText>
-            Пароль: <strong>{data?.password}</strong>
-          </InformModalText>
+          {newConstructor && (
+            <>
+              <InformModalText>
+                Логин: <strong>{newConstructor.username}</strong>
+              </InformModalText>
+              <InformModalText>
+                Пароль: <strong>{newConstructor.password}</strong>
+              </InformModalText>
+            </>
+          )}
         </Stack>
       </InformModal>
 
       <FormWrapper onSubmit={form.onSubmit(handleSubmit)}>
-        <Group position="apart" spacing={100}>
-          <Group spacing={42}>
-            <UnstyledButton
-              onClick={() => navigate(Paths.CONSTRUCTORS)}
-              type="button"
-            >
-              <BsArrowLeft size={50} color="var(--orange)" />
-            </UnstyledButton>
-            <UnstyledButton
-              onClick={() => navigate(Paths.PROJECTS)}
-              type="button"
-            >
-              <BsFillHouseFill size={44} color="var(--orange)" />
-            </UnstyledButton>
-          </Group>
+        <FormHeader
+          isSubmitBtnLoading={isCreateLoading}
+          isSubmitBtnDisabled={isCreateLoading}
+          onBack={navigateBack}
+        />
 
-          <OrangeButton disabled={isLoading} type="submit" $width={148}>
-            {isLoading ? <Loader size={35} /> : <span>Сохранить</span>}
-          </OrangeButton>
-        </Group>
-
-        <Grid>
+        <ThreeColumnGrid>
           <TextInput
             {...form.getInputProps('lastName')}
             label="Фамилия"
@@ -131,7 +120,6 @@ const CreateForm = () => {
           <DatePicker
             {...form.getInputProps('dateOfEmployment')}
             title="Дата регистрации"
-            defaultValue={new Date()}
           />
           <TextInput
             {...form.getInputProps('username')}
@@ -139,7 +127,7 @@ const CreateForm = () => {
             placeholder="Логин"
             maxLength={15}
           />
-        </Grid>
+        </ThreeColumnGrid>
       </FormWrapper>
     </>
   );

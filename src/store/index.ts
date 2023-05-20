@@ -15,27 +15,27 @@ import storage from 'redux-persist/lib/storage';
 import { baseApi } from './apis';
 import authReducer from './slices/auth';
 import employeeReducer from './slices/employee';
-import constructorReducer from './slices/constructor';
 import workTypeReducer from './slices/workType';
+import projectReducer from './slices/project';
 
 const authPersistConfig = {
   key: 'auth',
   storage,
-  blacklist: ['refreshToken'],
+  blacklist: ['refreshToken', 'accessToken'],
 };
 
 const rootReducer = combineReducers({
   auth: persistReducer(authPersistConfig, authReducer),
   employee: employeeReducer,
-  builder: constructorReducer,
   workType: workTypeReducer,
+  project: projectReducer,
   [baseApi.reducerPath]: baseApi.reducer,
 });
 
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['employee', 'builder', 'workType'],
+  whitelist: ['employee', 'workType', 'project'],
   blacklist: ['auth'],
 };
 

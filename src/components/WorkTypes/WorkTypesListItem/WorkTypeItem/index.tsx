@@ -5,8 +5,7 @@ import { WorkType } from '../../../../store/apis/workTypes/types';
 import { Paths } from '../../../../constants/paths';
 import { useAppDispatch } from '../../../../helpers/hooks/useAppDispatch';
 import { setWorkType } from '../../../../store/slices/workType';
-import { BgWhiteCard } from '../../../styles';
-import { EditButton, Title } from './styles';
+import { BgWhiteCard, EditButton, Title } from './styles';
 
 interface Props {
   workType: WorkType;
@@ -17,7 +16,7 @@ const WorkTypeItem = ({ workType }: Props) => {
   const dispatch = useAppDispatch();
 
   const navigateToEditingPage = () => {
-    navigate(Paths.WORK_TYPES_EDITING);
+    navigate(Paths.WORK_TYPE_EDITING);
     dispatch(setWorkType(workType));
   };
 

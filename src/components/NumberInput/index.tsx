@@ -12,6 +12,7 @@ const NumberInput = forwardRef(
     <MantineNumberInput
       {...props}
       ref={inputRef}
+      hideControls
       styles={{
         label: {
           fontWeight: 400,

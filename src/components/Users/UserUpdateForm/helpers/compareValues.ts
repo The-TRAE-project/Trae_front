@@ -19,8 +19,3 @@ export const compareValues = (
 
   return findDifference;
 };
-
-export const checkValues = (
-  leftSide: string | null,
-  rightSide: string | undefined
-) => leftSide === rightSide;

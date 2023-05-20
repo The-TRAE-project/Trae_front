@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Group, SelectItem } from '@mantine/core';
+import { SelectItem } from '@mantine/core';
 import { useForm, zodResolver } from '@mantine/form';
-import { BsArrowLeft, BsFillHouseFill } from 'react-icons/bs';
 
 import { Paths } from '../../../constants/paths';
 import { useCreateEmployeeMutation } from '../../../store/apis/employee';
@@ -12,19 +11,14 @@ import {
 } from '../../../store/apis/employee/types';
 import { useGetActiveWorkTypesQuery } from '../../../store/apis/workTypes';
 import { showErrorNotification } from '../../../helpers/showErrorNotification';
+import { useOpenModal } from '../../../helpers/hooks/useOpenModal';
 import InformModal from '../../InformModal';
-import Loader from '../../Loader';
 import MaskedTextInput from '../../MaskedInput';
 import MultiSelect from '../../MultiSelect';
 import TextInput from '../../TextInput';
 import DatePicker from '../../DatePicker';
-import {
-  FormWrapper,
-  Grid,
-  InformModalText,
-  OrangeButton,
-  UnstyledButton,
-} from '../../styles';
+import { FormWrapper, ThreeColumnGrid, InformModalText } from '../../styles';
+import FormHeader from '../../FormHeader';
 
 const EmployeeCreateForm = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -46,8 +40,10 @@ const EmployeeCreateForm = () => {
     },
   });
 
-  const [createEmployee, { data: createdEmployee, isLoading }] =
-    useCreateEmployeeMutation();
+  const [
+    createEmployee,
+    { data: createdEmployee, isLoading: isCreateLoading, isSuccess },
+  ] = useCreateEmployeeMutation();
   const { data: workTypes } = useGetActiveWorkTypesQuery();
 
   const handleSubmit = async (values: EmployeeFormValues) => {
@@ -56,13 +52,15 @@ const EmployeeCreateForm = () => {
         ...values,
         typesId: values.typesId.map((typeId) => +typeId),
       }).unwrap();
-      setIsOpen(true);
       form.reset();
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
-      showErrorNotification(err.status, err.error);
+      form.reset();
+      showErrorNotification(err?.data?.status, err?.data?.error);
     }
   };
+
+  useOpenModal(setIsOpen, isSuccess);
 
   const workTypeSelectItems: SelectItem[] = workTypes
     ? workTypes.map<SelectItem>((workType) => ({
@@ -71,42 +69,36 @@ const EmployeeCreateForm = () => {
       }))
     : [];
 
+  const navigateBack = () => navigate(Paths.EMPLOYEES);
+
+  const closeModal = () => {
+    setIsOpen(false);
+    navigateBack();
+  };
+
   return (
     <>
       <InformModal
         isOpen={isOpen}
-        onClose={() => setIsOpen(false)}
-        title={`${createdEmployee?.firstName} ${createdEmployee?.firstName} успешно добавлен`}
+        onClose={closeModal}
+        title={`${createdEmployee?.firstName} ${createdEmployee?.lastName} успешно добавлен`}
         backPath={Paths.EMPLOYEES}
       >
         {!!createdEmployee && (
-          <InformModalText>Пароль: {createdEmployee.pinCode}</InformModalText>
+          <InformModalText>
+            Пароль: <strong>{createdEmployee.pinCode}</strong>
+          </InformModalText>
         )}
       </InformModal>
 
       <FormWrapper onSubmit={form.onSubmit(handleSubmit)}>
-        <Group position="apart" spacing={100}>
-          <Group spacing={42}>
-            <UnstyledButton
-              onClick={() => navigate(Paths.EMPLOYEES)}
-              type="button"
-            >
-              <BsArrowLeft size={50} color="var(--orange)" />
-            </UnstyledButton>
-            <UnstyledButton
-              onClick={() => navigate(Paths.PROJECTS)}
-              type="button"
-            >
-              <BsFillHouseFill size={44} color="var(--orange)" />
-            </UnstyledButton>
-          </Group>
+        <FormHeader
+          isSubmitBtnDisabled={isCreateLoading}
+          isSubmitBtnLoading={isCreateLoading}
+          onBack={navigateBack}
+        />
 
-          <OrangeButton disabled={isLoading} type="submit" $width={148}>
-            {isLoading ? <Loader size={35} /> : <span>Сохранить</span>}
-          </OrangeButton>
-        </Group>
-
-        <Grid>
+        <ThreeColumnGrid>
           <TextInput
             {...form.getInputProps('lastName')}
             label="Фамилия"
@@ -141,7 +133,7 @@ const EmployeeCreateForm = () => {
             label="Типы работ"
             {...form.getInputProps('typesId')}
           />
-        </Grid>
+        </ThreeColumnGrid>
       </FormWrapper>
     </>
   );

@@ -11,8 +11,8 @@ import { LocalStorage } from '../../constants/localStorage';
 import { clearUserState, setCredentials } from '../slices/auth';
 import { TokenValue } from '../slices/auth/types';
 import { clearEmployeeState } from '../slices/employee';
-import { clearConstructorState } from '../slices/constructor';
 import { clearWorkTypeState } from '../slices/workType';
+import { clearProjectState } from '../slices/project';
 import { RootState } from '..';
 
 const baseQuery = fetchBaseQuery({
@@ -39,7 +39,7 @@ const baseQueryWithReAuth = async (
 ) => {
   let result = await baseQuery(args, api, extraOptions);
 
-  if (result?.error?.status === 400) {
+  if (result?.error?.status === 401) {
     const { refreshToken } = (api.getState() as RootState).auth;
 
     const refreshResponse = await baseQuery(
@@ -57,8 +57,8 @@ const baseQueryWithReAuth = async (
     } else {
       api.dispatch(clearUserState());
       api.dispatch(clearEmployeeState());
-      api.dispatch(clearConstructorState());
       api.dispatch(clearWorkTypeState());
+      api.dispatch(clearProjectState());
       removeItem(LocalStorage.NAVBAR_LIST);
     }
   }

@@ -25,8 +25,8 @@ const WorkTypes = () => {
 
   const navigate = useNavigate();
 
-  const navigateToHome = () => navigate(Paths.PROJECTS);
-  const navigateToCreateWorkTypesPage = () => navigate(Paths.WORK_TYPES_CREATE);
+  const navigateToHome = () => navigate(Paths.DASHBOARD);
+  const navigateToCreateWorkTypesPage = () => navigate(Paths.WORK_TYPE_CREATE);
 
   return (
     <>

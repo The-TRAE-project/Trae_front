@@ -13,7 +13,8 @@ export function useSetDefaultValues(
     WorkTypeWithoutId,
     (values: WorkTypeWithoutId) => WorkTypeWithoutId
   >,
-  workType: WorkType | null
+  workType: WorkType | null,
+  setCurrentWorkType: React.Dispatch<React.SetStateAction<WorkType | null>>
 ) {
   useEffect(() => {
     form.setFieldValue('newName', workType?.name || null);
@@ -23,4 +24,9 @@ export function useSetDefaultValues(
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [workType]);
+
+  useEffect(() => {
+    setCurrentWorkType(workType);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 }
