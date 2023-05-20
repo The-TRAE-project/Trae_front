@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Group, SelectItem, Stack } from '@mantine/core';
+import { SelectItem, Stack } from '@mantine/core';
 import { useForm, zodResolver } from '@mantine/form';
-import { BsArrowLeft, BsFillHouseFill } from 'react-icons/bs';
 
 import { Paths } from '../../../constants/paths';
 import { Status } from '../../../store/types';
@@ -16,19 +15,16 @@ import { setWorkType } from '../../../store/slices/workType';
 import { useAppSelector } from '../../../helpers/hooks/useAppSelector';
 import { useAppDispatch } from '../../../helpers/hooks/useAppDispatch';
 import { showErrorNotification } from '../../../helpers/showErrorNotification';
-import Loader from '../../Loader';
+import { checkForEquality } from '../../../helpers/checkForEquality';
+import { useOpenModal } from '../../../helpers/hooks/useOpenModal';
 import Select from '../../Select';
 import TextInput from '../../TextInput';
 import InformModal from '../../InformModal';
-import {
-  FormWrapper,
-  InformModalText,
-  OrangeButton,
-  UnstyledButton,
-} from '../../styles';
-import { useSetDefaultValues } from './helpers/useSetDefaultValues';
-import { checkValues, compareValues } from './helpers/compareValues';
+import FormHeader from '../../FormHeader';
+import { FormWrapper, InformModalText } from '../../styles';
 import { FormFlexContainer } from '../styles';
+import { useSetDefaultValues } from './helpers/useSetDefaultValues';
+import { compareValues } from './helpers/compareValues';
 
 const UpdateWorkTypeForm = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -55,8 +51,10 @@ const UpdateWorkTypeForm = () => {
   });
   const { newName, isActive } = form.values;
 
-  const [editWorkType, { isLoading: isEditLoading, data: editedTypeWork }] =
-    useEditWorkTypeMutation();
+  const [
+    editWorkType,
+    { isLoading: isEditLoading, data: editedTypeWork, isSuccess },
+  ] = useEditWorkTypeMutation();
 
   useSetDefaultValues(form, workType, setCurrentWorkType);
 
@@ -70,15 +68,17 @@ const UpdateWorkTypeForm = () => {
           typeWorkId: workType.id,
           ...comparedValues,
         }).unwrap();
-        setIsOpen(true);
         form.reset();
         dispatch(setWorkType(response));
       }
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
-      showErrorNotification(err.data.status, err.data.error);
+      form.reset();
+      showErrorNotification(err?.data?.status, err?.data?.error);
     }
   };
+
+  useOpenModal(setIsOpen, isSuccess);
 
   const statusesSelectItems: SelectItem[] = [
     {
@@ -91,20 +91,23 @@ const UpdateWorkTypeForm = () => {
     },
   ];
 
-  const handleClose = () => {
+  const navigateBack = () => navigate(Paths.WORK_TYPES);
+
+  const closeModal = () => {
     setIsOpen(false);
     setCurrentWorkType(workType);
+    navigateBack();
   };
 
   const isDisabled =
-    checkValues(newName, workType?.name) &&
-    checkValues(isActive, isWorkTypeActive);
+    checkForEquality(newName, workType?.name) &&
+    checkForEquality(isActive, isWorkTypeActive);
 
   return (
     <>
       <InformModal
         isOpen={isOpen}
-        onClose={handleClose}
+        onClose={closeModal}
         title="Изменения сохранены"
         backPath={Paths.WORK_TYPES}
       >
@@ -130,30 +133,11 @@ const UpdateWorkTypeForm = () => {
       </InformModal>
 
       <FormWrapper onSubmit={form.onSubmit(handleSubmit)}>
-        <Group position="apart" spacing={100}>
-          <Group spacing={42}>
-            <UnstyledButton
-              onClick={() => navigate(Paths.WORK_TYPES)}
-              type="button"
-            >
-              <BsArrowLeft size={50} color="var(--orange)" />
-            </UnstyledButton>
-            <UnstyledButton
-              onClick={() => navigate(Paths.DASHBOARD)}
-              type="button"
-            >
-              <BsFillHouseFill size={44} color="var(--orange)" />
-            </UnstyledButton>
-          </Group>
-
-          <OrangeButton
-            disabled={isDisabled || !workType || isEditLoading}
-            $width={171}
-            type="submit"
-          >
-            {isEditLoading ? <Loader size={35} /> : <span>Сохранить</span>}
-          </OrangeButton>
-        </Group>
+        <FormHeader
+          isSubmitBtnDisabled={isDisabled || !workType || isEditLoading}
+          isSubmitBtnLoading={isEditLoading}
+          onBack={navigateBack}
+        />
 
         <FormFlexContainer>
           <TextInput

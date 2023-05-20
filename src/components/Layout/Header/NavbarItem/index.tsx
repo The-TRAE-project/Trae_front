@@ -21,8 +21,8 @@ const NavbarItem = ({ navbarLink }: Props) => {
   const handleNavigate = (itemPath: string) => navigate(itemPath);
 
   const definePathIsActive = (link: string, path: string) => {
-    const splicedPath = path.split('/');
-    return link.includes(splicedPath[1]);
+    const slicedPath = path.split('/');
+    return link.includes(slicedPath[1]);
   };
 
   return (

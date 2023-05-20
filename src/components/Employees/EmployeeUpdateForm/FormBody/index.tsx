@@ -17,7 +17,7 @@ import NumberInput from '../../../NumberInput';
 import DatePicker from '../../../DatePicker';
 import DetailsCard from '../../../DetailsCard';
 import { useMultiSelectStyles } from '../../../MultiSelect/styles';
-import { FormBodyWrapper, Grid } from '../../../styles';
+import { FormBodyWrapper, ThreeColumnGrid } from '../../../styles';
 import WorkTypesDetailsCard from './WorkTypesDetailsCard';
 
 type EmployeeWithoutId = Omit<EmployeeUpdateFormValues, 'employeeId'>;
@@ -74,7 +74,7 @@ const FormBody = ({ employee, form, isUpdate }: Props) => {
   return (
     <FormBodyWrapper>
       {employee ? (
-        <Grid>
+        <ThreeColumnGrid>
           {isUpdate ? (
             <TextInput
               {...form.getInputProps('lastName')}
@@ -186,7 +186,7 @@ const FormBody = ({ employee, form, isUpdate }: Props) => {
           ) : (
             <WorkTypesDetailsCard workTypes={employee.types} />
           )}
-        </Grid>
+        </ThreeColumnGrid>
       ) : (
         <Loader size={80} isAbsoluteCentered />
       )}

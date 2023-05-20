@@ -226,12 +226,6 @@ export const FormWrapper = styled.form`
   gap: 3rem;
 `;
 
-export const Grid = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 40px;
-`;
-
 export const ErrorMessage = styled.p`
   display: block;
   font-family: var(--font-roboto);
@@ -340,4 +334,12 @@ export const ThreeColumnGrid = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   gap: 40px;
+`;
+
+export const ListItemWrapper = styled.div`
+  position: relative;
+  min-height: calc(100vh - 336px);
+  ${({ theme }) => theme.mixins.column};
+  justify-content: space-between;
+  gap: 3rem;
 `;

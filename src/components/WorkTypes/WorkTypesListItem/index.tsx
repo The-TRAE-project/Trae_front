@@ -6,9 +6,8 @@ import { useGetAllWorkTypesQuery } from '../../../store/apis/workTypes';
 import { LocalStorage } from '../../../constants/localStorage';
 import Loader from '../../Loader';
 import SliderButtons from '../../SliderButtons';
-import { TwoColumnGrid } from '../../styles';
+import { ListItemWrapper, TwoColumnGrid } from '../../styles';
 import WorkTypeItem from './WorkTypeItem';
-import { Wrapper } from './styles';
 
 interface Props {
   paramActive: Status | null;
@@ -46,7 +45,7 @@ const WorkTypesListItem = ({ paramActive }: Props) => {
   };
 
   return (
-    <Wrapper>
+    <ListItemWrapper>
       {!isLoading && !!workTypes ? (
         <>
           <TwoColumnGrid>
@@ -68,7 +67,7 @@ const WorkTypesListItem = ({ paramActive }: Props) => {
       ) : (
         <Loader size={80} isAbsoluteCentered />
       )}
-    </Wrapper>
+    </ListItemWrapper>
   );
 };
 

@@ -12,7 +12,6 @@ import { useAppSelector } from '../../../helpers/hooks/useAppSelector';
 import { showErrorNotification } from '../../../helpers/showErrorNotification';
 import { FormWrapper } from '../../styles';
 import {
-  checkValues,
   compareValues,
   convertToDate,
   convertToNumberArray,
@@ -23,6 +22,8 @@ import { useSetMultiSelectDefaultValues } from './helpers/useSetMultiSelectDefau
 import FormHeader from './FormHeader';
 import FormBody from './FormBody';
 import { useSetDefaultValues } from './helpers/useSetDefaultValues';
+import { checkForEquality } from '../../../helpers/checkForEquality';
+import { useOpenModal } from '../../../helpers/hooks/useOpenModal';
 
 const EmployeeUpdateForm = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -68,8 +69,10 @@ const EmployeeUpdateForm = () => {
     ? 'Активный'
     : 'Заблокированный';
 
-  const [editEmployee, { data: updatedEmployee, isLoading }] =
-    useEditEmployeeMutation();
+  const [
+    editEmployee,
+    { data: updatedEmployee, isLoading: isEditLoading, isSuccess },
+  ] = useEditEmployeeMutation();
   // TODO:
   const handleSubmit = async (
     values: Omit<EmployeeUpdateFormValues, 'employeeId'>
@@ -88,7 +91,6 @@ const EmployeeUpdateForm = () => {
         }
         const comparedValues = compareValues(values, employeeToEdit);
         await editEmployee(comparedValues).unwrap();
-        setIsOpen(true);
         form.reset();
       }
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -97,7 +99,9 @@ const EmployeeUpdateForm = () => {
     }
   };
 
-  const handleCloseModal = () => {
+  useOpenModal(setIsOpen, isSuccess);
+
+  const closeModal = () => {
     setIsOpen(false);
     setIsUpdate(false);
   };
@@ -116,14 +120,14 @@ const EmployeeUpdateForm = () => {
     );
 
   const isDisabled =
-    checkValues(firstName, employeeToEdit?.firstName) &&
-    checkValues(lastName, employeeToEdit?.lastName) &&
-    checkValues(middleName, employeeToEdit?.middleName) &&
-    checkValues(phone, employeeToEdit?.phone) &&
-    checkValues(pinCode, employeeToEdit?.pinCode) &&
-    checkValues(isActive, isEmployeeActive) &&
+    checkForEquality(firstName, employeeToEdit?.firstName) &&
+    checkForEquality(lastName, employeeToEdit?.lastName) &&
+    checkForEquality(middleName, employeeToEdit?.middleName) &&
+    checkForEquality(phone, employeeToEdit?.phone) &&
+    checkForEquality(pinCode, employeeToEdit?.pinCode) &&
+    checkForEquality(isActive, isEmployeeActive) &&
     isWorkTypesEqual &&
-    checkValues(
+    checkForEquality(
       dateOfEmployment?.getTime(),
       convertToDate(employeeToEdit?.dateOfEmployment)
     );
@@ -131,11 +135,11 @@ const EmployeeUpdateForm = () => {
   return (
     <FormWrapper onSubmit={form.onSubmit(handleSubmit)}>
       <FormHeader
-        isLoading={isLoading}
+        isLoading={isEditLoading}
         isUpdate={isUpdate}
         onUpdate={() => setIsUpdate(true)}
         isOpen={isOpen}
-        onClose={handleCloseModal}
+        onClose={closeModal}
         employee={updatedEmployee}
         isDisabled={isDisabled}
       />

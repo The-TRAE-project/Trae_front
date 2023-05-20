@@ -58,8 +58,8 @@ const Header = () => {
 
   useEffect(() => {
     const previousItemIndex = list.findIndex((item) => {
-      const splicedPath = location.pathname.split('/');
-      return item.value.includes(splicedPath[1]);
+      const slicedPath = location.pathname.split('/');
+      return item.value.includes(slicedPath[1]);
     });
 
     setList(

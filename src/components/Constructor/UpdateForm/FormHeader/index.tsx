@@ -5,10 +5,10 @@ import dayjs from 'dayjs';
 
 import { Paths } from '../../../../constants/paths';
 import { User, UserUpdateReturnType } from '../../../../store/apis/user/types';
+import { checkForEquality } from '../../../../helpers/checkForEquality';
 import { InformModalText, OrangeButton, UnstyledButton } from '../../../styles';
 import Loader from '../../../Loader';
 import InformModal from '../../../InformModal';
-import { checkValues } from '../helpers/compareValues';
 
 interface Props {
   isLoading: boolean;
@@ -48,12 +48,15 @@ const FormHeader = ({
         <Stack spacing={20}>
           {!!updatedUser && (
             <>
-              {!checkValues(currentUser?.role, updatedUser.role) && (
+              {!checkForEquality(currentUser?.role, updatedUser.role) && (
                 <InformModalText>
                   Роль: <strong>{updatedUser.role}</strong>
                 </InformModalText>
               )}
-              {!checkValues(currentUser?.status, updatedUser.accountStatus) && (
+              {!checkForEquality(
+                currentUser?.status,
+                updatedUser.accountStatus
+              ) && (
                 <InformModalText>
                   Статус:&nbsp;
                   <strong>
@@ -63,7 +66,7 @@ const FormHeader = ({
                   </strong>
                 </InformModalText>
               )}
-              {!checkValues(currentUser?.status, updatedUser.accountStatus)
+              {!checkForEquality(currentUser?.status, updatedUser.accountStatus)
                 ? !!updatedUser.dateOfDismissal && (
                     <InformModalText>
                       Дата увольнения:&nbsp;

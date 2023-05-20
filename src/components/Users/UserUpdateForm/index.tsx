@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm, zodResolver } from '@mantine/form';
-import { Group, Stack } from '@mantine/core';
-import { BsArrowLeft, BsFillHouseFill } from 'react-icons/bs';
+import { Stack } from '@mantine/core';
 
 import { Paths } from '../../../constants/paths';
 import { useAppSelector } from '../../../helpers/hooks/useAppSelector';
 import { showErrorNotification } from '../../../helpers/showErrorNotification';
+import { useOpenModal } from '../../../helpers/hooks/useOpenModal';
+import { checkForEquality } from '../../../helpers/checkForEquality';
 import {
   useEditUserMutation,
   useGetUserAdditionalInformationQuery,
@@ -22,13 +23,12 @@ import MaskedTextInput from '../../MaskedInput';
 import {
   FormBodyWrapper,
   FormWrapper,
-  Grid,
+  ThreeColumnGrid,
   InformModalText,
-  OrangeButton,
-  UnstyledButton,
 } from '../../styles';
-import { checkValues, compareValues } from './helpers/compareValues';
 import { useSetDefaultValues } from './helpers/useSetDefaultValues';
+import { compareValues } from './helpers/compareValues';
+import FormHeader from '../../FormHeader';
 
 const UserUpdateForm = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -36,8 +36,10 @@ const UserUpdateForm = () => {
   const { username } = useAppSelector((store) => store.auth);
   const navigate = useNavigate();
 
-  const { data: user } = useGetUserAdditionalInformationQuery();
-  const [editUser, { data: editedUser, isLoading }] = useEditUserMutation();
+  const { data: user, isLoading: isGetLoading } =
+    useGetUserAdditionalInformationQuery();
+  const [editUser, { data: editedUser, isLoading: isEditLoading, isSuccess }] =
+    useEditUserMutation();
 
   const form = useForm<Omit<UserEditFormValues, 'username'>>({
     initialValues: {
@@ -64,28 +66,37 @@ const UserUpdateForm = () => {
           ...comparedValues,
           username,
         }).unwrap();
-        setIsOpen(true);
         form.reset();
       }
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
+      form.reset();
       showErrorNotification(err?.data?.status, err?.data?.error);
     }
   };
 
   useSetDefaultValues(form, user);
 
+  useOpenModal(setIsOpen, isSuccess);
+
   const isDisabled =
-    checkValues(firstName, user?.firstName) &&
-    checkValues(lastName, user?.lastName) &&
-    checkValues(middleName, user?.middleName) &&
-    checkValues(phone, user?.phone);
+    checkForEquality(firstName, user?.firstName) &&
+    checkForEquality(lastName, user?.lastName) &&
+    checkForEquality(middleName, user?.middleName) &&
+    checkForEquality(phone, user?.phone);
+
+  const navigateBack = () => navigate(Paths.PERSONAL_CABINET);
+
+  const closeModal = () => {
+    setIsOpen(false);
+    navigateBack();
+  };
 
   return (
     <>
       <InformModal
         isOpen={isOpen}
-        onClose={() => setIsOpen(false)}
+        onClose={closeModal}
         title="Изменения сохранены"
         backPath={Paths.PERSONAL_CABINET}
       >
@@ -119,34 +130,15 @@ const UserUpdateForm = () => {
       </InformModal>
 
       <FormWrapper onSubmit={form.onSubmit(handleSubmit)}>
-        <Group position="apart" spacing={100}>
-          <Group spacing={42}>
-            <UnstyledButton
-              onClick={() => navigate(Paths.PERSONAL_CABINET)}
-              type="button"
-            >
-              <BsArrowLeft size={50} color="var(--orange)" />
-            </UnstyledButton>
-            <UnstyledButton
-              onClick={() => navigate(Paths.DASHBOARD)}
-              type="button"
-            >
-              <BsFillHouseFill size={44} color="var(--orange)" />
-            </UnstyledButton>
-          </Group>
-
-          <OrangeButton
-            disabled={isLoading || isDisabled}
-            $width={171}
-            type="submit"
-          >
-            {isLoading ? <Loader size={35} /> : <span>Сохранить</span>}
-          </OrangeButton>
-        </Group>
+        <FormHeader
+          isSubmitBtnDisabled={isEditLoading || isDisabled}
+          isSubmitBtnLoading={isEditLoading}
+          onBack={navigateBack}
+        />
 
         <FormBodyWrapper>
-          {!isLoading && user ? (
-            <Grid>
+          {!isGetLoading && user ? (
+            <ThreeColumnGrid>
               <TextInput
                 {...form.getInputProps('lastName')}
                 label="Фамилия"
@@ -174,7 +166,7 @@ const UserUpdateForm = () => {
                 placeholder="+7 (000) 000 0000"
               />
               <br />
-            </Grid>
+            </ThreeColumnGrid>
           ) : (
             <Loader size={80} isAbsoluteCentered />
           )}

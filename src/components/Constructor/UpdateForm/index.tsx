@@ -15,14 +15,16 @@ import {
 import { Status } from '../../../store/types';
 import { useDisplayError } from '../../../helpers/hooks/useDisplayError';
 import { showErrorNotification } from '../../../helpers/showErrorNotification';
+import { checkForEquality } from '../../../helpers/checkForEquality';
+import { useOpenModal } from '../../../helpers/hooks/useOpenModal';
 import { FormWrapper } from '../../styles';
 import { useSetDefaultValues } from './helpers/useSetDefaultValues';
-import { checkValues, compareValues } from './helpers/compareValues';
+import { compareValues } from './helpers/compareValues';
 import FormBody from './FormBody';
 import FormHeader from './FormHeader';
 
 const UpdateForm = () => {
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isUpdate, setIsUpdate] = useState<boolean>(false);
   const [currentUser, setCurrentUser] = useState<User | undefined>();
 
@@ -30,7 +32,7 @@ const UpdateForm = () => {
 
   const [
     updateUserSomeFields,
-    { isLoading: isUpdateLoading, data: updatedUser },
+    { isLoading: isUpdateLoading, data: updatedUser, isSuccess },
   ] = useUpdateUserSomeFieldsMutation();
   const {
     data: user,
@@ -80,18 +82,20 @@ const UpdateForm = () => {
           managerId: user.id,
           ...comparedValues,
         }).unwrap();
-        setIsModalOpen(true);
         form.reset();
       }
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
+      form.reset();
       showErrorNotification(err?.data?.status, err?.data?.error);
     }
   };
 
-  const handleCloseModal = () => {
+  useOpenModal(setIsOpen, isSuccess);
+
+  const closeModal = () => {
     setIsUpdate(false);
-    setIsModalOpen(false);
+    setIsOpen(false);
     setCurrentUser(user);
   };
 
@@ -106,13 +110,13 @@ const UpdateForm = () => {
         isLoading={isUpdateLoading}
         isUpdate={isUpdate}
         onUpdate={handleUpdate}
-        isOpen={isModalOpen}
-        onClose={handleCloseModal}
+        isOpen={isOpen}
+        onClose={closeModal}
         currentUser={currentUser}
         updatedUser={updatedUser}
         isDisabled={
-          checkValues(form.values.newRole, user?.role) &&
-          checkValues(form.values.accountStatus, isUserActive)
+          checkForEquality(form.values.newRole, user?.role) &&
+          checkForEquality(form.values.accountStatus, isUserActive)
         }
       />
 

@@ -22,7 +22,3 @@ export const compareValues = (
 
   return findDifference;
 };
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const checkValues = (leftSide: any, rightSide: any) =>
-  leftSide === rightSide;

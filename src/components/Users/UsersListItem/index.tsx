@@ -6,8 +6,8 @@ import { Status } from '../../../store/apis/user/types';
 import { LocalStorage } from '../../../constants/localStorage';
 import SliderButtons from '../../SliderButtons';
 import Loader from '../../Loader';
+import { ListItemWrapper, TwoColumnGrid } from '../../styles';
 import UserItem from './UserItem';
-import { Grid, Wrapper } from './styles';
 
 interface Props {
   paramRole: string | null;
@@ -47,14 +47,14 @@ const UsersListItem = ({ paramRole, paramActive }: Props) => {
   };
 
   return (
-    <Wrapper>
+    <ListItemWrapper>
       {!isLoading && !!users ? (
         <>
-          <Grid>
+          <TwoColumnGrid>
             {users.content.map((user) => (
               <UserItem key={user.managerId} user={user} />
             ))}
-          </Grid>
+          </TwoColumnGrid>
 
           {users.totalElements > 10 && (
             <SliderButtons
@@ -69,7 +69,7 @@ const UsersListItem = ({ paramRole, paramActive }: Props) => {
       ) : (
         <Loader size={80} isAbsoluteCentered />
       )}
-    </Wrapper>
+    </ListItemWrapper>
   );
 };
 

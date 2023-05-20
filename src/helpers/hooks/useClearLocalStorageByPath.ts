@@ -10,7 +10,9 @@ export function useClearLocalStorageByPath() {
   const location = useLocation();
 
   useEffect(() => {
-    if (!location.pathname.includes(Paths.EMPLOYEES)) {
+    const slicedPath = location.pathname.split('/')[1];
+
+    if (!Paths.EMPLOYEES.includes(slicedPath)) {
       const employeesModifiedTypeWorks = getItem(
         LocalStorage.EMPLOYEE_MODIFIED_TYPE_WORKS
       );
@@ -24,7 +26,7 @@ export function useClearLocalStorageByPath() {
       }
     }
 
-    if (!location.pathname.includes(Paths.WORK_TYPES)) {
+    if (!Paths.WORK_TYPES.includes(slicedPath)) {
       const typeWorkPage = getItem(LocalStorage.WORK_TYPE_PAGE);
       const typeWorkStatus = getItem(LocalStorage.WORK_TYPE_STATUS);
 
@@ -34,7 +36,7 @@ export function useClearLocalStorageByPath() {
       }
     }
 
-    if (!location.pathname.includes(Paths.CONSTRUCTORS)) {
+    if (!Paths.CONSTRUCTORS.includes(slicedPath)) {
       const userStatus = getItem(LocalStorage.USER_STATUS);
       const userPage = getItem(LocalStorage.USER_PAGE);
       const userRole = getItem(LocalStorage.USER_ROLE);
@@ -46,16 +48,24 @@ export function useClearLocalStorageByPath() {
       }
     }
 
-    // if (!location.pathname.includes(Paths.PROJECTS)) {
-    //   const userStatus = getItem(LocalStorage.PROJECT_SEARCH_PAGE);
-    //   const userPage = getItem(LocalStorage.PROJECT_FILTER_PAGE);
-    //   const userRole = getItem(LocalStorage.PROJECT_FILTER_IS_ENDED);
+    if (!Paths.PROJECTS.includes(slicedPath)) {
+      const projectSearchPage = getItem(LocalStorage.PROJECT_SEARCH_PAGE);
+      const projectFilterPage = getItem(LocalStorage.PROJECT_FILTER_PAGE);
+      const projectIsEnded = getItem(LocalStorage.PROJECT_FILTER_IS_ENDED);
 
-    //   if (!userStatus || userStatus || userRole || userPage) {
-    //     removeItem(LocalStorage.USER_STATUS);
-    //     removeItem(LocalStorage.USER_PAGE);
-    //     removeItem(LocalStorage.USER_ROLE);
-    //   }
-    // }
+      if (
+        projectSearchPage ||
+        projectFilterPage ||
+        projectIsEnded ||
+        !projectIsEnded
+      ) {
+        removeItem(LocalStorage.PROJECT_SEARCH_PAGE);
+        removeItem(LocalStorage.PROJECT_FILTER_PAGE);
+        removeItem(LocalStorage.PROJECT_FILTER_IS_ENDED);
+        removeItem(LocalStorage.PROJECT_FILTER_IS_NOT_ACCEPTANCE);
+        removeItem(LocalStorage.PROJECT_FILTER_IS_LAST_IN_WORK);
+        removeItem(LocalStorage.PROJECT_FILTER_IS_CURRENT_OVERDUE);
+      }
+    }
   }, [location.pathname]);
 }
