@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
-import { useGetAvailableProjectsByEmployeeIdQuery } from '../../../store/apis/employee';
-import { Project } from '../../../store/apis/employee/types';
+import { useGetAvailableProjectsByEmployeeIdQuery } from '../../../store/apis/project';
+import { ProjectBriefInfo } from '../../../store/apis/project/types';
 import { useSlider } from '../../../helpers/hooks/useSlider';
 import { useAppSelector } from '../../../helpers/hooks/useAppSelector';
 import { divisorByChunk } from '../../../helpers/divisorByChunk';
@@ -12,7 +12,9 @@ import ProjectCard from './ProjectCard';
 import { Grid, Wrapper } from './styles';
 
 const ProjectsListItem = () => {
-  const [projects, setProjects] = useState<Project[][] | undefined>([]);
+  const [projects, setProjects] = useState<ProjectBriefInfo[][] | undefined>(
+    []
+  );
 
   const { employee } = useAppSelector((store) => store.employee);
   const { quantity, current, slideIndex, prevSlide, nextSlide } =

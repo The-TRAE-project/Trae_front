@@ -15,7 +15,9 @@ const Details = () => {
     isLoading,
     error,
     isError,
-  } = useGetProjectByIdQuery(Number(id as string));
+  } = useGetProjectByIdQuery(Number(id as string), {
+    refetchOnMountOrArgChange: true,
+  });
 
   useDisplayError(error, isError);
 

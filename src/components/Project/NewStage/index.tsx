@@ -38,7 +38,13 @@ const NewStage = () => {
       {!isLoading && !!project ? (
         <>
           <FormHeader isShowSubmitBtn={false} onBack={navigateBack} />
-          {!!stages && <ListItem list={stages} lastItem={getLastStage()} />}
+          {!!stages && (
+            <ListItem
+              list={stages}
+              lastItem={getLastStage()}
+              onBack={navigateBack}
+            />
+          )}
 
           <ThreeColumnGrid>
             <DashedOrangeButton

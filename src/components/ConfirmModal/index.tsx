@@ -39,7 +39,7 @@ const ConfirmModal = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSuccess]);
 
-  const handleClose = () => {
+  const closeModal = () => {
     setIsInform(false);
     onCallAtTheEnd?.();
   };
@@ -71,7 +71,7 @@ const ConfirmModal = ({
       </Modal>
       <InformModal
         isOpen={isInform}
-        onClose={handleClose}
+        onClose={closeModal}
         informTitle={informTitle}
         onBack={onBack}
       />

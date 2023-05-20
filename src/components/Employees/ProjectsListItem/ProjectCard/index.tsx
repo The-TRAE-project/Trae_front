@@ -1,13 +1,13 @@
 import { useNavigate } from 'react-router-dom';
 
 import { useAppDispatch } from '../../../../helpers/hooks/useAppDispatch';
-import { Project } from '../../../../store/apis/employee/types';
+import { ProjectBriefInfo } from '../../../../store/apis/project/types';
 import { setProjectNumber } from '../../../../store/slices/employee';
 import { ProjectCustomer, ProjectName, ProjectNumber } from '../../../styles';
 import { Wrapper, ProjectOperationName } from './styles';
 
 interface Props {
-  project: Project;
+  project: ProjectBriefInfo;
 }
 
 const ProjectCard = ({ project }: Props) => {

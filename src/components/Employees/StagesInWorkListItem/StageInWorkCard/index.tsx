@@ -3,13 +3,13 @@ import { Group } from '@mantine/core';
 import { HiInformationCircle } from 'react-icons/hi';
 import { useNavigate } from 'react-router-dom';
 
-import { useFinishProjectStageMutation } from '../../../../store/apis/employee';
+import { useFinishProjectStageMutation } from '../../../../store/apis/project';
 import {
   clearEmployeeState,
   setProjectNumber,
   setTimer,
 } from '../../../../store/slices/employee';
-import { StageInWork } from '../../../../store/apis/employee/types';
+import { StageInWork } from '../../../../store/apis/project/types';
 import { useAppDispatch } from '../../../../helpers/hooks/useAppDispatch';
 import { useAppSelector } from '../../../../helpers/hooks/useAppSelector';
 import { showErrorNotification } from '../../../../helpers/showErrorNotification';

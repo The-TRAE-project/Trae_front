@@ -10,6 +10,12 @@ import {
   ReturnUpdatedEndDateValues,
   UpdateEndDateFormValues,
   NewOperationFormValues,
+  // Terminal Workshop
+  StageInWork,
+  ReceiveProjectStageValue,
+  ProjectStage,
+  ProjectBriefInfo,
+  CloseProjectStageValue,
 } from './types';
 
 const projectTags = baseApi.enhanceEndpoints({
@@ -69,7 +75,7 @@ const projectApi = projectTags.injectEndpoints({
     >({
       query: (query) =>
         `/project/search?direction=asc${query.elementPerPage}${query.page}${query.projectNumberOrCustomer}`,
-      providesTags: ['Projects'],
+      providesTags: ['Projects', 'Project'],
     }),
 
     editProject: build.mutation<
@@ -110,6 +116,16 @@ const projectApi = projectTags.injectEndpoints({
       invalidatesTags: ['Projects'],
     }),
 
+    deleteOperation: build.mutation<void, number>({
+      query(operationId) {
+        return {
+          url: `/operation/delete-operation/${operationId}`,
+          method: 'DELETE',
+        };
+      },
+      invalidatesTags: ['Project'],
+    }),
+
     insertNewOperation: build.mutation<void, NewOperationFormValues>({
       query(body) {
         return {
@@ -119,6 +135,46 @@ const projectApi = projectTags.injectEndpoints({
         };
       },
       invalidatesTags: ['Projects'],
+    }),
+    // Terminal Workshop
+    getStagesInWorkByEmployeeId: build.query<StageInWork[], number>({
+      query: (employeeId) =>
+        `/operation/employee/operations-in-work/${employeeId}`,
+      providesTags: ['Projects'],
+    }),
+
+    finishProjectStage: build.mutation<void, CloseProjectStageValue>({
+      query(body) {
+        return {
+          url: 'operation/employee/finish-operation',
+          method: 'POST',
+          body,
+        };
+      },
+      invalidatesTags: ['Projects'],
+    }),
+
+    receiveProjectStage: build.mutation<void, ReceiveProjectStageValue>({
+      query(body) {
+        return {
+          url: '/operation/employee/receive-operation',
+          method: 'POST',
+          body,
+        };
+      },
+      invalidatesTags: ['Projects'],
+    }),
+
+    getProjectStages: build.query<ProjectStage[], number>({
+      query: (projectId) =>
+        `operation/employee/project-operations/${projectId}`,
+      providesTags: ['Projects'],
+    }),
+
+    getAvailableProjectsByEmployeeId: build.query<ProjectBriefInfo[], number>({
+      query: (employeeId) =>
+        `/project/employee/available-projects/${employeeId}`,
+      providesTags: ['Projects'],
     }),
   }),
 });
@@ -134,4 +190,11 @@ export const {
   useEditProjectEndDateMutation,
   useCloseProjectMutation,
   useInsertNewOperationMutation,
+  useDeleteOperationMutation,
+  // Terminal Workshop
+  useReceiveProjectStageMutation,
+  useFinishProjectStageMutation,
+  useGetAvailableProjectsByEmployeeIdQuery,
+  useGetStagesInWorkByEmployeeIdQuery,
+  useGetProjectStagesQuery,
 } = projectApi;

@@ -1,37 +1,18 @@
-import { AiOutlineMinusCircle } from 'react-icons/ai';
-
 import { ProjectOperation } from '../../../../store/apis/project/types';
 import { ThreeColumnGrid } from '../../../styles';
-import {
-  DeleteButton,
-  Item,
-  ItemPriority,
-  ItemPriorityWrapper,
-  ItemTitle,
-} from './styles';
+import Item from './Item';
 
 interface Props {
   list: ProjectOperation[];
   lastItem: ProjectOperation | undefined;
+  onBack: () => void;
 }
 
-const ListItem = ({ list, lastItem }: Props) => {
+const ListItem = ({ list, lastItem, onBack }: Props) => {
   return (
     <ThreeColumnGrid>
       {list.map((item) => (
-        <Item key={item.id}>
-          <ItemPriorityWrapper>
-            <ItemPriority>{item.priority}</ItemPriority>
-          </ItemPriorityWrapper>
-          <ItemTitle>{item.name}</ItemTitle>
-          {lastItem?.id !== item.id ? (
-            <DeleteButton type="button">
-              <AiOutlineMinusCircle />
-            </DeleteButton>
-          ) : (
-            <br />
-          )}
-        </Item>
+        <Item key={item.id} item={item} lastItem={lastItem} onBack={onBack} />
       ))}
     </ThreeColumnGrid>
   );

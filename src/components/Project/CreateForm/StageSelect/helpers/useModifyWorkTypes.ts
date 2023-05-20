@@ -1,4 +1,4 @@
-import { useEffect, useState, useId } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useGetActiveWorkTypesQuery } from '../../../../../store/apis/workTypes';
 import { WorkTypeStatuses } from '../../../../../store/apis/workTypes/types';
@@ -6,7 +6,7 @@ import { WorkTypeStatuses } from '../../../../../store/apis/workTypes/types';
 export interface ModifiedWorkType {
   name: string;
   typeWorkId: number;
-  idx: number | string;
+  idx: number;
 }
 
 export function useModifyWorkTypes() {
@@ -18,8 +18,6 @@ export function useModifyWorkTypes() {
   );
 
   const { data } = useGetActiveWorkTypesQuery();
-
-  const idx = useId();
 
   useEffect(() => {
     if (data) {
@@ -33,13 +31,13 @@ export function useModifyWorkTypes() {
           name: workType.name,
           typeWorkId: workType.id,
           // idx -> like id to filter array
-          idx: `${idx}${workType.name}${index}`,
+          idx: workType.id + Math.floor(Math.random() * 50000) + index,
         }));
 
       const modifiedShipment: ModifiedWorkType = {
         name: shipment.name,
         typeWorkId: shipment.id,
-        idx: `${idx}${shipment.name}${Math.random() * 1000}`,
+        idx: shipment.id + Math.floor(Math.random() * 50000),
       };
 
       setModifiedWorkTypes([...workTypes, modifiedShipment]);

@@ -1,6 +1,6 @@
 import { createStyles } from '@mantine/core';
 import { IoIosArrowUp } from 'react-icons/io';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 export const Title = styled.p`
   font-family: var(--font-roboto);
@@ -52,6 +52,10 @@ export const SelectLabel = styled.p`
   padding-left: 14px;
 `;
 
+type SelectDisplayInputProps = {
+  $isFs28?: boolean;
+};
+
 export const SelectDisplayInput = styled.div`
   position: relative;
   min-height: 73px;
@@ -69,8 +73,16 @@ export const SelectDisplayInput = styled.div`
 
   p {
     font-family: var(--font-roboto);
-    font-weight: 400;
-    ${({ theme }) => theme.mixins.fontSize22};
+    ${(props: SelectDisplayInputProps) =>
+      props.$isFs28
+        ? css`
+            ${({ theme }) => theme.mixins.fontSize28};
+            font-weight: 500;
+          `
+        : css`
+            ${({ theme }) => theme.mixins.fontSize22};
+            font-weight: 400;
+          `}
     color: var(--white-black);
   }
 `;

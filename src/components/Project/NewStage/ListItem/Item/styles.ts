@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const Item = styled.div`
+export const ItemWrapper = styled.div`
   position: relative;
   min-height: 110px;
   ${({ theme }) => theme.mixins.apart};
@@ -17,10 +17,12 @@ export const ItemTitle = styled.p`
   ${({ theme }) => theme.mixins.fontSize24};
   color: var(--white-black);
   word-break: break-word;
+  text-align: center;
 `;
 
 export const ItemPriorityWrapper = styled.div`
   position: relative;
+  min-width: 53px;
   height: 100%;
 `;
 

@@ -5,8 +5,8 @@ import { Paths } from '../../../../constants/paths';
 import { useAppDispatch } from '../../../../helpers/hooks/useAppDispatch';
 import { useAppSelector } from '../../../../helpers/hooks/useAppSelector';
 import { showErrorNotification } from '../../../../helpers/showErrorNotification';
-import { useReceiveProjectStageMutation } from '../../../../store/apis/employee';
-import { ProjectStage } from '../../../../store/apis/employee/types';
+import { useReceiveProjectStageMutation } from '../../../../store/apis/project';
+import { ProjectStage } from '../../../../store/apis/project/types';
 import {
   clearEmployeeState,
   setTimer,

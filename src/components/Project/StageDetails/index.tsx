@@ -5,7 +5,7 @@ import { Stack } from '@mantine/core';
 import { useAppSelector } from '../../../helpers/hooks/useAppSelector';
 import { useCloseProjectOperationMutation } from '../../../store/apis/project';
 import Loader from '../../Loader';
-import ConfirmModal from '../../ConfrimModal';
+import ConfirmModal from '../../ConfirmModal';
 import FormHeader from '../../FormHeader';
 import { showErrorNotification } from '../../../helpers/showErrorNotification';
 import StageBody from './StageBody';

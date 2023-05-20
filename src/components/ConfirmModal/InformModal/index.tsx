@@ -9,13 +9,8 @@ interface Props {
 }
 
 const InformModal = ({ isOpen, onClose, informTitle, onBack }: Props) => {
-  const handleClose = () => {
-    onClose();
-    onBack();
-  };
-
   return (
-    <Modal isOpen={isOpen} onClose={handleClose} onBack={onBack}>
+    <Modal isOpen={isOpen} onClose={onClose} onBack={onBack}>
       <Title dangerouslySetInnerHTML={{ __html: informTitle }} />
     </Modal>
   );

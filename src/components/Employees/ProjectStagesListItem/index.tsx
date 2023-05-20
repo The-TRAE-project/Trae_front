@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { ProjectStage } from '../../../store/apis/employee/types';
+import { ProjectStage } from '../../../store/apis/project/types';
 import { divisorByChunk } from '../../../helpers/divisorByChunk';
 import { useDisplayError } from '../../../helpers/hooks/useDisplayError';
-import { useGetProjectStagesQuery } from '../../../store/apis/employee';
+import { useGetProjectStagesQuery } from '../../../store/apis/project';
 import { useAppSelector } from '../../../helpers/hooks/useAppSelector';
 import { useSlider } from '../../../helpers/hooks/useSlider';
 import SliderButtons from '../../SliderButtons';

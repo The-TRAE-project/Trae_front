@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useCloseProjectMutation } from '../../../../store/apis/project';
 import { showErrorNotification } from '../../../../helpers/showErrorNotification';
 import { Paths } from '../../../../constants/paths';
-import ConfirmModal from '../../../ConfrimModal';
+import ConfirmModal from '../../../ConfirmModal';
 import FormHeader from '../../../FormHeader';
 
 interface Props {
@@ -26,7 +26,7 @@ const DetailsHeader = ({ projectId, projectNumber, isEnded }: Props) => {
       await closeProject(projectId).unwrap();
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
-      showErrorNotification(err.status, err?.data?.error);
+      showErrorNotification(err?.data?.status, err?.data?.error);
     }
   };
 

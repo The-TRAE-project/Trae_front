@@ -1,10 +1,6 @@
 import { baseApi } from '..';
 import { FilteredResponse, FilterValues } from '../types';
 import {
-  ProjectStage,
-  Project,
-  StageInWork,
-  ReceiveProjectStageValue,
   Employee,
   CreateEmployeeReturnType,
   EmployeeFormValues,
@@ -12,53 +8,11 @@ import {
 } from './types';
 
 const employeeTags = baseApi.enhanceEndpoints({
-  addTagTypes: ['Employee', 'ProjectStage', 'Project'],
+  addTagTypes: ['Employee'],
 });
-// TODO:
+
 const employeeApi = employeeTags.injectEndpoints({
   endpoints: (build) => ({
-    getAvailableProjectsByEmployeeId: build.query<Project[], number>({
-      query: (employeeId) =>
-        `/project/employee/available-projects/${employeeId}`,
-      // keepUnusedDataFor: 0,
-      providesTags: ['Project'],
-    }),
-
-    getStagesInWorkByEmployeeId: build.query<StageInWork[], number>({
-      query: (employeeId) =>
-        `/operation/employee/operations-in-work/${employeeId}`,
-      // keepUnusedDataFor: 0,
-      providesTags: ['Project'],
-    }),
-
-    getProjectStages: build.query<ProjectStage[], number>({
-      query: (projectId) =>
-        `operation/employee/project-operations/${projectId}`,
-      providesTags: ['Project'],
-    }),
-
-    receiveProjectStage: build.mutation<void, ReceiveProjectStageValue>({
-      query(body) {
-        return {
-          url: '/operation/employee/receive-operation',
-          method: 'POST',
-          body,
-        };
-      },
-      invalidatesTags: ['Project'],
-    }),
-
-    finishProjectStage: build.mutation<void, ReceiveProjectStageValue>({
-      query(body) {
-        return {
-          url: 'operation/employee/finish-operation',
-          method: 'POST',
-          body,
-        };
-      },
-      invalidatesTags: ['Project'],
-    }),
-
     createEmployee: build.mutation<
       CreateEmployeeReturnType,
       EmployeeFormValues
@@ -93,11 +47,6 @@ const employeeApi = employeeTags.injectEndpoints({
 });
 
 export const {
-  useGetAvailableProjectsByEmployeeIdQuery,
-  useGetStagesInWorkByEmployeeIdQuery,
-  useGetProjectStagesQuery,
-  useReceiveProjectStageMutation,
-  useFinishProjectStageMutation,
   useCreateEmployeeMutation,
   useGetAllEmployeesQuery,
   useEditEmployeeMutation,

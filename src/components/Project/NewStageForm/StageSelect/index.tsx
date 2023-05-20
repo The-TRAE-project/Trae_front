@@ -110,7 +110,7 @@ const StageSelect = ({ form }: Props) => {
         classNames={{ dropdown, divider, item, itemLabel }}
       >
         <Menu.Target>
-          <SelectDisplayInput>
+          <SelectDisplayInput $isFs28>
             <input type="text" {...form.getInputProps('name')} />
             {form.values.name && <p>{form.values.name}</p>}
             <SelectArrow $isOpen={opened} size={34} />

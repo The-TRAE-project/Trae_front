@@ -229,3 +229,43 @@ export const NewOperationSchema = z.object({
 });
 
 export type NewOperationFormValues = z.infer<typeof NewOperationSchema>;
+
+// Terminal Workshop
+export interface StageInWork {
+  customerLastName: string;
+  operationId: number;
+  operationName: string;
+  projectId: number;
+  projectName: string;
+  projectNumber: number;
+}
+
+export interface ReceiveProjectStageValue {
+  employeeId: number;
+  operationId: number;
+  operationPriority: number;
+}
+
+export interface CloseProjectStageValue {
+  employeeId: number;
+  operationId: number;
+}
+
+export interface ProjectBriefInfo {
+  id: number;
+  projectName: string;
+  number: number;
+  customer: string;
+  availableOperationName: string;
+}
+
+export interface ProjectStage {
+  id: number;
+  name: string;
+  readyToAcceptance: boolean;
+  priority: number;
+  isEnded: boolean;
+  inWork: boolean;
+  employeeFirstName: null | string;
+  employeeLastName: null | string;
+}
