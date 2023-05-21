@@ -33,7 +33,7 @@ const NavbarItem = ({ navbarLink }: Props) => {
           onClick={() => handleNavigate(navbarLink.value)}
           $isActive={definePathIsActive(navbarLink.value, location.pathname)}
         >
-          <BsPersonLinesFill size={48} />
+          <BsPersonLinesFill />
         </UserProfileButton>
       ) : (
         <>

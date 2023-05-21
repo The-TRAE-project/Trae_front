@@ -5,8 +5,12 @@ import bg from '../../assets/bg.svg';
 
 export const Container = styled.div`
   margin: 0 auto;
+  @media ${({ theme }) => theme.bp.bpLarge} {
+    width: 1140px;
+  }
+
   @media ${({ theme }) => theme.bp.bpXlarge} {
-    max-width: 1280px;
+    width: 1280px;
   }
 `;
 
@@ -16,6 +20,10 @@ export const WrapperWithBgImage = styled.section`
   background-size: cover;
   background-repeat: no-repeat;
   min-height: 100vh;
+
+  @media ${({ theme }) => theme.bp.bpLarge} {
+    padding: 95px 0 40px;
+  }
 
   @media ${({ theme }) => theme.bp.bpXlarge} {
     padding: 185px 0 104px;
@@ -32,15 +40,28 @@ export const ApartContainer = styled(Container)`
 
 export const TopContainer = styled(Container)`
   display: flex;
-  align-items: flex-start;
   justify-content: space-between;
+
+  @media ${({ theme }) => theme.bp.bpLarge} {
+    min-height: calc(100vh - 135px);
+    align-items: center;
+  }
 
   @media ${({ theme }) => theme.bp.bpXlarge} {
     min-height: calc(100vh - 289px);
+    align-items: flex-start;
   }
 `;
 
 export const TraeLogoImageWrapper = styled(Box)`
+  --wd: clamp(25rem, calc(14.18rem + 12.68vw), 29.88rem);
+  --ht: clamp(30rem, calc(20.43rem + 11.22vw), 34.31rem);
+
+  @media ${({ theme }) => theme.bp.bpLarge} {
+    height: var(--ht);
+    width: var(--wd);
+  }
+
   @media ${({ theme }) => theme.bp.bpXlarge} {
     height: 549px;
     width: 478px;
@@ -54,6 +75,10 @@ export const WrapperBgGreen = styled.section`
     var(--gradient-green1) 2.46%,
     var(--gradient-green2) 70.65%
   );
+
+  @media ${({ theme }) => theme.bp.bpLarge} {
+    padding: 100px 0 50px;
+  }
 
   @media ${({ theme }) => theme.bp.bpXlarge} {
     padding: 185px 0 104px;
@@ -71,6 +96,10 @@ export const WrapperGradientGreen = styled.section`
     var(--gradient-green1) 2.46%,
     var(--gradient-green2) 70.65%
   );
+
+  @media ${({ theme }) => theme.bp.bpLarge} {
+    padding: 108px 0 40px;
+  }
 
   @media ${({ theme }) => theme.bp.bpXlarge} {
     padding: 148px 0 80px;
