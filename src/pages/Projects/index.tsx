@@ -81,12 +81,40 @@ const Projects = () => {
         ? `&isOverdueCurrentOpInProject=${paramIsCurrentOverdue}`
         : '',
     });
-
+  // TODO:
   const resetFilterParams = () => {
     setParamIsEnded(false);
     setParamIsFirstNoAcceptance(false);
     setParamIsLastInWork(false);
     setParamIsCurrentOverdue(false);
+  };
+  // TODO:
+  const handleSetIsEnded = () => {
+    setParamIsEnded(true);
+    setParamIsFirstNoAcceptance(false);
+    setParamIsLastInWork(false);
+    setParamIsCurrentOverdue(false);
+  };
+  // TODO:
+  const handleSetIsFirstNoAcceptance = () => {
+    setParamIsFirstNoAcceptance(true);
+    setParamIsEnded(false);
+    setParamIsLastInWork(false);
+    setParamIsCurrentOverdue(false);
+  };
+  // TODO:
+  const handleSetIsLastInWork = () => {
+    setParamIsLastInWork(true);
+    setParamIsFirstNoAcceptance(false);
+    setParamIsEnded(false);
+    setParamIsCurrentOverdue(false);
+  };
+  // TODO:
+  const handleSetIsCurrentOverdue = () => {
+    setParamIsLastInWork(false);
+    setParamIsFirstNoAcceptance(false);
+    setParamIsEnded(false);
+    setParamIsCurrentOverdue(true);
   };
 
   const navigateToHome = () => navigate(Paths.DASHBOARD);
@@ -107,13 +135,13 @@ const Projects = () => {
               <Group spacing={40}>
                 <ProjectFilterMenu
                   isEnded={paramIsEnded}
-                  setIsEnded={setParamIsEnded}
-                  isFirstNoAcceptance={paramIsLastInWork}
-                  setIsFirstNoAcceptance={setParamIsFirstNoAcceptance}
+                  setIsEnded={handleSetIsEnded}
+                  isFirstNoAcceptance={paramIsFirstNoAcceptance}
+                  setIsFirstNoAcceptance={handleSetIsFirstNoAcceptance}
                   isLastInWork={paramIsLastInWork}
-                  setIsLastInWork={setParamIsLastInWork}
+                  setIsLastInWork={handleSetIsLastInWork}
                   isCurrentOverdue={paramIsCurrentOverdue}
-                  setParamIsCurrentOverdue={setParamIsCurrentOverdue}
+                  setParamIsCurrentOverdue={handleSetIsCurrentOverdue}
                   reset={resetFilterParams}
                 />
                 <UnstyledButton onClick={navigateToHome} type="button">

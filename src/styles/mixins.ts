@@ -44,13 +44,13 @@ const mixins = {
   `,
 
   fontSize28: css`
-    font-size: 28px;
-    line-height: 33px;
+    font-size: var(--fs-28);
+    line-height: var(--fs-28-lh);
   `,
 
   fontSize30: css`
-    font-size: 30px;
-    line-height: 35px;
+    font-size: var(--fs-30);
+    line-height: var(--fs-30-lh);
   `,
 
   fontSize32: css`

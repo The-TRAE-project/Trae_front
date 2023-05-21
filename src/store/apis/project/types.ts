@@ -126,6 +126,7 @@ export interface ProjectShortInfo {
   number: number;
   name: string;
   customer: string;
+  isEnded: boolean;
   operation: OperationShortInfo;
 }
 

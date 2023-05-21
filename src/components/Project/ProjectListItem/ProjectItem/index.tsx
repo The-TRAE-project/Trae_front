@@ -11,20 +11,27 @@ interface Props {
 const ProjectItem = ({ project }: Props) => {
   const navigate = useNavigate();
 
-  const inWork = project.operation.inWork ? 'inWork' : '';
-  const isEnded = project.operation.isEnded ? 'isEnded' : '';
-  const readyToAcceptance = project.operation ? 'readyToAcceptance' : '';
+  const stageInWork = project.operation.inWork ? 'stageInWork' : '';
+  const stageReadyToAcceptance = project.operation
+    ? 'stageReadyToAcceptance'
+    : '';
+  const stageIsEnded = project.operation.isEnded ? 'ended' : '';
+  const projectEnded = project.isEnded ? 'ended' : '';
 
   const handleNavigateToDetails = () =>
     navigate(`/project/${project.id}/details`);
 
   return (
     <ButtonWrapper onClick={handleNavigateToDetails}>
-      <ProjectNumber>{project.number}</ProjectNumber>
+      <ProjectNumber $isEnded={project.isEnded}>{project.number}</ProjectNumber>
       <ProjectCustomer>{project.customer}</ProjectCustomer>
       <ProjectName>{project.name}</ProjectName>
-      <ProjectOperationName className={inWork || isEnded || readyToAcceptance}>
-        {project.operation.name}
+      <ProjectOperationName
+        className={
+          projectEnded || stageInWork || stageIsEnded || stageReadyToAcceptance
+        }
+      >
+        {project.isEnded ? 'Проект выполнен' : project.operation.name}
       </ProjectOperationName>
     </ButtonWrapper>
   );

@@ -34,6 +34,12 @@ export const loginUser = createAsyncThunk(
         Response<TokenValue>
       >('/auth/login', value);
 
+      if (response.data) {
+        Cookies.set(TokenTypes.A_TOKEN, response.data.accessToken, {
+          expires: A_TOKEN_EXPIRATION,
+        });
+      }
+
       return response.data;
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
@@ -129,9 +135,6 @@ export const authSlice = createSlice({
         (state, { payload }: PayloadAction<TokenValue>) => {
           if (state.isLoading === 'pending') {
             state.isLoading = 'idle';
-            Cookies.set(TokenTypes.A_TOKEN, payload.accessToken, {
-              expires: A_TOKEN_EXPIRATION,
-            });
             state.accessToken = Cookies.get(TokenTypes.A_TOKEN) as string;
             state.isLoggedIn = !!Cookies.get(TokenTypes.A_TOKEN);
             state.refreshToken = payload.refreshToken;

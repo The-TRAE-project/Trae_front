@@ -1,5 +1,5 @@
-import styled from 'styled-components';
 import { Box, createStyles } from '@mantine/core';
+import styled, { css } from 'styled-components';
 
 import bg from '../../assets/bg.svg';
 
@@ -344,6 +344,11 @@ export const ProjectName = styled.p`
   white-space: nowrap;
 `;
 
+type ProjectNumberProps = {
+  $isEnded?: boolean;
+  $isOverdue?: boolean;
+};
+
 export const ProjectNumber = styled.p`
   ${({ theme }) => theme.mixins.orangeCircle};
   position: absolute;
@@ -351,6 +356,17 @@ export const ProjectNumber = styled.p`
   left: 0;
   right: 0;
   margin: 0 auto;
+  ${(props: ProjectNumberProps) =>
+    props.$isEnded &&
+    css`
+      background-color: var(--light-green2);
+    `}
+
+  ${(props: ProjectNumberProps) =>
+    props.$isOverdue &&
+    css`
+      background-color: var(--red2);
+    `}
 `;
 
 export const TwoColumnGrid = styled.div`

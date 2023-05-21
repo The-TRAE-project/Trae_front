@@ -1,6 +1,8 @@
 // TODO:
 import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
+
 import { Paths } from '../../constants/paths';
 import { LocalStorage } from '../../constants/localStorage';
 import { Roles } from '../../store/slices/auth/types';
@@ -11,12 +13,15 @@ import { clearUserState } from '../../store/slices/auth';
 import { clearWorkTypeState } from '../../store/slices/workType';
 import { clearProjectState } from '../../store/slices/project';
 import { removeItem } from '../removeItem';
+import { TokenTypes } from './useCookies';
 
 export function useNavigateLoggedInUser() {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useAppDispatch();
-  const { accessToken, permission } = useAppSelector((store) => store.auth);
+  const { permission } = useAppSelector((store) => store.auth);
+
+  const accessToken = Cookies.get(TokenTypes.A_TOKEN);
 
   useEffect(() => {
     if (accessToken) {

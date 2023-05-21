@@ -16,6 +16,7 @@ const variables = css`
     --orange: #ff9a4a;
     --orange2: rgba(255, 154, 74, 0.8);
     --red: #da1212;
+    --red2: #f93c3c;
     --green: #42894d;
     --green2: rgba(131, 204, 140, 0.6);
     --green3: #68a56e;
@@ -40,6 +41,21 @@ const variables = css`
     --border-radius: 15px;
     --easing: cubic-bezier(0.645, 0.045, 0.355, 1);
     --transition: all 0.4s linear 0.2s;
+
+    --fs-28: clamp(1.5rem, calc(0.95rem + 0.65vw), 1.75rem);
+    --fs-28-lh: clamp(1.88rem, calc(1.46rem + 0.49vw), 2.06rem);
+    --fs-30: clamp(1.63rem, calc(1.07rem + 0.65vw), 1.88rem);
+    --fs-30-lh: clamp(1.56rem, calc(0.18rem + 1.63vw), 2.19rem);
+
+    --fs-24-label: clamp(1.25rem, calc(0.7rem + 0.65vw), 1.5rem);
+    --fs-24-label-lh: clamp(1.38rem, calc(2.58rem + -0.98vw), 1.75rem);
+
+    --lgn-form-input-wd: clamp(23.06rem, calc(18.76rem + 5.04vw), 25rem);
+    --lgn-form-input-ht: clamp(4.06rem, calc(2.95rem + 1.3vw), 4.56rem);
+    --lgn-form-input-pd: clamp(0.94rem, calc(0.24rem + 0.81vw), 1.25rem);
+    --lgn-form-label-pm: clamp(0.63rem, calc(0.49rem + 0.16vw), 0.69rem);
+
+    --right-icon-wh: clamp(1.75rem, calc(0.78rem + 1.14vw), 2.19rem);
   }
 `;
 

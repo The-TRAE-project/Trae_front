@@ -1,4 +1,8 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
+
+type ButtonWrapperProps = {
+  $isOverdue?: boolean;
+};
 
 export const ButtonWrapper = styled.button`
   position: relative;
@@ -15,6 +19,12 @@ export const ButtonWrapper = styled.button`
   &:is(:hover, :active, :focus) {
     outline: none;
   }
+
+  ${(props: ButtonWrapperProps) =>
+    props.$isOverdue &&
+    css`
+      border: 3px solid var(--red2);
+    `}
 `;
 
 export const ProjectOperationName = styled.p`
@@ -22,15 +32,15 @@ export const ProjectOperationName = styled.p`
   ${({ theme }) => theme.mixins.fontSize30};
   text-align: center;
 
-  &.inWork {
+  &.stageInWork {
     color: var(--orange);
   }
 
-  &.readyToAcceptance {
+  &.stageReadyToAcceptance {
     color: var(--green);
   }
 
-  &.isEnded {
+  &.ended {
     color: var(--white-black);
   }
 `;
