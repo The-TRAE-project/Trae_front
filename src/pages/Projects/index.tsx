@@ -42,7 +42,7 @@ const Projects = () => {
   const [paramIsFirstNoAcceptance, setParamIsFirstNoAcceptance] =
     useLocalStorage<boolean>({
       key: LocalStorage.PROJECT_FILTER_IS_NOT_ACCEPTANCE,
-      defaultValue: false,
+      defaultValue: true,
     });
   const [paramIsLastInWork, setParamIsLastInWork] = useLocalStorage<boolean>({
     key: LocalStorage.PROJECT_FILTER_IS_LAST_IN_WORK,
@@ -70,15 +70,15 @@ const Projects = () => {
     useGetProjectsQuery({
       elementPerPage: `&elementPerPage=${10}`,
       page: `&page=${searchPage}`,
-      isEnded: paramIsEnded ? `&isEnded=${paramIsEnded}` : '',
+      isEnded: `&isEnded=${paramIsEnded}`,
+      isOverdueCurrentOpInProject: paramIsCurrentOverdue
+        ? `&isOverdueCurrentOpInProject=${paramIsCurrentOverdue}`
+        : '',
       isOnlyFirstOpWithoutAcceptance: paramIsFirstNoAcceptance
         ? `&isOnlyFirstOpWithoutAcceptance=${paramIsFirstNoAcceptance}`
         : '',
       isOnlyLastOpInWork: paramIsLastInWork
         ? `&isOnlyLastOpInWork=${paramIsLastInWork}`
-        : '',
-      isOverdueCurrentOpInProject: paramIsCurrentOverdue
-        ? `&isOverdueCurrentOpInProject=${paramIsCurrentOverdue}`
         : '',
     });
   // TODO:
@@ -111,10 +111,28 @@ const Projects = () => {
   };
   // TODO:
   const handleSetIsCurrentOverdue = () => {
+    setParamIsCurrentOverdue(true);
     setParamIsLastInWork(false);
     setParamIsFirstNoAcceptance(false);
     setParamIsEnded(false);
-    setParamIsCurrentOverdue(true);
+  };
+
+  const clearSearchInput = () => {
+    if (debounced) {
+      setSearchValue('');
+    }
+  };
+
+  const clearFilterParams = () => {
+    if (
+      paramIsFirstNoAcceptance ||
+      paramIsEnded ||
+      paramIsCurrentOverdue ||
+      paramIsLastInWork ||
+      filterPage
+    ) {
+      resetFilterParams();
+    }
   };
 
   const navigateToHome = () => navigate(Paths.DASHBOARD);
@@ -134,6 +152,7 @@ const Projects = () => {
             <Group position="apart" spacing={100}>
               <Group spacing={40}>
                 <ProjectFilterMenu
+                  onClearInput={clearSearchInput}
                   isEnded={paramIsEnded}
                   setIsEnded={handleSetIsEnded}
                   isFirstNoAcceptance={paramIsFirstNoAcceptance}
@@ -152,6 +171,7 @@ const Projects = () => {
               <ProjectSearchInput
                 searchValue={searchValue}
                 setSearchValue={setSearchValue}
+                onClearFilter={clearFilterParams}
               />
 
               <OrangeButton onClick={navigateToCreateProjectPage} type="button">
@@ -166,6 +186,7 @@ const Projects = () => {
                 setPage={setSearchPage}
                 isLoading={isSearchLoading}
                 projects={findProjectsBySearch}
+                isOverdue={paramIsCurrentOverdue}
               />
             ) : (
               <ProjectListItem

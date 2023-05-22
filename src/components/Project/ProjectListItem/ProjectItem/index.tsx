@@ -6,9 +6,10 @@ import { ButtonWrapper, ProjectOperationName } from './styles';
 
 interface Props {
   project: ProjectShortInfo;
+  isOverdue?: boolean;
 }
 
-const ProjectItem = ({ project }: Props) => {
+const ProjectItem = ({ project, isOverdue }: Props) => {
   const navigate = useNavigate();
 
   const stageInWork = project.operation.inWork ? 'stageInWork' : '';
@@ -22,8 +23,10 @@ const ProjectItem = ({ project }: Props) => {
     navigate(`/project/${project.id}/details`);
 
   return (
-    <ButtonWrapper onClick={handleNavigateToDetails}>
-      <ProjectNumber $isEnded={project.isEnded}>{project.number}</ProjectNumber>
+    <ButtonWrapper onClick={handleNavigateToDetails} $isOverdue={isOverdue}>
+      <ProjectNumber $isEnded={project.isEnded} $isOverdue={isOverdue}>
+        {project.number}
+      </ProjectNumber>
       <ProjectCustomer>{project.customer}</ProjectCustomer>
       <ProjectName>{project.name}</ProjectName>
       <ProjectOperationName

@@ -65,7 +65,7 @@ const projectApi = projectTags.injectEndpoints({
       FilterValues
     >({
       query: (query) =>
-        `/project/projects?direction=asc${query.elementPerPage}${query.page}${query.isEnded}${query.isOnlyFirstOpWithoutAcceptance}${query.isOnlyLastOpInWork}`,
+        `/project/projects?direction=asc${query.elementPerPage}${query.page}${query.isEnded}${query.isOnlyFirstOpWithoutAcceptance}${query.isOnlyLastOpInWork}${query.isOverdueCurrentOpInProject}`,
       providesTags: ['Projects', 'Project'],
     }),
 

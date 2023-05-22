@@ -15,6 +15,7 @@ import {
 } from './styles';
 
 interface Props {
+  onClearInput: () => void;
   isEnded: boolean;
   setIsEnded: () => void;
   isFirstNoAcceptance: boolean;
@@ -27,6 +28,7 @@ interface Props {
 }
 
 const ProjectFilterMenu = ({
+  onClearInput,
   isEnded,
   setIsEnded,
   isFirstNoAcceptance,
@@ -61,7 +63,7 @@ const ProjectFilterMenu = ({
       }}
     >
       <Menu.Target>
-        <UnstyledButton>
+        <UnstyledButton onClick={onClearInput}>
           <Filter />
         </UnstyledButton>
       </Menu.Target>

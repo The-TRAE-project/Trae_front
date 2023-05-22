@@ -1,4 +1,5 @@
 import { Dispatch, SetStateAction } from 'react';
+
 import { FilteredResponse } from '../../../store/apis/types';
 import { ProjectShortInfo } from '../../../store/apis/project/types';
 import Loader from '../../Loader';
@@ -11,9 +12,16 @@ interface Props {
   setPage: Dispatch<SetStateAction<number>>;
   isLoading: boolean;
   projects: FilteredResponse<ProjectShortInfo[]> | undefined;
+  isOverdue?: boolean;
 }
 
-const ProjectListItem = ({ page, setPage, isLoading, projects }: Props) => {
+const ProjectListItem = ({
+  page,
+  setPage,
+  isLoading,
+  projects,
+  isOverdue,
+}: Props) => {
   const prevSlide = () => {
     if (page !== 0) {
       setPage((prevPage) => prevPage - 1);
@@ -32,7 +40,11 @@ const ProjectListItem = ({ page, setPage, isLoading, projects }: Props) => {
         <>
           <Grid>
             {projects.content.map((project) => (
-              <ProjectItem key={project.id} project={project} />
+              <ProjectItem
+                key={project.id}
+                project={project}
+                isOverdue={isOverdue}
+              />
             ))}
           </Grid>
 
