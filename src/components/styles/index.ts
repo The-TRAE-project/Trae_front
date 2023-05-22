@@ -101,6 +101,22 @@ export const WrapperGradientGreen = styled.section`
     padding: 108px 0 40px;
   }
 
+  @media (min-width: 1500px) {
+    padding: 115px 0 45px;
+  }
+
+  @media (min-width: 1600px) {
+    padding: 120px 0 55px;
+  }
+
+  @media (min-width: 1750px) {
+    padding: 130px 0 65px;
+  }
+
+  @media (min-width: 1850px) {
+    padding: 140px 0 75px;
+  }
+
   @media ${({ theme }) => theme.bp.bpXlarge} {
     padding: 148px 0 80px;
   }

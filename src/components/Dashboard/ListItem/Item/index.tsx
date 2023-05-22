@@ -5,7 +5,7 @@ interface Props {
   project: any;
 }
 
-const ProjectItem = ({ project }: Props) => {
+const Item = ({ project }: Props) => {
   return (
     <Wrapper>
       <Quantity>{project.quantity}</Quantity>
@@ -14,4 +14,4 @@ const ProjectItem = ({ project }: Props) => {
   );
 };
 
-export default ProjectItem;
+export default Item;

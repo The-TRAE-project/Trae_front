@@ -1,4 +1,4 @@
-import ProjectItem from './ProjectItem';
+import Item from './Item';
 import { Wrapper } from './styles';
 // TODO:
 const list = [
@@ -29,14 +29,14 @@ const list = [
   },
 ];
 
-const ProjectListItem = () => {
+const ListItem = () => {
   return (
     <Wrapper>
       {list.map((item) => (
-        <ProjectItem key={item.id} project={item} />
+        <Item key={item.id} project={item} />
       ))}
     </Wrapper>
   );
 };
 
-export default ProjectListItem;
+export default ListItem;

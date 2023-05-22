@@ -46,6 +46,8 @@ const variables = css`
     --fs-28-lh: clamp(1.88rem, calc(1.46rem + 0.49vw), 2.06rem);
     --fs-30: clamp(1.63rem, calc(1.07rem + 0.65vw), 1.88rem);
     --fs-30-lh: clamp(1.56rem, calc(0.18rem + 1.63vw), 2.19rem);
+    --fs-40: clamp(1.56rem, calc(-0.75rem + 2.71vw), 2.5rem);
+    --fs-40-lh: clamp(1.69rem, calc(-1.39rem + 3.61vw), 2.94rem);
 
     --fs-24-label: clamp(1.25rem, calc(0.7rem + 0.65vw), 1.5rem);
     --fs-24-label-lh: clamp(1.38rem, calc(2.58rem + -0.98vw), 1.75rem);

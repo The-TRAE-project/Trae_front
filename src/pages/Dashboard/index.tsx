@@ -1,4 +1,4 @@
-import ProjectListItem from '../../components/ProjectsListItem';
+import ListItem from '../../components/Dashboard/ListItem';
 import SEO from '../../components/SEO';
 import { Container, WrapperGradientGreen } from '../../components/styles';
 
@@ -13,7 +13,7 @@ const Dashboard = () => {
       />
       <WrapperGradientGreen>
         <Container>
-          <ProjectListItem />
+          <ListItem />
         </Container>
       </WrapperGradientGreen>
     </>
