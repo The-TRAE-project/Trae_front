@@ -9,6 +9,7 @@ interface Props {
   nextSlide: () => void;
   color: string;
   isVertical?: boolean;
+  isResponsive?: boolean;
 }
 
 const SliderButtons = ({
@@ -18,15 +19,17 @@ const SliderButtons = ({
   nextSlide,
   color,
   isVertical,
+  isResponsive = true,
 }: Props) => {
   return (
     <Wrapper $vertical={isVertical}>
-      <Group $vertical={isVertical} spacing={44}>
+      <Group $vertical={isVertical} $responsive={isResponsive}>
         <Button
           onClick={prevSlide}
           disabled={current === 1}
           color={color}
           $vertical={isVertical}
+          $responsive={isResponsive}
         >
           <ControlArrowRight color={color} />
         </Button>
@@ -38,6 +41,7 @@ const SliderButtons = ({
           disabled={current === quantity}
           color={color}
           $vertical={isVertical}
+          $responsive={isResponsive}
         >
           <ControlArrowLeft color={color} />
         </Button>

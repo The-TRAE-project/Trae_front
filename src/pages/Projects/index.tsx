@@ -1,9 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Group, Stack } from '@mantine/core';
+import { Stack } from '@mantine/core';
 import { useLocalStorage, useDebouncedValue } from '@mantine/hooks';
-import { BsFillHouseFill } from 'react-icons/bs';
-import { AiOutlinePlusCircle } from 'react-icons/ai';
 
 import {
   useGetProjectsQuery,
@@ -15,12 +13,8 @@ import SEO from '../../components/SEO';
 import ProjectFilterMenu from '../../components/Project/ProjectFilterMenu';
 import ProjectSearchInput from '../../components/Project/ProjectSearchInput';
 import ProjectListItem from '../../components/Project/ProjectListItem';
-import {
-  Container,
-  OrangeButton,
-  UnstyledButton,
-  WrapperGradientGreen,
-} from '../../components/styles';
+import { Container, WrapperGradientGreen } from '../../components/styles';
+import PageHeader from '../../components/PageHeader';
 
 const Projects = () => {
   const [searchValue, setSearchValue] = useState<string>('');
@@ -135,7 +129,6 @@ const Projects = () => {
     }
   };
 
-  const navigateToHome = () => navigate(Paths.DASHBOARD);
   const navigateToCreateProjectPage = () => navigate(Paths.PROJECT_CREATE);
 
   return (
@@ -149,8 +142,8 @@ const Projects = () => {
       <WrapperGradientGreen>
         <Container>
           <Stack spacing={87}>
-            <Group position="apart" spacing={100}>
-              <Group spacing={40}>
+            <PageHeader
+              filter={
                 <ProjectFilterMenu
                   onClearInput={clearSearchInput}
                   isEnded={paramIsEnded}
@@ -163,22 +156,16 @@ const Projects = () => {
                   setParamIsCurrentOverdue={handleSetIsCurrentOverdue}
                   reset={resetFilterParams}
                 />
-                <UnstyledButton onClick={navigateToHome} type="button">
-                  <BsFillHouseFill size={44} color="var(--orange)" />
-                </UnstyledButton>
-              </Group>
-
-              <ProjectSearchInput
-                searchValue={searchValue}
-                setSearchValue={setSearchValue}
-                onClearFilter={clearFilterParams}
-              />
-
-              <OrangeButton onClick={navigateToCreateProjectPage} type="button">
-                <AiOutlinePlusCircle size={30} color="var(--white)" />
-                <span>Добавить</span>
-              </OrangeButton>
-            </Group>
+              }
+              input={
+                <ProjectSearchInput
+                  searchValue={searchValue}
+                  setSearchValue={setSearchValue}
+                  onClearFilter={clearFilterParams}
+                />
+              }
+              onCreate={navigateToCreateProjectPage}
+            />
 
             {debounced ? (
               <ProjectListItem

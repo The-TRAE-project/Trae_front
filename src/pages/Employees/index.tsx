@@ -1,19 +1,16 @@
 import { useNavigate } from 'react-router-dom';
-import { Group, Stack } from '@mantine/core';
 import { useLocalStorage } from '@mantine/hooks';
-import { BsFillHouseFill } from 'react-icons/bs';
-import { AiOutlinePlusCircle } from 'react-icons/ai';
 
 import { Status } from '../../store/apis/user/types';
 import { Paths } from '../../constants/paths';
 import { LocalStorage } from '../../constants/localStorage';
 import SEO from '../../components/SEO';
+import PageHeader from '../../components/PageHeader';
 import EmployeesFilterMenu from '../../components/Employees/EmployeesFilterMenu';
 import EmployeesListItem from '../../components/Employees/EmployeesListItem';
 import {
   Container,
-  OrangeButton,
-  UnstyledButton,
+  ContentStack,
   WrapperGradientGreen,
 } from '../../components/styles';
 
@@ -31,7 +28,6 @@ const Employees = () => {
 
   const navigate = useNavigate();
 
-  const navigateToHome = () => navigate(Paths.DASHBOARD);
   const navigateToCreateEmployeePage = () => navigate(Paths.EMPLOYEE_CREATE);
 
   return (
@@ -44,9 +40,9 @@ const Employees = () => {
       />
       <WrapperGradientGreen>
         <Container>
-          <Stack spacing={50}>
-            <Group position="apart" spacing={100}>
-              <Group spacing={40}>
+          <ContentStack>
+            <PageHeader
+              filter={
                 <EmployeesFilterMenu
                   status={paramActive}
                   setStatus={setParamActive}
@@ -55,25 +51,15 @@ const Employees = () => {
                   setTypeWorks={setParamTypeWorkIds}
                   resetTypeWork={() => setParamTypeWorkIds([])}
                 />
-                <UnstyledButton onClick={navigateToHome} type="button">
-                  <BsFillHouseFill size={44} color="var(--orange)" />
-                </UnstyledButton>
-              </Group>
-
-              <OrangeButton
-                onClick={navigateToCreateEmployeePage}
-                type="button"
-              >
-                <AiOutlinePlusCircle size={30} color="var(--white)" />
-                <span>Добавить</span>
-              </OrangeButton>
-            </Group>
+              }
+              onCreate={navigateToCreateEmployeePage}
+            />
 
             <EmployeesListItem
               paramTypeWorkIds={paramTypeWorkIds}
               paramActive={paramActive}
             />
-          </Stack>
+          </ContentStack>
         </Container>
       </WrapperGradientGreen>
     </>

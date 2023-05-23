@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction, useEffect } from 'react';
-import { Menu, Checkbox, Group } from '@mantine/core';
+import { Menu, Checkbox } from '@mantine/core';
 import { useLocalStorage } from '@mantine/hooks';
 
 import { Status as StatusTitle } from '../../../store/types';
@@ -9,6 +9,7 @@ import { LocalStorage } from '../../../constants/localStorage';
 import { getItem } from '../../../helpers/getItem';
 import Filter from '../../svgs/Filter';
 import {
+  FilterMenuItemGroup,
   FilterMenuItemTitle,
   UnstyledButton,
   useCheckboxStyles,
@@ -88,7 +89,7 @@ const EmployeesFilterMenu = ({
       }}
     >
       <Menu.Target>
-        <UnstyledButton>
+        <UnstyledButton $isFilterIcon>
           <Filter />
         </UnstyledButton>
       </Menu.Target>
@@ -97,7 +98,7 @@ const EmployeesFilterMenu = ({
         <Menu.Label>Статус</Menu.Label>
         {statuses.map((item) => (
           <Menu.Item key={item.value} onClick={() => setStatus(item.value)}>
-            <Group spacing={12}>
+            <FilterMenuItemGroup>
               <Checkbox
                 readOnly
                 checked={item.value === status}
@@ -106,24 +107,24 @@ const EmployeesFilterMenu = ({
               <FilterMenuItemTitle $active={item.value === status}>
                 {item.title}
               </FilterMenuItemTitle>
-            </Group>
+            </FilterMenuItemGroup>
           </Menu.Item>
         ))}
         <Menu.Item onClick={resetStatus}>
-          <Group spacing={12}>
+          <FilterMenuItemGroup>
             <Checkbox
               readOnly
               checked={!status}
               classNames={{ input, inner, icon }}
             />
             <FilterMenuItemTitle $active={!status}>Все</FilterMenuItemTitle>
-          </Group>
+          </FilterMenuItemGroup>
         </Menu.Item>
 
         <Menu.Label>Категория</Menu.Label>
         <OverflowWrapper>
           <Menu.Item onClick={resetTypeWork}>
-            <Group spacing={12}>
+            <FilterMenuItemGroup>
               <Checkbox
                 readOnly
                 checked={typeWorks?.length === 0}
@@ -132,7 +133,7 @@ const EmployeesFilterMenu = ({
               <FilterMenuItemTitle $active={typeWorks?.length === 0}>
                 Все
               </FilterMenuItemTitle>
-            </Group>
+            </FilterMenuItemGroup>
           </Menu.Item>
           {!!data &&
             data.map((workType) => (

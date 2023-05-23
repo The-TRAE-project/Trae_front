@@ -34,8 +34,8 @@ const mixins = {
   `,
 
   fontSize24: css`
-    font-size: 24px;
-    line-height: 28px;
+    font-size: var(--fs-24);
+    line-height: var(--fs-24-lh);
   `,
 
   fontSize26: css`
@@ -88,7 +88,7 @@ const mixins = {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    gap: 3rem;
+    gap: var(--gap-50);
   `,
 
   // animations

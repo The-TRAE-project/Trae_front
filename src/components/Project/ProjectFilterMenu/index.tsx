@@ -1,8 +1,9 @@
-import { Menu, Checkbox, Group, Collapse } from '@mantine/core';
+import { Menu, Checkbox, Collapse } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 
 import Filter from '../../svgs/Filter';
 import {
+  FilterMenuItemGroup,
   FilterMenuItemTitle,
   UnstyledButton,
   useCheckboxStyles,
@@ -13,7 +14,7 @@ import {
   useCircleCheckboxStyles,
   useMenuStyles,
 } from './styles';
-
+// TODO:
 interface Props {
   onClearInput: () => void;
   isEnded: boolean;
@@ -63,14 +64,14 @@ const ProjectFilterMenu = ({
       }}
     >
       <Menu.Target>
-        <UnstyledButton onClick={onClearInput}>
+        <UnstyledButton onClick={onClearInput} $isFilterIcon>
           <Filter />
         </UnstyledButton>
       </Menu.Target>
 
       <Menu.Dropdown>
         <Menu.Item onClick={toggle}>
-          <Group spacing={12}>
+          <FilterMenuItemGroup>
             <Checkbox
               readOnly
               checked={isFirstNoAcceptance || isLastInWork}
@@ -79,13 +80,13 @@ const ProjectFilterMenu = ({
             <FilterMenuItemTitle $active={isFirstNoAcceptance || isLastInWork}>
               В работе
             </FilterMenuItemTitle>
-          </Group>
+          </FilterMenuItemGroup>
         </Menu.Item>
 
         <Collapse in={opened}>
           <MenuItemStack>
             <Menu.Item onClick={setIsFirstNoAcceptance}>
-              <Group spacing={12}>
+              <FilterMenuItemGroup>
                 <Checkbox
                   readOnly
                   checked={isFirstNoAcceptance}
@@ -98,10 +99,10 @@ const ProjectFilterMenu = ({
                 <FilterMenuItemTitle $active={isFirstNoAcceptance}>
                   Новые
                 </FilterMenuItemTitle>
-              </Group>
+              </FilterMenuItemGroup>
             </Menu.Item>
             <Menu.Item onClick={setIsLastInWork}>
-              <Group spacing={12}>
+              <FilterMenuItemGroup>
                 <Checkbox
                   readOnly
                   checked={isLastInWork}
@@ -114,13 +115,13 @@ const ProjectFilterMenu = ({
                 <FilterMenuItemTitle $active={isLastInWork}>
                   Отгружаются
                 </FilterMenuItemTitle>
-              </Group>
+              </FilterMenuItemGroup>
             </Menu.Item>
           </MenuItemStack>
         </Collapse>
 
         <Menu.Item onClick={setIsEnded}>
-          <Group spacing={12}>
+          <FilterMenuItemGroup>
             <Checkbox
               readOnly
               checked={isEnded}
@@ -129,11 +130,11 @@ const ProjectFilterMenu = ({
             <FilterMenuItemTitle $active={isEnded}>
               Выполнены
             </FilterMenuItemTitle>
-          </Group>
+          </FilterMenuItemGroup>
         </Menu.Item>
 
         <Menu.Item onClick={setParamIsCurrentOverdue}>
-          <Group spacing={12}>
+          <FilterMenuItemGroup>
             <Checkbox
               readOnly
               checked={isCurrentOverdue}
@@ -146,11 +147,11 @@ const ProjectFilterMenu = ({
             <FilterMenuItemTitle $active={isCurrentOverdue}>
               Просроченные
             </FilterMenuItemTitle>
-          </Group>
+          </FilterMenuItemGroup>
         </Menu.Item>
 
         <Menu.Item onClick={reset}>
-          <Group spacing={12}>
+          <FilterMenuItemGroup>
             <Checkbox
               readOnly
               checked={
@@ -171,7 +172,7 @@ const ProjectFilterMenu = ({
             >
               Все
             </FilterMenuItemTitle>
-          </Group>
+          </FilterMenuItemGroup>
         </Menu.Item>
       </Menu.Dropdown>
     </Menu>

@@ -42,9 +42,11 @@ const variables = css`
     --easing: cubic-bezier(0.645, 0.045, 0.355, 1);
     --transition: all 0.4s linear 0.2s;
 
-    --fs-28: clamp(1.5rem, calc(0.95rem + 0.65vw), 1.75rem);
+    --fs-24: clamp(1.13rem, calc(0.2rem + 1.08vw), 1.5rem);
+    --fs-24-lh: clamp(1.38rem, calc(0.45rem + 1.08vw), 1.75rem);
+    --fs-28: clamp(1.38rem, calc(0.45rem + 1.08vw), 1.75rem);
     --fs-28-lh: clamp(1.88rem, calc(1.46rem + 0.49vw), 2.06rem);
-    --fs-30: clamp(1.63rem, calc(1.07rem + 0.65vw), 1.88rem);
+    --fs-30: clamp(1.5rem, calc(0.58rem + 1.08vw), 1.88rem);
     --fs-30-lh: clamp(1.56rem, calc(0.18rem + 1.63vw), 2.19rem);
     --fs-40: clamp(1.56rem, calc(-0.75rem + 2.71vw), 2.5rem);
     --fs-40-lh: clamp(1.69rem, calc(-1.39rem + 3.61vw), 2.94rem);
@@ -57,7 +59,17 @@ const variables = css`
     --lgn-form-input-pd: clamp(0.94rem, calc(0.24rem + 0.81vw), 1.25rem);
     --lgn-form-label-pm: clamp(0.63rem, calc(0.49rem + 0.16vw), 0.69rem);
 
+    --gap-40: clamp(1.88rem, calc(0.33rem + 1.81vw), 2.5rem);
+    --gap-50: clamp(2.5rem, calc(0.96rem + 1.81vw), 3.13rem);
+
     --right-icon-wh: clamp(1.75rem, calc(0.78rem + 1.14vw), 2.19rem);
+    --bg-white-card-ht: clamp(4.38rem, calc(2.99rem + 1.62vw), 4.94rem);
+    --bg-white-card-ptb: clamp(1.38rem, calc(0.45rem + 1.08vw), 1.75rem);
+    --bg-white-card-plr: clamp(1.5rem, calc(0.58rem + 1.08vw), 1.88rem);
+    --checkbox-wd-th: clamp(1.56rem, calc(0.64rem + 1.08vw), 1.94rem);
+    --checkbox-i-wd-ht: clamp(0.94rem, calc(0.32rem + 0.72vw), 1.19rem);
+    --menu-ptb: clamp(1.13rem, calc(0.2rem + 1.08vw), 1.5rem);
+    --menu-plr: clamp(1.5rem, calc(0.58rem + 1.08vw), 1.88rem);
   }
 `;
 

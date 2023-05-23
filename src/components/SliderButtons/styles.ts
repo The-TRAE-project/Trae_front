@@ -3,11 +3,13 @@ import styled, { css } from 'styled-components';
 
 type VerticalPositionProps = {
   $vertical?: boolean;
+  $responsive?: boolean;
 };
 
 type BtnProps = {
   color: string;
   $vertical?: boolean;
+  $responsive?: boolean;
 };
 
 type TitleProps = {
@@ -29,6 +31,14 @@ export const Wrapper = styled.div`
 export const Group = styled(MantineGroup)`
   flex-direction: ${(props: VerticalPositionProps) =>
     props.$vertical ? 'column' : 'row'};
+  gap: 44px;
+
+  ${(props) =>
+    props.$responsive &&
+    css`
+      --gap-44: clamp(2.13rem, calc(1.2rem + 1.08vw), 2.5rem);
+      gap: var(--gap-44);
+    `}
 `;
 
 export const Button = styled.button`
@@ -48,6 +58,17 @@ export const Button = styled.button`
       opacity: 0.6;
     }
   }
+
+  ${(props) =>
+    props.$responsive &&
+    css`
+      --ht: clamp(2rem, calc(1.08rem + 1.08vw), 2.38rem);
+      --wd: clamp(1rem, calc(0.08rem + 1.08vw), 1.38rem);
+      svg {
+        height: var(--ht);
+        width: var(--wd);
+      }
+    `}
 `;
 
 export const InformTitle = styled.p`

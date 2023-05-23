@@ -1,11 +1,12 @@
 import { Dispatch, SetStateAction } from 'react';
-import { Menu, Checkbox, Group } from '@mantine/core';
+import { Menu, Checkbox } from '@mantine/core';
 
 import { Status as StatusTitle } from '../../../store/types';
 import { Status } from '../../../store/apis/user/types';
 import { useGetAllRolesQuery } from '../../../store/apis/user';
 import Filter from '../../svgs/Filter';
 import {
+  FilterMenuItemGroup,
   FilterMenuItemTitle,
   UnstyledButton,
   useCheckboxStyles,
@@ -56,7 +57,7 @@ const UserFilterMenu = ({
       }}
     >
       <Menu.Target>
-        <UnstyledButton>
+        <UnstyledButton $isFilterIcon>
           <Filter />
         </UnstyledButton>
       </Menu.Target>
@@ -65,7 +66,7 @@ const UserFilterMenu = ({
         <Menu.Label>Статус</Menu.Label>
         {statuses.map((item) => (
           <Menu.Item key={item.value} onClick={() => setStatus(item.value)}>
-            <Group spacing={12}>
+            <FilterMenuItemGroup>
               <Checkbox
                 readOnly
                 checked={item.value === status}
@@ -74,25 +75,25 @@ const UserFilterMenu = ({
               <FilterMenuItemTitle $active={item.value === status}>
                 {item.title}
               </FilterMenuItemTitle>
-            </Group>
+            </FilterMenuItemGroup>
           </Menu.Item>
         ))}
         <Menu.Item onClick={resetStatus}>
-          <Group spacing={12}>
+          <FilterMenuItemGroup>
             <Checkbox
               readOnly
               checked={!status}
               classNames={{ input, inner, icon }}
             />
             <FilterMenuItemTitle $active={!status}>Все</FilterMenuItemTitle>
-          </Group>
+          </FilterMenuItemGroup>
         </Menu.Item>
 
         <Menu.Label>Категория</Menu.Label>
         {!!roles &&
           Object.values(roles).map((item) => (
             <Menu.Item key={item} onClick={() => setRole(item)}>
-              <Group spacing={12}>
+              <FilterMenuItemGroup>
                 <Checkbox
                   readOnly
                   checked={item === role}
@@ -101,18 +102,18 @@ const UserFilterMenu = ({
                 <FilterMenuItemTitle $active={item === role}>
                   {item}
                 </FilterMenuItemTitle>
-              </Group>
+              </FilterMenuItemGroup>
             </Menu.Item>
           ))}
         <Menu.Item onClick={resetRole}>
-          <Group spacing={12}>
+          <FilterMenuItemGroup>
             <Checkbox
               readOnly
               checked={!role}
               classNames={{ input, inner, icon }}
             />
             <FilterMenuItemTitle $active={!role}> Все</FilterMenuItemTitle>
-          </Group>
+          </FilterMenuItemGroup>
         </Menu.Item>
       </Menu.Dropdown>
     </Menu>

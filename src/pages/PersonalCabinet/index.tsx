@@ -1,7 +1,4 @@
-import { Group, Stack } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
-import { BsFillHouseFill } from 'react-icons/bs';
-import { IoMdExit } from 'react-icons/io';
 
 import { Paths } from '../../constants/paths';
 import { LocalStorage } from '../../constants/localStorage';
@@ -15,16 +12,15 @@ import SEO from '../../components/SEO';
 import UserDetails from '../../components/Users/UserDetails';
 import {
   Container,
-  OrangeButton,
-  UnstyledButton,
+  ContentStack,
   WrapperGradientGreen,
 } from '../../components/styles';
+import PageHeader from '../../components/PageHeader';
 
 const PersonalCabinet = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  const navigateToHome = () => navigate(Paths.DASHBOARD);
   const handleLogout = async () => {
     await dispatch(logoutUser());
     dispatch(clearUserState());
@@ -45,20 +41,15 @@ const PersonalCabinet = () => {
       />
       <WrapperGradientGreen>
         <Container>
-          <Stack spacing={50}>
-            <Group position="apart" spacing={100}>
-              <UnstyledButton onClick={navigateToHome} type="button">
-                <BsFillHouseFill size={44} color="var(--orange)" />
-              </UnstyledButton>
-
-              <OrangeButton onClick={handleLogout} type="button" $width={163}>
-                <IoMdExit size={32} color="var(--white)" />
-                <span>Выйти</span>
-              </OrangeButton>
-            </Group>
+          <ContentStack>
+            <PageHeader
+              isShowCreateBtn={false}
+              isShowExitBtn
+              onExit={handleLogout}
+            />
 
             <UserDetails />
-          </Stack>
+          </ContentStack>
         </Container>
       </WrapperGradientGreen>
     </>

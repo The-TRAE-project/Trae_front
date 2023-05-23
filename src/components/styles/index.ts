@@ -1,4 +1,4 @@
-import { Box, createStyles } from '@mantine/core';
+import { Box, createStyles, Group, Stack } from '@mantine/core';
 import styled, { css } from 'styled-components';
 
 import bg from '../../assets/bg.svg';
@@ -122,14 +122,45 @@ export const WrapperGradientGreen = styled.section`
   }
 `;
 
+type UnstyledButtonProps = {
+  $isHomeIcon?: boolean;
+  $isFilterIcon?: boolean;
+};
+
 export const UnstyledButton = styled.button`
   background: none;
   border: none;
+  padding: 0;
+  margin: 0;
   ${({ theme }) => theme.mixins.fCenter};
 
   &:is(:focus, :focus-within) {
     outline: none;
   }
+
+  ${(props: UnstyledButtonProps) =>
+    props.$isHomeIcon &&
+    css`
+      --home-i-wd: clamp(2.38rem, calc(1.45rem + 1.08vw), 2.75rem);
+      --home-i-ht: clamp(2.38rem, calc(1.45rem + 1.08vw), 2.75rem);
+
+      svg {
+        width: var(--home-i-wd);
+        height: var(--home-i-ht);
+      }
+    `}
+
+  ${(props: UnstyledButtonProps) =>
+    props.$isFilterIcon &&
+    css`
+      --filter-i-wd: clamp(2.25rem, calc(1.63rem + 0.72vw), 2.5rem);
+      --filter-i-ht: clamp(2.31rem, calc(1.7rem + 0.72vw), 2.56rem);
+
+      svg {
+        width: var(--filter-i-wd);
+        height: var(--filter-i-ht);
+      }
+    `}
 `;
 
 type OrangeButtonProps = {
@@ -137,14 +168,19 @@ type OrangeButtonProps = {
 };
 
 export const OrangeButton = styled.button`
+  --ht: clamp(3rem, calc(1.46rem + 1.81vw), 3.63rem);
+  --prl: clamp(1.13rem, calc(0.2rem + 1.08vw), 1.5rem);
+  --ptb: clamp(0.63rem, calc(-0.15rem + 0.9vw), 0.94rem);
+  --gap-12: clamp(0.5rem, calc(-0.12rem + 0.72vw), 0.75rem);
+
   width: ${(props: OrangeButtonProps) => props.$width && `${props.$width}px`};
-  height: 58px;
-  padding: 15px 24px;
+  height: var(--ht);
+  padding: var(--ptb) var(--prl);
   background: var(--orange);
   border: none;
   border-radius: var(--border-radius);
   ${({ theme }) => theme.mixins.fCenter};
-  gap: 12px;
+  gap: var(--gap-12);
   font-weight: 400;
   ${({ theme }) => theme.mixins.fontSize24};
   color: var(--white);
@@ -156,13 +192,13 @@ export const OrangeButton = styled.button`
 
 export const useFilterMenuStyles = createStyles(() => ({
   dropdown: {
-    left: '320px !important',
+    left: '0px !important',
     width: '324px !important',
     maxWidth: 324,
     maxHeight: 450,
     border: 'none',
     background: 'var(--white)',
-    padding: '24px 30px',
+    padding: 'var(--menu-ptb) var(--menu-plr)',
     boxShadow: '0px 4px 4px var(--black-shadow)',
     borderRadius: 'var(--border-radius)',
   },
@@ -170,23 +206,31 @@ export const useFilterMenuStyles = createStyles(() => ({
   label: {
     padding: 0,
     fontWeight: 600,
-    fontSize: 24,
-    lineHeight: '28px',
+    fontSize: 'var(--fs-24)',
+    lineHeight: 'var(--fs-24-lh)',
     color: 'var(--white-black)',
-    marginBottom: 10,
+    marginTop: 'clamp(0.06rem, calc(0.93rem + -0.72vw), 0.31rem)',
+    marginBottom: 'clamp(0.31rem, calc(-0.46rem + 0.90vw), 0.63rem)',
   },
 
   item: {
-    padding: '9px 0 9px',
+    padding:
+      'clamp(0.31rem, calc(-0.30rem + 0.72vw), 0.56rem) 0 clamp(0.31rem, calc(-0.30rem + 0.72vw), 0.56rem)',
     fontWeight: 400,
-    fontSize: 24,
-    lineHeight: '28px',
+    fontSize: 'var(--fs-24)',
+    lineHeight: 'var(--fs-24-lh)',
   },
 }));
 
 type FilterMenuItemTitleProps = {
   $active?: boolean;
 };
+
+export const FilterMenuItemGroup = styled(Group)`
+  --gap-12: clamp(0.5rem, calc(-0.12rem + 0.72vw), 0.75rem);
+
+  gap: var(--gap-12);
+`;
 
 export const FilterMenuItemTitle = styled.p<FilterMenuItemTitleProps>`
   max-width: 216px;
@@ -197,14 +241,14 @@ export const FilterMenuItemTitle = styled.p<FilterMenuItemTitleProps>`
 
 export const BgWhiteCardLinkBtn = styled.button`
   position: relative;
-  width: 620px;
-  height: 79px;
+  width: 100%;
+  height: var(--bg-white-card-ht);
   font-weight: 600;
   ${({ theme }) => theme.mixins.fontSize30};
   color: var(--white-black);
   border: none;
   ${({ theme }) => theme.mixins.fCenter};
-  padding: 22px 30px;
+  padding: var(--bg-white-card-ptb) var(--bg-white-card-plr);
   background: var(--white);
   border-radius: var(--border-radius);
 
@@ -223,8 +267,8 @@ export const InformModalText = styled.p`
 
 export const useCheckboxStyles = createStyles(() => ({
   input: {
-    width: 31,
-    height: 31,
+    width: 'var(--checkbox-wd-th)',
+    height: 'var(--checkbox-wd-th)',
     border: '1.5px solid var(--gray)',
     borderRadius: '4px',
 
@@ -235,13 +279,13 @@ export const useCheckboxStyles = createStyles(() => ({
   },
 
   inner: {
-    width: 31,
-    height: 31,
+    width: 'var(--checkbox-wd-th)',
+    height: 'var(--checkbox-wd-th)',
   },
 
   icon: {
-    width: 19,
-    height: 19,
+    width: 'var(--checkbox-i-wd-ht)',
+    height: 'var(--checkbox-i-wd-ht)',
     color: 'var(--orange) !important',
   },
 }));
@@ -388,13 +432,13 @@ export const ProjectNumber = styled.p`
 export const TwoColumnGrid = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 40px;
+  gap: var(--gap-40);
 `;
 
 export const ThreeColumnGrid = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  gap: 40px;
+  gap: var(--gap-40);
 `;
 
 export const ListItemWrapper = styled.div`
@@ -402,5 +446,11 @@ export const ListItemWrapper = styled.div`
   min-height: calc(100vh - 336px);
   ${({ theme }) => theme.mixins.column};
   justify-content: space-between;
-  gap: 3rem;
+  gap: var(--gap-50);
+`;
+
+export const ContentStack = styled(Stack)`
+  --gap-50: clamp(2.5rem, calc(0.96rem + 1.81vw), 3.13rem);
+
+  gap: var(--gap-50);
 `;

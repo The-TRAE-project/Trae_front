@@ -3,11 +3,11 @@ import { useLocalStorage } from '@mantine/hooks';
 import { useGetAllEmployeesQuery } from '../../../store/apis/employee';
 import { useDisplayError } from '../../../helpers/hooks/useDisplayError';
 import { Status } from '../../../store/apis/user/types';
+import { LocalStorage } from '../../../constants/localStorage';
 import SliderButtons from '../../SliderButtons';
 import Loader from '../../Loader';
+import { ListItemWrapper, TwoColumnGrid } from '../../styles';
 import EmployeeItem from './EmployeeItem';
-import { Grid, Wrapper } from './styles';
-import { LocalStorage } from '../../../constants/localStorage';
 
 interface Props {
   paramTypeWorkIds: number[] | null;
@@ -49,14 +49,14 @@ const EmployeesListItem = ({ paramTypeWorkIds, paramActive }: Props) => {
   };
 
   return (
-    <Wrapper>
+    <ListItemWrapper>
       {!isLoading && !!employees ? (
         <>
-          <Grid>
+          <TwoColumnGrid>
             {employees.content.map((employee) => (
               <EmployeeItem key={employee.id} employee={employee} />
             ))}
-          </Grid>
+          </TwoColumnGrid>
 
           {employees.totalElements > 10 && (
             <SliderButtons
@@ -71,7 +71,7 @@ const EmployeesListItem = ({ paramTypeWorkIds, paramActive }: Props) => {
       ) : (
         <Loader size={80} isAbsoluteCentered />
       )}
-    </Wrapper>
+    </ListItemWrapper>
   );
 };
 

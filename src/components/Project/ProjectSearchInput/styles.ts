@@ -2,8 +2,12 @@ import { MdOutlineSearch } from 'react-icons/md';
 import styled from 'styled-components';
 
 export const InputWrapper = styled.div`
-  width: 719px;
-  height: 58px;
+  --wd: clamp(36.25rem, calc(14.83rem + 25.09vw), 44.94rem);
+  --ht: clamp(3rem, calc(1.46rem + 1.81vw), 3.63rem);
+
+  position: relative;
+  width: var(--wd);
+  height: var(--ht);
   ${({ theme }) => theme.mixins.apart};
   background: var(--gray-shadow);
   border-radius: var(--border-radius);
@@ -30,7 +34,9 @@ export const Input = styled.input`
 `;
 
 export const SearchIcon = styled(MdOutlineSearch)`
-  font-size: 32px;
+  --fs-32: clamp(1.75rem, calc(1.13rem + 0.72vw), 2rem);
+
+  font-size: var(--fs-32);
   font-weight: 300;
   color: var(--white);
 `;
