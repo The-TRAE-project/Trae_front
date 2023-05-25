@@ -68,7 +68,7 @@ const FormHeader = ({
           </OrangeButton>
         )}
         {isShowClickBtn && (
-          <OrangeButton onClick={handleClick} $width={171} type="button">
+          <OrangeButton onClick={handleClick} type="button">
             <span>{clickBtnText}</span>
           </OrangeButton>
         )}
