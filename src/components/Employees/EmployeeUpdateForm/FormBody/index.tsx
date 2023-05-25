@@ -171,7 +171,7 @@ const FormBody = ({ employee, form, isUpdate }: Props) => {
             <MultiSelect
               {...form.getInputProps('changedTypesId')}
               data={workTypesSelectItems}
-              label="Тип работ"
+              label="Типы работ"
               maxDropdownHeight={284}
               classNames={{
                 dropdown,

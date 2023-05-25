@@ -5,6 +5,7 @@ import dayjs from 'dayjs';
 
 import {
   useGetUserDetailsQuery,
+  useResetUserPasswordMutation,
   useUpdateUserSomeFieldsMutation,
 } from '../../../store/apis/user';
 import {
@@ -13,18 +14,22 @@ import {
   UserUpdateSchema,
 } from '../../../store/apis/user/types';
 import { Status } from '../../../store/types';
+import { Paths } from '../../../constants/paths';
 import { useDisplayError } from '../../../helpers/hooks/useDisplayError';
 import { showErrorNotification } from '../../../helpers/showErrorNotification';
 import { checkForEquality } from '../../../helpers/checkForEquality';
 import { useOpenModal } from '../../../helpers/hooks/useOpenModal';
-import { FormWrapper } from '../../styles';
+import InformModal from '../../InformModal';
+import { FormWrapper, InformModalText } from '../../styles';
 import { useSetDefaultValues } from './helpers/useSetDefaultValues';
 import { compareValues } from './helpers/compareValues';
 import FormBody from './FormBody';
 import FormHeader from './FormHeader';
 
 const UpdateForm = () => {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState<boolean>(false);
+  const [isChangePasswordModalOpen, setIsChangePasswordModalOpen] =
+    useState<boolean>(false);
   const [isUpdate, setIsUpdate] = useState<boolean>(false);
   const [currentUser, setCurrentUser] = useState<User | undefined>();
 
@@ -32,8 +37,20 @@ const UpdateForm = () => {
 
   const [
     updateUserSomeFields,
-    { isLoading: isUpdateLoading, data: updatedUser, isSuccess },
+    {
+      isLoading: isUpdateLoading,
+      data: updatedUser,
+      isSuccess: isUpdateSuccess,
+    },
   ] = useUpdateUserSomeFieldsMutation();
+  const [
+    resetPassword,
+    {
+      data: passwordChangedUser,
+      isLoading: isChangePasswordLoading,
+      isSuccess: isChangePasswordSuccess,
+    },
+  ] = useResetUserPasswordMutation();
   const {
     data: user,
     isLoading: isGetLoading,
@@ -91,11 +108,11 @@ const UpdateForm = () => {
     }
   };
 
-  useOpenModal(setIsOpen, isSuccess);
+  useOpenModal(setIsUpdateModalOpen, isUpdateSuccess);
 
-  const closeModal = () => {
+  const closeUpdateModal = () => {
     setIsUpdate(false);
-    setIsOpen(false);
+    setIsUpdateModalOpen(false);
     setCurrentUser(user);
   };
 
@@ -104,30 +121,63 @@ const UpdateForm = () => {
     setCurrentUser(user);
   };
 
-  return (
-    <FormWrapper onSubmit={form.onSubmit(handleSubmit)}>
-      <FormHeader
-        isLoading={isUpdateLoading}
-        isUpdate={isUpdate}
-        onUpdate={handleUpdate}
-        isOpen={isOpen}
-        onClose={closeModal}
-        currentUser={currentUser}
-        updatedUser={updatedUser}
-        isDisabled={
-          checkForEquality(form.values.newRole, user?.role) &&
-          checkForEquality(form.values.accountStatus, isUserActive)
-        }
-      />
+  const handleChangePassword = async () => {
+    try {
+      if (user) {
+        await resetPassword(user.username).unwrap();
+      }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
+      showErrorNotification(err?.data?.status, err?.data?.error);
+    }
+  };
 
-      <FormBody
-        form={form}
-        isLoading={isGetLoading}
-        isUpdate={isUpdate}
-        user={user}
-        completeUpdate={() => setIsUpdate(false)}
-      />
-    </FormWrapper>
+  useOpenModal(setIsChangePasswordModalOpen, isChangePasswordSuccess);
+
+  const closeChangePasswordModal = () => {
+    setIsChangePasswordModalOpen(false);
+    setIsUpdate(false);
+  };
+
+  return (
+    <>
+      <InformModal
+        isOpen={isChangePasswordModalOpen}
+        onClose={closeChangePasswordModal}
+        title={`${passwordChangedUser?.firstName} ${passwordChangedUser?.lastName} пароль сброшен`}
+        backPath={Paths.CONSTRUCTORS}
+      >
+        <InformModalText>
+          Новый пароль:&nbsp;
+          <strong>{passwordChangedUser?.newPassword}</strong>
+        </InformModalText>
+      </InformModal>
+
+      <FormWrapper onSubmit={form.onSubmit(handleSubmit)}>
+        <FormHeader
+          isLoading={isUpdateLoading}
+          isUpdate={isUpdate}
+          onUpdate={handleUpdate}
+          isOpen={isUpdateModalOpen}
+          onClose={closeUpdateModal}
+          currentUser={currentUser}
+          updatedUser={updatedUser}
+          isDisabled={
+            checkForEquality(form.values.newRole, user?.role) &&
+            checkForEquality(form.values.accountStatus, isUserActive)
+          }
+          onChangePassword={handleChangePassword}
+          isChangePasswordLoading={isChangePasswordLoading}
+        />
+
+        <FormBody
+          form={form}
+          isLoading={isGetLoading}
+          isUpdate={isUpdate}
+          user={user}
+        />
+      </FormWrapper>
+    </>
   );
 };
 

@@ -121,7 +121,7 @@ const EmployeesFilterMenu = ({
           </FilterMenuItemGroup>
         </Menu.Item>
 
-        <Menu.Label>Категория</Menu.Label>
+        <Menu.Label>Типы работ</Menu.Label>
         <OverflowWrapper>
           <Menu.Item onClick={resetTypeWork}>
             <FilterMenuItemGroup>

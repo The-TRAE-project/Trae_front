@@ -6,7 +6,12 @@ import dayjs from 'dayjs';
 import { Paths } from '../../../../constants/paths';
 import { User, UserUpdateReturnType } from '../../../../store/apis/user/types';
 import { checkForEquality } from '../../../../helpers/checkForEquality';
-import { InformModalText, OrangeButton, UnstyledButton } from '../../../styles';
+import {
+  DashedOrangeButton,
+  InformModalText,
+  OrangeButton,
+  UnstyledButton,
+} from '../../../styles';
 import Loader from '../../../Loader';
 import InformModal from '../../../InformModal';
 
@@ -19,6 +24,8 @@ interface Props {
   currentUser: User | undefined;
   updatedUser: UserUpdateReturnType | undefined;
   isDisabled: boolean;
+  onChangePassword: () => void;
+  isChangePasswordLoading: boolean;
 }
 
 const FormHeader = ({
@@ -30,6 +37,8 @@ const FormHeader = ({
   currentUser,
   updatedUser,
   isDisabled,
+  onChangePassword,
+  isChangePasswordLoading,
 }: Props) => {
   const navigate = useNavigate();
 
@@ -98,15 +107,33 @@ const FormHeader = ({
           </UnstyledButton>
         </Group>
 
-        {isUpdate && (
-          <OrangeButton
-            disabled={isLoading || isDisabled}
-            $width={171}
-            type="submit"
-          >
-            {isLoading ? <Loader size={35} /> : <span>Сохранить</span>}
-          </OrangeButton>
-        )}
+        <Group spacing={40}>
+          {isUpdate && (
+            <>
+              <DashedOrangeButton
+                onClick={onChangePassword}
+                disabled={isChangePasswordLoading}
+                type="button"
+                $width={266}
+              >
+                {isChangePasswordLoading ? (
+                  <Loader size={35} />
+                ) : (
+                  <span>Сбросить пароль</span>
+                )}
+              </DashedOrangeButton>
+
+              <OrangeButton
+                disabled={isLoading || isDisabled}
+                $width={171}
+                type="submit"
+              >
+                {isLoading ? <Loader size={35} /> : <span>Сохранить</span>}
+              </OrangeButton>
+            </>
+          )}
+        </Group>
+
         {!isUpdate && (
           <OrangeButton onClick={onUpdate} disabled={isLoading} type="button">
             <BsFillPencilFill />

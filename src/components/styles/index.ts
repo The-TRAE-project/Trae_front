@@ -193,9 +193,9 @@ export const OrangeButton = styled.button`
 export const useFilterMenuStyles = createStyles(() => ({
   dropdown: {
     left: '0px !important',
-    width: '324px !important',
-    maxWidth: 324,
-    maxHeight: 450,
+    width: '369px !important',
+    maxWidth: 369,
+    maxHeight: 528,
     border: 'none',
     background: 'var(--white)',
     padding: 'var(--menu-ptb) var(--menu-plr)',
@@ -233,7 +233,7 @@ export const FilterMenuItemGroup = styled(Group)`
 `;
 
 export const FilterMenuItemTitle = styled.p<FilterMenuItemTitleProps>`
-  max-width: 216px;
+  max-width: 266px;
   word-break: break-word;
   color: ${(props) => (props.$active ? 'var(--orange)' : 'var(--white-black)')};
   transition: var(--transition);
@@ -290,20 +290,21 @@ export const useCheckboxStyles = createStyles(() => ({
   },
 }));
 
+type DashedButtonProps = {
+  $width?: number;
+};
+
 export const DashedOrangeButton = styled.button`
-  grid-column-start: 3;
+  width: ${(props: DashedButtonProps) => props.$width && `${props.$width}px`};
+  height: 58px;
   ${({ theme }) => theme.mixins.fCenter};
-  max-width: 509px;
-  min-height: 73px;
-  max-height: 73px;
   background: var(--orange);
   border: 2px dashed var(--white);
   border-radius: var(--border-radius);
   font-weight: 400;
   ${({ theme }) => theme.mixins.fontSize24};
   color: var(--white);
-  padding: 22.5px;
-  margin-top: 10px;
+  padding: 15px 34px;
 
   &:is(:focus, :focus-within) {
     outline: none;

@@ -26,7 +26,8 @@ const Dates = ({ project }: Props) => {
     endDateInContract,
   } = project;
 
-  const navigateToEditEndDate = () => navigate(`/project/${id}/edit-end-date`);
+  const navigateToEditEndDate = () =>
+    navigate(`/project/${id}/editing-end-date`);
 
   return (
     <StageCard

@@ -1,28 +1,17 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { SelectItem } from '@mantine/core';
 import { UseFormReturnType } from '@mantine/form';
 import dayjs from 'dayjs';
 
-import { showErrorNotification } from '../../../../helpers/showErrorNotification';
 import { Status } from '../../../../store/types';
-import {
-  useGetAllRolesQuery,
-  useResetUserPasswordMutation,
-} from '../../../../store/apis/user';
+import { useGetAllRolesQuery } from '../../../../store/apis/user';
 import { UserUpdateFormValues, User } from '../../../../store/apis/user/types';
 import { Roles } from '../../../../store/slices/auth/types';
-import { Paths } from '../../../../constants/paths';
 import Loader from '../../../Loader';
 import Select from '../../../Select';
 import DatePicker from '../../../DatePicker';
-import InformModal from '../../../InformModal';
 import DetailsCard from '../../../DetailsCard';
-import {
-  DashedOrangeButton,
-  FormBodyWrapper,
-  ThreeColumnGrid,
-  InformModalText,
-} from '../../../styles';
+import { FormBodyWrapper, ThreeColumnGrid } from '../../../styles';
 
 type UserWithoutId = Omit<UserUpdateFormValues, 'managerId'>;
 
@@ -33,23 +22,10 @@ interface Props {
   >;
   isLoading: boolean;
   isUpdate: boolean;
-  completeUpdate: () => void;
   user: User | undefined;
 }
 
-const FormBody = ({
-  form,
-  isUpdate,
-  isLoading,
-  user,
-  completeUpdate,
-}: Props) => {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-
-  const [
-    resetPassword,
-    { data: passwordChangedUser, isLoading: isResetPasswordLoading },
-  ] = useResetUserPasswordMutation();
+const FormBody = ({ form, isUpdate, isLoading, user }: Props) => {
   const { data: roles } = useGetAllRolesQuery();
 
   const rolesSelectItems: SelectItem[] = roles
@@ -70,23 +46,6 @@ const FormBody = ({
     },
   ];
 
-  const handleResetUserPassword = async () => {
-    try {
-      if (user) {
-        await resetPassword(user.username).unwrap();
-        setIsOpen(true);
-      }
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (err: any) {
-      showErrorNotification(err?.data?.status, err?.data?.error);
-    }
-  };
-
-  const closeModal = () => {
-    setIsOpen(false);
-    completeUpdate();
-  };
-
   useEffect(() => {
     if (
       form.values.accountStatus === Status.BLOCKED &&
@@ -105,18 +64,6 @@ const FormBody = ({
 
   return (
     <FormBodyWrapper>
-      <InformModal
-        isOpen={isOpen}
-        onClose={closeModal}
-        title={`${passwordChangedUser?.firstName} ${passwordChangedUser?.lastName} пароль сброшен`}
-        backPath={Paths.CONSTRUCTORS}
-      >
-        <InformModalText>
-          Новый пароль:&nbsp;
-          <strong>{passwordChangedUser?.newPassword}</strong>
-        </InformModalText>
-      </InformModal>
-
       {!isLoading && !!user ? (
         <ThreeColumnGrid>
           <DetailsCard label="Фамилия" text={user.lastName} />
@@ -166,15 +113,6 @@ const FormBody = ({
               }
               label="Дата увольнения"
             />
-          )}
-          {isUpdate && (
-            <DashedOrangeButton onClick={handleResetUserPassword} type="button">
-              {isResetPasswordLoading ? (
-                <Loader size={35} />
-              ) : (
-                <span>Сбросить пароль</span>
-              )}
-            </DashedOrangeButton>
           )}
         </ThreeColumnGrid>
       ) : (
