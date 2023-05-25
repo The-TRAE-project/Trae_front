@@ -9,13 +9,13 @@ import { clearProjectState } from '../../store/slices/project';
 import { useAppDispatch } from '../../helpers/hooks/useAppDispatch';
 import { removeItem } from '../../helpers/removeItem';
 import SEO from '../../components/SEO';
+import PageHeader from '../../components/PageHeader';
 import UserDetails from '../../components/Users/UserDetails';
 import {
   Container,
   ContentStack,
   WrapperGradientGreen,
 } from '../../components/styles';
-import PageHeader from '../../components/PageHeader';
 
 const PersonalCabinet = () => {
   const navigate = useNavigate();
@@ -30,6 +30,9 @@ const PersonalCabinet = () => {
     removeItem(LocalStorage.NAVBAR_LIST);
     navigate(Paths.LOGIN, { replace: true });
   };
+
+  const navigateToChangePassword = () =>
+    navigate(Paths.PERSONAL_CABINET_CHANGE_PASSWORD);
 
   return (
     <>
@@ -46,6 +49,8 @@ const PersonalCabinet = () => {
               isShowCreateBtn={false}
               isShowExitBtn
               onExit={handleLogout}
+              isShowDashedBtn
+              onDashedBtnClick={navigateToChangePassword}
             />
 
             <UserDetails />

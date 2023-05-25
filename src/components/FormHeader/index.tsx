@@ -4,7 +4,7 @@ import { BsArrowLeft, BsFillHouseFill } from 'react-icons/bs';
 
 import { Paths } from '../../constants/paths';
 import Loader from '../Loader';
-import { DashedOrangeButton, OrangeButton, UnstyledButton } from '../styles';
+import { OrangeButton, UnstyledButton } from '../styles';
 import { DeleteButton } from './styles';
 
 interface Props {
@@ -18,10 +18,6 @@ interface Props {
   submitBtnText?: string;
   isShowDeleteBtn?: boolean;
   onDelete?: () => void;
-  isShowDashedBtn?: boolean;
-  onDashedBtnClick?: () => void;
-  isDashedBtnLoading?: boolean;
-  dashedBtnText?: string;
 }
 
 const FormHeader = ({
@@ -35,14 +31,11 @@ const FormHeader = ({
   submitBtnText = 'Сохранить',
   isShowDeleteBtn = false,
   onDelete,
-  isShowDashedBtn = false,
-  onDashedBtnClick,
-  isDashedBtnLoading = false,
-  dashedBtnText = 'Сбросить пароль',
 }: Props) => {
   const navigate = useNavigate();
 
-  const handleClickDashedBtn = () => onDashedBtnClick?.();
+  const handleClick = () => onClick?.();
+  const handleDelete = () => onDelete?.();
 
   return (
     <Group position="apart" spacing={100}>
@@ -56,17 +49,8 @@ const FormHeader = ({
       </Group>
 
       <Group spacing={40}>
-        {isShowDashedBtn && (
-          <DashedOrangeButton onClick={handleClickDashedBtn} type="button">
-            {isDashedBtnLoading ? (
-              <Loader size={35} />
-            ) : (
-              <span>{dashedBtnText}</span>
-            )}
-          </DashedOrangeButton>
-        )}
         {isShowDeleteBtn && (
-          <DeleteButton onClick={onDelete} type="button">
+          <DeleteButton onClick={handleDelete} type="button">
             Удалить
           </DeleteButton>
         )}
@@ -84,7 +68,7 @@ const FormHeader = ({
           </OrangeButton>
         )}
         {isShowClickBtn && (
-          <OrangeButton onClick={onClick} $width={171} type="button">
+          <OrangeButton onClick={handleClick} $width={171} type="button">
             <span>{clickBtnText}</span>
           </OrangeButton>
         )}
