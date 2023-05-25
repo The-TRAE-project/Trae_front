@@ -4,17 +4,20 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 import { Paths } from '../../../constants/paths';
 import { useAppDispatch } from '../../../helpers/hooks/useAppDispatch';
+import { useAppSelector } from '../../../helpers/hooks/useAppSelector';
 import { useCheckEmployeeWithTimer } from '../../../helpers/hooks/useCheckEmployeeWithTimer';
 import { clearEmployeeState, setTimer } from '../../../store/slices/employee';
 import { Container, UnstyledButton } from '../../styles';
 import HeaderTime from './HeaderTime';
 import HeaderTitle from './HeaderTitle';
-import { FlexContainer, Wrapper } from './styles';
+import { FlexContainer, ProjectNumber, Wrapper } from './styles';
 
 const EmployeeHeader = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const { projectNumber } = useAppSelector((store) => store.employee);
+
   // TODO:
   const navigateToBack = () => {
     switch (location.pathname) {
@@ -52,11 +55,22 @@ const EmployeeHeader = () => {
             <HeaderTime findCurrentPath={findCurrentPath} />
             {!findCurrentPath(Paths.EMPLOYEE_LOGIN) && (
               <>
-                {!findCurrentPath(Paths.EMPLOYEE_MAIN) && (
-                  <HeaderTitle findCurrentPath={findCurrentPath} />
-                )}
+                <Group spacing={172}>
+                  {!findCurrentPath(Paths.EMPLOYEE_MAIN) && (
+                    <HeaderTitle findCurrentPath={findCurrentPath} />
+                  )}
 
-                <Group spacing={11}>
+                  {!findCurrentPath(
+                    Paths.EMPLOYEE_MAIN,
+                    Paths.EMPLOYEE_PROJECTS,
+                    Paths.EMPLOYEE_STAGES_IN_WORK
+                  ) &&
+                    projectNumber && (
+                      <ProjectNumber>{projectNumber}</ProjectNumber>
+                    )}
+                </Group>
+
+                <Group spacing={40}>
                   {!findCurrentPath(Paths.EMPLOYEE_MAIN) && (
                     <UnstyledButton
                       onClick={navigateToBack}

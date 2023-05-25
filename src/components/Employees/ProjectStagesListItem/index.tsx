@@ -5,12 +5,11 @@ import { ProjectStage } from '../../../store/apis/project/types';
 import { divisorByChunk } from '../../../helpers/divisorByChunk';
 import { useDisplayError } from '../../../helpers/hooks/useDisplayError';
 import { useGetProjectStagesQuery } from '../../../store/apis/project';
-import { useAppSelector } from '../../../helpers/hooks/useAppSelector';
 import { useSlider } from '../../../helpers/hooks/useSlider';
 import SliderButtons from '../../SliderButtons';
 import Loader from '../../Loader';
 import StageCard from './StageCard';
-import { FlexContainer, FooterWrapper, ProjectNumber, Wrapper } from './styles';
+import { FlexContainer, Wrapper } from './styles';
 
 const ProjectStagesListItem = () => {
   const { id } = useParams();
@@ -19,7 +18,6 @@ const ProjectStagesListItem = () => {
   );
   const { quantity, current, slideIndex, prevSlide, nextSlide } =
     useSlider(projectStages);
-  const { projectNumber } = useAppSelector((store) => store.employee);
 
   const { data, isLoading, isError, error } = useGetProjectStagesQuery(
     id as unknown as number
@@ -56,16 +54,13 @@ const ProjectStagesListItem = () => {
               ))}
             </FlexContainer>
           ) : null}
-          <FooterWrapper>
-            <SliderButtons
-              current={current}
-              quantity={quantity}
-              prevSlide={prevSlide}
-              nextSlide={nextSlide}
-              color="--white-black"
-            />
-            {projectNumber && <ProjectNumber>{projectNumber}</ProjectNumber>}
-          </FooterWrapper>
+          <SliderButtons
+            current={current}
+            quantity={quantity}
+            prevSlide={prevSlide}
+            nextSlide={nextSlide}
+            color="--white-black"
+          />
         </>
       ) : (
         <Loader size={80} color="--white-black" isAbsoluteCentered />
