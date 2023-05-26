@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components';
 
 type ButtonWrapperProps = {
-  $isOverdue?: boolean;
+  $isOpOverdue?: boolean;
 };
 
 export const ButtonWrapper = styled.button`
@@ -21,7 +21,7 @@ export const ButtonWrapper = styled.button`
   }
 
   ${(props: ButtonWrapperProps) =>
-    props.$isOverdue &&
+    props.$isOpOverdue &&
     css`
       border: 3px solid var(--red2);
     `}
@@ -42,5 +42,20 @@ export const ProjectOperationName = styled.p`
 
   &.ended {
     color: var(--white-black);
+  }
+`;
+
+export const ProjectFinishBtn = styled.button`
+  font-weight: 500;
+  ${({ theme }) => theme.mixins.fontSize28};
+  text-align: center;
+  color: var(--white);
+  padding: 10px 16px;
+  border: none;
+  border-radius: var(--border-radius);
+  background-color: var(--green);
+
+  &:is(:focus, :active, :hover) {
+    outline: none;
   }
 `;

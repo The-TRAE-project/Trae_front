@@ -13,8 +13,8 @@ import SEO from '../../components/SEO';
 import ProjectFilterMenu from '../../components/Project/ProjectFilterMenu';
 import ProjectSearchInput from '../../components/Project/ProjectSearchInput';
 import ProjectListItem from '../../components/Project/ProjectListItem';
-import { Container, WrapperGradientGreen } from '../../components/styles';
 import PageHeader from '../../components/PageHeader';
+import { Container, WrapperGradientGreen } from '../../components/styles';
 
 const Projects = () => {
   const [searchValue, setSearchValue] = useState<string>('');
@@ -42,9 +42,19 @@ const Projects = () => {
     key: LocalStorage.PROJECT_FILTER_IS_LAST_IN_WORK,
     defaultValue: false,
   });
-  const [paramIsCurrentOverdue, setParamIsCurrentOverdue] =
+  const [paramIsCurrentOpOverdue, setParamIsCurrentOpOverdue] =
     useLocalStorage<boolean>({
-      key: LocalStorage.PROJECT_FILTER_IS_CURRENT_OVERDUE,
+      key: LocalStorage.PROJECT_FILTER_IS_CURRENT_OP_OVERDUE,
+      defaultValue: false,
+    });
+  const [paramIsCurrentPrOverdue, setParamIsCurrentPrOverdue] =
+    useLocalStorage<boolean>({
+      key: LocalStorage.PROJECT_FILTER_IS_CURRENT_PR_OVERDUE,
+      defaultValue: false,
+    });
+  const [paramIsCurrentInWork, setParamIsCurrentInWork] =
+    useLocalStorage<boolean>({
+      key: LocalStorage.PROJECT_FILTER_IS_CURRENT_IN_WORK,
       defaultValue: false,
     });
 
@@ -60,13 +70,21 @@ const Projects = () => {
       }
     );
 
+  const isDisabledEndedParam =
+    paramIsCurrentOpOverdue ||
+    paramIsFirstNoAcceptance ||
+    paramIsCurrentPrOverdue ||
+    paramIsCurrentInWork ||
+    paramIsLastInWork ||
+    paramIsEnded;
+
   const { data: findProjectsByFilter, isLoading: isFilterLoading } =
     useGetProjectsQuery({
       elementPerPage: `&elementPerPage=${10}`,
       page: `&page=${searchPage}`,
-      isEnded: `&isEnded=${paramIsEnded}`,
-      isOverdueCurrentOpInProject: paramIsCurrentOverdue
-        ? `&isOverdueCurrentOpInProject=${paramIsCurrentOverdue}`
+      isEnded: isDisabledEndedParam ? `&isEnded=${paramIsEnded}` : '',
+      isOverdueCurrentOpInProject: paramIsCurrentOpOverdue
+        ? `&isOverdueCurrentOpInProject=${paramIsCurrentOpOverdue}`
         : '',
       isOnlyFirstOpWithoutAcceptance: paramIsFirstNoAcceptance
         ? `&isOnlyFirstOpWithoutAcceptance=${paramIsFirstNoAcceptance}`
@@ -74,38 +92,72 @@ const Projects = () => {
       isOnlyLastOpInWork: paramIsLastInWork
         ? `&isOnlyLastOpInWork=${paramIsLastInWork}`
         : '',
+      isOverdueProject: paramIsCurrentPrOverdue
+        ? `&isOverdueProject=${paramIsCurrentPrOverdue}`
+        : '',
+      isCurrentOpInWork: paramIsCurrentInWork
+        ? `&isCurrentOpInWork=${paramIsCurrentInWork}`
+        : '',
     });
   // TODO:
   const resetFilterParams = () => {
     setParamIsEnded(false);
     setParamIsFirstNoAcceptance(false);
     setParamIsLastInWork(false);
-    setParamIsCurrentOverdue(false);
+    setParamIsCurrentOpOverdue(false);
+    setParamIsCurrentPrOverdue(false);
+    setParamIsCurrentInWork(false);
   };
   // TODO:
   const handleSetIsEnded = () => {
     setParamIsEnded(true);
     setParamIsFirstNoAcceptance(false);
     setParamIsLastInWork(false);
-    setParamIsCurrentOverdue(false);
+    setParamIsCurrentOpOverdue(false);
+    setParamIsCurrentPrOverdue(false);
+    setParamIsCurrentInWork(false);
   };
   // TODO:
   const handleSetIsFirstNoAcceptance = () => {
     setParamIsFirstNoAcceptance(true);
     setParamIsEnded(false);
     setParamIsLastInWork(false);
-    setParamIsCurrentOverdue(false);
+    setParamIsCurrentOpOverdue(false);
+    setParamIsCurrentPrOverdue(false);
+    setParamIsCurrentInWork(false);
   };
   // TODO:
   const handleSetIsLastInWork = () => {
     setParamIsLastInWork(true);
     setParamIsFirstNoAcceptance(false);
     setParamIsEnded(false);
-    setParamIsCurrentOverdue(false);
+    setParamIsCurrentOpOverdue(false);
+    setParamIsCurrentPrOverdue(false);
+    setParamIsCurrentInWork(false);
   };
   // TODO:
-  const handleSetIsCurrentOverdue = () => {
-    setParamIsCurrentOverdue(true);
+  const handleSetIsCurrentOpOverdue = () => {
+    setParamIsCurrentOpOverdue(true);
+    setParamIsLastInWork(false);
+    setParamIsFirstNoAcceptance(false);
+    setParamIsEnded(false);
+    setParamIsCurrentPrOverdue(false);
+    setParamIsCurrentInWork(false);
+  };
+  // TODO:
+  const handleSetIsCurrentPrOverdue = () => {
+    setParamIsCurrentPrOverdue(true);
+    setParamIsCurrentOpOverdue(false);
+    setParamIsLastInWork(false);
+    setParamIsFirstNoAcceptance(false);
+    setParamIsEnded(false);
+    setParamIsCurrentInWork(false);
+  };
+  // TODO:
+  const handleSetIsCurrentInWork = () => {
+    setParamIsCurrentInWork(true);
+    setParamIsCurrentPrOverdue(false);
+    setParamIsCurrentOpOverdue(false);
     setParamIsLastInWork(false);
     setParamIsFirstNoAcceptance(false);
     setParamIsEnded(false);
@@ -121,8 +173,10 @@ const Projects = () => {
     if (
       paramIsFirstNoAcceptance ||
       paramIsEnded ||
-      paramIsCurrentOverdue ||
+      paramIsCurrentOpOverdue ||
       paramIsLastInWork ||
+      paramIsCurrentPrOverdue ||
+      paramIsCurrentInWork ||
       filterPage
     ) {
       resetFilterParams();
@@ -152,8 +206,12 @@ const Projects = () => {
                   setIsFirstNoAcceptance={handleSetIsFirstNoAcceptance}
                   isLastInWork={paramIsLastInWork}
                   setIsLastInWork={handleSetIsLastInWork}
-                  isCurrentOverdue={paramIsCurrentOverdue}
-                  setParamIsCurrentOverdue={handleSetIsCurrentOverdue}
+                  isCurrentOpOverdue={paramIsCurrentOpOverdue}
+                  setIsCurrentOpOverdue={handleSetIsCurrentOpOverdue}
+                  isCurrentPrOverdue={paramIsCurrentPrOverdue}
+                  setIsCurrentPrOverdue={handleSetIsCurrentPrOverdue}
+                  isCurrentInWork={paramIsCurrentInWork}
+                  setIsCurrentInWork={handleSetIsCurrentInWork}
                   reset={resetFilterParams}
                 />
               }
@@ -173,7 +231,6 @@ const Projects = () => {
                 setPage={setSearchPage}
                 isLoading={isSearchLoading}
                 projects={findProjectsBySearch}
-                isOverdue={paramIsCurrentOverdue}
               />
             ) : (
               <ProjectListItem
@@ -181,6 +238,8 @@ const Projects = () => {
                 setPage={setFilterPage}
                 isLoading={isFilterLoading}
                 projects={findProjectsByFilter}
+                isOpOverdue={paramIsCurrentOpOverdue}
+                isPrOverdue={paramIsCurrentPrOverdue}
               />
             )}
           </Stack>

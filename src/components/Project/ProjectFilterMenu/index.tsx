@@ -23,8 +23,12 @@ interface Props {
   setIsFirstNoAcceptance: () => void;
   isLastInWork: boolean;
   setIsLastInWork: () => void;
-  isCurrentOverdue: boolean;
-  setParamIsCurrentOverdue: () => void;
+  isCurrentOpOverdue: boolean;
+  setIsCurrentOpOverdue: () => void;
+  isCurrentPrOverdue: boolean;
+  setIsCurrentPrOverdue: () => void;
+  isCurrentInWork: boolean;
+  setIsCurrentInWork: () => void;
   reset: () => void;
 }
 
@@ -36,8 +40,12 @@ const ProjectFilterMenu = ({
   setIsFirstNoAcceptance,
   isLastInWork,
   setIsLastInWork,
-  isCurrentOverdue,
-  setParamIsCurrentOverdue,
+  isCurrentOpOverdue,
+  setIsCurrentOpOverdue,
+  isCurrentPrOverdue,
+  setIsCurrentPrOverdue,
+  isCurrentInWork,
+  setIsCurrentInWork,
   reset,
 }: Props) => {
   const [opened, { toggle }] = useDisclosure(false);
@@ -74,10 +82,24 @@ const ProjectFilterMenu = ({
           <FilterMenuItemGroup>
             <Checkbox
               readOnly
-              checked={isFirstNoAcceptance || isLastInWork}
+              checked={
+                isFirstNoAcceptance ||
+                isLastInWork ||
+                isCurrentInWork ||
+                isCurrentOpOverdue ||
+                isCurrentPrOverdue
+              }
               classNames={{ input, inner, icon }}
             />
-            <FilterMenuItemTitle $active={isFirstNoAcceptance || isLastInWork}>
+            <FilterMenuItemTitle
+              $active={
+                isFirstNoAcceptance ||
+                isLastInWork ||
+                isCurrentInWork ||
+                isCurrentOpOverdue ||
+                isCurrentPrOverdue
+              }
+            >
               В работе
             </FilterMenuItemTitle>
           </FilterMenuItemGroup>
@@ -101,6 +123,22 @@ const ProjectFilterMenu = ({
                 </FilterMenuItemTitle>
               </FilterMenuItemGroup>
             </Menu.Item>
+            <Menu.Item onClick={setIsCurrentInWork}>
+              <FilterMenuItemGroup>
+                <Checkbox
+                  readOnly
+                  checked={isCurrentInWork}
+                  classNames={{
+                    input: circleInput,
+                    inner: circleInner,
+                    icon: circleIcon,
+                  }}
+                />
+                <FilterMenuItemTitle $active={isCurrentInWork}>
+                  В работе сейчас
+                </FilterMenuItemTitle>
+              </FilterMenuItemGroup>
+            </Menu.Item>
             <Menu.Item onClick={setIsLastInWork}>
               <FilterMenuItemGroup>
                 <Checkbox
@@ -113,7 +151,39 @@ const ProjectFilterMenu = ({
                   }}
                 />
                 <FilterMenuItemTitle $active={isLastInWork}>
-                  Отгружаются
+                  Готовые к отгрузке
+                </FilterMenuItemTitle>
+              </FilterMenuItemGroup>
+            </Menu.Item>
+            <Menu.Item onClick={setIsCurrentOpOverdue}>
+              <FilterMenuItemGroup>
+                <Checkbox
+                  readOnly
+                  checked={isCurrentOpOverdue}
+                  classNames={{
+                    input: circleInput,
+                    inner: circleInner,
+                    icon: circleIcon,
+                  }}
+                />
+                <FilterMenuItemTitle $active={isCurrentOpOverdue}>
+                  Истек срок этапа
+                </FilterMenuItemTitle>
+              </FilterMenuItemGroup>
+            </Menu.Item>
+            <Menu.Item onClick={setIsCurrentPrOverdue}>
+              <FilterMenuItemGroup>
+                <Checkbox
+                  readOnly
+                  checked={isCurrentPrOverdue}
+                  classNames={{
+                    input: circleInput,
+                    inner: circleInner,
+                    icon: circleIcon,
+                  }}
+                />
+                <FilterMenuItemTitle $active={isCurrentPrOverdue}>
+                  Истек срок проекта
                 </FilterMenuItemTitle>
               </FilterMenuItemGroup>
             </Menu.Item>
@@ -133,23 +203,6 @@ const ProjectFilterMenu = ({
           </FilterMenuItemGroup>
         </Menu.Item>
 
-        <Menu.Item onClick={setParamIsCurrentOverdue}>
-          <FilterMenuItemGroup>
-            <Checkbox
-              readOnly
-              checked={isCurrentOverdue}
-              classNames={{
-                input,
-                inner,
-                icon,
-              }}
-            />
-            <FilterMenuItemTitle $active={isCurrentOverdue}>
-              Просроченные
-            </FilterMenuItemTitle>
-          </FilterMenuItemGroup>
-        </Menu.Item>
-
         <Menu.Item onClick={reset}>
           <FilterMenuItemGroup>
             <Checkbox
@@ -158,7 +211,9 @@ const ProjectFilterMenu = ({
                 !isEnded &&
                 !isFirstNoAcceptance &&
                 !isLastInWork &&
-                !isCurrentOverdue
+                !isCurrentOpOverdue &&
+                !isCurrentPrOverdue &&
+                !isCurrentInWork
               }
               classNames={{ input, inner, icon }}
             />
@@ -167,7 +222,9 @@ const ProjectFilterMenu = ({
                 !isEnded &&
                 !isFirstNoAcceptance &&
                 !isLastInWork &&
-                !isCurrentOverdue
+                !isCurrentOpOverdue &&
+                !isCurrentPrOverdue &&
+                !isCurrentInWork
               }
             >
               Все

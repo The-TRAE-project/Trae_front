@@ -54,23 +54,25 @@ const PageHeader = ({
 
       {input}
 
-      <Group spacing={40}>
-        {isShowDashedBtn && (
-          <DashedOrangeButton onClick={handleDashedBtnClick} type="button">
-            {isDashedBtnLoading ? (
-              <Loader size={35} />
-            ) : (
-              <span>{dashedBtnText}</span>
-            )}
-          </DashedOrangeButton>
-        )}
-        {isShowExitBtn && (
-          <Button onClick={handleLogout} type="button">
-            <IoMdExit size={32} color="var(--white)" />
-            <span>Выйти</span>
-          </Button>
-        )}
-      </Group>
+      {(isShowDashedBtn || isShowExitBtn) && (
+        <Group spacing={40}>
+          {isShowDashedBtn && (
+            <DashedOrangeButton onClick={handleDashedBtnClick} type="button">
+              {isDashedBtnLoading ? (
+                <Loader size={35} />
+              ) : (
+                <span>{dashedBtnText}</span>
+              )}
+            </DashedOrangeButton>
+          )}
+          {isShowExitBtn && (
+            <Button onClick={handleLogout} type="button">
+              <IoMdExit size={32} color="var(--white)" />
+              <span>Выйти</span>
+            </Button>
+          )}
+        </Group>
+      )}
       {isShowCreateBtn && (
         <Button onClick={handleCreate} type="button">
           <AiOutlinePlusCircle size={30} color="var(--white)" />

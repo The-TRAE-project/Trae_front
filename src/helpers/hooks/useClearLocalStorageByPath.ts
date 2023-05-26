@@ -63,8 +63,10 @@ export function useClearLocalStorageByPath() {
         removeItem(LocalStorage.PROJECT_FILTER_PAGE);
         removeItem(LocalStorage.PROJECT_FILTER_IS_ENDED);
         removeItem(LocalStorage.PROJECT_FILTER_IS_NOT_ACCEPTANCE);
+        removeItem(LocalStorage.PROJECT_FILTER_IS_CURRENT_IN_WORK);
         removeItem(LocalStorage.PROJECT_FILTER_IS_LAST_IN_WORK);
-        removeItem(LocalStorage.PROJECT_FILTER_IS_CURRENT_OVERDUE);
+        removeItem(LocalStorage.PROJECT_FILTER_IS_CURRENT_OP_OVERDUE);
+        removeItem(LocalStorage.PROJECT_FILTER_IS_CURRENT_PR_OVERDUE);
       }
     }
   }, [location.pathname]);

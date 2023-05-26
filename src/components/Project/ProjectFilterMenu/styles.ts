@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 export const MenuItemStack = styled.div`
   ${({ theme }) => theme.mixins.column};
-  padding-left: 38px;
+  padding-left: 26px;
 `;
 
 export const useMenuStyles = createStyles(() => ({

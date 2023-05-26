@@ -12,7 +12,8 @@ interface Props {
   setPage: Dispatch<SetStateAction<number>>;
   isLoading: boolean;
   projects: FilteredResponse<ProjectShortInfo[]> | undefined;
-  isOverdue?: boolean;
+  isOpOverdue?: boolean;
+  isPrOverdue?: boolean;
 }
 
 const ProjectListItem = ({
@@ -20,7 +21,8 @@ const ProjectListItem = ({
   setPage,
   isLoading,
   projects,
-  isOverdue,
+  isOpOverdue,
+  isPrOverdue,
 }: Props) => {
   const prevSlide = () => {
     if (page !== 0) {
@@ -43,7 +45,8 @@ const ProjectListItem = ({
               <ProjectItem
                 key={project.id}
                 project={project}
-                isOverdue={isOverdue}
+                isOpOverdue={isOpOverdue}
+                isPrOverdue={isPrOverdue}
               />
             ))}
           </Grid>
