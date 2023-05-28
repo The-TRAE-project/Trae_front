@@ -41,7 +41,6 @@ const NavbarItem = ({ navbarLink }: Props) => {
             type="button"
             onClick={() => handleNavigate(navbarLink.value)}
             $isActive={definePathIsActive(navbarLink.value, location.pathname)}
-            disabled={navbarLink.value === Paths.REPORTS}
           >
             {navbarLink.title}
           </Button>

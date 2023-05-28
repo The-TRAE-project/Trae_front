@@ -1,5 +1,6 @@
 import { Box, createStyles, Group, Stack } from '@mantine/core';
 import styled, { css } from 'styled-components';
+import { IoIosArrowUp } from 'react-icons/io';
 
 import bg from '../../assets/bg.svg';
 
@@ -312,6 +313,8 @@ export const DashedOrangeButton = styled.button`
 `;
 // TODO:
 export const FormWrapper = styled.form`
+  position: relative;
+  min-height: calc(100vh - 336px);
   ${({ theme }) => theme.mixins.column};
   gap: 3rem;
 `;
@@ -454,4 +457,64 @@ export const ContentStack = styled(Stack)`
   --gap-50: clamp(2.5rem, calc(0.96rem + 1.81vw), 3.13rem);
 
   gap: var(--gap-50);
+`;
+
+export const SelectWrapper = styled.div`
+  position: relative;
+  ${({ theme }) => theme.mixins.column};
+  gap: 13px;
+`;
+
+export const SelectLabel = styled.p`
+  ${({ theme }) => theme.mixins.fontSize24};
+  font-weight: 400;
+  color: var(--white);
+  padding-left: 14px;
+`;
+
+type SelectDisplayInputProps = {
+  $isFs28?: boolean;
+};
+
+export const SelectDisplayInput = styled.div`
+  position: relative;
+  min-height: 73px;
+  ${({ theme }) => theme.mixins.center};
+  flex-wrap: wrap;
+  column-gap: 22px;
+  row-gap: 16px;
+  padding: 11px 84px 11px 22px;
+  background: var(--white);
+  border-radius: var(--border-radius);
+
+  input {
+    display: none;
+  }
+
+  p {
+    font-family: var(--font-roboto);
+    ${(props: SelectDisplayInputProps) =>
+      props.$isFs28
+        ? css`
+            ${({ theme }) => theme.mixins.fontSize28};
+            font-weight: 500;
+          `
+        : css`
+            ${({ theme }) => theme.mixins.fontSize22};
+            font-weight: 400;
+          `}
+    color: var(--white-black);
+  }
+`;
+
+type SelectArrowProps = {
+  $isOpen?: boolean;
+};
+
+export const SelectArrow = styled(IoIosArrowUp)`
+  position: absolute;
+  right: 29px;
+  transform: ${(props: SelectArrowProps) =>
+    props.$isOpen ? 'rotate(180deg)' : 'rotate(0)'};
+  color: var(--white-black);
 `;

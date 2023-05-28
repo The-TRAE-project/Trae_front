@@ -1,6 +1,5 @@
 import { createStyles } from '@mantine/core';
-import { IoIosArrowUp } from 'react-icons/io';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
 export const Title = styled.p`
   font-family: var(--font-roboto);
@@ -38,53 +37,6 @@ export const DateBadge = styled.p`
   font-weight: 400;
   ${({ theme }) => theme.mixins.fontSize20};
   color: var(--white);
-`;
-
-export const SelectWrapper = styled.div`
-  ${({ theme }) => theme.mixins.column};
-  gap: 13px;
-`;
-
-export const SelectLabel = styled.p`
-  ${({ theme }) => theme.mixins.fontSize24};
-  font-weight: 400;
-  color: var(--white);
-  padding-left: 14px;
-`;
-
-type SelectDisplayInputProps = {
-  $isFs28?: boolean;
-};
-
-export const SelectDisplayInput = styled.div`
-  position: relative;
-  min-height: 73px;
-  ${({ theme }) => theme.mixins.center};
-  flex-wrap: wrap;
-  column-gap: 22px;
-  row-gap: 16px;
-  padding: 11px 84px 11px 22px;
-  background: var(--white);
-  border-radius: var(--border-radius);
-
-  input {
-    display: none;
-  }
-
-  p {
-    font-family: var(--font-roboto);
-    ${(props: SelectDisplayInputProps) =>
-      props.$isFs28
-        ? css`
-            ${({ theme }) => theme.mixins.fontSize28};
-            font-weight: 500;
-          `
-        : css`
-            ${({ theme }) => theme.mixins.fontSize22};
-            font-weight: 400;
-          `}
-    color: var(--white-black);
-  }
 `;
 
 export const useSelectMenuStyles = createStyles(() => ({
@@ -126,18 +78,6 @@ export const SelectGrid = styled.div`
   row-gap: 15px;
   max-height: 240px;
   overflow: auto;
-`;
-
-type SelectArrowProps = {
-  $isOpen?: boolean;
-};
-
-export const SelectArrow = styled(IoIosArrowUp)`
-  position: absolute;
-  right: 29px;
-  transform: ${(props: SelectArrowProps) =>
-    props.$isOpen ? 'rotate(180deg)' : 'rotate(0)'};
-  color: var(--white-black);
 `;
 
 export const ExtraStageButton = styled.button`

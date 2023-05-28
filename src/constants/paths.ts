@@ -1,8 +1,10 @@
 export const Paths = {
   LOGIN: '/login',
   MAIN: '/',
-  REPORTS: '/reports',
   DASHBOARD: '/dashboard',
+  // Admin Reports paths
+  REPORTS: '/reports',
+  REPORTS_BY_EMPLOYEES: '/reports/by-employees',
   // Admin Personal Cabinet paths
   PERSONAL_CABINET: '/personal-cabinet',
   PERSONAL_CABINET_EDITING: '/personal-cabinet/editing',

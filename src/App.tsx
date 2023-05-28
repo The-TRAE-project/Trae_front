@@ -46,6 +46,8 @@ const ProjectInsertNewStage = lazy(
   () => import('./pages/ProjectInsertNewStage')
 );
 const ProjectNewStage = lazy(() => import('./pages/ProjectNewStage'));
+const Reports = lazy(() => import('./pages/Reports'));
+const ReportsByEmployees = lazy(() => import('./pages/ReportsByEmployees'));
 
 const App = () => {
   const { isLoggedIn } = useAppSelector((store) => store.employee);
@@ -58,33 +60,6 @@ const App = () => {
           <Route path={Paths.LOGIN} element={<Login />} />
           <Route path="*" element={<Navigate to={Paths.LOGIN} replace />} />
 
-          {/* All users */}
-          <Route
-            element={
-              <ProtectedRoute
-                isAllowed={
-                  permission === Roles.ADMIN ||
-                  permission === Roles.CONSTRUCTOR ||
-                  permission === Roles.EMPLOYEE
-                }
-                redirectPath={Paths.LOGIN}
-              />
-            }
-          >
-            <Route
-              path={Paths.PERSONAL_CABINET}
-              element={<PersonalCabinet />}
-            />
-            <Route
-              path={Paths.PERSONAL_CABINET_EDITING}
-              element={<PersonalCabinetEditing />}
-            />
-            <Route
-              path={Paths.PERSONAL_CABINET_CHANGE_PASSWORD}
-              element={<PersonalCabinetChangePassword />}
-            />
-          </Route>
-
           {/* Admin routes */}
           <Route
             element={
@@ -95,6 +70,13 @@ const App = () => {
             }
           >
             <Route path={Paths.DASHBOARD} element={<Dashboard />} />
+            {/* Reports routes */}
+            <Route path={Paths.REPORTS} element={<Reports />} />
+            <Route
+              path={Paths.REPORTS_BY_EMPLOYEES}
+              element={<ReportsByEmployees />}
+            />
+            {/* Project routes */}
             <Route path={Paths.PROJECTS} element={<Projects />} />
             <Route path={Paths.PROJECT_CREATE} element={<CreateProject />} />
             <Route path={Paths.PROJECT_DETAILS} element={<ProjectDetails />} />
@@ -116,21 +98,37 @@ const App = () => {
               path={Paths.PROJECT_INSERT_NEW_STAGE}
               element={<ProjectInsertNewStage />}
             />
+            {/* Constructor routes */}
             <Route path={Paths.CONSTRUCTORS} element={<Constructors />} />
             <Route
               path={Paths.CONSTRUCTOR_CREATE}
               element={<CreateConstructor />}
             />
             <Route path={Paths.CONSTRUCTOR_EDITING} element={<UpdateUser />} />
+            {/* Employee routes */}
             <Route path={Paths.EMPLOYEES} element={<Employees />} />
             <Route path={Paths.EMPLOYEE_CREATE} element={<CreateEmployee />} />
             <Route path={Paths.EMPLOYEE_EDITING} element={<UpdateEmployee />} />
+            {/* Work Type routes  */}
             <Route path={Paths.WORK_TYPES} element={<WorkTypes />} />
             <Route
               path={Paths.WORK_TYPE_EDITING}
               element={<UpdateWorkType />}
             />
             <Route path={Paths.WORK_TYPE_CREATE} element={<CreateWorkType />} />
+            {/* Personal Cabinet routes */}
+            <Route
+              path={Paths.PERSONAL_CABINET}
+              element={<PersonalCabinet />}
+            />
+            <Route
+              path={Paths.PERSONAL_CABINET_EDITING}
+              element={<PersonalCabinetEditing />}
+            />
+            <Route
+              path={Paths.PERSONAL_CABINET_CHANGE_PASSWORD}
+              element={<PersonalCabinetChangePassword />}
+            />
           </Route>
 
           {/* Employee routes */}

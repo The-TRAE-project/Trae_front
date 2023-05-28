@@ -63,6 +63,72 @@ const GlobalStyles = createGlobalStyle`
   input[type=number] {
     -moz-appearance:textfield; /* Firefox */
   }
+  // react calendar timeline styles
+  .react-calendar-timeline {
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    background: var(--white);
+    padding: 36px 8px 10px;
+  }
+
+  .react-calendar-timeline .rct-calendar-header {
+    border: none!important;
+  }
+
+  .react-calendar-timeline .rct-header-root {
+    background: var(--white) !important;
+  }
+
+  .react-calendar-timeline .rct-dateHeader {
+    font-family: var(--font-roboto);
+    font-size: 20px !important;
+    font-weight: 500;
+    color: var(--white);
+    background: var(--orange) !important;
+    border-bottom-color: var(--green) !important;
+  }
+
+  .react-calendar-timeline .rct-dateHeader-primary {
+    background: var(--green) !important;
+    font-weight: 700;
+    line-height: 23px;
+    padding: 6px 0;
+    border: none !important;
+    border-radius: 15px 15px 0px 0px;
+  }
+
+  .react-calendar-timeline .rct-sidebar {
+    border-right: 1px solid var(--green) !important;
+  }
+
+  .react-calendar-timeline .rct-vertical-lines .rct-vl {
+    
+    border-bottom: 1px solid var(--green) !important;
+  }
+
+  .react-calendar-timeline .rct-sidebar .rct-sidebar-row {
+    border-top: 1px solid var(--green) !important;
+    border-bottom-color: var(--green) !important;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 23px;
+    color: var(--black);
+    text-align: center;
+  }
+
+  .shift-day {
+    font-family: var(--font-roboto);
+    font-weight: 400;
+    font-size: 18px !important;
+    text-align: center;
+    color: var(--black) !important;
+    border: none !important;
+    background: transparent !important;
+  }
+
+  .auto-closed {
+    background: var(--red) !important;
+  }
 `;
 
 export default GlobalStyles;
