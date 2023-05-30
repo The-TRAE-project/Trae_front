@@ -17,6 +17,10 @@ import {
   HorizontalDivider,
   DateTitle,
   EmployeeTitle,
+  RightSideWrapper,
+  Title,
+  TotalListItem,
+  TotalTitle,
 } from './styles';
 
 interface Props {
@@ -94,6 +98,8 @@ const TimelineListItem = ({
       groups={groups}
       items={items}
       keys={keys}
+      rightSidebarWidth={64}
+      rightSidebarContent={<div>Above The Right</div>}
       sidebarContent={<div>Above The Left</div>}
       itemTouchSendsClick={false}
       stackItems
@@ -113,6 +119,20 @@ const TimelineListItem = ({
                 <DateTitle>Дата</DateTitle>
                 <EmployeeTitle>Сотрудник</EmployeeTitle>
               </LeftSideWrapper>
+            );
+          }}
+        </SidebarHeader>
+        <SidebarHeader variant="right">
+          {({ getRootProps }) => {
+            return (
+              <RightSideWrapper {...getRootProps()}>
+                <Title>Итого смен</Title>
+                <TotalListItem>
+                  {/* <TotalTitle>fefef</TotalTitle>
+                  <TotalTitle>fefefdfsd</TotalTitle>
+                  <TotalTitle>fefefdsfd</TotalTitle> */}
+                </TotalListItem>
+              </RightSideWrapper>
             );
           }}
         </SidebarHeader>

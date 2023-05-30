@@ -1,21 +1,23 @@
 import { UseFormReturnType } from '@mantine/form';
 
-import { ParamsForEmployees } from '../../../../store/apis/reports/types';
+import { EmployeeShortInfo } from '../../../../store/apis/employee/types';
+import { EmployeeReportFormValues } from '../../../../store/apis/reports/types';
 import DatePicker from '../../../DatePicker';
 import { ThreeColumnGrid } from '../../../styles';
 import EmployeeSelect from './EmployeeSelect';
 
 interface Props {
   form: UseFormReturnType<
-    ParamsForEmployees,
-    (values: ParamsForEmployees) => ParamsForEmployees
+    EmployeeReportFormValues,
+    (values: EmployeeReportFormValues) => EmployeeReportFormValues
   >;
+  employees: EmployeeShortInfo[];
 }
 
-const FormBody = ({ form }: Props) => {
+const FormBody = ({ form, employees }: Props) => {
   return (
     <ThreeColumnGrid>
-      <EmployeeSelect />
+      <EmployeeSelect form={form} employees={employees} />
       <DatePicker
         {...form.getInputProps('startOfPeriod')}
         title="Дата начало"

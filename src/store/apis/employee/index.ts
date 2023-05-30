@@ -5,6 +5,7 @@ import {
   CreateEmployeeReturnType,
   EmployeeFormValues,
   EmployeeUpdateFormValues,
+  EmployeeShortInfo,
 } from './types';
 
 const employeeTags = baseApi.enhanceEndpoints({
@@ -43,6 +44,11 @@ const employeeApi = employeeTags.injectEndpoints({
       },
       invalidatesTags: ['Employee'],
     }),
+
+    getAllEmployeesWithoutPagination: build.query<EmployeeShortInfo[], void>({
+      query: () => '/employee/employees/list',
+      providesTags: ['Employee'],
+    }),
   }),
 });
 
@@ -50,4 +56,5 @@ export const {
   useCreateEmployeeMutation,
   useGetAllEmployeesQuery,
   useEditEmployeeMutation,
+  useGetAllEmployeesWithoutPaginationQuery,
 } = employeeApi;

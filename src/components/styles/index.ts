@@ -97,6 +97,7 @@ export const WrapperGradientGreen = styled.section`
     var(--gradient-green1) 2.46%,
     var(--gradient-green2) 70.65%
   );
+  overflow: auto;
 
   @media ${({ theme }) => theme.bp.bpLarge} {
     padding: 108px 0 40px;
@@ -300,7 +301,8 @@ export const DashedOrangeButton = styled.button`
   height: 58px;
   ${({ theme }) => theme.mixins.fCenter};
   background: var(--orange);
-  border: 2px dashed var(--white);
+  border: none;
+  background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='15' ry='15' stroke='white' stroke-width='4' stroke-dasharray='24%2c 15' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
   border-radius: var(--border-radius);
   font-weight: 400;
   ${({ theme }) => theme.mixins.fontSize24};
