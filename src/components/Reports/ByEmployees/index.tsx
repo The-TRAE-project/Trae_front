@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm, zodResolver } from '@mantine/form';
 import { Stack } from '@mantine/core';
@@ -12,18 +12,21 @@ import {
 } from '../../../store/apis/reports/types';
 import { selectOnlyIds } from '../../../helpers/selectOnlyIds';
 import { useExportToExcel } from '../../../helpers/hooks/useExportToExcel';
+import { useExportToPDF } from '../../../helpers/hooks/useExportToPDF';
 import Loader from '../../Loader';
-import { FormWrapper } from '../../styles';
 import FormHeader from '../FormHeader';
+import { FormWrapper } from '../../styles';
 import {
   DATE_30_AHEAD,
   formatToQueryParamDate,
 } from './helpers/formatToParamDate';
 import { useSetDefaultValue } from './helpers/useSetDefaultValue';
+import { prepareForExcel } from './helpers/prepareForExcel';
 import FormBody from './FormBody';
 import TimelineListItem from './TimelineListItem';
 
 const ByEmployees = () => {
+  const PDFRef = useRef<HTMLDivElement | null>(null);
   const [startDate, setStartDate] = useState<string | null>(null);
   const [endDate, setEndDate] = useState<string | null>(null);
   const [employeeIds, setEmployeeIds] = useState<number[] | null>([]);
@@ -64,7 +67,8 @@ const ByEmployees = () => {
     }
   );
 
-  const { isLoading, exportToExcel } = useExportToExcel();
+  const { isLoading: isExcelExportLoading, exportToExcel } = useExportToExcel();
+  const { isLoading: isExportPDFLoading, exportToPDF } = useExportToPDF();
 
   const handleSubmit = (values: EmployeeReportFormValues) => {
     setStartDate(formatToQueryParamDate(values.startOfPeriod));
@@ -73,9 +77,14 @@ const ByEmployees = () => {
   };
 
   const handleExportToExcel = () => {
-    const data = [['Имя', 'Фамилия', 'День', 'Итого']];
-    exportToExcel(data, 'Отчеты по сотрудникам');
+    if (!reportsByEmployees) return;
+
+    exportToExcel(prepareForExcel(reportsByEmployees), 'Отчеты по сотрудникам');
   };
+
+  const isReportExist =
+    !!reportsByEmployees &&
+    reportsByEmployees.employeeIdTotalPartsDtoList.length > 0;
 
   return (
     <FormWrapper onSubmit={form.onSubmit(handleSubmit)}>
@@ -84,8 +93,11 @@ const ByEmployees = () => {
         isReportFormed={!!reportsByEmployees}
         isFormBtnLoading={isFetching || isGetLoading}
         isFormBtnDisabled={isFetching || isGetLoading}
-        isExportToExcelLoading={isLoading}
+        isExportToExcelLoading={isExcelExportLoading}
+        isExportBtnDisabled={!isReportExist}
         onExportToExcel={handleExportToExcel}
+        isExportToPDFLoading={isExportPDFLoading}
+        onExportToPDF={() => exportToPDF(PDFRef, 'Отчеты по сотрудникам')}
       />
 
       <Stack spacing={40}>
@@ -97,13 +109,20 @@ const ByEmployees = () => {
         {startDate &&
           endDate &&
           employeeIds?.length &&
-          (!isGetLoading && !!reportsByEmployees ? (
-            <TimelineListItem
-              defaultTimeStart={startOfPeriod as Date}
-              defaultTimeEnd={endOfPeriod as Date}
-              employeeGroups={reportsByEmployees.shortEmployeeDtoList}
-              employeeItems={reportsByEmployees.workingShiftEmployeeDtoList}
-            />
+          (!isGetLoading && !isFetching && !!reportsByEmployees ? (
+            <div ref={PDFRef}>
+              <TimelineListItem
+                defaultTimeStart={startOfPeriod as Date}
+                defaultTimeEnd={endOfPeriod as Date}
+                employees={reportsByEmployees.shortEmployeeDtoList}
+                employeeWorkingShifts={
+                  reportsByEmployees.workingShiftEmployeeDtoList
+                }
+                employeeTotalShifts={
+                  reportsByEmployees.employeeIdTotalPartsDtoList
+                }
+              />
+            </div>
           ) : (
             <Loader size={80} isAbsoluteCentered />
           ))}

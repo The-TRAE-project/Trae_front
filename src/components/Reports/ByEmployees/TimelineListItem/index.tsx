@@ -1,43 +1,43 @@
-import dayjs from 'dayjs';
 import { useState, useEffect } from 'react';
+import { Group } from '@mantine/core';
 import Timeline, {
   TimelineHeaders,
   SidebarHeader,
   DateHeader,
 } from 'react-calendar-timeline';
 import 'react-calendar-timeline/lib/Timeline.css';
+import dayjs from 'dayjs';
 
 import { convertToDate } from '../../../../helpers/convertToDate';
 import {
   ShortEmployeeInfo,
-  ShortWorkingShiftInfo,
+  EmployeeWorkingShiftInfo,
+  EmployeeTotalShiftInfo,
 } from '../../../../store/apis/reports/types';
+import RightSideBar from './RightSideBar';
 import {
   LeftSideWrapper,
   HorizontalDivider,
   DateTitle,
   EmployeeTitle,
-  RightSideWrapper,
-  Title,
-  TotalListItem,
-  TotalTitle,
 } from './styles';
 
 interface Props {
   defaultTimeStart: Date;
   defaultTimeEnd: Date;
-  employeeGroups: ShortEmployeeInfo[];
-  employeeItems: ShortWorkingShiftInfo[];
+  employees: ShortEmployeeInfo[];
+  employeeWorkingShifts: EmployeeWorkingShiftInfo[];
+  employeeTotalShifts: EmployeeTotalShiftInfo[];
 }
 
-interface Group {
+interface TimeLineGroup {
   id: string;
   title: string;
   rightTitle: string;
   bgColor: string;
 }
 
-interface Item {
+interface TimeLineItem {
   id: string;
   group: string;
   title: string;
@@ -62,15 +62,16 @@ const keys = {
 const TimelineListItem = ({
   defaultTimeStart,
   defaultTimeEnd,
-  employeeGroups,
-  employeeItems,
+  employees,
+  employeeWorkingShifts,
+  employeeTotalShifts,
 }: Props) => {
-  const [groups, setGroups] = useState<Group[]>([]);
+  const [groups, setGroups] = useState<TimeLineGroup[]>([]);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [items, setItems] = useState<Item[] | any>([]);
+  const [items, setItems] = useState<TimeLineItem[] | any>([]);
 
   useEffect(() => {
-    const modifiedGroups = employeeGroups.map((item) => ({
+    const modifiedGroups = employees.map((item) => ({
       id: String(item.id),
       title: `${item.firstName} ${item.lastName}`,
       rightTitle: `${item.firstName} ${item.lastName}`,
@@ -79,7 +80,7 @@ const TimelineListItem = ({
 
     setGroups(modifiedGroups);
 
-    const modifiedItems = employeeItems.map((item) => ({
+    const modifiedItems = employeeWorkingShifts.map((item) => ({
       id: String(item.employeeId),
       group: String(item.employeeId),
       title: `${item.partOfShift}`,
@@ -91,55 +92,42 @@ const TimelineListItem = ({
       className: item.autoClosed ? 'shift-day auto-closed' : 'shift-day',
     }));
     setItems(modifiedItems);
-  }, [employeeGroups, employeeItems]);
+  }, [employees, employeeWorkingShifts]);
 
   return (
-    <Timeline
-      groups={groups}
-      items={items}
-      keys={keys}
-      rightSidebarWidth={64}
-      rightSidebarContent={<div>Above The Right</div>}
-      sidebarContent={<div>Above The Left</div>}
-      itemTouchSendsClick={false}
-      stackItems
-      itemHeightRatio={0.75}
-      canMove={false}
-      canResize={false}
-      defaultTimeStart={defaultTimeStart}
-      defaultTimeEnd={defaultTimeEnd}
-      lineHeight={99}
-    >
-      <TimelineHeaders className="sticky">
-        <SidebarHeader>
-          {({ getRootProps }) => {
-            return (
-              <LeftSideWrapper {...getRootProps()}>
-                <HorizontalDivider />
-                <DateTitle>Дата</DateTitle>
-                <EmployeeTitle>Сотрудник</EmployeeTitle>
-              </LeftSideWrapper>
-            );
-          }}
-        </SidebarHeader>
-        <SidebarHeader variant="right">
-          {({ getRootProps }) => {
-            return (
-              <RightSideWrapper {...getRootProps()}>
-                <Title>Итого смен</Title>
-                <TotalListItem>
-                  {/* <TotalTitle>fefef</TotalTitle>
-                  <TotalTitle>fefefdfsd</TotalTitle>
-                  <TotalTitle>fefefdsfd</TotalTitle> */}
-                </TotalListItem>
-              </RightSideWrapper>
-            );
-          }}
-        </SidebarHeader>
-        <DateHeader unit="primaryHeader" />
-        <DateHeader />
-      </TimelineHeaders>
-    </Timeline>
+    <Group spacing={0}>
+      <Timeline
+        groups={groups}
+        items={items}
+        keys={keys}
+        sidebarContent={<div>Above The Left</div>}
+        itemTouchSendsClick={false}
+        stackItems
+        itemHeightRatio={0.75}
+        canMove={false}
+        canResize={false}
+        defaultTimeStart={defaultTimeStart}
+        defaultTimeEnd={defaultTimeEnd}
+        lineHeight={99}
+      >
+        <TimelineHeaders className="sticky">
+          <SidebarHeader>
+            {({ getRootProps }) => {
+              return (
+                <LeftSideWrapper {...getRootProps()}>
+                  <HorizontalDivider />
+                  <DateTitle>Дата</DateTitle>
+                  <EmployeeTitle>Сотрудник</EmployeeTitle>
+                </LeftSideWrapper>
+              );
+            }}
+          </SidebarHeader>
+          <DateHeader unit="primaryHeader" height={35} />
+          <DateHeader height={35} />
+        </TimelineHeaders>
+      </Timeline>
+      <RightSideBar totalShifts={employeeTotalShifts} />
+    </Group>
   );
 };
 

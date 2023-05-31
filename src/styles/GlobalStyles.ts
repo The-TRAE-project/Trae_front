@@ -2,7 +2,6 @@ import { createGlobalStyle } from 'styled-components';
 import variables from './variables';
 
 const GlobalStyles = createGlobalStyle`
-
   ${variables};
 
   html {
@@ -65,10 +64,11 @@ const GlobalStyles = createGlobalStyle`
   }
   // react calendar timeline styles
   .react-calendar-timeline {
-    border-radius: var(--border-radius);
+    width: 95%;
     overflow: hidden;
     background: var(--white);
-    padding: 36px 8px 10px;
+    border-radius: var(--border-radius) 0 0 var(--border-radius);
+    padding: 36px 0px 10px 8px;
   }
 
   .react-calendar-timeline .rct-calendar-header {
@@ -89,12 +89,12 @@ const GlobalStyles = createGlobalStyle`
   }
 
   .react-calendar-timeline .rct-dateHeader-primary {
-    background: var(--green) !important;
     font-weight: 700;
     line-height: 23px;
     padding: 6px 0;
     border: none !important;
     border-radius: 15px 15px 0px 0px;
+    background: linear-gradient(97.03deg, var(--green) 7.5%, var(--gradient-green3) 94.35%) !important;
   }
 
   .react-calendar-timeline .rct-sidebar {
@@ -102,18 +102,28 @@ const GlobalStyles = createGlobalStyle`
   }
 
   .react-calendar-timeline .rct-vertical-lines .rct-vl {
-    
     border-bottom: 1px solid var(--green) !important;
   }
 
   .react-calendar-timeline .rct-sidebar .rct-sidebar-row {
-    border-top: 1px solid var(--green) !important;
-    border-bottom-color: var(--green) !important;
     font-weight: 500;
     font-size: 20px;
     line-height: 23px;
     color: var(--black);
     text-align: center;
+    border-bottom-color: var(--green) !important;
+
+    &:first-child {
+      border-top: 1px solid var(--green) !important;
+    }
+  }
+  
+  .react-calendar-timeline .rct-horizontal-lines .rct-hl-even {
+    border-bottom-color: var(--green) !important;
+  }
+
+  .react-calendar-timeline .rct-horizontal-lines .rct-hl-odd  {
+    border-bottom-color: var(--green) !important;
   }
 
   .shift-day {
@@ -127,6 +137,8 @@ const GlobalStyles = createGlobalStyle`
   }
 
   .auto-closed {
+    font-weight: 500;
+    color: var(--white) !important;
     background: var(--red) !important;
   }
 `;

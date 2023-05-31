@@ -29,14 +29,14 @@ export interface ShortEmployeeInfo {
   lastName: string;
 }
 
-export interface ShortWorkingShiftInfo {
+export interface EmployeeWorkingShiftInfo {
   employeeId: number;
   autoClosed: boolean;
   partOfShift: number;
   shiftDate: number[];
 }
 
-export interface EmployeeTotalInfo {
+export interface EmployeeTotalShiftInfo {
   id: number;
   totalPartsOfShift: number;
 }
@@ -45,6 +45,6 @@ export interface EmployeesReports {
   startPeriod: number[];
   endPeriod: number[];
   shortEmployeeDtoList: ShortEmployeeInfo[];
-  workingShiftEmployeeDtoList: ShortWorkingShiftInfo[];
-  employeeIdTotalPartsDtoList: EmployeeTotalInfo[];
+  workingShiftEmployeeDtoList: EmployeeWorkingShiftInfo[];
+  employeeIdTotalPartsDtoList: EmployeeTotalShiftInfo[];
 }

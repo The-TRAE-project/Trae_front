@@ -13,6 +13,7 @@ interface Props {
   isFormBtnDisabled: boolean;
   onExportToExcel?: () => void;
   isExportToExcelLoading?: boolean;
+  isExportBtnDisabled?: boolean;
   onExportToPDF?: () => void;
   isExportToPDFLoading?: boolean;
 }
@@ -24,6 +25,7 @@ const FormHeader = ({
   isFormBtnDisabled,
   onExportToExcel,
   isExportToExcelLoading,
+  isExportBtnDisabled,
   onExportToPDF,
   isExportToPDFLoading,
 }: Props) => {
@@ -45,7 +47,7 @@ const FormHeader = ({
           <>
             <DashedOrangeButton
               onClick={onExportToExcel}
-              disabled={isExportToExcelLoading}
+              disabled={isExportToExcelLoading || isExportBtnDisabled}
               type="button"
             >
               {isExportToExcelLoading ? (
