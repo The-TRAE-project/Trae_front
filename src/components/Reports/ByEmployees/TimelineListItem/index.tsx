@@ -4,6 +4,8 @@ import Timeline, {
   TimelineHeaders,
   SidebarHeader,
   DateHeader,
+  ReactCalendarItemRendererProps,
+  TimelineItemBase,
 } from 'react-calendar-timeline';
 import 'react-calendar-timeline/lib/Timeline.css';
 import dayjs from 'dayjs';
@@ -15,6 +17,7 @@ import {
   EmployeeTotalShiftInfo,
 } from '../../../../store/apis/reports/types';
 import RightSideBar from './RightSideBar';
+import ItemRenderer from './ItemRenderer';
 import {
   LeftSideWrapper,
   HorizontalDivider,
@@ -94,8 +97,14 @@ const TimelineListItem = ({
     setItems(modifiedItems);
   }, [employees, employeeWorkingShifts]);
 
+  const handleItemRenderer = (
+    props: ReactCalendarItemRendererProps<TimelineItemBase<number>>
+  ) => {
+    return <ItemRenderer props={props} />;
+  };
+
   return (
-    <Group spacing={0}>
+    <Group spacing={0} align="stretch">
       <Timeline
         groups={groups}
         items={items}
@@ -109,6 +118,7 @@ const TimelineListItem = ({
         defaultTimeStart={defaultTimeStart}
         defaultTimeEnd={defaultTimeEnd}
         lineHeight={99}
+        itemRenderer={handleItemRenderer}
       >
         <TimelineHeaders className="sticky">
           <SidebarHeader>

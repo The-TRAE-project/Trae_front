@@ -5,6 +5,7 @@ import { Status } from '../../store/apis/user/types';
 import { Paths } from '../../constants/paths';
 import SEO from '../../components/SEO';
 import { LocalStorage } from '../../constants/localStorage';
+import PageHeader from '../../components/PageHeader';
 import WorkTypesFilterMenu from '../../components/WorkTypes/WorkTypesFilterMenu';
 import {
   Container,
@@ -12,12 +13,11 @@ import {
   WrapperGradientGreen,
 } from '../../components/styles';
 import WorkTypesListItem from '../../components/WorkTypes/WorkTypesListItem';
-import PageHeader from '../../components/PageHeader';
 
 const WorkTypes = () => {
   const [paramActive, setParamActive] = useLocalStorage<Status | null>({
     key: LocalStorage.WORK_TYPE_STATUS,
-    defaultValue: null,
+    defaultValue: Status.ACTIVE,
   });
 
   const navigate = useNavigate();

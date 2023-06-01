@@ -24,6 +24,8 @@ type TotalTitleProps = {
 
 export const TotalTitle = styled(Title)`
   height: 99px;
+  font-family: var(--font-roboto);
+  font-weight: 500;
   ${({ theme }) => theme.mixins.fCenter};
   word-break: break-all;
   border-left: 1px solid var(--green);
@@ -36,7 +38,7 @@ export const TotalTitle = styled(Title)`
   ${(props: TotalTitleProps) =>
     props.$isFirst &&
     css`
-      height: 60px;
+      height: 69px;
       word-break: normal;
       border: none;
       padding-left: 6px;
