@@ -133,6 +133,7 @@ const GlobalStyles = createGlobalStyle`
     text-align: center;
     color: var(--black) !important;
     border: none !important;
+    background: transparent !important;
   }
 
   .auto-closed {

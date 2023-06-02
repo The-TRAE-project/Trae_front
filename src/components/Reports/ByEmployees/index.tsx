@@ -94,9 +94,10 @@ const ByEmployees = () => {
         isFormBtnLoading={isFetching || isGetLoading}
         isFormBtnDisabled={isFetching || isGetLoading}
         isExportToExcelLoading={isExcelExportLoading}
-        isExportBtnDisabled={!isReportExist}
+        isExportToExcelBtnDisabled={!isReportExist}
         onExportToExcel={handleExportToExcel}
         isExportToPDFLoading={isExportPDFLoading}
+        isExportToPDFBtnDisabled={!isReportExist}
         onExportToPDF={() => exportToPDF(PDFRef, 'Отчеты по сотрудникам')}
       />
 

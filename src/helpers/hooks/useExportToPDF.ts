@@ -35,9 +35,8 @@ export function useExportToPDF() {
         imgHeight * ratio
       );
       pdf.save(fileName);
+      setIsLoading(false);
     });
-
-    setIsLoading(false);
   };
 
   return { exportToPDF, isLoading };

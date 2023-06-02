@@ -7,6 +7,7 @@ import { LocalStorage } from '../../../constants/localStorage';
 import Loader from '../../Loader';
 import SliderButtons from '../../SliderButtons';
 import { ListItemWrapper, TwoColumnGrid } from '../../styles';
+import { sortByPriority } from './helpers/sortByPriority';
 import WorkTypeItem from './WorkTypeItem';
 
 interface Props {
@@ -49,7 +50,7 @@ const WorkTypesListItem = ({ paramActive }: Props) => {
       {!isLoading && !!workTypes ? (
         <>
           <TwoColumnGrid>
-            {workTypes.content.map((workType) => (
+            {sortByPriority(workTypes.content).map((workType) => (
               <WorkTypeItem key={workType.id} workType={workType} />
             ))}
           </TwoColumnGrid>

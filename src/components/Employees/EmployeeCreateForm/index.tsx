@@ -12,13 +12,14 @@ import {
 import { useGetActiveWorkTypesQuery } from '../../../store/apis/workTypes';
 import { showErrorNotification } from '../../../helpers/showErrorNotification';
 import { useOpenModal } from '../../../helpers/hooks/useOpenModal';
+import { onClipboardPaste } from '../../../helpers/onClipboardPaste';
 import InformModal from '../../InformModal';
 import MaskedTextInput from '../../MaskedInput';
 import MultiSelect from '../../MultiSelect';
 import TextInput from '../../TextInput';
 import DatePicker from '../../DatePicker';
-import { FormWrapper, ThreeColumnGrid, InformModalText } from '../../styles';
 import FormHeader from '../../FormHeader';
+import { FormWrapper, ThreeColumnGrid, InformModalText } from '../../styles';
 
 const EmployeeCreateForm = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -76,6 +77,8 @@ const EmployeeCreateForm = () => {
     navigateBack();
   };
 
+  const handlePaste = (value: string) => form.setFieldValue('phone', value);
+
   return (
     <>
       <InformModal
@@ -117,6 +120,7 @@ const EmployeeCreateForm = () => {
             mask="+7 (000) 000 0000"
             label="Номер телефона"
             placeholder="+7 (000) 000 0000"
+            onPaste={(event) => onClipboardPaste(event, handlePaste)}
           />
           <TextInput
             {...form.getInputProps('firstName')}

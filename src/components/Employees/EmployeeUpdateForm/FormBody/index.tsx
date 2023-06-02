@@ -7,6 +7,7 @@ import { useGetActiveWorkTypesQuery } from '../../../../store/apis/workTypes';
 import { EmployeeUpdateFormValues } from '../../../../store/apis/employee/types';
 import { EmployeeToEdit } from '../../../../store/slices/employee/types';
 import { Status } from '../../../../store/types';
+import { onClipboardPaste } from '../../../../helpers/onClipboardPaste';
 import Loader from '../../../Loader';
 import Select from '../../../Select';
 import TextInput from '../../../TextInput';
@@ -71,6 +72,9 @@ const FormBody = ({ employee, form, isUpdate }: Props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form.values.isActive]);
 
+  const handlePaste = (clipboardValue: string) =>
+    form.setFieldValue('phone', clipboardValue);
+
   return (
     <FormBodyWrapper>
       {employee ? (
@@ -128,6 +132,7 @@ const FormBody = ({ employee, form, isUpdate }: Props) => {
               mask="+7 (000) 000 0000"
               label="Номер телефона"
               placeholder="+7 (000) 000 0000"
+              onPaste={(event) => onClipboardPaste(event, handlePaste)}
             />
           ) : (
             <DetailsCard text={employee.phone} label="Номер телефона" />

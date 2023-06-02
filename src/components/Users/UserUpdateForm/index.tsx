@@ -8,6 +8,7 @@ import { useAppSelector } from '../../../helpers/hooks/useAppSelector';
 import { showErrorNotification } from '../../../helpers/showErrorNotification';
 import { useOpenModal } from '../../../helpers/hooks/useOpenModal';
 import { checkForEquality } from '../../../helpers/checkForEquality';
+import { onClipboardPaste } from '../../../helpers/onClipboardPaste';
 import {
   useEditUserMutation,
   useGetUserAdditionalInformationQuery,
@@ -20,6 +21,7 @@ import InformModal from '../../InformModal';
 import Loader from '../../Loader';
 import TextInput from '../../TextInput';
 import MaskedTextInput from '../../MaskedInput';
+import FormHeader from '../../FormHeader';
 import {
   FormBodyWrapper,
   FormWrapper,
@@ -28,7 +30,6 @@ import {
 } from '../../styles';
 import { useSetDefaultValues } from './helpers/useSetDefaultValues';
 import { compareValues } from './helpers/compareValues';
-import FormHeader from '../../FormHeader';
 
 const UserUpdateForm = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -91,6 +92,8 @@ const UserUpdateForm = () => {
     setIsOpen(false);
     navigateBack();
   };
+
+  const handlePaste = (value: string) => form.setFieldValue('phone', value);
 
   return (
     <>
@@ -164,6 +167,7 @@ const UserUpdateForm = () => {
                 mask="+7 (000) 000 0000"
                 label="Номер телефона"
                 placeholder="+7 (000) 000 0000"
+                onPaste={(event) => onClipboardPaste(event, handlePaste)}
               />
               <br />
             </ThreeColumnGrid>

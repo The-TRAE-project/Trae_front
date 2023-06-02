@@ -9,6 +9,8 @@ import Timeline, {
 } from 'react-calendar-timeline';
 import 'react-calendar-timeline/lib/Timeline.css';
 import dayjs from 'dayjs';
+import moment from 'moment';
+import 'moment/locale/ru';
 
 import { convertToDate } from '../../../../helpers/convertToDate';
 import {
@@ -24,6 +26,8 @@ import {
   DateTitle,
   EmployeeTitle,
 } from './styles';
+
+moment().locale('ru');
 
 interface Props {
   defaultTimeStart: Date;

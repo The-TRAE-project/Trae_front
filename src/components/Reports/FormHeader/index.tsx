@@ -13,9 +13,10 @@ interface Props {
   isFormBtnDisabled: boolean;
   onExportToExcel?: () => void;
   isExportToExcelLoading?: boolean;
-  isExportBtnDisabled?: boolean;
+  isExportToExcelBtnDisabled?: boolean;
   onExportToPDF?: () => void;
   isExportToPDFLoading?: boolean;
+  isExportToPDFBtnDisabled?: boolean;
 }
 
 const FormHeader = ({
@@ -25,9 +26,10 @@ const FormHeader = ({
   isFormBtnDisabled,
   onExportToExcel,
   isExportToExcelLoading,
-  isExportBtnDisabled,
+  isExportToExcelBtnDisabled,
   onExportToPDF,
   isExportToPDFLoading,
+  isExportToPDFBtnDisabled,
 }: Props) => {
   const navigate = useNavigate();
 
@@ -47,8 +49,9 @@ const FormHeader = ({
           <>
             <DashedOrangeButton
               onClick={onExportToExcel}
-              disabled={isExportToExcelLoading || isExportBtnDisabled}
+              disabled={isExportToExcelLoading || isExportToExcelBtnDisabled}
               type="button"
+              $width={258}
             >
               {isExportToExcelLoading ? (
                 <Loader size={35} />
@@ -58,8 +61,9 @@ const FormHeader = ({
             </DashedOrangeButton>
             <DashedOrangeButton
               onClick={onExportToPDF}
-              disabled={isExportToPDFLoading}
+              disabled={isExportToPDFLoading || isExportToPDFBtnDisabled}
               type="button"
+              $width={258}
             >
               {isExportToPDFLoading ? (
                 <Loader size={35} />
