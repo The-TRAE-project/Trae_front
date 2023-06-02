@@ -1,7 +1,11 @@
 import { Dispatch, SetStateAction } from 'react';
-import { Menu, Group, Checkbox } from '@mantine/core';
+import { Menu, Checkbox } from '@mantine/core';
 
-import { FilterMenuItemTitle, useCheckboxStyles } from '../../../styles';
+import {
+  FilterMenuItemGroup,
+  FilterMenuItemTitle,
+  useCheckboxStyles,
+} from '../../../styles';
 import { ModifiedWorkType } from '..';
 
 interface Props {
@@ -46,7 +50,7 @@ const EmployeesFilterMenuItem = ({
 
   return (
     <Menu.Item onClick={() => handleSetTypeWorks(workType)}>
-      <Group spacing={12}>
+      <FilterMenuItemGroup>
         <Checkbox
           readOnly
           checked={typeWorks?.includes(workType.id)}
@@ -55,7 +59,7 @@ const EmployeesFilterMenuItem = ({
         <FilterMenuItemTitle $active={typeWorks?.includes(workType.id)}>
           {workType.workType}
         </FilterMenuItemTitle>
-      </Group>
+      </FilterMenuItemGroup>
     </Menu.Item>
   );
 };

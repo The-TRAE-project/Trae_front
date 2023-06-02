@@ -34,6 +34,9 @@ const FormHeader = ({
 }: Props) => {
   const navigate = useNavigate();
 
+  const handleClick = () => onClick?.();
+  const handleDelete = () => onDelete?.();
+
   return (
     <Group position="apart" spacing={100}>
       <Group spacing={42}>
@@ -47,7 +50,7 @@ const FormHeader = ({
 
       <Group spacing={40}>
         {isShowDeleteBtn && (
-          <DeleteButton onClick={onDelete} type="button">
+          <DeleteButton onClick={handleDelete} type="button">
             Удалить
           </DeleteButton>
         )}
@@ -65,7 +68,7 @@ const FormHeader = ({
           </OrangeButton>
         )}
         {isShowClickBtn && (
-          <OrangeButton onClick={onClick} $width={171} type="button">
+          <OrangeButton onClick={handleClick} type="button">
             <span>{clickBtnText}</span>
           </OrangeButton>
         )}

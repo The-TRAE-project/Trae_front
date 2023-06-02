@@ -3,9 +3,9 @@ import styled from 'styled-components';
 export const BgWhiteCard = styled.div`
   position: relative;
   ${({ theme }) => theme.mixins.fCenter};
-  padding: 22px 30px;
-  width: 620px;
-  height: 79px;
+  padding: var(--bg-white-card-ptb) var(--bg-white-card-plr);
+  width: 100%;
+  height: var(--bg-white-card-ht);
   background: var(--white);
   border-radius: var(--border-radius);
 `;
@@ -17,8 +17,13 @@ export const Title = styled.p`
 `;
 
 export const EditButton = styled.button`
+  --svg-wd: clamp(1.25rem, calc(0.63rem + 0.72vw), 1.5rem);
+  --svg-ht: clamp(1.25rem, calc(0.63rem + 0.72vw), 1.5rem);
+
   position: absolute;
-  top: 27px;
+  top: 0;
+  bottom: 0;
+  margin-inline: auto;
   right: 28px;
   font-size: 24px;
   border: none;
@@ -27,5 +32,10 @@ export const EditButton = styled.button`
 
   &:is(:focus, :focus-within) {
     outline: none;
+  }
+
+  svg {
+    width: var(--svg-wd);
+    height: var(--svg-ht);
   }
 `;

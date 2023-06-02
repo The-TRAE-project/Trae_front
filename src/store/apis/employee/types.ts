@@ -10,7 +10,7 @@ export const EmployeeFormSchema = z.object({
       message:
         'Фамилия должно содержать только кириллицу и начинаться с заглавной буквы',
     })
-    .min(3, { message: 'Фамилия должно быть не меньше 2 символов' })
+    .min(2, { message: 'Фамилия должна содержать не менее 2 символов. ' })
     .max(15, { message: 'Фамилия должно быть не больше 15 символов' }),
   firstName: z
     .string()
@@ -18,7 +18,7 @@ export const EmployeeFormSchema = z.object({
       message:
         'Имя должно содержать только кириллицу и начинаться с заглавной буквы',
     })
-    .min(3, { message: 'Имя должно быть не меньше 2 символов' })
+    .min(2, { message: 'Имя должно быть не меньше 2 символов' })
     .max(15, { message: 'Имя должно быть не больше 15 символов' }),
   middleName: z
     .string()
@@ -126,3 +126,9 @@ export const EmployeeUpdateFormSchema = z.object({
 });
 
 export type EmployeeUpdateFormValues = z.infer<typeof EmployeeUpdateFormSchema>;
+
+export interface EmployeeShortInfo {
+  id: number;
+  firstName: string;
+  lastName: string;
+}

@@ -47,7 +47,7 @@ const projectApi = projectTags.injectEndpoints({
 
     getProjectById: build.query<Project, number>({
       query: (projectId) => `/project/${projectId}`,
-      providesTags: ['Projects'],
+      providesTags: ['Projects', 'Project'],
     }),
 
     closeProjectOperation: build.mutation<void, number>({
@@ -65,7 +65,7 @@ const projectApi = projectTags.injectEndpoints({
       FilterValues
     >({
       query: (query) =>
-        `/project/projects?direction=asc${query.elementPerPage}${query.page}${query.isEnded}${query.isOnlyFirstOpWithoutAcceptance}${query.isOnlyLastOpInWork}${query.isOverdueCurrentOpInProject}`,
+        `/project/projects?direction=asc${query.elementPerPage}${query.page}${query.isEnded}${query.isOnlyFirstOpWithoutAcceptance}${query.isOnlyLastOpInWork}${query.isOverdueCurrentOpInProject}${query.isCurrentOpInWork}${query.isOverdueProject}`,
       providesTags: ['Projects', 'Project'],
     }),
 

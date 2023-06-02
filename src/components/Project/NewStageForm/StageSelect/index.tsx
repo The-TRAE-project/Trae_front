@@ -17,14 +17,16 @@ import {
   OperationCreateSchema,
 } from '../../../../store/apis/project/types';
 import { WorkTypeStatuses } from '../../../../store/apis/workTypes/types';
-import { ErrorMessage } from '../../../styles';
 import {
-  ExtraStageButton,
+  ErrorMessage,
   SelectArrow,
   SelectDisplayInput,
-  SelectGrid,
   SelectLabel,
   SelectWrapper,
+} from '../../../styles';
+import {
+  ExtraStageButton,
+  SelectGrid,
   useSelectMenuStyles,
   useExtraStageInputStyles,
 } from '../../styles';

@@ -4,7 +4,7 @@ export const useMultiSelectStyles = createStyles(() => ({
   dropdown: {
     top: 0,
     width: 400,
-    height: 284,
+    maxHeight: 284,
     background: 'var(--white)',
     border: 'none',
     borderRadius: '0px 0px 15px 15px',
@@ -48,19 +48,22 @@ export const useMultiSelectStyles = createStyles(() => ({
   },
 
   itemsWrapper: {
-    height: 254,
-    minHeight: 254,
+    maxWidth: 370,
     maxHeight: 254,
-    overflowX: 'hidden',
+    // flexDirection: 'row !important',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    overflow: 'auto',
     gap: 20,
   },
 
   item: {
+    width: 'auto',
     fontWeight: 400,
     fontSize: 24,
     lineHeight: '28px',
     color: 'var(--white-black)',
-    padding: 10,
+    padding: '10px 25px',
     textAlign: 'center',
   },
 

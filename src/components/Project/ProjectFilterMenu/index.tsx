@@ -1,8 +1,9 @@
-import { Menu, Checkbox, Group, Collapse } from '@mantine/core';
+import { Menu, Checkbox, Collapse } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 
 import Filter from '../../svgs/Filter';
 import {
+  FilterMenuItemGroup,
   FilterMenuItemTitle,
   UnstyledButton,
   useCheckboxStyles,
@@ -13,7 +14,7 @@ import {
   useCircleCheckboxStyles,
   useMenuStyles,
 } from './styles';
-
+// TODO:
 interface Props {
   onClearInput: () => void;
   isEnded: boolean;
@@ -22,8 +23,12 @@ interface Props {
   setIsFirstNoAcceptance: () => void;
   isLastInWork: boolean;
   setIsLastInWork: () => void;
-  isCurrentOverdue: boolean;
-  setParamIsCurrentOverdue: () => void;
+  isCurrentOpOverdue: boolean;
+  setIsCurrentOpOverdue: () => void;
+  isCurrentPrOverdue: boolean;
+  setIsCurrentPrOverdue: () => void;
+  isCurrentInWork: boolean;
+  setIsCurrentInWork: () => void;
   reset: () => void;
 }
 
@@ -35,8 +40,12 @@ const ProjectFilterMenu = ({
   setIsFirstNoAcceptance,
   isLastInWork,
   setIsLastInWork,
-  isCurrentOverdue,
-  setParamIsCurrentOverdue,
+  isCurrentOpOverdue,
+  setIsCurrentOpOverdue,
+  isCurrentPrOverdue,
+  setIsCurrentPrOverdue,
+  isCurrentInWork,
+  setIsCurrentInWork,
   reset,
 }: Props) => {
   const [opened, { toggle }] = useDisclosure(false);
@@ -63,29 +72,43 @@ const ProjectFilterMenu = ({
       }}
     >
       <Menu.Target>
-        <UnstyledButton onClick={onClearInput}>
+        <UnstyledButton onClick={onClearInput} $isFilterIcon>
           <Filter />
         </UnstyledButton>
       </Menu.Target>
 
       <Menu.Dropdown>
         <Menu.Item onClick={toggle}>
-          <Group spacing={12}>
+          <FilterMenuItemGroup>
             <Checkbox
               readOnly
-              checked={isFirstNoAcceptance || isLastInWork}
+              checked={
+                isFirstNoAcceptance ||
+                isLastInWork ||
+                isCurrentInWork ||
+                isCurrentOpOverdue ||
+                isCurrentPrOverdue
+              }
               classNames={{ input, inner, icon }}
             />
-            <FilterMenuItemTitle $active={isFirstNoAcceptance || isLastInWork}>
+            <FilterMenuItemTitle
+              $active={
+                isFirstNoAcceptance ||
+                isLastInWork ||
+                isCurrentInWork ||
+                isCurrentOpOverdue ||
+                isCurrentPrOverdue
+              }
+            >
               В работе
             </FilterMenuItemTitle>
-          </Group>
+          </FilterMenuItemGroup>
         </Menu.Item>
 
         <Collapse in={opened}>
           <MenuItemStack>
             <Menu.Item onClick={setIsFirstNoAcceptance}>
-              <Group spacing={12}>
+              <FilterMenuItemGroup>
                 <Checkbox
                   readOnly
                   checked={isFirstNoAcceptance}
@@ -98,10 +121,26 @@ const ProjectFilterMenu = ({
                 <FilterMenuItemTitle $active={isFirstNoAcceptance}>
                   Новые
                 </FilterMenuItemTitle>
-              </Group>
+              </FilterMenuItemGroup>
+            </Menu.Item>
+            <Menu.Item onClick={setIsCurrentInWork}>
+              <FilterMenuItemGroup>
+                <Checkbox
+                  readOnly
+                  checked={isCurrentInWork}
+                  classNames={{
+                    input: circleInput,
+                    inner: circleInner,
+                    icon: circleIcon,
+                  }}
+                />
+                <FilterMenuItemTitle $active={isCurrentInWork}>
+                  В работе сейчас
+                </FilterMenuItemTitle>
+              </FilterMenuItemGroup>
             </Menu.Item>
             <Menu.Item onClick={setIsLastInWork}>
-              <Group spacing={12}>
+              <FilterMenuItemGroup>
                 <Checkbox
                   readOnly
                   checked={isLastInWork}
@@ -112,15 +151,47 @@ const ProjectFilterMenu = ({
                   }}
                 />
                 <FilterMenuItemTitle $active={isLastInWork}>
-                  Отгружаются
+                  Готовые к отгрузке
                 </FilterMenuItemTitle>
-              </Group>
+              </FilterMenuItemGroup>
+            </Menu.Item>
+            <Menu.Item onClick={setIsCurrentOpOverdue}>
+              <FilterMenuItemGroup>
+                <Checkbox
+                  readOnly
+                  checked={isCurrentOpOverdue}
+                  classNames={{
+                    input: circleInput,
+                    inner: circleInner,
+                    icon: circleIcon,
+                  }}
+                />
+                <FilterMenuItemTitle $active={isCurrentOpOverdue}>
+                  Истек срок этапа
+                </FilterMenuItemTitle>
+              </FilterMenuItemGroup>
+            </Menu.Item>
+            <Menu.Item onClick={setIsCurrentPrOverdue}>
+              <FilterMenuItemGroup>
+                <Checkbox
+                  readOnly
+                  checked={isCurrentPrOverdue}
+                  classNames={{
+                    input: circleInput,
+                    inner: circleInner,
+                    icon: circleIcon,
+                  }}
+                />
+                <FilterMenuItemTitle $active={isCurrentPrOverdue}>
+                  Истек срок проекта
+                </FilterMenuItemTitle>
+              </FilterMenuItemGroup>
             </Menu.Item>
           </MenuItemStack>
         </Collapse>
 
         <Menu.Item onClick={setIsEnded}>
-          <Group spacing={12}>
+          <FilterMenuItemGroup>
             <Checkbox
               readOnly
               checked={isEnded}
@@ -129,35 +200,20 @@ const ProjectFilterMenu = ({
             <FilterMenuItemTitle $active={isEnded}>
               Выполнены
             </FilterMenuItemTitle>
-          </Group>
-        </Menu.Item>
-
-        <Menu.Item onClick={setParamIsCurrentOverdue}>
-          <Group spacing={12}>
-            <Checkbox
-              readOnly
-              checked={isCurrentOverdue}
-              classNames={{
-                input,
-                inner,
-                icon,
-              }}
-            />
-            <FilterMenuItemTitle $active={isCurrentOverdue}>
-              Просроченные
-            </FilterMenuItemTitle>
-          </Group>
+          </FilterMenuItemGroup>
         </Menu.Item>
 
         <Menu.Item onClick={reset}>
-          <Group spacing={12}>
+          <FilterMenuItemGroup>
             <Checkbox
               readOnly
               checked={
                 !isEnded &&
                 !isFirstNoAcceptance &&
                 !isLastInWork &&
-                !isCurrentOverdue
+                !isCurrentOpOverdue &&
+                !isCurrentPrOverdue &&
+                !isCurrentInWork
               }
               classNames={{ input, inner, icon }}
             />
@@ -166,12 +222,14 @@ const ProjectFilterMenu = ({
                 !isEnded &&
                 !isFirstNoAcceptance &&
                 !isLastInWork &&
-                !isCurrentOverdue
+                !isCurrentOpOverdue &&
+                !isCurrentPrOverdue &&
+                !isCurrentInWork
               }
             >
               Все
             </FilterMenuItemTitle>
-          </Group>
+          </FilterMenuItemGroup>
         </Menu.Item>
       </Menu.Dropdown>
     </Menu>

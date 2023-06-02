@@ -15,7 +15,7 @@ const GeneralInformation = ({ project }: Props) => {
   const constructorFullName = `${project.managerDto.firstName} ${project.managerDto.lastName}`;
 
   const navigateToEditGeneralInfo = () =>
-    navigate(`/project/${project.id}/edit-general-info`);
+    navigate(`/project/${project.id}/editing-general-info`);
 
   return (
     <StageCard

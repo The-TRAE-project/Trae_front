@@ -18,8 +18,8 @@ const MultiSelect = ({ label, data, defaultValue, ...props }: Props) => {
       {...props}
       label={label}
       maxDropdownHeight={284}
-      // placeholder="Выберите тип работы"
       data={data}
+      switchDirectionOnFlip
       classNames={{
         dropdown,
         input,

@@ -1,7 +1,4 @@
-import { Group, Stack } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
-import { BsFillHouseFill } from 'react-icons/bs';
-import { IoMdExit } from 'react-icons/io';
 
 import { Paths } from '../../constants/paths';
 import { LocalStorage } from '../../constants/localStorage';
@@ -11,22 +8,24 @@ import { clearWorkTypeState } from '../../store/slices/workType';
 import { clearProjectState } from '../../store/slices/project';
 import { useAppDispatch } from '../../helpers/hooks/useAppDispatch';
 import { removeItem } from '../../helpers/removeItem';
+import { useCookies } from '../../helpers/hooks/useCookies';
 import SEO from '../../components/SEO';
+import PageHeader from '../../components/PageHeader';
 import UserDetails from '../../components/Users/UserDetails';
 import {
   Container,
-  OrangeButton,
-  UnstyledButton,
+  ContentStack,
   WrapperGradientGreen,
 } from '../../components/styles';
 
 const PersonalCabinet = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const { removeCookie } = useCookies();
 
-  const navigateToHome = () => navigate(Paths.DASHBOARD);
   const handleLogout = async () => {
     await dispatch(logoutUser());
+    removeCookie();
     dispatch(clearUserState());
     dispatch(clearEmployeeState());
     dispatch(clearWorkTypeState());
@@ -34,6 +33,9 @@ const PersonalCabinet = () => {
     removeItem(LocalStorage.NAVBAR_LIST);
     navigate(Paths.LOGIN, { replace: true });
   };
+
+  const navigateToChangePassword = () =>
+    navigate(Paths.PERSONAL_CABINET_CHANGE_PASSWORD);
 
   return (
     <>
@@ -45,20 +47,17 @@ const PersonalCabinet = () => {
       />
       <WrapperGradientGreen>
         <Container>
-          <Stack spacing={50}>
-            <Group position="apart" spacing={100}>
-              <UnstyledButton onClick={navigateToHome} type="button">
-                <BsFillHouseFill size={44} color="var(--orange)" />
-              </UnstyledButton>
-
-              <OrangeButton onClick={handleLogout} type="button" $width={163}>
-                <IoMdExit size={32} color="var(--white)" />
-                <span>Выйти</span>
-              </OrangeButton>
-            </Group>
+          <ContentStack>
+            <PageHeader
+              isShowCreateBtn={false}
+              isShowExitBtn
+              onExit={handleLogout}
+              isShowDashedBtn
+              onDashedBtnClick={navigateToChangePassword}
+            />
 
             <UserDetails />
-          </Stack>
+          </ContentStack>
         </Container>
       </WrapperGradientGreen>
     </>

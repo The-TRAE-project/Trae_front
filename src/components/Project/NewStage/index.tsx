@@ -6,7 +6,7 @@ import { useGetProjectByIdQuery } from '../../../store/apis/project';
 import { ProjectOperation } from '../../../store/apis/project/types';
 import FormHeader from '../../FormHeader';
 import Loader from '../../Loader';
-import { FormStack, DashedOrangeButton, ThreeColumnGrid } from '../../styles';
+import { FormStack } from '../../styles';
 import { useFilterStages } from '../helpers/useFilterStages';
 import ListItem from './ListItem';
 
@@ -37,7 +37,13 @@ const NewStage = () => {
     <FormStack>
       {!isLoading && !!project ? (
         <>
-          <FormHeader isShowSubmitBtn={false} onBack={navigateBack} />
+          <FormHeader
+            isShowSubmitBtn={false}
+            isShowClickBtn
+            onClick={navigateToInsertNewStage}
+            clickBtnText="Добавить этап"
+            onBack={navigateBack}
+          />
           {!!stages && (
             <ListItem
               list={stages}
@@ -46,14 +52,14 @@ const NewStage = () => {
             />
           )}
 
-          <ThreeColumnGrid>
+          {/* <ThreeColumnGrid>
             <DashedOrangeButton
               onClick={navigateToInsertNewStage}
               type="button"
             >
               Добавить этап
             </DashedOrangeButton>
-          </ThreeColumnGrid>
+          </ThreeColumnGrid> */}
         </>
       ) : (
         <Loader size={80} isAbsoluteCentered />

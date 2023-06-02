@@ -15,3 +15,12 @@ export const Wrapper = styled.header`
 export const FlexContainer = styled(MantineGroup)`
   position: relative;
 `;
+
+export const ProjectNumber = styled.p`
+  font-family: var(--font-roboto);
+  font-style: normal;
+  font-weight: 500;
+  font-size: 54px;
+  line-height: 63px;
+  color: var(--green);
+`;

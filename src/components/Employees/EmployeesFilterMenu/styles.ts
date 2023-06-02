@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 export const OverflowWrapper = styled.div`
-  max-height: 162px;
+  width: 324px;
+  max-height: 236px;
   overflow: auto;
 `;

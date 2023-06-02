@@ -6,15 +6,14 @@ import {
   CreateProjectFormValues,
   Operation,
 } from '../../../../store/apis/project/types';
-import { ErrorMessage } from '../../../styles';
 import {
+  ErrorMessage,
   SelectArrow,
   SelectDisplayInput,
-  SelectGrid,
   SelectLabel,
   SelectWrapper,
-  useSelectMenuStyles,
-} from '../../styles';
+} from '../../../styles';
+import { SelectGrid, useSelectMenuStyles } from '../../styles';
 import {
   ModifiedWorkType,
   useModifyWorkTypes,
