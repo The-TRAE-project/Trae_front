@@ -1,9 +1,6 @@
-import {
-  WorkType,
-  WorkTypeStatuses,
-} from '../../../../store/apis/workTypes/types';
+import { WorkType, WorkTypeStatuses } from '../store/apis/workTypes/types';
 
-export const sortByPriority = (data: WorkType[]) => {
+export const sortWorkTypesByPriority = (data: WorkType[]) => {
   const shipment = data.filter(
     (it) => it.name === WorkTypeStatuses.SHIPMENT
   )[0];

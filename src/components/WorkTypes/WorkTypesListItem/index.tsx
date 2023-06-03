@@ -1,13 +1,13 @@
 import { useLocalStorage } from '@mantine/hooks';
 
-import { Status } from '../../../store/apis/user/types';
-import { useDisplayError } from '../../../helpers/hooks/useDisplayError';
-import { useGetAllWorkTypesQuery } from '../../../store/apis/workTypes';
 import { LocalStorage } from '../../../constants/localStorage';
+import { Status } from '../../../store/apis/user/types';
+import { useGetAllWorkTypesQuery } from '../../../store/apis/workTypes';
+import { useDisplayError } from '../../../helpers/hooks/useDisplayError';
+import { sortWorkTypesByPriority } from '../../../helpers/sortWorkTypesByPriority';
 import Loader from '../../Loader';
 import SliderButtons from '../../SliderButtons';
 import { ListItemWrapper, TwoColumnGrid } from '../../styles';
-import { sortByPriority } from './helpers/sortByPriority';
 import WorkTypeItem from './WorkTypeItem';
 
 interface Props {
@@ -50,7 +50,7 @@ const WorkTypesListItem = ({ paramActive }: Props) => {
       {!isLoading && !!workTypes ? (
         <>
           <TwoColumnGrid>
-            {sortByPriority(workTypes.content).map((workType) => (
+            {sortWorkTypesByPriority(workTypes.content).map((workType) => (
               <WorkTypeItem key={workType.id} workType={workType} />
             ))}
           </TwoColumnGrid>

@@ -8,12 +8,11 @@ import { EmployeeUpdateFormValues } from '../../../../store/apis/employee/types'
 import { EmployeeToEdit } from '../../../../store/slices/employee/types';
 import { Status } from '../../../../store/types';
 import { onClipboardPaste } from '../../../../helpers/onClipboardPaste';
+import { sortWorkTypesByPriority } from '../../../../helpers/sortWorkTypesByPriority';
 import Loader from '../../../Loader';
 import Select from '../../../Select';
 import TextInput from '../../../TextInput';
 import MaskedTextInput from '../../../MaskedInput';
-// TODO:
-// import MultiSelect from '../../../MultiSelect';
 import NumberInput from '../../../NumberInput';
 import DatePicker from '../../../DatePicker';
 import DetailsCard from '../../../DetailsCard';
@@ -39,7 +38,7 @@ const FormBody = ({ employee, form, isUpdate }: Props) => {
   } = useMultiSelectStyles();
 
   const workTypesSelectItems: SelectItem[] = workTypes
-    ? workTypes.map<SelectItem>((workType) => ({
+    ? sortWorkTypesByPriority(workTypes).map<SelectItem>((workType) => ({
         value: String(workType.id),
         label: workType.name,
       }))
@@ -178,6 +177,7 @@ const FormBody = ({ employee, form, isUpdate }: Props) => {
               data={workTypesSelectItems}
               label="Типы работ"
               maxDropdownHeight={284}
+              switchDirectionOnFlip
               classNames={{
                 dropdown,
                 input,

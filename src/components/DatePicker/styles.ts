@@ -77,6 +77,7 @@ export const useDateInputStyles = createStyles(() => ({
     fontSize: 20,
     lineHeight: '23px',
     color: 'var(--secondary-black)',
+    textTransform: 'uppercase',
   },
 
   day: {
@@ -87,6 +88,7 @@ export const useDateInputStyles = createStyles(() => ({
     color: 'var(--dark-purple)',
 
     '&[data-weekend]': {
+      fontWeight: 600,
       color: 'var(--orange)',
     },
 

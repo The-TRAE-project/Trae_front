@@ -13,6 +13,7 @@ import { useGetActiveWorkTypesQuery } from '../../../store/apis/workTypes';
 import { showErrorNotification } from '../../../helpers/showErrorNotification';
 import { useOpenModal } from '../../../helpers/hooks/useOpenModal';
 import { onClipboardPaste } from '../../../helpers/onClipboardPaste';
+import { sortWorkTypesByPriority } from '../../../helpers/sortWorkTypesByPriority';
 import InformModal from '../../InformModal';
 import MaskedTextInput from '../../MaskedInput';
 import MultiSelect from '../../MultiSelect';
@@ -64,7 +65,7 @@ const EmployeeCreateForm = () => {
   useOpenModal(setIsOpen, isSuccess);
 
   const workTypeSelectItems: SelectItem[] = workTypes
-    ? workTypes.map<SelectItem>((workType) => ({
+    ? sortWorkTypesByPriority(workTypes).map<SelectItem>((workType) => ({
         value: String(workType.id),
         label: workType.name,
       }))
