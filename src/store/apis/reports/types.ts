@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export interface ParamsForEmployees {
+export interface ParamsForEmployeesReports {
   startOfPeriod: string | Date;
   endOfPeriod: string | Date;
   employeeIds?: string;
@@ -41,10 +41,64 @@ export interface EmployeeTotalShiftInfo {
   totalPartsOfShift: number;
 }
 
-export interface EmployeesReports {
+export interface EmployeesReport {
   startPeriod: number[];
   endPeriod: number[];
   shortEmployeeDtoList: ShortEmployeeInfo[];
   workingShiftEmployeeDtoList: EmployeeWorkingShiftInfo[];
   employeeIdTotalPartsDtoList: EmployeeTotalShiftInfo[];
+}
+
+export interface ParamsForProjectsReports {
+  startOfPeriod: string | Date;
+  endOfPeriod: string | Date;
+}
+
+export const ProjectReportSchema = z.object({
+  startOfPeriod: z.date({
+    required_error: 'Пожалуйста, выберите дату начало',
+    invalid_type_error: 'Пожалуйста, выберите дату начало',
+  }),
+  endOfPeriod: z.date({
+    required_error: 'Пожалуйста, выберите дату окончания',
+    invalid_type_error: 'Пожалуйста, выберите дату окончания',
+  }),
+});
+
+export type ProjectReportFormValues = z.infer<typeof ProjectReportSchema>;
+
+export interface ProjectOperation {
+  id: number;
+  inWork: boolean;
+  isEnded: boolean;
+  name: string;
+  priority: number;
+  readyToAcceptance: boolean;
+  plannedEndDate: number[];
+  acceptanceDate: number[] | null;
+  realEndDate: number[] | null;
+  startDate: number[];
+}
+
+export interface ProjectInfo {
+  id: number;
+  number: number;
+  customer: string;
+  name: string;
+  operationPeriod: number;
+  isEnded: boolean;
+  comment: string;
+  operations: ProjectOperation[];
+  endDateInContract: number[];
+  plannedEndDate: number[];
+  realEndDate: number[] | null;
+  startDate: number[];
+  startFirstOperationDate: number[] | null;
+}
+
+export interface ProjectsReport {
+  startPeriod: number[];
+  endPeriod: number[];
+  dateOfReportFormation: number[];
+  projectsForReportDtoList: ProjectInfo[];
 }

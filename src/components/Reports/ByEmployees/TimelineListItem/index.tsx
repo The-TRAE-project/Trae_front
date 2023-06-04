@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { Group } from '@mantine/core';
 import Timeline, {
   TimelineHeaders,
   SidebarHeader,
@@ -25,6 +24,7 @@ import {
   HorizontalDivider,
   DateTitle,
   EmployeeTitle,
+  Wrapper,
 } from './styles';
 
 moment().locale('ru');
@@ -108,7 +108,7 @@ const TimelineListItem = ({
   };
 
   return (
-    <Group spacing={0} align="stretch">
+    <Wrapper>
       <Timeline
         groups={groups}
         items={items}
@@ -141,7 +141,7 @@ const TimelineListItem = ({
         </TimelineHeaders>
       </Timeline>
       <RightSideBar totalShifts={employeeTotalShifts} />
-    </Group>
+    </Wrapper>
   );
 };
 

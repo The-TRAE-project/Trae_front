@@ -1,9 +1,7 @@
 import { useState, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useForm, zodResolver } from '@mantine/form';
 import { Stack } from '@mantine/core';
 
-import { Paths } from '../../../constants/paths';
 import { useGetEmployeesReportsQuery } from '../../../store/apis/reports';
 import { useGetAllEmployeesWithoutPaginationQuery } from '../../../store/apis/employee';
 import {
@@ -19,7 +17,7 @@ import { FormWrapper } from '../../styles';
 import {
   DATE_30_AHEAD,
   formatToQueryParamDate,
-} from './helpers/formatToParamDate';
+} from '../helpers/formatToParamDate';
 import { useSetDefaultValue } from './helpers/useSetDefaultValue';
 import { prepareForExcel } from './helpers/prepareForExcel';
 import FormBody from './FormBody';
@@ -30,8 +28,6 @@ const ByEmployees = () => {
   const [startDate, setStartDate] = useState<string | null>(null);
   const [endDate, setEndDate] = useState<string | null>(null);
   const [employeeIds, setEmployeeIds] = useState<number[] | null>([]);
-
-  const navigate = useNavigate();
 
   const { data: employees } = useGetAllEmployeesWithoutPaginationQuery();
   const onlyEmployeesIds = employees ? selectOnlyIds(employees) : [];
@@ -89,7 +85,6 @@ const ByEmployees = () => {
   return (
     <FormWrapper onSubmit={form.onSubmit(handleSubmit)}>
       <FormHeader
-        onBack={() => navigate(Paths.REPORTS)}
         isReportFormed={!!reportsByEmployees}
         isFormBtnLoading={isFetching || isGetLoading}
         isFormBtnDisabled={isFetching || isGetLoading}

@@ -12,7 +12,7 @@ const list = [
   {
     id: '2',
     title: 'Проекты',
-    path: '',
+    path: Paths.REPORTS_BY_PROJECTS,
   },
   {
     id: '3',
@@ -31,7 +31,7 @@ const ListItem = () => {
           <LinkBtn
             key={item.id}
             onClick={() => navigate(item.path)}
-            disabled={item.id === '2' || item.id === '3'}
+            disabled={item.id === '3'}
             type="button"
           >
             {item.title}

@@ -1,5 +1,10 @@
 import { baseApi } from '..';
-import { ParamsForEmployees, EmployeesReports } from './types';
+import {
+  ParamsForEmployeesReports,
+  EmployeesReport,
+  ParamsForProjectsReports,
+  ProjectsReport,
+} from './types';
 
 const reportsTags = baseApi.enhanceEndpoints({
   addTagTypes: ['Reports'],
@@ -7,12 +12,22 @@ const reportsTags = baseApi.enhanceEndpoints({
 
 const workTypeApi = reportsTags.injectEndpoints({
   endpoints: (build) => ({
-    getEmployeesReports: build.query<EmployeesReports, ParamsForEmployees>({
+    getEmployeesReports: build.query<
+      EmployeesReport,
+      ParamsForEmployeesReports
+    >({
       query: (query) =>
         `/report/working-shifts-for-period${query.startOfPeriod}${query.endOfPeriod}${query.employeeIds}`,
+      providesTags: ['Reports'],
+    }),
+
+    getProjectsReports: build.query<ProjectsReport, ParamsForProjectsReports>({
+      query: (query) =>
+        `/report/projects-for-period${query.startOfPeriod}${query.endOfPeriod}`,
       providesTags: ['Reports'],
     }),
   }),
 });
 
-export const { useGetEmployeesReportsQuery } = workTypeApi;
+export const { useGetEmployeesReportsQuery, useGetProjectsReportsQuery } =
+  workTypeApi;

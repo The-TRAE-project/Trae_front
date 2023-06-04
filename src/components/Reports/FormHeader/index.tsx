@@ -7,7 +7,6 @@ import Loader from '../../Loader';
 import { DashedOrangeButton, OrangeButton, UnstyledButton } from '../../styles';
 
 interface Props {
-  onBack: () => void;
   isReportFormed: boolean;
   isFormBtnLoading: boolean;
   isFormBtnDisabled: boolean;
@@ -20,7 +19,6 @@ interface Props {
 }
 
 const FormHeader = ({
-  onBack,
   isReportFormed,
   isFormBtnLoading,
   isFormBtnDisabled,
@@ -36,7 +34,7 @@ const FormHeader = ({
   return (
     <Group position="apart" spacing={100}>
       <Group spacing={42}>
-        <UnstyledButton onClick={onBack} type="button">
+        <UnstyledButton onClick={() => navigate(Paths.REPORTS)} type="button">
           <BsArrowLeft size={50} color="var(--orange)" />
         </UnstyledButton>
         <UnstyledButton onClick={() => navigate(Paths.DASHBOARD)} type="button">

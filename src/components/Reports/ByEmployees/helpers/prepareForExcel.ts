@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 
 import { convertToDate } from '../../../../helpers/convertToDate';
-import { EmployeesReports } from '../../../../store/apis/reports/types';
+import { EmployeesReport } from '../../../../store/apis/reports/types';
 
 export const getDatesBetween = (startDate: Date, endDate: Date) => {
   const currentDate = new Date(startDate.getTime());
@@ -13,7 +13,7 @@ export const getDatesBetween = (startDate: Date, endDate: Date) => {
   return dates;
 };
 
-export const prepareForExcel = (reportsByEmployees: EmployeesReports) => {
+export const prepareForExcel = (reportsByEmployees: EmployeesReport) => {
   const dates = getDatesBetween(
     convertToDate(reportsByEmployees.startPeriod),
     convertToDate(reportsByEmployees.endPeriod)

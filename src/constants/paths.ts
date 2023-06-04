@@ -5,6 +5,7 @@ export const Paths = {
   // Admin Reports paths
   REPORTS: '/reports',
   REPORTS_BY_EMPLOYEES: '/reports/by-employees',
+  REPORTS_BY_PROJECTS: '/reports/by-projects',
   // Admin Personal Cabinet paths
   PERSONAL_CABINET: '/personal-cabinet',
   PERSONAL_CABINET_EDITING: '/personal-cabinet/editing',
