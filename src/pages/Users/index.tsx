@@ -15,7 +15,7 @@ import {
   WrapperGradientGreen,
 } from '../../components/styles';
 
-const Constructors = () => {
+const Users = () => {
   const [paramRole, setParamRole] = useLocalStorage<string | null>({
     key: LocalStorage.USER_ROLE,
     defaultValue: Roles.CONSTRUCTOR,
@@ -27,14 +27,13 @@ const Constructors = () => {
 
   const navigate = useNavigate();
 
-  const navigateToCreateConstructorPage = () =>
-    navigate(Paths.CONSTRUCTOR_CREATE);
+  const navigateToCreateUserPage = () => navigate(Paths.OFFICE_CREATE);
 
   return (
     <>
       <SEO
-        title="TRAE | Конструкторы"
-        description="Страница конструкторов."
+        title="TRAE | Офис"
+        description="Страница всех пользователей."
         name="TRAE"
         type="application"
       />
@@ -52,7 +51,7 @@ const Constructors = () => {
                   resetRole={() => setParamRole(null)}
                 />
               }
-              onCreate={navigateToCreateConstructorPage}
+              onCreate={navigateToCreateUserPage}
             />
 
             <UsersListItem paramRole={paramRole} paramActive={paramActive} />
@@ -63,4 +62,4 @@ const Constructors = () => {
   );
 };
 
-export default Constructors;
+export default Users;

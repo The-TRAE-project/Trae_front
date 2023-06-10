@@ -145,7 +145,7 @@ const UpdateForm = () => {
         isOpen={isChangePasswordModalOpen}
         onClose={closeChangePasswordModal}
         title={`${passwordChangedUser?.firstName} ${passwordChangedUser?.lastName} пароль сброшен`}
-        backPath={Paths.CONSTRUCTORS}
+        backPath={Paths.OFFICE}
       >
         <InformModalText>
           Новый пароль:&nbsp;

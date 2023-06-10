@@ -20,10 +20,10 @@ export const Paths = {
   PROJECT_DELETE: '/project/:id/delete',
   PROJECT_NEW_STAGE: '/project/:id/new-stage',
   PROJECT_INSERT_NEW_STAGE: '/project/:id/insert-new-stage',
-  // Admin Constructor paths
-  CONSTRUCTORS: '/constructors',
-  CONSTRUCTOR_CREATE: '/constructor/create',
-  CONSTRUCTOR_EDITING: '/constructor/:id/editing',
+  // Admin Office paths
+  OFFICE: '/office',
+  OFFICE_CREATE: '/office/create',
+  OFFICE_EDITING: '/office/:id/editing',
   // Admin Employee paths
   EMPLOYEES: '/employees',
   EMPLOYEE_CREATE: '/employee/create',

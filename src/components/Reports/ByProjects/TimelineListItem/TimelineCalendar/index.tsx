@@ -92,21 +92,32 @@ const TimelineCalendar = ({
     return <ItemRenderer props={props} />;
   };
 
+  const onTimeChange = (
+    start: number,
+    end: number,
+    updateScrollCanvas: any
+  ) => {
+    updateScrollCanvas(start, end, true);
+  };
+
   return (
     <Timeline
       groups={groups}
       items={items}
       keys={keys}
       sidebarContent={<div>Above The Left</div>}
+      // itemsSorted={true}
       itemTouchSendsClick={false}
       stackItems
       itemHeightRatio={0.75}
+      // showCursorLine
       canMove={false}
       canResize={false}
       defaultTimeStart={defaultTimeStart}
       defaultTimeEnd={defaultTimeEnd}
       lineHeight={99}
       itemRenderer={handleItemRenderer}
+      onTimeChange={onTimeChange}
     >
       <TimelineHeaders className="sticky">
         <DateHeader unit="primaryHeader" height={35} />

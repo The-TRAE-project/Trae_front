@@ -52,7 +52,7 @@ const FormHeader = ({
             ? `${updatedUser.firstName} ${updatedUser.lastName} изменения сохранены`
             : ''
         }
-        backPath={Paths.CONSTRUCTORS}
+        backPath={Paths.OFFICE}
       >
         <Stack spacing={20}>
           {!!updatedUser && (
@@ -93,10 +93,7 @@ const FormHeader = ({
       </InformModal>
       <Group position="apart" spacing={100}>
         <Group spacing={42}>
-          <UnstyledButton
-            onClick={() => navigate(Paths.CONSTRUCTORS)}
-            type="button"
-          >
+          <UnstyledButton onClick={() => navigate(Paths.OFFICE)} type="button">
             <BsArrowLeft size={50} color="var(--orange)" />
           </UnstyledButton>
           <UnstyledButton

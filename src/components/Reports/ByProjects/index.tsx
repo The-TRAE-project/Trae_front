@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react';
 import { useForm, zodResolver } from '@mantine/form';
 import { Stack } from '@mantine/core';
+import moment from 'moment';
 
 import { useGetProjectsReportsQuery } from '../../../store/apis/reports';
 import {
@@ -12,7 +13,7 @@ import { useExportToPDF } from '../../../helpers/hooks/useExportToPDF';
 import { FormWrapper } from '../../styles';
 import Loader from '../../Loader';
 import {
-  DATE_30_AHEAD,
+  DATE_1_AHEAD,
   formatToQueryParamDate,
 } from '../helpers/formatToParamDate';
 import FormHeader from '../FormHeader';
@@ -41,7 +42,7 @@ const ByProjects = () => {
   const form = useForm<ProjectReportFormValues>({
     initialValues: {
       startOfPeriod: new Date(),
-      endOfPeriod: DATE_30_AHEAD,
+      endOfPeriod: DATE_1_AHEAD,
     },
     validate: (values) => {
       const resolver = zodResolver(ProjectReportSchema);
@@ -69,6 +70,9 @@ const ByProjects = () => {
     !!reportsByProjects &&
     reportsByProjects.projectsForReportDtoList.length > 0;
 
+  const defaultTimeStart = moment().startOf('day').toDate();
+  const defaultTimeEnd = moment().startOf('day').add(1, 'day').toDate();
+  console.log(defaultTimeStart, defaultTimeEnd, startOfPeriod, endOfPeriod);
   return (
     <FormWrapper onSubmit={form.onSubmit(handleSubmit)}>
       <FormHeader
@@ -91,8 +95,8 @@ const ByProjects = () => {
           (!isGetLoading && !isFetching && !!isReportExist ? (
             <div ref={PDFRef}>
               <TimelineListItem
-                defaultTimeStart={startOfPeriod as Date}
-                defaultTimeEnd={endOfPeriod as Date}
+                defaultTimeStart={defaultTimeStart}
+                defaultTimeEnd={defaultTimeEnd}
                 projects={reportsByProjects.projectsForReportDtoList}
               />
             </div>

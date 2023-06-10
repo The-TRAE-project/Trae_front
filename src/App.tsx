@@ -18,8 +18,8 @@ const EmployeeStagesInWork = lazy(() => import('./pages/EmployeeStagesInWork'));
 const Login = lazy(() => import('./pages/Login'));
 const Dashboard = lazy(() => import('./pages/Dashboard'));
 const Projects = lazy(() => import('./pages/Projects'));
-const Constructors = lazy(() => import('./pages/Constructors'));
-const CreateConstructor = lazy(() => import('./pages/CreateConstructor'));
+const Users = lazy(() => import('./pages/Users'));
+const CreateUser = lazy(() => import('./pages/CreateUser'));
 const UpdateUser = lazy(() => import('./pages/UpdateUser'));
 const Employees = lazy(() => import('./pages/Employees'));
 const CreateEmployee = lazy(() => import('./pages/CreateEmployee'));
@@ -103,13 +103,10 @@ const App = () => {
               path={Paths.PROJECT_INSERT_NEW_STAGE}
               element={<ProjectInsertNewStage />}
             />
-            {/* Constructor routes */}
-            <Route path={Paths.CONSTRUCTORS} element={<Constructors />} />
-            <Route
-              path={Paths.CONSTRUCTOR_CREATE}
-              element={<CreateConstructor />}
-            />
-            <Route path={Paths.CONSTRUCTOR_EDITING} element={<UpdateUser />} />
+            {/* Office routes */}
+            <Route path={Paths.OFFICE} element={<Users />} />
+            <Route path={Paths.OFFICE_CREATE} element={<CreateUser />} />
+            <Route path={Paths.OFFICE_EDITING} element={<UpdateUser />} />
             {/* Employee routes */}
             <Route path={Paths.EMPLOYEES} element={<Employees />} />
             <Route path={Paths.EMPLOYEE_CREATE} element={<CreateEmployee />} />

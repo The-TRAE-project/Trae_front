@@ -1,13 +1,13 @@
 import SEO from '../../components/SEO';
-import CreateForm from '../../components/Constructor/CreateForm';
+import CreateForm from '../../components/Users/CreateForm';
 import { Container, WrapperGradientGreen } from '../../components/styles';
 
-const CreateConstructor = () => {
+const CreateUser = () => {
   return (
     <>
       <SEO
-        title="TRAE | Создать конструктора"
-        description="Страница создание конструктора."
+        title="TRAE | Создать пользователя"
+        description="Страница создание пользователя."
         name="TRAE"
         type="application"
       />
@@ -20,4 +20,4 @@ const CreateConstructor = () => {
   );
 };
 
-export default CreateConstructor;
+export default CreateUser;

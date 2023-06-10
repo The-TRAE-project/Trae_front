@@ -18,8 +18,8 @@ const navbarList: NavbarLink[] = [
   },
   {
     id: 2,
-    value: Paths.CONSTRUCTORS,
-    title: 'Конструкторы',
+    value: Paths.OFFICE,
+    title: 'Офис',
     isShowLine: true,
   },
   {

@@ -11,7 +11,7 @@ const UserItem = ({ user }: Props) => {
   const navigate = useNavigate();
 
   const navigateToEditingPage = () =>
-    navigate(`/constructor/${user.managerId}/editing`);
+    navigate(`/office/${user.managerId}/editing`);
 
   return (
     <BgWhiteCardLinkBtn onClick={navigateToEditingPage} type="button">

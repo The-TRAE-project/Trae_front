@@ -55,7 +55,7 @@ const CreateForm = () => {
 
   useOpenModal(setIsOpen, isSuccess);
 
-  const navigateBack = () => navigate(Paths.CONSTRUCTORS);
+  const navigateBack = () => navigate(Paths.OFFICE);
 
   const closeModal = () => {
     form.reset();
@@ -71,7 +71,7 @@ const CreateForm = () => {
         isOpen={isOpen}
         onClose={closeModal}
         title={`${form.values.firstName} ${form.values.lastName} успешно добавлен`}
-        backPath={Paths.CONSTRUCTORS}
+        backPath={Paths.OFFICE}
       >
         <Stack spacing={20}>
           {newConstructor && (

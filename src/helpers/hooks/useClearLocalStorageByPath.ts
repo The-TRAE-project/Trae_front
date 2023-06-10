@@ -36,7 +36,7 @@ export function useClearLocalStorageByPath() {
       }
     }
 
-    if (!Paths.CONSTRUCTORS.includes(slicedPath)) {
+    if (!Paths.OFFICE.includes(slicedPath)) {
       const userStatus = getItem(LocalStorage.USER_STATUS);
       const userPage = getItem(LocalStorage.USER_PAGE);
       const userRole = getItem(LocalStorage.USER_ROLE);
