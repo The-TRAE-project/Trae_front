@@ -85,7 +85,7 @@ export const Button = styled.button`
 
   @media ${({ theme }) => theme.bp.bpXlarge} {
     height: 88px;
-    padding: 25px 34.5px 28px;
+    padding: 25px 47.2px 28px;
     font-size: 30px;
     line-height: 35px;
   }

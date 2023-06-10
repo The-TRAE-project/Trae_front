@@ -55,6 +55,21 @@ export const useMultiSelectStyles = createStyles(() => ({
     justifyContent: 'center',
     overflow: 'auto',
     gap: 20,
+
+    /* width */
+    '::-webkit-scrollbar': {
+      width: 2,
+    },
+
+    /* Track */
+    '::-webkit-scrollbar-track': {
+      background: 'transparent',
+    },
+
+    /* Handle */
+    '::-webkit-scrollbar-thumb': {
+      background: '#888',
+    },
   },
 
   item: {
@@ -63,7 +78,7 @@ export const useMultiSelectStyles = createStyles(() => ({
     fontSize: 24,
     lineHeight: '28px',
     color: 'var(--white-black)',
-    padding: '10px 25px',
+    padding: '10px 20px',
     textAlign: 'center',
   },
 
