@@ -20,7 +20,6 @@ const MultiSelect = ({ label, data, defaultValue, ...props }: Props) => {
       maxDropdownHeight={284}
       data={data}
       switchDirectionOnFlip
-      initiallyOpened
       classNames={{
         dropdown,
         input,
