@@ -139,7 +139,9 @@ export const UserEditSchema = z.object({
       message:
         'Отчество должно содержать только кириллицу и начинаться с заглавной буквы',
     })
-    .nullable(),
+    .optional()
+    .nullable()
+    .or(z.literal('')),
   phone: z
     .string()
     .min(17, {

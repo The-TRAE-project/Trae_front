@@ -11,7 +11,9 @@ export const compareValues = (
     firstName: values.firstName === user?.firstName ? null : values.firstName,
     lastName: values.lastName === user?.lastName ? null : values.lastName,
     middleName:
-      values.middleName === user?.middleName ? null : values.middleName,
+      values.middleName === user?.middleName || !values.middleName
+        ? null
+        : values.middleName,
     phone: values.phone === user?.phone ? null : values.phone,
     oldPassword: null,
     newPassword: null,

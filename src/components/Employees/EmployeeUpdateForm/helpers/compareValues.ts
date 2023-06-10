@@ -36,7 +36,7 @@ export const compareValues = (
     lastName:
       employeeToEdit.lastName === values.lastName ? null : values.lastName,
     middleName:
-      employeeToEdit.middleName === values.middleName
+      employeeToEdit.middleName === values.middleName || !values.middleName
         ? null
         : values.middleName,
     phone: employeeToEdit.phone === values.phone ? null : values.phone,
