@@ -1,19 +1,10 @@
-import { Menu, Checkbox, Collapse } from '@mantine/core';
+import { useId } from 'react';
+import { Collapse } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 
-import Filter from '../../svgs/Filter';
-import {
-  FilterMenuItemGroup,
-  FilterMenuItemTitle,
-  UnstyledButton,
-  useCheckboxStyles,
-  useFilterMenuStyles,
-} from '../../styles';
-import {
-  MenuItemStack,
-  useCircleCheckboxStyles,
-  useMenuStyles,
-} from './styles';
+import Menu from '../../FilterMenu/Menu';
+import MenuItem from '../../FilterMenu/MenuItem';
+import { MenuItemStack } from './styles';
 // TODO:
 interface Props {
   onClearInput: () => void;
@@ -30,6 +21,8 @@ interface Props {
   isCurrentInWork: boolean;
   setIsCurrentInWork: () => void;
   reset: () => void;
+  onEnded: () => void;
+  isAllInWork: boolean;
 }
 
 const ProjectFilterMenu = ({
@@ -47,191 +40,87 @@ const ProjectFilterMenu = ({
   isCurrentInWork,
   setIsCurrentInWork,
   reset,
+  onEnded,
+  isAllInWork,
 }: Props) => {
   const [opened, { toggle }] = useDisclosure(false);
 
-  const { classes } = useFilterMenuStyles();
-  const {
-    classes: { input, inner, icon },
-  } = useCheckboxStyles();
+  const filterValues = [
+    {
+      id: useId(),
+      title: 'Новые',
+      onClick: setIsFirstNoAcceptance,
+      isActive: isFirstNoAcceptance,
+    },
+    {
+      id: useId(),
+      title: 'В работе сейчас',
+      onClick: setIsCurrentInWork,
+      isActive: isCurrentInWork,
+    },
+    {
+      id: useId(),
+      title: 'Готовые к отгрузке',
+      onClick: setIsLastInWork,
+      isActive: isLastInWork,
+    },
+    {
+      id: useId(),
+      title: 'Истек срок этапа',
+      onClick: setIsCurrentOpOverdue,
+      isActive: isCurrentOpOverdue,
+    },
+    {
+      id: useId(),
+      title: 'Истек срок проекта',
+      onClick: setIsCurrentPrOverdue,
+      isActive: isCurrentPrOverdue,
+    },
+    {
+      id: useId(),
+      title: 'Все',
+      onClick: onEnded,
+      isActive: isAllInWork,
+    },
+  ];
 
-  const {
-    classes: { dropdown },
-  } = useMenuStyles();
-  const {
-    classes: { circleInput, circleInner, circleIcon },
-  } = useCircleCheckboxStyles();
+  const isInWorkActive =
+    isFirstNoAcceptance ||
+    isLastInWork ||
+    isCurrentInWork ||
+    isCurrentOpOverdue ||
+    isCurrentPrOverdue ||
+    isAllInWork;
+
+  const isAllSelected =
+    !isEnded &&
+    !isFirstNoAcceptance &&
+    !isLastInWork &&
+    !isCurrentOpOverdue &&
+    !isCurrentPrOverdue &&
+    !isCurrentInWork &&
+    !isAllInWork;
 
   return (
-    <Menu
-      closeOnItemClick={false}
-      classNames={{
-        dropdown,
-        label: classes.label,
-        item: classes.item,
-      }}
-    >
-      <Menu.Target>
-        <UnstyledButton onClick={onClearInput} $isFilterIcon>
-          <Filter />
-        </UnstyledButton>
-      </Menu.Target>
+    <Menu onClick={onClearInput}>
+      <MenuItem title="В работе" onClick={toggle} isActive={isInWorkActive} />
 
-      <Menu.Dropdown>
-        <Menu.Item onClick={toggle}>
-          <FilterMenuItemGroup>
-            <Checkbox
-              readOnly
-              checked={
-                isFirstNoAcceptance ||
-                isLastInWork ||
-                isCurrentInWork ||
-                isCurrentOpOverdue ||
-                isCurrentPrOverdue
-              }
-              classNames={{ input, inner, icon }}
+      <Collapse in={opened}>
+        <MenuItemStack>
+          {filterValues.map((filterValue) => (
+            <MenuItem
+              key={filterValue.id}
+              title={filterValue.title}
+              onClick={filterValue.onClick}
+              isActive={filterValue.isActive}
+              isCircle
             />
-            <FilterMenuItemTitle
-              $active={
-                isFirstNoAcceptance ||
-                isLastInWork ||
-                isCurrentInWork ||
-                isCurrentOpOverdue ||
-                isCurrentPrOverdue
-              }
-            >
-              В работе
-            </FilterMenuItemTitle>
-          </FilterMenuItemGroup>
-        </Menu.Item>
+          ))}
+        </MenuItemStack>
+      </Collapse>
 
-        <Collapse in={opened}>
-          <MenuItemStack>
-            <Menu.Item onClick={setIsFirstNoAcceptance}>
-              <FilterMenuItemGroup>
-                <Checkbox
-                  readOnly
-                  checked={isFirstNoAcceptance}
-                  classNames={{
-                    input: circleInput,
-                    inner: circleInner,
-                    icon: circleIcon,
-                  }}
-                />
-                <FilterMenuItemTitle $active={isFirstNoAcceptance}>
-                  Новые
-                </FilterMenuItemTitle>
-              </FilterMenuItemGroup>
-            </Menu.Item>
-            <Menu.Item onClick={setIsCurrentInWork}>
-              <FilterMenuItemGroup>
-                <Checkbox
-                  readOnly
-                  checked={isCurrentInWork}
-                  classNames={{
-                    input: circleInput,
-                    inner: circleInner,
-                    icon: circleIcon,
-                  }}
-                />
-                <FilterMenuItemTitle $active={isCurrentInWork}>
-                  В работе сейчас
-                </FilterMenuItemTitle>
-              </FilterMenuItemGroup>
-            </Menu.Item>
-            <Menu.Item onClick={setIsLastInWork}>
-              <FilterMenuItemGroup>
-                <Checkbox
-                  readOnly
-                  checked={isLastInWork}
-                  classNames={{
-                    input: circleInput,
-                    inner: circleInner,
-                    icon: circleIcon,
-                  }}
-                />
-                <FilterMenuItemTitle $active={isLastInWork}>
-                  Готовые к отгрузке
-                </FilterMenuItemTitle>
-              </FilterMenuItemGroup>
-            </Menu.Item>
-            <Menu.Item onClick={setIsCurrentOpOverdue}>
-              <FilterMenuItemGroup>
-                <Checkbox
-                  readOnly
-                  checked={isCurrentOpOverdue}
-                  classNames={{
-                    input: circleInput,
-                    inner: circleInner,
-                    icon: circleIcon,
-                  }}
-                />
-                <FilterMenuItemTitle $active={isCurrentOpOverdue}>
-                  Истек срок этапа
-                </FilterMenuItemTitle>
-              </FilterMenuItemGroup>
-            </Menu.Item>
-            <Menu.Item onClick={setIsCurrentPrOverdue}>
-              <FilterMenuItemGroup>
-                <Checkbox
-                  readOnly
-                  checked={isCurrentPrOverdue}
-                  classNames={{
-                    input: circleInput,
-                    inner: circleInner,
-                    icon: circleIcon,
-                  }}
-                />
-                <FilterMenuItemTitle $active={isCurrentPrOverdue}>
-                  Истек срок проекта
-                </FilterMenuItemTitle>
-              </FilterMenuItemGroup>
-            </Menu.Item>
-          </MenuItemStack>
-        </Collapse>
-
-        <Menu.Item onClick={setIsEnded}>
-          <FilterMenuItemGroup>
-            <Checkbox
-              readOnly
-              checked={isEnded}
-              classNames={{ input, inner, icon }}
-            />
-            <FilterMenuItemTitle $active={isEnded}>
-              Выполнены
-            </FilterMenuItemTitle>
-          </FilterMenuItemGroup>
-        </Menu.Item>
-
-        <Menu.Item onClick={reset}>
-          <FilterMenuItemGroup>
-            <Checkbox
-              readOnly
-              checked={
-                !isEnded &&
-                !isFirstNoAcceptance &&
-                !isLastInWork &&
-                !isCurrentOpOverdue &&
-                !isCurrentPrOverdue &&
-                !isCurrentInWork
-              }
-              classNames={{ input, inner, icon }}
-            />
-            <FilterMenuItemTitle
-              $active={
-                !isEnded &&
-                !isFirstNoAcceptance &&
-                !isLastInWork &&
-                !isCurrentOpOverdue &&
-                !isCurrentPrOverdue &&
-                !isCurrentInWork
-              }
-            >
-              Все
-            </FilterMenuItemTitle>
-          </FilterMenuItemGroup>
-        </Menu.Item>
-      </Menu.Dropdown>
+      <MenuItem title="Выполнены" onClick={setIsEnded} isActive={isEnded} />
+      <MenuItem title="Все" onClick={reset} isActive={isAllSelected} />
     </Menu>
   );
 };

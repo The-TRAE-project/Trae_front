@@ -47,24 +47,27 @@ const WorkTypesListItem = ({ paramActive }: Props) => {
 
   return (
     <ListItemWrapper>
-      {!isLoading && !!workTypes ? (
-        <>
-          <TwoColumnGrid>
-            {sortWorkTypesByPriority(workTypes.content).map((workType) => (
-              <WorkTypeItem key={workType.id} workType={workType} />
-            ))}
-          </TwoColumnGrid>
+      {!isLoading ? (
+        !!workTypes &&
+        workTypes.content.length > 0 && (
+          <>
+            <TwoColumnGrid>
+              {sortWorkTypesByPriority(workTypes.content).map((workType) => (
+                <WorkTypeItem key={workType.id} workType={workType} />
+              ))}
+            </TwoColumnGrid>
 
-          {workTypes.totalElements > 10 && (
-            <SliderButtons
-              current={workTypes.currentNumberPage + 1}
-              quantity={workTypes.totalPages}
-              prevSlide={prevSlide}
-              nextSlide={nextSlide}
-              color="--white"
-            />
-          )}
-        </>
+            {workTypes.totalElements > 10 && (
+              <SliderButtons
+                current={workTypes.currentNumberPage + 1}
+                quantity={workTypes.totalPages}
+                prevSlide={prevSlide}
+                nextSlide={nextSlide}
+                color="--white"
+              />
+            )}
+          </>
+        )
       ) : (
         <Loader size={80} isAbsoluteCentered />
       )}

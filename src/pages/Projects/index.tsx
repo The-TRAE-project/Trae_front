@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Stack } from '@mantine/core';
-import { useLocalStorage, useDebouncedValue } from '@mantine/hooks';
+import { useLocalStorage } from '@mantine/hooks';
 
 import {
   useGetProjectsQuery,
@@ -18,8 +18,9 @@ import { Container, WrapperGradientGreen } from '../../components/styles';
 
 const Projects = () => {
   const [searchValue, setSearchValue] = useState<string>('');
-  const [debounced] = useDebouncedValue(searchValue, 200);
+
   const navigate = useNavigate();
+
   const [searchPage, setSearchPage] = useLocalStorage<number>({
     key: LocalStorage.PROJECT_SEARCH_PAGE,
     defaultValue: 0,
@@ -36,7 +37,7 @@ const Projects = () => {
   const [paramIsFirstNoAcceptance, setParamIsFirstNoAcceptance] =
     useLocalStorage<boolean>({
       key: LocalStorage.PROJECT_FILTER_IS_NOT_ACCEPTANCE,
-      defaultValue: true,
+      defaultValue: false,
     });
   const [paramIsLastInWork, setParamIsLastInWork] = useLocalStorage<boolean>({
     key: LocalStorage.PROJECT_FILTER_IS_LAST_IN_WORK,
@@ -57,16 +58,20 @@ const Projects = () => {
       key: LocalStorage.PROJECT_FILTER_IS_CURRENT_IN_WORK,
       defaultValue: false,
     });
+  const [paramInWorkAll, setParamInWorkAll] = useLocalStorage<boolean>({
+    key: LocalStorage.PROJECT_FILTER_IN_WORK_ALL,
+    defaultValue: true,
+  });
 
   const { data: findProjectsBySearch, isLoading: isSearchLoading } =
     useSearchProjectsQuery(
       {
         elementPerPage: `&elementPerPage=${10}`,
         page: `&page=${searchPage}`,
-        projectNumberOrCustomer: `&projectNumberOrCustomer=${debounced}`,
+        projectNumberOrCustomer: `&projectNumberOrCustomer=${searchValue}`,
       },
       {
-        skip: !debounced,
+        skip: !searchValue,
       }
     );
 
@@ -82,7 +87,12 @@ const Projects = () => {
     useGetProjectsQuery({
       elementPerPage: `&elementPerPage=${10}`,
       page: `&page=${searchPage}`,
-      isEnded: isDisabledEndedParam ? `&isEnded=${paramIsEnded}` : '',
+      // eslint-disable-next-line no-nested-ternary
+      isEnded: isDisabledEndedParam
+        ? `&isEnded=${paramIsEnded}`
+        : paramInWorkAll
+        ? `&isEnded=${paramIsEnded}`
+        : '',
       isOverdueCurrentOpInProject: paramIsCurrentOpOverdue
         ? `&isOverdueCurrentOpInProject=${paramIsCurrentOpOverdue}`
         : '',
@@ -101,6 +111,7 @@ const Projects = () => {
     });
   // TODO:
   const resetFilterParams = () => {
+    setParamInWorkAll(false);
     setParamIsEnded(false);
     setParamIsFirstNoAcceptance(false);
     setParamIsLastInWork(false);
@@ -116,6 +127,7 @@ const Projects = () => {
     setParamIsCurrentOpOverdue(false);
     setParamIsCurrentPrOverdue(false);
     setParamIsCurrentInWork(false);
+    setParamInWorkAll(false);
   };
   // TODO:
   const handleSetIsFirstNoAcceptance = () => {
@@ -125,6 +137,7 @@ const Projects = () => {
     setParamIsCurrentOpOverdue(false);
     setParamIsCurrentPrOverdue(false);
     setParamIsCurrentInWork(false);
+    setParamInWorkAll(false);
   };
   // TODO:
   const handleSetIsLastInWork = () => {
@@ -134,6 +147,7 @@ const Projects = () => {
     setParamIsCurrentOpOverdue(false);
     setParamIsCurrentPrOverdue(false);
     setParamIsCurrentInWork(false);
+    setParamInWorkAll(false);
   };
   // TODO:
   const handleSetIsCurrentOpOverdue = () => {
@@ -143,6 +157,7 @@ const Projects = () => {
     setParamIsEnded(false);
     setParamIsCurrentPrOverdue(false);
     setParamIsCurrentInWork(false);
+    setParamInWorkAll(false);
   };
   // TODO:
   const handleSetIsCurrentPrOverdue = () => {
@@ -152,6 +167,7 @@ const Projects = () => {
     setParamIsFirstNoAcceptance(false);
     setParamIsEnded(false);
     setParamIsCurrentInWork(false);
+    setParamInWorkAll(false);
   };
   // TODO:
   const handleSetIsCurrentInWork = () => {
@@ -161,10 +177,21 @@ const Projects = () => {
     setParamIsLastInWork(false);
     setParamIsFirstNoAcceptance(false);
     setParamIsEnded(false);
+    setParamInWorkAll(false);
+  };
+
+  const selectAllInWork = () => {
+    setParamInWorkAll(true);
+    setParamIsCurrentInWork(false);
+    setParamIsCurrentPrOverdue(false);
+    setParamIsCurrentOpOverdue(false);
+    setParamIsLastInWork(false);
+    setParamIsFirstNoAcceptance(false);
+    setParamIsEnded(false);
   };
 
   const clearSearchInput = () => {
-    if (debounced) {
+    if (searchValue) {
       setSearchValue('');
     }
   };
@@ -177,13 +204,18 @@ const Projects = () => {
       paramIsLastInWork ||
       paramIsCurrentPrOverdue ||
       paramIsCurrentInWork ||
-      filterPage
+      filterPage ||
+      paramInWorkAll
     ) {
       resetFilterParams();
     }
   };
 
   const navigateToCreateProjectPage = () => navigate(Paths.PROJECT_CREATE);
+
+  const isNotFoundBySearch = !(
+    (findProjectsBySearch?.content.length as number) > 0
+  );
 
   return (
     <>
@@ -213,6 +245,8 @@ const Projects = () => {
                   isCurrentInWork={paramIsCurrentInWork}
                   setIsCurrentInWork={handleSetIsCurrentInWork}
                   reset={resetFilterParams}
+                  onEnded={selectAllInWork}
+                  isAllInWork={paramInWorkAll}
                 />
               }
               input={
@@ -225,12 +259,13 @@ const Projects = () => {
               onCreate={navigateToCreateProjectPage}
             />
 
-            {debounced ? (
+            {searchValue ? (
               <ProjectListItem
                 page={searchPage}
                 setPage={setSearchPage}
                 isLoading={isSearchLoading}
                 projects={findProjectsBySearch}
+                isNotFoundBySearch={isNotFoundBySearch}
               />
             ) : (
               <ProjectListItem

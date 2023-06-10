@@ -12,6 +12,7 @@ export enum LocalStorage {
   PROJECT_FILTER_IS_CURRENT_IN_WORK = 'project-filter-is-current-in-work',
   PROJECT_FILTER_IS_CURRENT_PR_OVERDUE = 'project-filter-is-current-pr-overdue',
   PROJECT_FILTER_IS_CURRENT_OP_OVERDUE = 'project-filter-is-current-op-overdue',
+  PROJECT_FILTER_IN_WORK_ALL = 'project-filter-in-work-all',
   EMPLOYEE_STATUS = 'employee-status',
   EMPLOYEE_PAGE = 'employee-page',
   EMPLOYEE_TYPE_WORKS = 'employee-type-works',

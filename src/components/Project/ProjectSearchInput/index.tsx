@@ -1,4 +1,10 @@
-import { Dispatch, SetStateAction } from 'react';
+import {
+  Dispatch,
+  KeyboardEvent,
+  SetStateAction,
+  useEffect,
+  useState,
+} from 'react';
 
 import { InputWrapper, Input, SearchIcon } from './styles';
 
@@ -12,16 +18,33 @@ const ProjectSearchInput = ({
   searchValue,
   setSearchValue,
   onClearFilter,
-}: Props) => (
-  <InputWrapper>
-    <Input
-      value={searchValue}
-      onChange={(event) => setSearchValue(event.currentTarget.value)}
-      onFocus={onClearFilter}
-      placeholder="№ проекта или фамилия клиента"
-    />
-    <SearchIcon />
-  </InputWrapper>
-);
+}: Props) => {
+  const [value, setValue] = useState('');
+
+  const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      setSearchValue(value);
+    }
+  };
+
+  useEffect(() => {
+    if (!searchValue) {
+      setValue('');
+    }
+  }, [searchValue]);
+
+  return (
+    <InputWrapper>
+      <Input
+        value={value}
+        onChange={(event) => setValue(event.target.value)}
+        onKeyDown={handleKeyDown}
+        onFocus={onClearFilter}
+        placeholder="№ проекта или фамилия клиента"
+      />
+      <SearchIcon />
+    </InputWrapper>
+  );
+};
 
 export default ProjectSearchInput;

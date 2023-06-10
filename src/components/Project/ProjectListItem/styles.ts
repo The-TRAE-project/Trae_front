@@ -10,3 +10,11 @@ export const Grid = styled.div`
   column-gap: 42px;
   row-gap: 77px;
 `;
+
+export const NotFoundTitle = styled.p`
+  ${({ theme }) => theme.mixins.fontSize40};
+  font-family: var(--font-roboto);
+  font-weight: 500;
+  color: var(--white);
+  text-align: center;
+`;

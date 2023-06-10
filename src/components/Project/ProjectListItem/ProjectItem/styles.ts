@@ -1,10 +1,10 @@
 import styled, { css } from 'styled-components';
 
-type ButtonWrapperProps = {
+type WrapperProps = {
   $isOpOverdue?: boolean;
 };
 
-export const ButtonWrapper = styled.button`
+export const Wrapper = styled.div`
   position: relative;
   min-height: 270px;
   ${({ theme }) => theme.mixins.column};
@@ -20,7 +20,7 @@ export const ButtonWrapper = styled.button`
     outline: none;
   }
 
-  ${(props: ButtonWrapperProps) =>
+  ${(props: WrapperProps) =>
     props.$isOpOverdue &&
     css`
       border: 3px solid var(--red2);

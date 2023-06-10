@@ -1,5 +1,4 @@
 import { Dispatch, SetStateAction, useEffect } from 'react';
-import { Menu, Checkbox } from '@mantine/core';
 import { useLocalStorage } from '@mantine/hooks';
 
 import { Status as StatusTitle } from '../../../store/types';
@@ -7,15 +6,9 @@ import { Status } from '../../../store/apis/user/types';
 import { useGetActiveWorkTypesQuery } from '../../../store/apis/workTypes';
 import { LocalStorage } from '../../../constants/localStorage';
 import { getItem } from '../../../helpers/getItem';
-import Filter from '../../svgs/Filter';
-import {
-  FilterMenuItemGroup,
-  FilterMenuItemTitle,
-  UnstyledButton,
-  useCheckboxStyles,
-  useFilterMenuStyles,
-} from '../../styles';
-import EmployeesFilterMenuItem from './EmployeesFilterMenuItem';
+import Menu from '../../FilterMenu/Menu';
+import MenuLabel from '../../FilterMenu/MenuLabel';
+import MenuItem from '../../FilterMenu/MenuItem';
 import { OverflowWrapper } from './styles';
 
 const statuses = [
@@ -56,10 +49,6 @@ const EmployeesFilterMenu = ({
     defaultValue: [],
   });
 
-  const { classes } = useFilterMenuStyles();
-  const {
-    classes: { input, inner, icon },
-  } = useCheckboxStyles();
   const { data: workTypes } = useGetActiveWorkTypesQuery();
 
   useEffect(() => {
@@ -79,75 +68,61 @@ const EmployeesFilterMenu = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [workTypes]);
 
+  const handleSetTypeWorks = (typeWork: ModifiedWorkType) => {
+    if (!typeWork.isChecked) {
+      const newTypeWorks = typeWorks?.concat(typeWork.id) || [];
+      setTypeWorks(newTypeWorks);
+      setData(
+        data.map((item) =>
+          item.id === typeWork.id ? { ...item, isChecked: true } : item
+        )
+      );
+    } else if (typeWork.isChecked) {
+      const newTypeWorks =
+        typeWorks?.filter((item) => item !== typeWork.id) || [];
+      setTypeWorks(newTypeWorks);
+      setData(
+        data.map((item) =>
+          item.id === typeWork.id ? { ...item, isChecked: false } : item
+        )
+      );
+    }
+  };
+
   return (
-    <Menu
-      closeOnItemClick={false}
-      classNames={{
-        dropdown: classes.dropdown,
-        label: classes.label,
-        item: classes.item,
-      }}
-    >
-      <Menu.Target>
-        <UnstyledButton $isFilterIcon>
-          <Filter />
-        </UnstyledButton>
-      </Menu.Target>
+    <Menu>
+      <MenuLabel title="Статус" />
+      {statuses.map((item) => (
+        <MenuItem
+          key={item.value}
+          title={item.title}
+          onClick={() => setStatus(item.value)}
+          isActive={item.value === status}
+        />
+      ))}
+      <MenuItem title="Все" onClick={resetStatus} isActive={!status} />
 
-      <Menu.Dropdown>
-        <Menu.Label>Статус</Menu.Label>
-        {statuses.map((item) => (
-          <Menu.Item key={item.value} onClick={() => setStatus(item.value)}>
-            <FilterMenuItemGroup>
-              <Checkbox
-                readOnly
-                checked={item.value === status}
-                classNames={{ input, inner, icon }}
-              />
-              <FilterMenuItemTitle $active={item.value === status}>
-                {item.title}
-              </FilterMenuItemTitle>
-            </FilterMenuItemGroup>
-          </Menu.Item>
-        ))}
-        <Menu.Item onClick={resetStatus}>
-          <FilterMenuItemGroup>
-            <Checkbox
-              readOnly
-              checked={!status}
-              classNames={{ input, inner, icon }}
+      <MenuLabel title="Типы работ" />
+      <OverflowWrapper>
+        {typeWorks && (
+          <>
+            <MenuItem
+              title="Все"
+              onClick={resetTypeWork}
+              isActive={typeWorks.length === 0}
             />
-            <FilterMenuItemTitle $active={!status}>Все</FilterMenuItemTitle>
-          </FilterMenuItemGroup>
-        </Menu.Item>
-
-        <Menu.Label>Типы работ</Menu.Label>
-        <OverflowWrapper>
-          <Menu.Item onClick={resetTypeWork}>
-            <FilterMenuItemGroup>
-              <Checkbox
-                readOnly
-                checked={typeWorks?.length === 0}
-                classNames={{ input, inner, icon }}
-              />
-              <FilterMenuItemTitle $active={typeWorks?.length === 0}>
-                Все
-              </FilterMenuItemTitle>
-            </FilterMenuItemGroup>
-          </Menu.Item>
-          {!!data &&
-            data.map((workType) => (
-              <EmployeesFilterMenuItem
-                key={workType.id}
-                workType={workType}
-                typeWorks={typeWorks}
-                setTypeWorks={setTypeWorks}
-                data={data}
-                setData={setData}
-              />
-            ))}
-        </OverflowWrapper>
-      </Menu.Dropdown>
+            {!!data &&
+              data.map((workType) => (
+                <MenuItem
+                  key={workType.id}
+                  title={workType.workType}
+                  onClick={() => handleSetTypeWorks(workType)}
+                  isActive={typeWorks.includes(workType.id)}
+                />
+              ))}
+          </>
+        )}
+      </OverflowWrapper>
     </Menu>
   );
 };

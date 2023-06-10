@@ -1,4 +1,3 @@
-/* eslint-disable no-nested-ternary */
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -9,11 +8,7 @@ import { ProjectShortInfo } from '../../../../store/apis/project/types';
 import { WorkTypeStatuses } from '../../../../store/apis/workTypes/types';
 import ConfirmModal from '../../../ConfirmModal';
 import { ProjectCustomer, ProjectName, ProjectNumber } from '../../../styles';
-import {
-  ButtonWrapper,
-  ProjectFinishBtn,
-  ProjectOperationName,
-} from './styles';
+import { Wrapper, ProjectFinishBtn, ProjectOperationName } from './styles';
 
 interface Props {
   project: ProjectShortInfo;
@@ -22,6 +17,8 @@ interface Props {
 }
 
 const ProjectItem = ({ project, isOpOverdue, isPrOverdue }: Props) => {
+  const { id, number, name, customer, isEnded, operation } = project;
+
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const navigate = useNavigate();
@@ -29,23 +26,19 @@ const ProjectItem = ({ project, isOpOverdue, isPrOverdue }: Props) => {
   const [closeProject, { isSuccess, isLoading: isCloseLoading }] =
     useCloseProjectMutation();
 
-  const stageInWork = project.operation.inWork ? 'stageInWork' : '';
-  const stageReadyToAcceptance = project.operation
-    ? 'stageReadyToAcceptance'
-    : '';
-  const stageIsEnded = project.operation.isEnded ? 'ended' : '';
-  const projectEnded = project.isEnded ? 'ended' : '';
+  const stageInWork = operation.inWork ? 'stageInWork' : '';
+  const stageReadyToAcceptance = operation ? 'stageReadyToAcceptance' : '';
+  const stageIsEnded = operation.isEnded ? 'ended' : '';
+  const projectEnded = isEnded ? 'ended' : '';
 
   const isShipmentEnded =
-    project.operation.name === WorkTypeStatuses.SHIPMENT &&
-    project.operation.isEnded;
+    operation.name === WorkTypeStatuses.SHIPMENT && !isEnded;
 
-  const handleNavigateToDetails = () =>
-    navigate(`/project/${project.id}/details`);
+  const handleNavigateToDetails = () => navigate(`/project/${id}/details`);
 
   const handleCloseProject = async () => {
     try {
-      await closeProject(project.id).unwrap();
+      await closeProject(id).unwrap();
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       showErrorNotification(err?.data?.status, err?.data?.error);
@@ -54,8 +47,10 @@ const ProjectItem = ({ project, isOpOverdue, isPrOverdue }: Props) => {
 
   const navigateToProjects = () => navigate(Paths.PROJECTS);
 
-  const confirmTitle = `Завершить проект №${project.number}?`;
-  const informTitle = `Проект №${project.number} завершен`;
+  const confirmTitle = `Завершить проект №${number}?`;
+  const informTitle = `Проект №${number} завершен`;
+
+  const title = isEnded ? 'Проект выполнен' : operation.name;
 
   return (
     <>
@@ -70,16 +65,14 @@ const ProjectItem = ({ project, isOpOverdue, isPrOverdue }: Props) => {
         informTitle={informTitle}
         onBack={navigateToProjects}
       />
-      <ButtonWrapper
-        onClick={handleNavigateToDetails}
-        $isOpOverdue={isOpOverdue}
-      >
-        <ProjectNumber $isEnded={project.isEnded} $isOverdue={isPrOverdue}>
-          {project.number}
+      <Wrapper onClick={handleNavigateToDetails} $isOpOverdue={isOpOverdue}>
+        <ProjectNumber $isEnded={isEnded} $isOverdue={isPrOverdue}>
+          {number}
         </ProjectNumber>
-        <ProjectCustomer>{project.customer}</ProjectCustomer>
-        <ProjectName>{project.name}</ProjectName>
+        <ProjectCustomer>{customer}</ProjectCustomer>
+        <ProjectName>{name}</ProjectName>
         <ProjectOperationName
+          onClick={(event) => event.stopPropagation()}
           className={
             projectEnded ||
             stageInWork ||
@@ -91,13 +84,11 @@ const ProjectItem = ({ project, isOpOverdue, isPrOverdue }: Props) => {
             <ProjectFinishBtn onClick={() => setIsOpen(true)} type="button">
               Завершить проект
             </ProjectFinishBtn>
-          ) : project.isEnded ? (
-            'Проект выполнен'
           ) : (
-            project.operation.name
+            title
           )}
         </ProjectOperationName>
-      </ButtonWrapper>
+      </Wrapper>
     </>
   );
 };

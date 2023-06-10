@@ -1,4 +1,4 @@
-import { Box, createStyles, Group, Stack } from '@mantine/core';
+import { Box, createStyles, Stack } from '@mantine/core';
 import styled, { css } from 'styled-components';
 import { IoIosArrowUp } from 'react-icons/io';
 
@@ -192,55 +192,6 @@ export const OrangeButton = styled.button`
   }
 `;
 
-export const useFilterMenuStyles = createStyles(() => ({
-  dropdown: {
-    left: '0px !important',
-    width: '369px !important',
-    maxWidth: 369,
-    maxHeight: 528,
-    border: 'none',
-    background: 'var(--white)',
-    padding: 'var(--menu-ptb) var(--menu-plr)',
-    boxShadow: '0px 4px 4px var(--black-shadow)',
-    borderRadius: 'var(--border-radius)',
-  },
-
-  label: {
-    padding: 0,
-    fontWeight: 600,
-    fontSize: 'var(--fs-24)',
-    lineHeight: 'var(--fs-24-lh)',
-    color: 'var(--white-black)',
-    marginTop: 'clamp(0.06rem, calc(0.93rem + -0.72vw), 0.31rem)',
-    marginBottom: 'clamp(0.31rem, calc(-0.46rem + 0.90vw), 0.63rem)',
-  },
-
-  item: {
-    padding:
-      'clamp(0.31rem, calc(-0.30rem + 0.72vw), 0.56rem) 0 clamp(0.31rem, calc(-0.30rem + 0.72vw), 0.56rem)',
-    fontWeight: 400,
-    fontSize: 'var(--fs-24)',
-    lineHeight: 'var(--fs-24-lh)',
-  },
-}));
-
-type FilterMenuItemTitleProps = {
-  $active?: boolean;
-};
-
-export const FilterMenuItemGroup = styled(Group)`
-  --gap-12: clamp(0.5rem, calc(-0.12rem + 0.72vw), 0.75rem);
-
-  gap: var(--gap-12);
-`;
-
-export const FilterMenuItemTitle = styled.p<FilterMenuItemTitleProps>`
-  max-width: 266px;
-  word-break: break-word;
-  color: ${(props) => (props.$active ? 'var(--orange)' : 'var(--white-black)')};
-  transition: var(--transition);
-`;
-
 export const BgWhiteCardLinkBtn = styled.button`
   position: relative;
   width: 100%;
@@ -266,31 +217,6 @@ export const InformModalText = styled.p`
   text-align: center;
   color: var(--white-black);
 `;
-
-export const useCheckboxStyles = createStyles(() => ({
-  input: {
-    width: 'var(--checkbox-wd-th)',
-    height: 'var(--checkbox-wd-th)',
-    border: '1.5px solid var(--gray)',
-    borderRadius: '4px',
-
-    '&:checked': {
-      backgroundColor: 'var(--white)',
-      borderColor: 'var(--gray)',
-    },
-  },
-
-  inner: {
-    width: 'var(--checkbox-wd-th)',
-    height: 'var(--checkbox-wd-th)',
-  },
-
-  icon: {
-    width: 'var(--checkbox-i-wd-ht)',
-    height: 'var(--checkbox-i-wd-ht)',
-    color: 'var(--orange) !important',
-  },
-}));
 
 type DashedButtonProps = {
   $width?: number;

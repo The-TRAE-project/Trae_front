@@ -1,20 +1,17 @@
 import { useState } from 'react';
-import { Checkbox, Menu } from '@mantine/core';
+import { Menu } from '@mantine/core';
 import { UseFormReturnType } from '@mantine/form';
 
 import { EmployeeReportFormValues } from '../../../../../store/apis/reports/types';
 import { EmployeeShortInfo } from '../../../../../store/apis/employee/types';
 import { selectOnlyIds } from '../../../../../helpers/selectOnlyIds';
+import MenuItem from '../../../../FilterMenu/MenuItem';
 import {
   ErrorMessage,
-  FilterMenuItemGroup,
-  FilterMenuItemTitle,
   SelectArrow,
   SelectDisplayInput,
   SelectLabel,
   SelectWrapper,
-  useCheckboxStyles,
-  useFilterMenuStyles,
 } from '../../../../styles';
 import {
   SelectAllTitle,
@@ -37,13 +34,7 @@ const EmployeeSelect = ({ form, employees }: Props) => {
   >([]);
 
   const {
-    classes: { input, inner, icon },
-  } = useCheckboxStyles();
-  const {
-    classes: { item },
-  } = useFilterMenuStyles();
-  const {
-    classes: { dropdown },
+    classes: { dropdown, item },
   } = useEmployeeSelectMenuStyles();
 
   const { employeeIds } = form.values;
@@ -99,41 +90,19 @@ const EmployeeSelect = ({ form, employees }: Props) => {
         )}
 
         <Menu.Dropdown>
-          <Menu.Item onClick={handleSelectAll}>
-            <FilterMenuItemGroup>
-              <Checkbox
-                readOnly
-                checked={isAllSelected}
-                classNames={{ input, inner, icon }}
-              />
-              <FilterMenuItemTitle $active={isAllSelected}>
-                Все
-              </FilterMenuItemTitle>
-            </FilterMenuItemGroup>
-          </Menu.Item>
+          <MenuItem
+            title="Все"
+            onClick={handleSelectAll}
+            isActive={isAllSelected}
+          />
 
           {employees.map((employee) => (
-            <Menu.Item
+            <MenuItem
               key={employee.id}
+              title={`${employee.firstName} ${employee.lastName}`}
               onClick={() => handleSetEmployeeIds(employee)}
-            >
-              <FilterMenuItemGroup>
-                <Checkbox
-                  readOnly
-                  checked={
-                    selectedEmployees.includes(employee) && !isAllSelected
-                  }
-                  classNames={{ input, inner, icon }}
-                />
-                <FilterMenuItemTitle
-                  $active={
-                    selectedEmployees.includes(employee) && !isAllSelected
-                  }
-                >
-                  {employee.firstName} {employee.lastName}
-                </FilterMenuItemTitle>
-              </FilterMenuItemGroup>
-            </Menu.Item>
+              isActive={selectedEmployees.includes(employee) && !isAllSelected}
+            />
           ))}
         </Menu.Dropdown>
       </Menu>

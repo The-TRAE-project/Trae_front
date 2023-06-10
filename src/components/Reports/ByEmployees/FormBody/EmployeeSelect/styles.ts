@@ -13,7 +13,11 @@ export const useEmployeeSelectMenuStyles = createStyles(() => ({
   },
 
   item: {
-    padding: 0,
+    padding:
+      'clamp(0.31rem, calc(-0.30rem + 0.72vw), 0.56rem) 0 clamp(0.31rem, calc(-0.30rem + 0.72vw), 0.56rem)',
+    fontWeight: 400,
+    fontSize: 'var(--fs-24)',
+    lineHeight: 'var(--fs-24-lh)',
   },
 }));
 

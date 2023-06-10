@@ -5,13 +5,14 @@ import { ProjectShortInfo } from '../../../store/apis/project/types';
 import Loader from '../../Loader';
 import SliderButtons from '../../SliderButtons';
 import ProjectItem from './ProjectItem';
-import { Grid, Wrapper } from './styles';
+import { Grid, NotFoundTitle, Wrapper } from './styles';
 
 interface Props {
   page: number;
   setPage: Dispatch<SetStateAction<number>>;
   isLoading: boolean;
   projects: FilteredResponse<ProjectShortInfo[]> | undefined;
+  isNotFoundBySearch?: boolean;
   isOpOverdue?: boolean;
   isPrOverdue?: boolean;
 }
@@ -21,6 +22,7 @@ const ProjectListItem = ({
   setPage,
   isLoading,
   projects,
+  isNotFoundBySearch,
   isOpOverdue,
   isPrOverdue,
 }: Props) => {
@@ -40,16 +42,20 @@ const ProjectListItem = ({
     <Wrapper>
       {!isLoading && !!projects ? (
         <>
-          <Grid>
-            {projects.content.map((project) => (
-              <ProjectItem
-                key={project.id}
-                project={project}
-                isOpOverdue={isOpOverdue}
-                isPrOverdue={isPrOverdue}
-              />
-            ))}
-          </Grid>
+          {!isNotFoundBySearch ? (
+            <Grid>
+              {projects.content.map((project) => (
+                <ProjectItem
+                  key={project.id}
+                  project={project}
+                  isOpOverdue={isOpOverdue}
+                  isPrOverdue={isPrOverdue}
+                />
+              ))}
+            </Grid>
+          ) : (
+            <NotFoundTitle>Совпадений не найдено!</NotFoundTitle>
+          )}
 
           {projects.totalElements > 10 && (
             <SliderButtons
