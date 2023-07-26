@@ -29,6 +29,7 @@ export const loginUser = createAsyncThunk(
   'auth/loginUser',
   async (value: LoginFormValues, { rejectWithValue }) => {
     try {
+      // console.log(instance.);
       const response = await instance.post<
         LoginFormValues,
         Response<TokenValue>

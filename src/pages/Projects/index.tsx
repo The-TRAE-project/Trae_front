@@ -87,12 +87,10 @@ const Projects = () => {
     useGetProjectsQuery({
       elementPerPage: `&elementPerPage=${10}`,
       page: `&page=${searchPage}`,
-      // eslint-disable-next-line no-nested-ternary
-      isEnded: isDisabledEndedParam
-        ? `&isEnded=${paramIsEnded}`
-        : paramInWorkAll
-        ? `&isEnded=${paramIsEnded}`
-        : '',
+      isEnded:
+        isDisabledEndedParam || paramInWorkAll
+          ? `&isEnded=${paramIsEnded}`
+          : '',
       isOverdueCurrentOpInProject: paramIsCurrentOpOverdue
         ? `&isOverdueCurrentOpInProject=${paramIsCurrentOpOverdue}`
         : '',

@@ -9,8 +9,9 @@ export function useDisplayError(error: any, isError: boolean) {
   useEffect(() => {
     const showError = () => {
       const err = error as Error;
-      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-      isError && showErrorNotification(err?.data?.status, err?.data?.error);
+      if (isError) {
+        showErrorNotification(err?.data?.status, err?.data?.error);
+      }
     };
 
     showError();
