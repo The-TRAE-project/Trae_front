@@ -9,7 +9,7 @@ import {
   EmployeeReportSchema,
 } from '../../../store/apis/reports/types';
 import { selectOnlyIds } from '../../../helpers/selectOnlyIds';
-import { useExportToExcel } from '../../../helpers/hooks/useExportToExcel';
+// import { useExportToExcel } from '../../../helpers/hooks/useExportToExcel';
 import { useExportToPDF } from '../../../helpers/hooks/useExportToPDF';
 import Loader from '../../Loader';
 import FormHeader from '../FormHeader';
@@ -19,7 +19,7 @@ import {
   formatToQueryParamDate,
 } from '../helpers/formatToParamDate';
 import { useSetDefaultValue } from './helpers/useSetDefaultValue';
-import { prepareForExcel } from './helpers/prepareForExcel';
+// import { prepareForExcel } from './helpers/prepareForExcel';
 import FormBody from './FormBody';
 import TimelineListItem from './TimelineListItem';
 
@@ -63,7 +63,7 @@ const ByEmployees = () => {
     }
   );
 
-  const { isLoading: isExcelExportLoading, exportToExcel } = useExportToExcel();
+  // const { isLoading: isExcelExportLoading, exportToExcel } = useExportToExcel();
   const { isLoading: isExportPDFLoading, exportToPDF } = useExportToPDF();
 
   const handleSubmit = (values: EmployeeReportFormValues) => {
@@ -73,9 +73,10 @@ const ByEmployees = () => {
   };
 
   const handleExportToExcel = () => {
+    // eslint-disable-next-line no-useless-return
     if (!reportsByEmployees) return;
 
-    exportToExcel(prepareForExcel(reportsByEmployees), 'Отчеты по сотрудникам');
+    // exportToExcel(prepareForExcel(reportsByEmployees), 'Отчеты по сотрудникам');
   };
 
   const isReportExist =
@@ -88,7 +89,7 @@ const ByEmployees = () => {
         isReportFormed={!!reportsByEmployees}
         isFormBtnLoading={isFetching || isGetLoading}
         isFormBtnDisabled={isFetching || isGetLoading}
-        isExportToExcelLoading={isExcelExportLoading}
+        // isExportToExcelLoading={isExcelExportLoading}
         isExportToExcelBtnDisabled={!isReportExist}
         onExportToExcel={handleExportToExcel}
         isExportToPDFLoading={isExportPDFLoading}
