@@ -103,8 +103,8 @@ const Projects = () => {
       isOverdueProject: paramIsCurrentPrOverdue
         ? `&isOverdueProject=${paramIsCurrentPrOverdue}`
         : '',
-      isCurrentOpInWork: paramIsCurrentInWork
-        ? `&isCurrentOpInWork=${paramIsCurrentInWork}`
+      isCurrentOpInWorkOrReadyToAcceptance: paramIsCurrentInWork
+        ? `&isCurrentOpInWorkOrReadyToAcceptance=${paramIsCurrentInWork}`
         : '',
     });
   // TODO:

@@ -136,7 +136,7 @@ export interface FilterValues {
   isEnded?: string;
   isOnlyFirstOpWithoutAcceptance?: string;
   isOnlyLastOpInWork?: string;
-  isCurrentOpInWork?: string;
+  isCurrentOpInWorkOrReadyToAcceptance?: string;
   isOverdueProject?: string;
   isOverdueCurrentOpInProject?: string;
 }
