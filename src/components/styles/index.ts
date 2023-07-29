@@ -90,8 +90,13 @@ export const WrapperBgWhite = styled(WrapperWithBgImage)`
   background: var(--white2);
 `;
 
-export const WrapperGradientGreen = styled.section`
-  min-height: 100vh;
+export const WrapperGradientGreen = styled.section.attrs(
+  (props: { $size?: string }) => ({
+    $size: props.$size || '100vh',
+  })
+)`
+  // TODO: add 200vh options for dropdown menus
+  min-height: ${(props) => props.$size};
   background: linear-gradient(
     264.53deg,
     var(--gradient-green1) 2.46%,
@@ -422,12 +427,12 @@ export const SelectDisplayInput = styled.div`
   p {
     font-family: var(--font-roboto);
     ${(props: SelectDisplayInputProps) =>
-      props.$isFs28
-        ? css`
+    props.$isFs28
+      ? css`
             ${({ theme }) => theme.mixins.fontSize28};
             font-weight: 500;
           `
-        : css`
+      : css`
             ${({ theme }) => theme.mixins.fontSize22};
             font-weight: 400;
           `}
