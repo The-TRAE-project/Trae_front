@@ -95,7 +95,6 @@ export const WrapperGradientGreen = styled.section.attrs(
     $size: props.$size || '100vh',
   })
 )`
-  // TODO: add 200vh options for dropdown menus
   min-height: ${(props) => props.$size};
   background: linear-gradient(
     264.53deg,
