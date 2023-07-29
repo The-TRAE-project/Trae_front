@@ -22,7 +22,7 @@ const WorkTypeItem = ({ workType }: Props) => {
 
   return (
     <BgWhiteCard>
-      <Title>{workType.name}</Title>
+      <Title>{workType?.name}</Title>
       <EditButton onClick={navigateToEditingPage} type="button">
         <BsFillPencilFill />
       </EditButton>

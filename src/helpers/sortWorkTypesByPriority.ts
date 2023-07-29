@@ -12,5 +12,7 @@ export const sortWorkTypesByPriority = (data: WorkType[]) => {
 
   const restWorkTypes = data.slice(10);
 
-  return [...first10WorkTypes, shipment, ...restWorkTypes];
+  return shipment
+    ? [...first10WorkTypes, shipment, ...restWorkTypes]
+    : [...first10WorkTypes, ...restWorkTypes];
 };

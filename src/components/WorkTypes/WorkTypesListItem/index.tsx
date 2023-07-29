@@ -53,7 +53,7 @@ const WorkTypesListItem = ({ paramActive }: Props) => {
           <>
             <TwoColumnGrid>
               {sortWorkTypesByPriority(workTypes.content).map((workType) => (
-                <WorkTypeItem key={workType.id} workType={workType} />
+                <WorkTypeItem key={workType?.id} workType={workType} />
               ))}
             </TwoColumnGrid>
 
