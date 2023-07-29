@@ -11,7 +11,7 @@ const CreateProject = () => {
         name="TRAE"
         type="application"
       />
-      <WrapperGradientGreen $size="200vh">
+      <WrapperGradientGreen>
         <Container>
           <CreateForm />
         </Container>
