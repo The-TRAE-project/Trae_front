@@ -52,7 +52,7 @@ const ByProjects = () => {
   });
   const { startOfPeriod, endOfPeriod } = form.values;
 
-  const { isLoading: isExcelExportLoading, exportToExcel } = useExportToExcel();
+  //  const { isLoading: isExcelExportLoading, exportToExcel } = useExportToExcel();
   const { isLoading: isExportPDFLoading, exportToPDF } = useExportToPDF();
 
   const handleSubmit = (values: ProjectReportFormValues) => {
@@ -61,9 +61,10 @@ const ByProjects = () => {
   };
 
   const handleExportToExcel = () => {
+    // eslint-disable-next-line no-useless-return
     if (!reportsByProjects) return;
 
-    exportToExcel(reportsByProjects, 'Отчеты по проектам');
+    // exportToExcel(reportsByProjects, 'Отчеты по проектам');
   };
 
   const isReportExist =
@@ -72,14 +73,14 @@ const ByProjects = () => {
 
   const defaultTimeStart = moment().startOf('day').toDate();
   const defaultTimeEnd = moment().startOf('day').add(1, 'day').toDate();
-  console.log(defaultTimeStart, defaultTimeEnd, startOfPeriod, endOfPeriod);
+
   return (
     <FormWrapper onSubmit={form.onSubmit(handleSubmit)}>
       <FormHeader
         isReportFormed={!!reportsByProjects}
         isFormBtnLoading={isFetching || isGetLoading}
         isFormBtnDisabled={isFetching || isGetLoading}
-        isExportToExcelLoading={isExcelExportLoading}
+        // isExportToExcelLoading={isExcelExportLoading}
         isExportToExcelBtnDisabled
         onExportToExcel={handleExportToExcel}
         isExportToPDFLoading={isExportPDFLoading}
