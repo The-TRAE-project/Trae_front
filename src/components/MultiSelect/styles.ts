@@ -1,14 +1,14 @@
 import { createStyles } from '@mantine/core';
-
+// TODO: better handling of focue and dropdown position
 export const useMultiSelectStyles = createStyles(() => ({
   dropdown: {
-    top: 0,
     width: 400,
     maxHeight: 284,
     background: 'var(--white)',
     border: 'none',
     borderRadius: '0px 0px 15px 15px',
     padding: '15px 15px !important',
+    top: '359px !important',
   },
 
   input: {
@@ -18,7 +18,9 @@ export const useMultiSelectStyles = createStyles(() => ({
     borderRadius: 'var(--border-radius)',
     padding: '10px 12px',
 
-    '&:focus': {
+    '&:focus-within': {
+      borderRadius: '15px 15px 0px 0px',
+      border: 'none',
       outline: 'none',
     },
 
