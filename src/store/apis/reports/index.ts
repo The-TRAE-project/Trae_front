@@ -1,5 +1,6 @@
 import { baseApi } from '..';
 import {
+  DashboardReport,
   ParamsForEmployeesReports,
   EmployeesReport,
   ParamsForProjectsReports,
@@ -26,8 +27,16 @@ const workTypeApi = reportsTags.injectEndpoints({
         `/report/projects-for-period${query.startOfPeriod}${query.endOfPeriod}`,
       providesTags: ['Reports'],
     }),
+
+    getDashboardReport: build.query<DashboardReport, void>({
+      query: () => `/report/dashboard`,
+      providesTags: ['Reports'],
+    }),
   }),
 });
 
-export const { useGetEmployeesReportsQuery, useGetProjectsReportsQuery } =
-  workTypeApi;
+export const {
+  useGetEmployeesReportsQuery,
+  useGetProjectsReportsQuery,
+  useGetDashboardReportQuery,
+} = workTypeApi;

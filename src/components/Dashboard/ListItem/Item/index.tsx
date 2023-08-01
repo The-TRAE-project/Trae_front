@@ -1,8 +1,8 @@
+import { DashboardListItem } from '..';
 import { Quantity, Title, Wrapper } from './styles';
 
 interface Props {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  project: any;
+  project: DashboardListItem;
 }
 
 const Item = ({ project }: Props) => {

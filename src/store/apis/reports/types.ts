@@ -102,3 +102,11 @@ export interface ProjectsReport {
   dateOfReportFormation: number[];
   projectsForReportDtoList: ProjectInfo[];
 }
+
+export interface DashboardReport {
+  countEmpsOnActiveWorkingShift: number;
+  countNotEndedProjects: number;
+  countOverdueProjects: number;
+  countProjectsWithLastOpReadyToAcceptance: number;
+  countProjectsWithOverdueCurrentOperation: number;
+}
