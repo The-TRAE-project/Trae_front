@@ -1,6 +1,8 @@
 import Item from './Item';
 import { Wrapper } from './styles';
 import { useGetDashboardReportQuery } from '../../../store/apis/reports';
+import { useDisplayError } from '../../../helpers/hooks/useDisplayError';
+import Loader from '../../Loader';
 
 export type DashboardListItem = {
   id: string;
@@ -8,13 +10,20 @@ export type DashboardListItem = {
   quantity: number | undefined;
 };
 
-// TODO: add loading spinner, placeholder for failing to load and reload on timer
 const ListItem = () => {
+  // 300000 ms = 5 min
+  const extraOptions = { pollingInterval: 300000 };
+  const queryArguments = null;
+
   const {
     data: dashboardReport,
-    isLoading: isGetLoading,
+    isLoading,
     isFetching,
-  } = useGetDashboardReportQuery();
+    error,
+    isError,
+  } = useGetDashboardReportQuery(queryArguments, extraOptions);
+
+  useDisplayError(error, isError);
 
   const list: DashboardListItem[] = [
     {
@@ -46,9 +55,11 @@ const ListItem = () => {
 
   return (
     <Wrapper>
-      {list.map((item) => (
-        <Item key={item.id} project={item} />
-      ))}
+      {isLoading || isFetching ? (
+        <Loader size={80} isAbsoluteCentered />
+      ) : (
+        list.map((item) => <Item key={item.id} project={item} />)
+      )}
     </Wrapper>
   );
 };
