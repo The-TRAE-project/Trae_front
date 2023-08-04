@@ -22,6 +22,7 @@ import { useSetDefaultValue } from './helpers/useSetDefaultValue';
 // import { prepareForExcel } from './helpers/prepareForExcel';
 import FormBody from './FormBody';
 import TimelineListItem from './TimelineListItem';
+import ReportTable from './ReportTable';
 
 const ByEmployees = () => {
   const PDFRef = useRef<HTMLDivElement | null>(null);
@@ -90,11 +91,11 @@ const ByEmployees = () => {
         isFormBtnLoading={isFetching || isGetLoading}
         isFormBtnDisabled={isFetching || isGetLoading}
         // isExportToExcelLoading={isExcelExportLoading}
+        // onExportToPDF={() => exportToPDF(PDFRef, 'Отчеты по сотрудникам')}
         isExportToExcelBtnDisabled={!isReportExist}
         onExportToExcel={handleExportToExcel}
         isExportToPDFLoading={isExportPDFLoading}
         isExportToPDFBtnDisabled={!isReportExist}
-        onExportToPDF={() => exportToPDF(PDFRef, 'Отчеты по сотрудникам')}
       />
 
       <Stack spacing={40}>
@@ -107,7 +108,7 @@ const ByEmployees = () => {
           endDate &&
           employeeIds?.length &&
           (!isGetLoading && !isFetching && !!reportsByEmployees ? (
-            <div ref={PDFRef}>
+            <>
               <TimelineListItem
                 defaultTimeStart={startOfPeriod as Date}
                 defaultTimeEnd={endOfPeriod as Date}
@@ -119,7 +120,18 @@ const ByEmployees = () => {
                   reportsByEmployees.employeeIdTotalPartsDtoList
                 }
               />
-            </div>
+              <ReportTable
+                defaultTimeStart={startOfPeriod as Date}
+                defaultTimeEnd={endOfPeriod as Date}
+                employees={reportsByEmployees.shortEmployeeDtoList}
+                employeeWorkingShifts={
+                  reportsByEmployees.workingShiftEmployeeDtoList
+                }
+                employeeTotalShifts={
+                  reportsByEmployees.employeeIdTotalPartsDtoList
+                }
+              />
+            </>
           ) : (
             <Loader size={80} isAbsoluteCentered />
           ))}

@@ -8,8 +8,6 @@ import Timeline, {
 } from 'react-calendar-timeline';
 import 'react-calendar-timeline/lib/Timeline.css';
 import dayjs from 'dayjs';
-import moment from 'moment';
-import 'moment/locale/ru';
 
 import { convertToDate } from '../../../../helpers/convertToDate';
 import {
@@ -26,8 +24,6 @@ import {
   EmployeeTitle,
   Wrapper,
 } from './styles';
-
-moment().locale('ru');
 
 interface Props {
   defaultTimeStart: Date;
@@ -107,6 +103,13 @@ const TimelineListItem = ({
     return <ItemRenderer props={props} />;
   };
 
+  console.log(
+    defaultTimeStart,
+    defaultTimeEnd,
+    employees,
+    employeeWorkingShifts,
+    employeeTotalShifts
+  );
   return (
     <Wrapper>
       <Timeline
