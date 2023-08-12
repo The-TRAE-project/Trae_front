@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import { useForm, zodResolver } from '@mantine/form';
 import { Stack } from '@mantine/core';
 
@@ -9,8 +9,7 @@ import {
   EmployeeReportSchema,
 } from '../../../store/apis/reports/types';
 import { selectOnlyIds } from '../../../helpers/selectOnlyIds';
-// import { useExportToExcel } from '../../../helpers/hooks/useExportToExcel';
-import { useExportToPDF } from '../../../helpers/hooks/useExportToPDF';
+import { useExportToExcel } from '../../../helpers/hooks/useExportToExcel';
 import Loader from '../../Loader';
 import FormHeader from '../FormHeader';
 import { FormWrapper } from '../../styles';
@@ -19,13 +18,11 @@ import {
   formatToQueryParamDate,
 } from '../helpers/formatToParamDate';
 import { useSetDefaultValue } from './helpers/useSetDefaultValue';
-// import { prepareForExcel } from './helpers/prepareForExcel';
+import { prepareForExcel } from './helpers/prepareForExcel';
 import FormBody from './FormBody';
-import TimelineListItem from './TimelineListItem';
 import ReportTable from './ReportTable';
 
 const ByEmployees = () => {
-  const PDFRef = useRef<HTMLDivElement | null>(null);
   const [startDate, setStartDate] = useState<string | null>(null);
   const [endDate, setEndDate] = useState<string | null>(null);
   const [employeeIds, setEmployeeIds] = useState<number[] | null>([]);
@@ -64,8 +61,7 @@ const ByEmployees = () => {
     }
   );
 
-  // const { isLoading: isExcelExportLoading, exportToExcel } = useExportToExcel();
-  const { isLoading: isExportPDFLoading, exportToPDF } = useExportToPDF();
+  const { isLoading: isExcelExportLoading, exportToExcel } = useExportToExcel();
 
   const handleSubmit = (values: EmployeeReportFormValues) => {
     setStartDate(formatToQueryParamDate(values.startOfPeriod));
@@ -74,10 +70,9 @@ const ByEmployees = () => {
   };
 
   const handleExportToExcel = () => {
-    // eslint-disable-next-line no-useless-return
     if (!reportsByEmployees) return;
 
-    // exportToExcel(prepareForExcel(reportsByEmployees), 'Отчеты по сотрудникам');
+    exportToExcel(prepareForExcel(reportsByEmployees), 'Отчеты по сотрудникам');
   };
 
   const isReportExist =
@@ -90,11 +85,9 @@ const ByEmployees = () => {
         isReportFormed={!!reportsByEmployees}
         isFormBtnLoading={isFetching || isGetLoading}
         isFormBtnDisabled={isFetching || isGetLoading}
-        // isExportToExcelLoading={isExcelExportLoading}
-        // onExportToPDF={() => exportToPDF(PDFRef, 'Отчеты по сотрудникам')}
+        isExportToExcelLoading={isExcelExportLoading}
         isExportToExcelBtnDisabled={!isReportExist}
         onExportToExcel={handleExportToExcel}
-        isExportToPDFLoading={isExportPDFLoading}
         isExportToPDFBtnDisabled={!isReportExist}
       />
 
@@ -108,30 +101,17 @@ const ByEmployees = () => {
           endDate &&
           employeeIds?.length &&
           (!isGetLoading && !isFetching && !!reportsByEmployees ? (
-            <>
-              <TimelineListItem
-                defaultTimeStart={startOfPeriod as Date}
-                defaultTimeEnd={endOfPeriod as Date}
-                employees={reportsByEmployees.shortEmployeeDtoList}
-                employeeWorkingShifts={
-                  reportsByEmployees.workingShiftEmployeeDtoList
-                }
-                employeeTotalShifts={
-                  reportsByEmployees.employeeIdTotalPartsDtoList
-                }
-              />
-              <ReportTable
-                defaultTimeStart={startOfPeriod as Date}
-                defaultTimeEnd={endOfPeriod as Date}
-                employees={reportsByEmployees.shortEmployeeDtoList}
-                employeeWorkingShifts={
-                  reportsByEmployees.workingShiftEmployeeDtoList
-                }
-                employeeTotalShifts={
-                  reportsByEmployees.employeeIdTotalPartsDtoList
-                }
-              />
-            </>
+            <ReportTable
+              defaultTimeStart={startOfPeriod as Date}
+              defaultTimeEnd={endOfPeriod as Date}
+              employees={reportsByEmployees.shortEmployeeDtoList}
+              employeeWorkingShifts={
+                reportsByEmployees.workingShiftEmployeeDtoList
+              }
+              employeeTotalShifts={
+                reportsByEmployees.employeeIdTotalPartsDtoList
+              }
+            />
           ) : (
             <Loader size={80} isAbsoluteCentered />
           ))}

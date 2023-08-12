@@ -1,20 +1,35 @@
-import { useState, useEffect } from 'react';
+/* eslint-disable react/no-unused-prop-types */
 import dayjs from 'dayjs';
-
 import {
+  CellContext,
   ColumnDef,
+  createColumnHelper,
   flexRender,
   getCoreRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { convertToDate } from '../../../../helpers/convertToDate';
+import { useMemo } from 'react';
 import {
   ShortEmployeeInfo,
   EmployeeWorkingShiftInfo,
   EmployeeTotalShiftInfo,
 } from '../../../../store/apis/reports/types';
-
-import { Wrapper } from './styles';
+import {
+  DateTitle,
+  EmployeeTitle,
+  HorizontalDivider,
+  LeftSideWrapper,
+  Table,
+  TableCell,
+  TableCellContent,
+  TableDayHeader,
+  TableMonthHeader,
+  TableRow,
+  Wrapper,
+} from './styles';
+import { getDatesBetween } from '../helpers/getDatesBetween';
+import { convertMonthToString } from '../helpers/convertMonthToString';
+import { convertToDate } from '../../../../helpers/convertToDate';
 
 interface Props {
   defaultTimeStart: Date;
@@ -24,203 +39,174 @@ interface Props {
   employeeTotalShifts: EmployeeTotalShiftInfo[];
 }
 
-interface TimeLineGroup {
-  id: string;
-  title: string;
-  rightTitle: string;
-  bgColor: string;
+interface TableData {
+  employees: string;
+  totalShifts: number;
+  [key: string]: unknown;
 }
 
-interface TimeLineItem {
-  id: string;
-  group: string;
-  title: string;
-  start: number;
-  end: number;
-  className: string;
+function constructTableData(data: Props) {
+  const result = Array.from(data.employees).map((emp) => {
+    const { id: currentId } = emp;
+    const name = `${emp.firstName} ${emp.lastName}`;
+    const totalShifts = data.employeeTotalShifts.find(
+      (shifts) => shifts.id === currentId
+    )?.totalPartsOfShift;
+    const shifts = getDatesBetween(
+      data.defaultTimeStart,
+      data.defaultTimeEnd
+    ).map((d) => {
+      const currentShift = data.employeeWorkingShifts.find(
+        (shift) =>
+          shift.employeeId === currentId && convertToDate(shift.shiftDate) === d
+      );
+      return [
+        d,
+        {
+          shift: currentShift?.partOfShift ?? '',
+          closed: currentShift?.autoClosed,
+        },
+      ];
+    });
+
+    const row: TableData = Object.fromEntries(shifts);
+
+    row.employees = name;
+    row.totalShifts = totalShifts ?? 0;
+
+    return row;
+  });
+
+  return result;
 }
 
-const keys = {
-  groupIdKey: 'id',
-  groupTitleKey: 'title',
-  groupRightTitleKey: 'rightTitle',
-  itemIdKey: 'id',
-  itemTitleKey: 'title',
-  itemDivTitleKey: 'title',
-  itemGroupKey: 'group',
-  itemTimeStartKey: 'start',
-  itemTimeEndKey: 'end',
-  groupLabelKey: 'title',
-};
+function constructTableColumns(dateStart: Date, dateEnd: Date) {
+  function constructDateColumns() {
+    let currentDate = dayjs(dateStart).clone();
 
-const dataTestProps: Props[] = [
-  {
-    defaultTimeStart: new Date(
-      'Sat Jul 29 2023 00:00:00 GMT+0300 (Moscow Standard Time)'
-    ),
-    defaultTimeEnd: new Date(
-      'Wed Aug 04 2023 00:00:00 GMT+0300 (Moscow Standard Time)'
-    ),
-    employees: [
-      { id: 5, firstName: 'Никита', lastName: 'Бондаренко' },
-      { id: 7, firstName: 'Петр', lastName: 'Абраменко' },
-      { id: 8, firstName: 'ТЕСТОВИЧНЫЙ', lastName: 'ТЕСТОВЧИНКО' },
-    ],
-    employeeWorkingShifts: [
-      {
-        autoClosed: true,
-        employeeId: 5,
-        partOfShift: 0.4,
-        shiftDate: [2023, 8, 2],
-      },
-      {
-        autoClosed: true,
-        employeeId: 8,
-        partOfShift: 0.4,
-        shiftDate: [2023, 8, 1],
-      },
-      {
-        autoClosed: false,
-        employeeId: 8,
-        partOfShift: 1.6,
-        shiftDate: [2023, 7, 20],
-      },
-      {
-        autoClosed: false,
-        employeeId: 7,
-        partOfShift: 0,
-        shiftDate: [2023, 7, 20],
-      },
-    ],
-    employeeTotalShifts: [
-      { id: 5, totalPartsOfShift: 0.4 },
-      { id: 7, totalPartsOfShift: 0 },
-      { id: 8, totalPartsOfShift: 2 },
-    ],
-  },
-];
+    const result: ColumnDef<TableData>[] = [];
 
-const dataTest: any = [
-  {
-    name: 'Никита Бондаренко',
-    totalShifts: 0.4,
-  },
-  {
-    name: 'Петр Абраменко',
-    totalShifts: 0,
-  },
-  {
-    name: 'ТЕСТОВИЧНЫЙ ТЕСТОВЧИНКО',
-    totalShifts: 2,
-  },
-];
+    while (!currentDate.isAfter(dateEnd, 'day')) {
+      const currentMonth = currentDate.month();
+      const currentYear = currentDate.year();
+      result.push({
+        id: `${currentYear}-${currentMonth}`,
+        header: () => (
+          <TableMonthHeader>
+            {convertMonthToString(currentMonth)}
+          </TableMonthHeader>
+        ),
+        columns: new Array(
+          currentMonth === dateEnd.getMonth() &&
+            currentYear === dateEnd.getFullYear()
+            ? dateEnd.getDate()
+            : currentDate.daysInMonth() - currentDate.date() + 1
+        )
+          .fill(0)
+          // eslint-disable-next-line @typescript-eslint/no-loop-func
+          .map(() => {
+            const currentDay = currentDate.date();
+            const currentCell = {
+              accessorKey: currentDate.format('YYYY-MM-DD'),
+              header: () => <TableDayHeader>{currentDay}</TableDayHeader>,
+              // TODO: make better type
+              cell: (
+                info: CellContext<TableData, { closed: boolean; shift: number }>
+              ) => {
+                return (
+                  <TableCellContent
+                    className={info.getValue().closed ? 'autoClosed' : ''}
+                  >
+                    {info.getValue().shift}
+                  </TableCellContent>
+                );
+              },
+            };
 
-const columnsTest: ColumnDef<Props>[] = [
-  {
-    header: 'Сотрудники',
-    cell: (info) => info.getValue(),
-  },
-  {
-    // replace by function
-    header: 'Июль',
-    columns: new Array(31).fill(0).map<any>((_, index) => {
-      return {
-        accessorKey: `Июль ${index + 1}`,
-        header: index + 1,
-        cell: (info: any) => info.getValue(),
-      };
+            currentDate = currentDate.add(1, 'day');
+            return currentCell;
+          }),
+      });
+    }
+
+    return result;
+  }
+
+  const columnHelper = createColumnHelper<TableData>();
+
+  const columns = [
+    columnHelper.accessor('employees', {
+      header: () => {
+        return (
+          <LeftSideWrapper>
+            <HorizontalDivider />
+            <DateTitle>Дата</DateTitle>
+            <EmployeeTitle>Сотрудник</EmployeeTitle>
+          </LeftSideWrapper>
+        );
+      },
+      id: 'employees',
     }),
-  },
-  {
-    // replace by function
-    header: 'Август',
-    columns: new Array(31).fill(0).map<any>((_, index) => {
-      return {
-        accessorKey: `Август ${index + 1}`,
-        header: index + 1,
-        cell: (info: any) => info.getValue(),
-      };
+    columnHelper.group({
+      header: '',
+      id: 'shifts',
+      columns: constructDateColumns(),
     }),
-  },
-  {
-    header: 'Итого смен',
-    cell: (info) => info.getValue(),
-  },
-];
+    columnHelper.accessor('totalShifts', {
+      header: 'Итого смен',
+      id: 'totalShifts',
+    }),
+  ];
 
-const ReportTable = ({
-  defaultTimeStart,
-  defaultTimeEnd,
-  employees,
-  employeeWorkingShifts,
-  employeeTotalShifts,
-}: Props) => {
-  useEffect(() => {
-    const modifiedGroups = employees.map((item) => ({
-      id: String(item.id),
-      title: `${item.firstName} ${item.lastName}`,
-      rightTitle: `${item.firstName} ${item.lastName}`,
-      bgColor: 'var(--white)',
-    }));
+  return columns;
+}
 
-    //  setGroups(modifiedGroups);
-
-    const modifiedItems = employeeWorkingShifts.map((item) => ({
-      id: String(item.employeeId),
-      group: String(item.employeeId),
-      title: `${item.partOfShift}`,
-      start: convertToDate(item.shiftDate).getTime(),
-      end: dayjs(convertToDate(item.shiftDate))
-        .add(24, 'hours')
-        .toDate()
-        .getTime(),
-      className: item.autoClosed ? 'shift-day auto-closed' : 'shift-day',
-    }));
-    // setItems(modifiedItems);
-  }, [employees, employeeWorkingShifts]);
+const ReportTable = (props: Props) => {
+  const data = useMemo(() => constructTableData(props), [props]);
+  const columns = useMemo(
+    // eslint-disable-next-line react/destructuring-assignment
+    () => constructTableColumns(props.defaultTimeStart, props.defaultTimeEnd),
+    [props]
+  );
 
   const table = useReactTable({
-    data: dataTest,
-    columns: columnsTest,
+    data,
+    columns,
     getCoreRowModel: getCoreRowModel(),
   });
 
   return (
-    <table>
-      <thead>
-        {table.getHeaderGroups().map((headerGroup) => (
-          <tr key={headerGroup.id}>
-            {headerGroup.headers.map((header) => (
-              <th key={header.id} colSpan={header.colSpan}>
-                {header.isPlaceholder
-                  ? null
-                  : flexRender(
-                    header.column.columnDef.header,
-                    header.getContext()
-                  )}
-                <div
-                  {...{
-                    onMouseDown: header.getResizeHandler(),
-                    onTouchStart: header.getResizeHandler(),
-                  }}
-                />
-              </th>
-            ))}
-          </tr>
-        ))}
-      </thead>
-      <tbody>
-        {table.getRowModel().rows.map((row) => (
-          <tr key={row.id}>
-            {row.getVisibleCells().map((cell) => (
-              <td key={cell.id}>
-                {flexRender(cell.column.columnDef.cell, cell.getContext())}
-              </td>
-            ))}
-          </tr>
-        ))}
-      </tbody>
-    </table>
+    <Wrapper>
+      <Table>
+        <thead>
+          {table.getHeaderGroups().map((headerGroup) => (
+            <tr key={headerGroup.id}>
+              {headerGroup.headers.map((header) => (
+                <th key={header.id} colSpan={header.colSpan}>
+                  {header.isPlaceholder
+                    ? null
+                    : flexRender(
+                      header.column.columnDef.header,
+                      header.getContext()
+                    )}
+                </th>
+              ))}
+            </tr>
+          ))}
+        </thead>
+        <tbody>
+          {table.getRowModel().flatRows.map((row) => (
+            <TableRow key={row.id}>
+              {row.getAllCells().map((cell) => (
+                <TableCell key={cell.id}>
+                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                </TableCell>
+              ))}
+            </TableRow>
+          ))}
+        </tbody>
+      </Table>
+    </Wrapper>
   );
 };
 
