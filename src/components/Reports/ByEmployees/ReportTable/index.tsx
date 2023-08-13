@@ -110,19 +110,17 @@ export function constructTableColumns(dateStart: Date, dateEnd: Date) {
             const currentDay = currentDate.date();
             const currentCell = {
               accessorKey: currentDate.format('YYYY-MM-DD'),
-              header: () => <TableDayHeader>{currentDay} </TableDayHeader>,
+              header: () => <TableDayHeader>{currentDay}</TableDayHeader>,
               // TODO: make better type
               cell: (
                 info: CellContext<TableData, { closed: boolean; shift: number }>
-              ) => {
-                return (
-                  <TableCellContent
-                    className={info.getValue().closed ? 'autoClosed' : ''}
-                  >
-                    {info.getValue().shift}
-                  </TableCellContent>
-                );
-              },
+              ) => (
+                <TableCellContent
+                  className={info.getValue().closed ? 'autoClosed' : ''}
+                >
+                  {info.getValue().shift}
+                </TableCellContent>
+              ),
             };
 
             currentDate = currentDate.add(1, 'day');
@@ -138,15 +136,13 @@ export function constructTableColumns(dateStart: Date, dateEnd: Date) {
 
   const columns = [
     columnHelper.accessor('employees', {
-      header: () => {
-        return (
-          <LeftSideWrapper>
-            <HorizontalDivider />
-            <DateTitle>Дата</DateTitle>
-            <EmployeeTitle>Сотрудник</EmployeeTitle>
-          </LeftSideWrapper>
-        );
-      },
+      header: () => (
+        <LeftSideWrapper>
+          <HorizontalDivider />
+          <DateTitle>Дата</DateTitle>
+          <EmployeeTitle>Сотрудник</EmployeeTitle>
+        </LeftSideWrapper>
+      ),
       id: 'employees',
     }),
     columnHelper.group({
