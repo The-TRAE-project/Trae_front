@@ -47,7 +47,7 @@ const FormHeader = ({
           <>
             <DashedOrangeButton
               onClick={onExportToExcel}
-              disabled={isExportToExcelLoading || isExportToExcelBtnDisabled}
+              disabled // {isExportToExcelLoading || isExportToExcelBtnDisabled}
               type="button"
               $width={258}
             >
