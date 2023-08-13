@@ -52,7 +52,7 @@ const ByProjects = () => {
   });
   const { startOfPeriod, endOfPeriod } = form.values;
 
-  //  const { isLoading: isExcelExportLoading, exportToExcel } = useExportToExcel();
+  const { isLoading: isExcelExportLoading, exportToExcel } = useExportToExcel();
   const { isLoading: isExportPDFLoading, exportToPDF } = useExportToPDF();
 
   const handleSubmit = (values: ProjectReportFormValues) => {
@@ -61,10 +61,9 @@ const ByProjects = () => {
   };
 
   const handleExportToExcel = () => {
-    // eslint-disable-next-line no-useless-return
     if (!reportsByProjects) return;
 
-    // exportToExcel(reportsByProjects, 'Отчеты по проектам');
+    exportToExcel(reportsByProjects, 'Отчеты по проектам');
   };
 
   const isReportExist =
@@ -80,7 +79,7 @@ const ByProjects = () => {
         isReportFormed={!!reportsByProjects}
         isFormBtnLoading={isFetching || isGetLoading}
         isFormBtnDisabled={isFetching || isGetLoading}
-        // isExportToExcelLoading={isExcelExportLoading}
+        isExportToExcelLoading={isExcelExportLoading}
         isExportToExcelBtnDisabled
         onExportToExcel={handleExportToExcel}
         isExportToPDFLoading={isExportPDFLoading}

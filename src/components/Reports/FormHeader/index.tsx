@@ -57,7 +57,7 @@ const FormHeader = ({
                 <span>Экспорт в Excel</span>
               )}
             </DashedOrangeButton>
-            <DashedOrangeButton
+            {/* <DashedOrangeButton
               onClick={onExportToPDF}
               disabled={isExportToPDFLoading || isExportToPDFBtnDisabled}
               type="button"
@@ -68,7 +68,7 @@ const FormHeader = ({
               ) : (
                 <span>Экспорт в PDF</span>
               )}
-            </DashedOrangeButton>
+            </DashedOrangeButton> */}
           </>
         )}
 

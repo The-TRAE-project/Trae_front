@@ -426,12 +426,12 @@ export const SelectDisplayInput = styled.div`
   p {
     font-family: var(--font-roboto);
     ${(props: SelectDisplayInputProps) =>
-    props.$isFs28
-      ? css`
+      props.$isFs28
+        ? css`
             ${({ theme }) => theme.mixins.fontSize28};
             font-weight: 500;
           `
-      : css`
+        : css`
             ${({ theme }) => theme.mixins.fontSize22};
             font-weight: 400;
           `}

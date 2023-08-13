@@ -1,22 +1,13 @@
 import dayjs from 'dayjs';
 
-import { convertToDate } from '../../../../helpers/convertToDate';
+// import { convertToDate } from '../../../../helpers/convertToDate';
 import { EmployeesReport } from '../../../../store/apis/reports/types';
-
-export const getDatesBetween = (startDate: Date, endDate: Date) => {
-  const currentDate = new Date(startDate.getTime());
-  const dates = [];
-  while (currentDate <= endDate) {
-    dates.push(dayjs(new Date(currentDate)).format('DD.MM.YYYY'));
-    currentDate.setDate(currentDate.getDate() + 1);
-  }
-  return dates;
-};
+import { getDatesBetween } from './getDatesBetween';
 
 export const prepareForExcel = (reportsByEmployees: EmployeesReport) => {
   const dates = getDatesBetween(
-    convertToDate(reportsByEmployees.startPeriod),
-    convertToDate(reportsByEmployees.endPeriod)
+    new Date(reportsByEmployees.startPeriod),
+    new Date(reportsByEmployees.endPeriod)
   );
 
   const header = ['Сотрудник', ...dates, 'Итог Смена'];
@@ -36,8 +27,8 @@ export const prepareForExcel = (reportsByEmployees: EmployeesReport) => {
     // eslint-disable-next-line no-plusplus
     for (let j = 0; j < dates.length; j++) {
       if (
-        dayjs(dates[j]).toDate().getTime() ===
-        convertToDate(employeesWorkingShits[j]?.shiftDate).getTime()
+        dayjs(dates[j]).toDate().getTime()
+        // === convertToDate(employeesWorkingShits[j]?.shiftDate).getTime()
       ) {
         const workingShift = employeesWorkingShits[j]?.autoClosed
           ? `${employeesWorkingShits[j]?.partOfShift}(Авто Закрыто)`

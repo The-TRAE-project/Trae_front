@@ -19,9 +19,11 @@ import {
   EmployeeTitle,
   HorizontalDivider,
   LeftSideWrapper,
+  ScrollWrapper,
   Table,
   TableCell,
   TableCellContent,
+  TableCellHeader,
   TableDayHeader,
   TableMonthHeader,
   TableRow,
@@ -45,7 +47,7 @@ interface TableData {
   [key: string]: unknown;
 }
 
-function constructTableData(data: Props) {
+export function constructTableData(data: Props) {
   const result = Array.from(data.employees).map((emp) => {
     const { id: currentId } = emp;
     const name = `${emp.firstName} ${emp.lastName}`;
@@ -80,7 +82,7 @@ function constructTableData(data: Props) {
   return result;
 }
 
-function constructTableColumns(dateStart: Date, dateEnd: Date) {
+export function constructTableColumns(dateStart: Date, dateEnd: Date) {
   function constructDateColumns() {
     let currentDate = dayjs(dateStart).clone();
 
@@ -108,7 +110,7 @@ function constructTableColumns(dateStart: Date, dateEnd: Date) {
             const currentDay = currentDate.date();
             const currentCell = {
               accessorKey: currentDate.format('YYYY-MM-DD'),
-              header: () => <TableDayHeader>{currentDay}</TableDayHeader>,
+              header: () => <TableDayHeader>{currentDay} </TableDayHeader>,
               // TODO: make better type
               cell: (
                 info: CellContext<TableData, { closed: boolean; shift: number }>
@@ -177,35 +179,37 @@ const ReportTable = (props: Props) => {
 
   return (
     <Wrapper>
-      <Table>
-        <thead>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <tr key={headerGroup.id}>
-              {headerGroup.headers.map((header) => (
-                <th key={header.id} colSpan={header.colSpan}>
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(
-                      header.column.columnDef.header,
-                      header.getContext()
-                    )}
-                </th>
-              ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody>
-          {table.getRowModel().flatRows.map((row) => (
-            <TableRow key={row.id}>
-              {row.getAllCells().map((cell) => (
-                <TableCell key={cell.id}>
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </TableCell>
-              ))}
-            </TableRow>
-          ))}
-        </tbody>
-      </Table>
+      <ScrollWrapper>
+        <Table>
+          <thead>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <tr key={headerGroup.id}>
+                {headerGroup.headers.map((header) => (
+                  <TableCellHeader key={header.id} colSpan={header.colSpan}>
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                        header.column.columnDef.header,
+                        header.getContext()
+                      )}
+                  </TableCellHeader>
+                ))}
+              </tr>
+            ))}
+          </thead>
+          <tbody>
+            {table.getRowModel().flatRows.map((row) => (
+              <TableRow key={row.id}>
+                {row.getAllCells().map((cell) => (
+                  <TableCell key={cell.id}>
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))}
+          </tbody>
+        </Table>
+      </ScrollWrapper>
     </Wrapper>
   );
 };

@@ -1,14 +1,17 @@
 import styled from 'styled-components';
 
 export const Wrapper = styled.section`
-  width: 95%;
-  overflow: auto;
+  width: 100%;
   max-height: 1000px;
   background: var(--white);
   border-radius: var(--border-radius) var(--border-radius) 0 0;
-  // padding: 36px 0px 10px 8px;
+  padding: 36px 8px 10px 8px;
   display: flex;
   align-items: stretch;
+`;
+
+export const ScrollWrapper = styled.div`
+  overflow: auto;
 `;
 
 export const Table = styled.table`
@@ -85,6 +88,28 @@ export const TableCell = styled.td`
   }
 `;
 
+export const TableCellHeader = styled.th`
+  padding: 0 1px;
+
+  :nth-child(2) {
+    padding: 0 1px 0 0;
+  }
+  :nth-last-child(2) {
+    padding: 0 0 0 1px;
+  }
+  :first-child {
+    border-right: 2px solid var(--green);
+    border-left: none;
+    padding: 0;
+  }
+
+  :last-child {
+    border-left: 2px solid var(--green);
+    border-right: none;
+    padding: 0;
+  }
+`;
+
 export const TableMonthHeader = styled.div`
   height: 100%;
   font-weight: 700;
@@ -102,8 +127,10 @@ export const TableMonthHeader = styled.div`
 
 export const TableDayHeader = styled.div`
   margin: auto;
-  min-height: 40px;
+  height: 47px;
+  line-height: 47px;
   text-align: center;
+  vertical-align: middle;
   font-family: var(--font-roboto);
   font-size: 20px;
   font-weight: 500;
@@ -114,16 +141,17 @@ export const TableDayHeader = styled.div`
 
 export const LeftSideWrapper = styled.div`
   position: relative;
+  width: 191px;
 `;
 
 export const HorizontalDivider = styled.div`
   position: absolute;
-  top: -16px;
-  left: 5px;
+  top: -9px;
+  left: 6px;
   width: 100%;
   height: 2px;
   background: var(--green);
-  transform: rotate(15deg);
+  transform: rotate(20deg);
 `;
 
 export const Title = styled.p`
@@ -135,12 +163,12 @@ export const Title = styled.p`
 
 export const DateTitle = styled(Title)`
   position: absolute;
-  top: -40px;
+  top: -30px;
   right: 23px;
 `;
 
 export const EmployeeTitle = styled(Title)`
   position: absolute;
-  bottom: -10px;
+  bottom: -17px;
   left: 0;
 `;

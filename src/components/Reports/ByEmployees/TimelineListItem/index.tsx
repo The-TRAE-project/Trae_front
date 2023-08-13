@@ -9,7 +9,7 @@ import Timeline, {
 import 'react-calendar-timeline/lib/Timeline.css';
 import dayjs from 'dayjs';
 
-import { convertToDate } from '../../../../helpers/convertToDate';
+// import { convertToDate } from '../../../../helpers/convertToDate';
 import {
   ShortEmployeeInfo,
   EmployeeWorkingShiftInfo,
@@ -87,11 +87,11 @@ const TimelineListItem = ({
       id: String(item.employeeId),
       group: String(item.employeeId),
       title: `${item.partOfShift}`,
-      start: convertToDate(item.shiftDate).getTime(),
-      end: dayjs(convertToDate(item.shiftDate))
-        .add(24, 'hours')
-        .toDate()
-        .getTime(),
+      // start: convertToDate(item.shiftDate).getTime(),
+      // end: dayjs(convertToDate(item.shiftDate))
+      //   .add(24, 'hours')
+      //   .toDate()
+      //   .getTime(),
       className: item.autoClosed ? 'shift-day auto-closed' : 'shift-day',
     }));
     setItems(modifiedItems);
@@ -103,13 +103,6 @@ const TimelineListItem = ({
     return <ItemRenderer props={props} />;
   };
 
-  console.log(
-    defaultTimeStart,
-    defaultTimeEnd,
-    employees,
-    employeeWorkingShifts,
-    employeeTotalShifts
-  );
   return (
     <Wrapper>
       <Timeline
