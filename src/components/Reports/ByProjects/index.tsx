@@ -1,7 +1,6 @@
 import { useState, useRef } from 'react';
 import { useForm, zodResolver } from '@mantine/form';
 import { Stack } from '@mantine/core';
-import moment from 'moment';
 
 import { useGetProjectsReportsQuery } from '../../../store/apis/reports';
 import {
@@ -49,7 +48,7 @@ const ByProjects = () => {
       return errors;
     },
   });
-  const { startOfPeriod, endOfPeriod } = form.values;
+  // const { startOfPeriod, endOfPeriod } = form.values;
 
   const { isLoading: isExcelExportLoading, exportToExcel } = useExportToExcel();
   const { isLoading: isExportPDFLoading, exportToPDF } = useExportToPDF();
@@ -68,9 +67,6 @@ const ByProjects = () => {
   const isReportExist =
     !!reportsByProjects &&
     reportsByProjects.projectsForReportDtoList.length > 0;
-
-  const defaultTimeStart = moment().startOf('day').toDate();
-  const defaultTimeEnd = moment().startOf('day').add(1, 'day').toDate();
 
   return (
     <FormWrapper onSubmit={form.onSubmit(handleSubmit)}>
