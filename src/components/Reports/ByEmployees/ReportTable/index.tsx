@@ -31,7 +31,7 @@ import {
 } from './styles';
 import { getDatesBetween } from '../helpers/getDatesBetween';
 import { convertMonthToString } from '../helpers/convertMonthToString';
-import { convertToDate } from '../../../../helpers/convertToDate';
+import { convertToString } from '../helpers/convertToString';
 
 interface Props {
   defaultTimeStart: Date;
@@ -60,7 +60,8 @@ export function constructTableData(data: Props) {
     ).map((d) => {
       const currentShift = data.employeeWorkingShifts.find(
         (shift) =>
-          shift.employeeId === currentId && convertToDate(shift.shiftDate) === d
+          shift.employeeId === currentId &&
+          convertToString(shift.shiftDate) === d
       );
       return [
         d,

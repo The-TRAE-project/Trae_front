@@ -90,7 +90,7 @@ const UpdateEndDateForm = () => {
   const isDisabled =
     project?.endDateInContract &&
     convertToDate(project?.endDateInContract as number[]).getTime() ===
-      form.values.newPlannedAndContractEndDate?.getTime();
+    form.values.newPlannedAndContractEndDate?.getTime();
 
   return (
     <>
