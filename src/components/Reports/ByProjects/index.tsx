@@ -18,7 +18,6 @@ import {
 } from '../helpers/formatToParamDate';
 import FormHeader from '../FormHeader';
 import FormBody from './FormBody';
-import TimelineListItem from './TimelineListItem';
 
 const ByProjects = () => {
   const PDFRef = useRef<HTMLDivElement | null>(null);
@@ -93,13 +92,7 @@ const ByProjects = () => {
         {startDate &&
           endDate &&
           (!isGetLoading && !isFetching && !!isReportExist ? (
-            <div ref={PDFRef}>
-              <TimelineListItem
-                defaultTimeStart={defaultTimeStart}
-                defaultTimeEnd={defaultTimeEnd}
-                projects={reportsByProjects.projectsForReportDtoList}
-              />
-            </div>
+            <div ref={PDFRef}>Test</div>
           ) : (
             <Loader size={80} isAbsoluteCentered />
           ))}
