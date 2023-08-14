@@ -33,7 +33,7 @@ const ProjectListItem = ({
   };
 
   const nextSlide = () => {
-    if (page + 1 !== projects?.totalPages) {
+    if (projects !== undefined && page < projects.totalPages) {
       setPage((prevPage) => prevPage + 1);
     }
   };
