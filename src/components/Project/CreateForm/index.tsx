@@ -24,14 +24,6 @@ const CreateForm = () => {
 
   const navigate = useNavigate();
   const form = useForm<CreateProjectFormValues>({
-    initialValues: {
-      customer: '',
-      name: '',
-      number: 0,
-      operations: [],
-      comment: '',
-      plannedEndDate: new Date(),
-    },
     validate: (values) => {
       const resolver = zodResolver(CreateProjectSchema);
       const errors = resolver(values);
