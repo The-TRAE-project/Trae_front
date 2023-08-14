@@ -88,7 +88,6 @@ const ByEmployees = () => {
         isExportToExcelLoading={isExcelExportLoading}
         isExportToExcelBtnDisabled={!isReportExist}
         onExportToExcel={handleExportToExcel}
-        isExportToPDFBtnDisabled={!isReportExist}
       />
 
       <Stack spacing={40}>

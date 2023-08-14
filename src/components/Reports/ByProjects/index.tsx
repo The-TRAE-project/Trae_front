@@ -8,7 +8,6 @@ import {
   ProjectReportSchema,
 } from '../../../store/apis/reports/types';
 import { useExportToExcel } from '../../../helpers/hooks/useExportToExcel';
-import { useExportToPDF } from '../../../helpers/hooks/useExportToPDF';
 import { FormWrapper } from '../../styles';
 import Loader from '../../Loader';
 import {
@@ -19,7 +18,6 @@ import FormHeader from '../FormHeader';
 import FormBody from './FormBody';
 
 const ByProjects = () => {
-  const PDFRef = useRef<HTMLDivElement | null>(null);
   const [startDate, setStartDate] = useState<string | null>(null);
   const [endDate, setEndDate] = useState<string | null>(null);
 
@@ -51,7 +49,6 @@ const ByProjects = () => {
   // const { startOfPeriod, endOfPeriod } = form.values;
 
   const { isLoading: isExcelExportLoading, exportToExcel } = useExportToExcel();
-  const { isLoading: isExportPDFLoading, exportToPDF } = useExportToPDF();
 
   const handleSubmit = (values: ProjectReportFormValues) => {
     setStartDate(formatToQueryParamDate(values.startOfPeriod));
@@ -77,9 +74,6 @@ const ByProjects = () => {
         isExportToExcelLoading={isExcelExportLoading}
         isExportToExcelBtnDisabled
         onExportToExcel={handleExportToExcel}
-        isExportToPDFLoading={isExportPDFLoading}
-        isExportToPDFBtnDisabled={!isReportExist}
-        onExportToPDF={() => exportToPDF(PDFRef, 'Отчеты по проектам')}
       />
 
       <Stack spacing={40}>
@@ -88,7 +82,7 @@ const ByProjects = () => {
         {startDate &&
           endDate &&
           (!isGetLoading && !isFetching && !!isReportExist ? (
-            <div ref={PDFRef}>Test</div>
+            <div>Test</div>
           ) : (
             <Loader size={80} isAbsoluteCentered />
           ))}

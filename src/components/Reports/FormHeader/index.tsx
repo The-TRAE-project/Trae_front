@@ -13,9 +13,6 @@ interface Props {
   onExportToExcel?: () => void;
   isExportToExcelLoading?: boolean;
   isExportToExcelBtnDisabled?: boolean;
-  onExportToPDF?: () => void;
-  isExportToPDFLoading?: boolean;
-  isExportToPDFBtnDisabled?: boolean;
 }
 
 const FormHeader = ({
@@ -25,9 +22,6 @@ const FormHeader = ({
   onExportToExcel,
   isExportToExcelLoading,
   isExportToExcelBtnDisabled,
-  onExportToPDF,
-  isExportToPDFLoading,
-  isExportToPDFBtnDisabled,
 }: Props) => {
   const navigate = useNavigate();
 
@@ -44,32 +38,18 @@ const FormHeader = ({
 
       <Group spacing={40}>
         {isReportFormed && (
-          <>
-            <DashedOrangeButton
-              onClick={onExportToExcel}
-              disabled // {isExportToExcelLoading || isExportToExcelBtnDisabled}
-              type="button"
-              $width={258}
-            >
-              {isExportToExcelLoading ? (
-                <Loader size={35} />
-              ) : (
-                <span>Экспорт в Excel</span>
-              )}
-            </DashedOrangeButton>
-            {/* <DashedOrangeButton
-              onClick={onExportToPDF}
-              disabled={isExportToPDFLoading || isExportToPDFBtnDisabled}
-              type="button"
-              $width={258}
-            >
-              {isExportToPDFLoading ? (
-                <Loader size={35} />
-              ) : (
-                <span>Экспорт в PDF</span>
-              )}
-            </DashedOrangeButton> */}
-          </>
+          <DashedOrangeButton
+            onClick={onExportToExcel}
+            disabled // {isExportToExcelLoading || isExportToExcelBtnDisabled}
+            type="button"
+            $width={258}
+          >
+            {isExportToExcelLoading ? (
+              <Loader size={35} />
+            ) : (
+              <span>Экспорт в Excel</span>
+            )}
+          </DashedOrangeButton>
         )}
 
         <OrangeButton type="submit" disabled={isFormBtnDisabled} $width={220}>
