@@ -1,39 +1,24 @@
-/* eslint-disable react/no-unused-prop-types */
-import dayjs from 'dayjs';
 import {
-  CellContext,
-  ColumnDef,
-  createColumnHelper,
   flexRender,
   getCoreRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { useMemo } from 'react';
 import {
   ShortEmployeeInfo,
   EmployeeWorkingShiftInfo,
   EmployeeTotalShiftInfo,
 } from '../../../../store/apis/reports/types';
 import {
-  DateTitle,
-  EmployeeTitle,
-  HorizontalDivider,
-  LeftSideWrapper,
   ScrollWrapper,
   Table,
   TableCell,
-  TableCellContent,
   TableCellHeader,
-  TableDayHeader,
-  TableMonthHeader,
   TableRow,
   Wrapper,
 } from './styles';
-import { getDatesBetween } from '../helpers/getDatesBetween';
-import { convertMonthToString } from '../helpers/convertMonthToString';
-import { convertToString } from '../helpers/convertToString';
+import { useConstructTable } from './useConstructTable';
 
-interface Props {
+export interface ReportTableData {
   defaultTimeStart: Date;
   defaultTimeEnd: Date;
   employees: ShortEmployeeInfo[];
@@ -41,132 +26,20 @@ interface Props {
   employeeTotalShifts: EmployeeTotalShiftInfo[];
 }
 
-interface TableData {
-  employees: string;
-  totalShifts: number;
-  [key: string]: unknown;
-}
-
-export function constructTableData(data: Props) {
-  const result = Array.from(data.employees).map((emp) => {
-    const { id: currentId } = emp;
-    const name = `${emp.firstName} ${emp.lastName}`;
-    const totalShifts = data.employeeTotalShifts.find(
-      (shifts) => shifts.id === currentId
-    )?.totalPartsOfShift;
-    const shifts = getDatesBetween(
-      data.defaultTimeStart,
-      data.defaultTimeEnd
-    ).map((d) => {
-      const currentShift = data.employeeWorkingShifts.find(
-        (shift) =>
-          shift.employeeId === currentId &&
-          convertToString(shift.shiftDate) === d
-      );
-      return [
-        d,
-        {
-          shift: currentShift?.partOfShift ?? '',
-          closed: currentShift?.autoClosed,
-        },
-      ];
-    });
-
-    const row: TableData = Object.fromEntries(shifts);
-
-    row.employees = name;
-    row.totalShifts = totalShifts ?? 0;
-
-    return row;
+const ReportTable = ({
+  defaultTimeStart,
+  defaultTimeEnd,
+  employees,
+  employeeWorkingShifts,
+  employeeTotalShifts,
+}: ReportTableData) => {
+  const [data, columns] = useConstructTable({
+    defaultTimeStart,
+    defaultTimeEnd,
+    employees,
+    employeeWorkingShifts,
+    employeeTotalShifts,
   });
-
-  return result;
-}
-
-export function constructTableColumns(dateStart: Date, dateEnd: Date) {
-  function constructDateColumns() {
-    let currentDate = dayjs(dateStart).clone();
-
-    const result: ColumnDef<TableData>[] = [];
-
-    while (!currentDate.isAfter(dateEnd, 'day')) {
-      const currentMonth = currentDate.month();
-      const currentYear = currentDate.year();
-      result.push({
-        id: `${currentYear}-${currentMonth}`,
-        header: () => (
-          <TableMonthHeader>
-            {convertMonthToString(currentMonth)}
-          </TableMonthHeader>
-        ),
-        columns: new Array(
-          currentMonth === dateEnd.getMonth() &&
-            currentYear === dateEnd.getFullYear()
-            ? dateEnd.getDate()
-            : currentDate.daysInMonth() - currentDate.date() + 1
-        )
-          .fill(0)
-          // eslint-disable-next-line @typescript-eslint/no-loop-func
-          .map(() => {
-            const currentDay = currentDate.date();
-            const currentCell = {
-              accessorKey: currentDate.format('YYYY-MM-DD'),
-              header: () => <TableDayHeader>{currentDay}</TableDayHeader>,
-              // TODO: make better type
-              cell: (
-                info: CellContext<TableData, { closed: boolean; shift: number }>
-              ) => (
-                <TableCellContent
-                  className={info.getValue().closed ? 'autoClosed' : ''}
-                >
-                  {info.getValue().shift}
-                </TableCellContent>
-              ),
-            };
-
-            currentDate = currentDate.add(1, 'day');
-            return currentCell;
-          }),
-      });
-    }
-
-    return result;
-  }
-
-  const columnHelper = createColumnHelper<TableData>();
-
-  const columns = [
-    columnHelper.accessor('employees', {
-      header: () => (
-        <LeftSideWrapper>
-          <HorizontalDivider />
-          <DateTitle>Дата</DateTitle>
-          <EmployeeTitle>Сотрудник</EmployeeTitle>
-        </LeftSideWrapper>
-      ),
-      id: 'employees',
-    }),
-    columnHelper.group({
-      header: '',
-      id: 'shifts',
-      columns: constructDateColumns(),
-    }),
-    columnHelper.accessor('totalShifts', {
-      header: 'Итого смен',
-      id: 'totalShifts',
-    }),
-  ];
-
-  return columns;
-}
-
-const ReportTable = (props: Props) => {
-  const data = useMemo(() => constructTableData(props), [props]);
-  const columns = useMemo(
-    // eslint-disable-next-line react/destructuring-assignment
-    () => constructTableColumns(props.defaultTimeStart, props.defaultTimeEnd),
-    [props]
-  );
 
   const table = useReactTable({
     data,
@@ -186,9 +59,9 @@ const ReportTable = (props: Props) => {
                     {header.isPlaceholder
                       ? null
                       : flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
-                      )}
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
                   </TableCellHeader>
                 ))}
               </tr>
