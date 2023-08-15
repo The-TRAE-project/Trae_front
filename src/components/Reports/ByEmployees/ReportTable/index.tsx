@@ -3,11 +3,7 @@ import {
   getCoreRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import {
-  ShortEmployeeInfo,
-  EmployeeWorkingShiftInfo,
-  EmployeeTotalShiftInfo,
-} from '../../../../store/apis/reports/types';
+import { useMemo } from 'react';
 import {
   ScrollWrapper,
   Table,
@@ -16,30 +12,31 @@ import {
   TableRow,
   Wrapper,
 } from './styles';
-import { useConstructTable } from './useConstructTable';
-
-export interface ReportTableData {
-  defaultTimeStart: Date;
-  defaultTimeEnd: Date;
-  employees: ShortEmployeeInfo[];
-  employeeWorkingShifts: EmployeeWorkingShiftInfo[];
-  employeeTotalShifts: EmployeeTotalShiftInfo[];
-}
+import { constructTable } from '../helpers/constructTable';
+import { ReportTableData } from '..';
 
 const ReportTable = ({
-  defaultTimeStart,
-  defaultTimeEnd,
+  timeStart,
+  timeEnd,
   employees,
   employeeWorkingShifts,
   employeeTotalShifts,
 }: ReportTableData) => {
-  const [data, columns] = useConstructTable({
-    defaultTimeStart,
-    defaultTimeEnd,
+  const [data, columns] = useMemo(() => {
+    return constructTable({
+      timeStart,
+      timeEnd,
+      employees,
+      employeeWorkingShifts,
+      employeeTotalShifts,
+    });
+  }, [
+    timeStart,
+    timeEnd,
     employees,
     employeeWorkingShifts,
     employeeTotalShifts,
-  });
+  ]);
 
   const table = useReactTable({
     data,

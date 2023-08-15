@@ -4,10 +4,9 @@ import {
   createColumnHelper,
 } from '@tanstack/react-table';
 import dayjs from 'dayjs';
-import { useMemo } from 'react';
-import { ReportTableData } from '.';
-import { convertToString } from '../helpers/convertToString';
-import { getDatesBetween } from '../helpers/getDatesBetween';
+import { ReportTableData } from '..';
+import { convertToString } from './convertToString';
+import { getDatesBetween } from './getDatesBetween';
 import {
   DateTitle,
   EmployeeTitle,
@@ -16,8 +15,8 @@ import {
   TableCellContent,
   TableDayHeader,
   TableMonthHeader,
-} from './styles';
-import { convertMonthToString } from '../helpers/convertMonthToString';
+} from '../ReportTable/styles';
+import { convertMonthToString } from './convertMonthToString';
 
 interface TableCell {
   shift: number | string;
@@ -30,7 +29,7 @@ interface TableData {
   [key: string]: string | number | [string, TableCell];
 }
 
-function constructTableData(data: ReportTableData) {
+export function constructTableData(data: ReportTableData) {
   const result = Array.from(data.employees).map((emp) => {
     const { id: currentId } = emp;
     const name = `${emp.firstName} ${emp.lastName}`;
@@ -39,10 +38,7 @@ function constructTableData(data: ReportTableData) {
       data.employeeTotalShifts.find((shifts) => shifts.id === currentId)
         ?.totalPartsOfShift || 0;
 
-    const shifts = getDatesBetween(
-      data.defaultTimeStart,
-      data.defaultTimeEnd
-    ).map((d) => {
+    const shifts = getDatesBetween(data.timeStart, data.timeEnd).map((d) => {
       const currentShift = data.employeeWorkingShifts.find(
         (shift) =>
           shift.employeeId === currentId &&
@@ -145,15 +141,12 @@ function constructTableColumns(dateStart: Date, dateEnd: Date) {
   return columns;
 }
 
-export function useConstructTable(
+export function constructTable(
   props: ReportTableData
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): [TableData[], ColumnDef<TableData, any>[]] {
-  const data = useMemo(() => constructTableData(props), [props]);
-  const columns = useMemo(
-    () => constructTableColumns(props.defaultTimeStart, props.defaultTimeEnd),
-    [props.defaultTimeStart, props.defaultTimeEnd]
-  );
+  const data = constructTableData(props);
+  const columns = constructTableColumns(props.timeStart, props.timeEnd);
 
   return [data, columns];
 }

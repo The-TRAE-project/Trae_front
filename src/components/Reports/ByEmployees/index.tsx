@@ -7,6 +7,9 @@ import { useGetAllEmployeesWithoutPaginationQuery } from '../../../store/apis/em
 import {
   EmployeeReportFormValues,
   EmployeeReportSchema,
+  EmployeeTotalShiftInfo,
+  EmployeeWorkingShiftInfo,
+  ShortEmployeeInfo,
 } from '../../../store/apis/reports/types';
 import { selectOnlyIds } from '../../../helpers/selectOnlyIds';
 import { useExportToExcel } from '../../../helpers/hooks/useExportToExcel';
@@ -18,9 +21,17 @@ import {
   formatToQueryParamDate,
 } from '../helpers/formatToParamDate';
 import { useSetDefaultValue } from './helpers/useSetDefaultValue';
-import { prepareForExcel } from './helpers/prepareForExcel';
 import FormBody from './FormBody';
 import ReportTable from './ReportTable';
+import { prepareToExcel } from './helpers/prepareToExcel';
+
+export interface ReportTableData {
+  timeStart: Date;
+  timeEnd: Date;
+  employees: ShortEmployeeInfo[];
+  employeeWorkingShifts: EmployeeWorkingShiftInfo[];
+  employeeTotalShifts: EmployeeTotalShiftInfo[];
+}
 
 const ByEmployees = () => {
   const [startDate, setStartDate] = useState<string | null>(null);
@@ -72,7 +83,16 @@ const ByEmployees = () => {
   const handleExportToExcel = () => {
     if (!reportsByEmployees) return;
 
-    exportToExcel(prepareForExcel(reportsByEmployees), 'Отчеты по сотрудникам');
+    exportToExcel(
+      prepareToExcel({
+        timeStart: startOfPeriod,
+        timeEnd: endOfPeriod,
+        employees: reportsByEmployees.shortEmployeeDtoList,
+        employeeWorkingShifts: reportsByEmployees.workingShiftEmployeeDtoList,
+        employeeTotalShifts: reportsByEmployees.employeeIdTotalPartsDtoList,
+      }),
+      'Отчеты по сотрудникам'
+    );
   };
 
   const isReportExist =
@@ -101,8 +121,8 @@ const ByEmployees = () => {
           employeeIds?.length &&
           (!isGetLoading && !isFetching && !!reportsByEmployees ? (
             <ReportTable
-              defaultTimeStart={startOfPeriod as Date}
-              defaultTimeEnd={endOfPeriod as Date}
+              timeStart={startOfPeriod as Date}
+              timeEnd={endOfPeriod as Date}
               employees={reportsByEmployees.shortEmployeeDtoList}
               employeeWorkingShifts={
                 reportsByEmployees.workingShiftEmployeeDtoList
