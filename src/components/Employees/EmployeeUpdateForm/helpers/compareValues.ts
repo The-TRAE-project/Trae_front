@@ -1,7 +1,6 @@
 // TODO:
 /* eslint-disable no-unneeded-ternary */
 /* eslint-disable no-nested-ternary */
-/* eslint-disable prettier/prettier */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import dayjs from 'dayjs';
 import { EmployeeUpdateFormValues } from '../../../../store/apis/employee/types';
@@ -64,7 +63,6 @@ export const compareValues = (
       ? null
       : (values.changedTypesId?.map((typeId) => +typeId) as any),
   };
-  // eslint-disable-next-line consistent-return
   return findDifference;
 };
 

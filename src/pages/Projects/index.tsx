@@ -83,8 +83,6 @@ const Projects = () => {
     paramIsLastInWork ||
     paramIsEnded;
 
-  // TODO change query to accomodate different filters
-
   const pageQueryParam = searchValue === '' ? filterPage : searchPage;
   const { data: findProjectsByFilter, isLoading: isFilterLoading } =
     useGetProjectsQuery({
