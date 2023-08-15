@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const Wrapper = styled.section`
   width: 100%;
-  max-height: 1000px;
+  max-height: 535px;
   background: var(--white);
   border-radius: var(--border-radius) var(--border-radius) 0 0;
   padding: 36px 8px 10px 8px;
@@ -90,23 +90,18 @@ export const TableCell = styled.td`
 
 export const TableCellHeader = styled.th`
   padding: 0 1px;
+  position: relative;
 
   :nth-child(2) {
-    padding: 0 1px 0 0;
-  }
-  :nth-last-child(2) {
-    padding: 0 0 0 1px;
-  }
-  :first-child {
-    border-right: 2px solid var(--green);
-    border-left: none;
-    padding: 0;
-  }
-
-  :last-child {
     border-left: 2px solid var(--green);
     border-right: none;
-    padding: 0;
+    padding: 0 1px 0 0;
+  }
+
+  :nth-last-child(2) {
+    border-right: 2px solid var(--green);
+    border-left: none;
+    padding: 0 0 0 1px;
   }
 `;
 
