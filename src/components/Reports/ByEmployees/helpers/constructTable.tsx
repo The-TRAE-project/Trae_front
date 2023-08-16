@@ -38,7 +38,7 @@ export function constructTableData(data: ReportTableData) {
       data.employeeTotalShifts.find((shifts) => shifts.id === currentId)
         ?.totalPartsOfShift || 0;
 
-    const shifts = getDatesBetween(data.timeStart, data.timeEnd).map((d) => {
+    const shifts = getDatesBetween(data.dateStart, data.dateEnd).map((d) => {
       const currentShift = data.employeeWorkingShifts.find(
         (shift) =>
           shift.employeeId === currentId &&
@@ -64,20 +64,20 @@ export function constructTableData(data: ReportTableData) {
   return result;
 }
 
-function constructTableColumns(dateStart: Date, dateEnd: Date) {
+function constructTableColumns(dateStart: number[], dateEnd: number[]) {
   function constructDateColumns() {
-    let currentDate = dayjs(dateStart).clone();
+    let currentDate = dayjs(convertToString(dateStart)).clone();
+    const lastDate = dayjs(convertToString(dateEnd)).clone();
 
     const result: ColumnDef<TableData>[] = [];
 
-    while (!currentDate.isAfter(dateEnd, 'day')) {
+    while (!currentDate.isAfter(lastDate, 'day')) {
       const currentMonth = currentDate.month();
       const currentYear = currentDate.year();
 
       const columnsForDays = new Array(
-        currentMonth === dateEnd.getMonth() &&
-        currentYear === dateEnd.getFullYear()
-          ? dateEnd.getDate()
+        currentMonth === lastDate.month() && currentYear === lastDate.year()
+          ? lastDate.date()
           : currentDate.daysInMonth() - currentDate.date() + 1
       )
         .fill(0)
@@ -146,7 +146,7 @@ export function constructTable(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): [TableData[], ColumnDef<TableData, any>[]] {
   const data = constructTableData(props);
-  const columns = constructTableColumns(props.timeStart, props.timeEnd);
+  const columns = constructTableColumns(props.dateStart, props.dateEnd);
 
   return [data, columns];
 }

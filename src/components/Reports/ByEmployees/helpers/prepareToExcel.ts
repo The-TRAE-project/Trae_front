@@ -2,9 +2,11 @@ import dayjs from 'dayjs';
 import { ReportTableData } from '..';
 import { constructTableData } from './constructTable';
 import { convertMonthToString } from './convertMonthToString';
+import { convertToString } from './convertToString';
 
-function constructTableHeader(dateStart: Date, dateEnd: Date) {
-  let currentDate = dayjs(dateStart).clone();
+function constructTableHeader(dateStart: number[], dateEnd: number[]) {
+  let currentDate = dayjs(convertToString(dateStart)).clone();
+  const lastDate = dayjs(convertToString(dateEnd)).clone();
 
   const result: string[][] = [
     ['', convertMonthToString(currentDate.month())],
@@ -12,7 +14,7 @@ function constructTableHeader(dateStart: Date, dateEnd: Date) {
   ];
   let prevMonth = currentDate.month();
 
-  while (!currentDate.isAfter(dateEnd, 'day')) {
+  while (!currentDate.isAfter(lastDate, 'day')) {
     result[1].push(currentDate.date().toString());
 
     if (prevMonth !== currentDate.month()) {
@@ -29,7 +31,7 @@ function constructTableHeader(dateStart: Date, dateEnd: Date) {
 }
 
 export function prepareToExcel(data: ReportTableData) {
-  const header = constructTableHeader(data.timeStart, data.timeEnd);
+  const header = constructTableHeader(data.dateStart, data.dateEnd);
   const body = constructTableData(data);
 
   return { header, body };

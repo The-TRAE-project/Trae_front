@@ -42,8 +42,8 @@ export interface EmployeeTotalShiftInfo {
 }
 
 export interface EmployeesReport {
-  startPeriod: string;
-  endPeriod: string;
+  startPeriod: number[];
+  endPeriod: number[];
   shortEmployeeDtoList: ShortEmployeeInfo[];
   workingShiftEmployeeDtoList: EmployeeWorkingShiftInfo[];
   employeeIdTotalPartsDtoList: EmployeeTotalShiftInfo[];

@@ -1,8 +1,9 @@
 import dayjs from 'dayjs';
+import { convertToString } from './convertToString';
 
-export const getDatesBetween = (startDate: Date, endDate: Date) => {
-  let currentDate = dayjs(startDate);
-  const lastDate = dayjs(endDate);
+export const getDatesBetween = (startDate: number[], endDate: number[]) => {
+  let currentDate = dayjs(convertToString(startDate));
+  const lastDate = dayjs(convertToString(endDate));
   const dates = [];
   while (currentDate.isBefore(lastDate)) {
     dates.push(currentDate.format('YYYY-MM-DD'));

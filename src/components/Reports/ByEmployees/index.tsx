@@ -26,8 +26,8 @@ import ReportTable from './ReportTable';
 import { prepareToExcel } from './helpers/prepareToExcel';
 
 export interface ReportTableData {
-  timeStart: Date;
-  timeEnd: Date;
+  dateStart: number[];
+  dateEnd: number[];
   employees: ShortEmployeeInfo[];
   employeeWorkingShifts: EmployeeWorkingShiftInfo[];
   employeeTotalShifts: EmployeeTotalShiftInfo[];
@@ -53,7 +53,6 @@ const ByEmployees = () => {
       return errors;
     },
   });
-  const { startOfPeriod, endOfPeriod } = form.values;
 
   useSetDefaultValue(form, employees);
 
@@ -85,8 +84,8 @@ const ByEmployees = () => {
 
     exportToExcel(
       prepareToExcel({
-        timeStart: startOfPeriod,
-        timeEnd: endOfPeriod,
+        dateStart: reportsByEmployees.startPeriod,
+        dateEnd: reportsByEmployees.endPeriod,
         employees: reportsByEmployees.shortEmployeeDtoList,
         employeeWorkingShifts: reportsByEmployees.workingShiftEmployeeDtoList,
         employeeTotalShifts: reportsByEmployees.employeeIdTotalPartsDtoList,
@@ -121,8 +120,8 @@ const ByEmployees = () => {
           employeeIds?.length &&
           (!isGetLoading && !isFetching && !!reportsByEmployees ? (
             <ReportTable
-              timeStart={startOfPeriod as Date}
-              timeEnd={endOfPeriod as Date}
+              dateStart={reportsByEmployees.startPeriod}
+              dateEnd={reportsByEmployees.endPeriod}
               employees={reportsByEmployees.shortEmployeeDtoList}
               employeeWorkingShifts={
                 reportsByEmployees.workingShiftEmployeeDtoList

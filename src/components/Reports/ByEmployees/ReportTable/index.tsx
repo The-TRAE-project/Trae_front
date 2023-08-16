@@ -16,23 +16,23 @@ import { constructTable } from '../helpers/constructTable';
 import { ReportTableData } from '..';
 
 const ReportTable = ({
-  timeStart,
-  timeEnd,
+  dateStart,
+  dateEnd,
   employees,
   employeeWorkingShifts,
   employeeTotalShifts,
 }: ReportTableData) => {
   const [data, columns] = useMemo(() => {
     return constructTable({
-      timeStart,
-      timeEnd,
+      dateStart,
+      dateEnd,
       employees,
       employeeWorkingShifts,
       employeeTotalShifts,
     });
   }, [
-    timeStart,
-    timeEnd,
+    dateStart,
+    dateEnd,
     employees,
     employeeWorkingShifts,
     employeeTotalShifts,

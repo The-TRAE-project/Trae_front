@@ -1,7 +1,8 @@
 import styled from 'styled-components';
 
 export const Wrapper = styled.section`
-  width: 100%;
+  width: fit-content;
+  max-width: 100%;
   max-height: 535px;
   background: var(--white);
   border-radius: var(--border-radius) var(--border-radius) 0 0;
@@ -68,6 +69,7 @@ export const TableCell = styled.td`
   }
 
   :first-child {
+    width: 191px;
     border-right: 2px solid var(--green);
     border-left: none;
     font-weight: 500;
@@ -88,6 +90,7 @@ export const TableCell = styled.td`
   }
 `;
 
+// TODO: better border for header cells
 export const TableCellHeader = styled.th`
   padding: 0 1px;
   position: relative;
