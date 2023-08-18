@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import { useForm, zodResolver } from '@mantine/form';
 import { Stack } from '@mantine/core';
 
@@ -16,6 +16,7 @@ import {
 } from '../helpers/formatToParamDate';
 import FormHeader from '../FormHeader';
 import FormBody from './FormBody';
+import { ReportTable } from './ReportTable';
 
 const ByProjects = () => {
   const [startDate, setStartDate] = useState<string | null>(null);
@@ -58,7 +59,7 @@ const ByProjects = () => {
   const handleExportToExcel = () => {
     if (!reportsByProjects) return;
 
-    exportToExcel(reportsByProjects, 'Отчеты по проектам');
+    exportToExcel(reportsByProjects, 'Отчеты по проектам', 'Projects');
   };
 
   const isReportExist =
@@ -82,7 +83,14 @@ const ByProjects = () => {
         {startDate &&
           endDate &&
           (!isGetLoading && !isFetching && !!isReportExist ? (
-            <div>Test</div>
+            <ReportTable
+              startPeriod={reportsByProjects.dateOfReportFormation}
+              endPeriod={reportsByProjects.endPeriod}
+              projectsForReportDtoList={
+                reportsByProjects.projectsForReportDtoList
+              }
+              dateOfReportFormation={reportsByProjects.dateOfReportFormation}
+            />
           ) : (
             <Loader size={80} isAbsoluteCentered />
           ))}

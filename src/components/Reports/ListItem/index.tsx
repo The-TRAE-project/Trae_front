@@ -31,7 +31,7 @@ const ListItem = () => {
           <LinkBtn
             key={item.id}
             onClick={() => navigate(item.path)}
-            disabled={item.id !== '1'}
+            disabled={item.id === '3'}
             type="button"
           >
             {item.title}
