@@ -90,7 +90,8 @@ const ByEmployees = () => {
         employeeWorkingShifts: reportsByEmployees.workingShiftEmployeeDtoList,
         employeeTotalShifts: reportsByEmployees.employeeIdTotalPartsDtoList,
       }),
-      'Отчеты по сотрудникам'
+      'Отчеты по сотрудникам',
+      'Employees'
     );
   };
 

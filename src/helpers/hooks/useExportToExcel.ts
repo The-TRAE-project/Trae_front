@@ -4,21 +4,38 @@ import * as ExcelJS from 'exceljs';
 export function useExportToExcel() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const exportToExcel = async (data: any, fileName: string) => {
+  const exportToExcel = async (
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    data: any,
+    fileName: string,
+    type: 'Employees' | 'Projects' | 'Deadlines'
+  ) => {
     setIsLoading(true);
     const workBook = new ExcelJS.Workbook();
 
     workBook.created = new Date();
     workBook.modified = new Date();
 
-    // TODO add parameters as second argumant
     const workSheet = workBook.addWorksheet(`${fileName}`, {
       headerFooter: {
         firstHeader: 'Hello Exceljs',
         firstFooter: 'Hello World',
       },
     });
+
+    switch (type) {
+      case 'Employees':
+        workSheet.addRows(data.header);
+        workSheet.addRows(data.body);
+        break;
+      case 'Projects':
+        break;
+      case 'Deadlines':
+        break;
+      default:
+        break;
+    }
+    // TODO add parameters as second argumant
     const buffer = await workBook.xlsx.writeBuffer();
 
     const blob = new Blob([buffer], {

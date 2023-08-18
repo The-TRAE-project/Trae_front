@@ -5,7 +5,7 @@ import {
 } from '@tanstack/react-table';
 import dayjs from 'dayjs';
 import { ReportTableData } from '..';
-import { convertToString } from './convertToString';
+import { convertToString } from '../../../../helpers/convertToString';
 import { getDatesBetween } from './getDatesBetween';
 import {
   DateTitle,
@@ -16,7 +16,7 @@ import {
   TableDayHeader,
   TableMonthHeader,
 } from '../ReportTable/styles';
-import { convertMonthToString } from './convertMonthToString';
+import { convertMonthToString } from '../../../../helpers/convertMonthToString';
 
 interface TableCell {
   shift: number | string;

@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { convertToString } from './convertToString';
+import { convertToString } from '../../../../helpers/convertToString';
 
 export const getDatesBetween = (startDate: number[], endDate: number[]) => {
   let currentDate = dayjs(convertToString(startDate));

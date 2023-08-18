@@ -1,10 +1,9 @@
 import dayjs from 'dayjs';
 import { ReportTableData } from '..';
-import { constructTableData } from './constructTable';
-import { convertMonthToString } from './convertMonthToString';
-import { convertToString } from './convertToString';
+import { convertMonthToString } from '../../../../helpers/convertMonthToString';
+import { convertToString } from '../../../../helpers/convertToString';
 
-function constructTableHeader(dateStart: number[], dateEnd: number[]) {
+function constructExcelHeader(dateStart: number[], dateEnd: number[]) {
   let currentDate = dayjs(convertToString(dateStart)).clone();
   const lastDate = dayjs(convertToString(dateEnd)).clone();
 
@@ -30,9 +29,18 @@ function constructTableHeader(dateStart: number[], dateEnd: number[]) {
   return result;
 }
 
+// TODO: data preparation for excel import
+function constructExcelBody(data: ReportTableData) {
+  const result: string[][] = [
+    [data.employeeTotalShifts[0].totalPartsOfShift.toString()],
+  ];
+
+  return result;
+}
+
 export function prepareToExcel(data: ReportTableData) {
-  const header = constructTableHeader(data.dateStart, data.dateEnd);
-  const body = constructTableData(data);
+  const header = constructExcelHeader(data.dateStart, data.dateEnd);
+  const body = constructExcelBody(data);
 
   return { header, body };
 }

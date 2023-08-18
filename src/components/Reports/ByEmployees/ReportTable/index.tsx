@@ -15,13 +15,13 @@ import {
 import { constructTable } from '../helpers/constructTable';
 import { ReportTableData } from '..';
 
-const ReportTable = ({
+export function ReportTable({
   dateStart,
   dateEnd,
   employees,
   employeeWorkingShifts,
   employeeTotalShifts,
-}: ReportTableData) => {
+}: ReportTableData) {
   const [data, columns] = useMemo(() => {
     return constructTable({
       dateStart,
@@ -79,6 +79,4 @@ const ReportTable = ({
       </ScrollWrapper>
     </Wrapper>
   );
-};
-
-export default ReportTable;
+}
