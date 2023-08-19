@@ -56,7 +56,7 @@ const StageInWorkCard = ({ stage }: Props) => {
   const handleSubmit = async () => {
     try {
       if (!employee) return;
-      // TODO:
+      // TODO: navigate to main page
       setTimeout(async () => {
         await finishProject({
           employeeId: employee.id,

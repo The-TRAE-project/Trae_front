@@ -243,7 +243,7 @@ export const DashedOrangeButton = styled.button`
     outline: none;
   }
 `;
-// TODO:
+// TODO: collapse into one wrapper
 export const FormWrapper = styled.form`
   position: relative;
   min-height: calc(100vh - 336px);

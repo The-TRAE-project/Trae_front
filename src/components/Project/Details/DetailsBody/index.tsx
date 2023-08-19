@@ -15,7 +15,7 @@ const DetailsBody = ({ project }: Props) => {
       <TwoColumnGrid>
         <GeneralInformation project={project} />
         <Dates project={project} />
-        {/* // TODO: */}
+        {/* // TODO: map if needed */}
         <Operations
           projectId={project.id}
           projectOperations={project.operations}

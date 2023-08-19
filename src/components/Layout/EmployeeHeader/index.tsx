@@ -18,7 +18,7 @@ const EmployeeHeader = () => {
   const dispatch = useAppDispatch();
   const { projectNumber } = useAppSelector((store) => store.employee);
 
-  // TODO:
+  // TODO: change default navigate behaviour
   const navigateToBack = () => {
     switch (location.pathname) {
       case Paths.EMPLOYEE_PROJECTS:

@@ -48,7 +48,7 @@ const EmployeeMain = () => {
     setIsOpen(false);
     dispatch(setTimer(121));
   };
-  // TODO:
+  // TODO: add employee and admin roles
   const handleLogOut = async () => {
     try {
       if (!employee) return;
