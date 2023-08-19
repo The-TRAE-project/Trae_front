@@ -4,7 +4,6 @@ import {
   createColumnHelper,
 } from '@tanstack/react-table';
 import dayjs from 'dayjs';
-import { ReportTableData } from '..';
 import { convertToString } from '../../../../helpers/convertToString';
 import { getDatesBetween } from './getDatesBetween';
 import {
@@ -17,6 +16,7 @@ import {
   TableMonthHeader,
 } from '../ReportTable/styles';
 import { convertMonthToString } from '../../../../helpers/convertMonthToString';
+import { EmployeesReportTableData } from '../ReportTable';
 
 interface TableCell {
   shift: number | string;
@@ -29,7 +29,7 @@ interface TableData {
   [key: string]: string | number | [string, TableCell];
 }
 
-export function constructTableData(data: ReportTableData) {
+function constructTableData(data: EmployeesReportTableData) {
   const result = Array.from(data.employees).map((emp) => {
     const { id: currentId } = emp;
     const name = `${emp.firstName} ${emp.lastName}`;
@@ -142,7 +142,7 @@ function constructTableColumns(dateStart: number[], dateEnd: number[]) {
 }
 
 export function constructTable(
-  props: ReportTableData
+  props: EmployeesReportTableData
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): [TableData[], ColumnDef<TableData, any>[]] {
   const data = constructTableData(props);

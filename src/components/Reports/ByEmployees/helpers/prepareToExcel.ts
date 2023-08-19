@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
-import { ReportTableData } from '..';
 import { convertMonthToString } from '../../../../helpers/convertMonthToString';
 import { convertToString } from '../../../../helpers/convertToString';
+import { EmployeesReportTableData } from '../ReportTable';
 
 function constructExcelHeader(dateStart: number[], dateEnd: number[]) {
   let currentDate = dayjs(convertToString(dateStart)).clone();
@@ -30,7 +30,7 @@ function constructExcelHeader(dateStart: number[], dateEnd: number[]) {
 }
 
 // TODO: data preparation for excel import
-function constructExcelBody(data: ReportTableData) {
+function constructExcelBody(data: EmployeesReportTableData) {
   const result: string[][] = [
     [data.employeeTotalShifts[0].totalPartsOfShift.toString()],
   ];
@@ -38,7 +38,7 @@ function constructExcelBody(data: ReportTableData) {
   return result;
 }
 
-export function prepareToExcel(data: ReportTableData) {
+export function prepareToExcel(data: EmployeesReportTableData) {
   const header = constructExcelHeader(data.dateStart, data.dateEnd);
   const body = constructExcelBody(data);
 

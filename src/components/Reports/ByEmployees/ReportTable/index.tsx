@@ -13,7 +13,19 @@ import {
   Wrapper,
 } from './styles';
 import { constructTable } from '../helpers/constructTable';
-import { ReportTableData } from '..';
+import {
+  EmployeeTotalShiftInfo,
+  EmployeeWorkingShiftInfo,
+  ShortEmployeeInfo,
+} from '../../../../store/apis/reports/types';
+
+export interface EmployeesReportTableData {
+  dateStart: number[];
+  dateEnd: number[];
+  employees: ShortEmployeeInfo[];
+  employeeWorkingShifts: EmployeeWorkingShiftInfo[];
+  employeeTotalShifts: EmployeeTotalShiftInfo[];
+}
 
 export function ReportTable({
   dateStart,
@@ -21,8 +33,8 @@ export function ReportTable({
   employees,
   employeeWorkingShifts,
   employeeTotalShifts,
-}: ReportTableData) {
-  const [data, columns] = useMemo(() => {
+}: EmployeesReportTableData) {
+  const [tableData, tableColumns] = useMemo(() => {
     return constructTable({
       dateStart,
       dateEnd,
@@ -39,8 +51,8 @@ export function ReportTable({
   ]);
 
   const table = useReactTable({
-    data,
-    columns,
+    data: tableData,
+    columns: tableColumns,
     getCoreRowModel: getCoreRowModel(),
   });
 

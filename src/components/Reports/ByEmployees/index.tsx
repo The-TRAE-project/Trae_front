@@ -7,9 +7,6 @@ import { useGetAllEmployeesWithoutPaginationQuery } from '../../../store/apis/em
 import {
   EmployeeReportFormValues,
   EmployeeReportSchema,
-  EmployeeTotalShiftInfo,
-  EmployeeWorkingShiftInfo,
-  ShortEmployeeInfo,
 } from '../../../store/apis/reports/types';
 import { selectOnlyIds } from '../../../helpers/selectOnlyIds';
 import { useExportToExcel } from '../../../helpers/hooks/useExportToExcel';
@@ -22,16 +19,8 @@ import {
 } from '../helpers/formatToParamDate';
 import { useSetDefaultValue } from './helpers/useSetDefaultValue';
 import FormBody from './FormBody';
-import ReportTable from './ReportTable';
+import { ReportTable } from './ReportTable';
 import { prepareToExcel } from './helpers/prepareToExcel';
-
-export interface ReportTableData {
-  dateStart: number[];
-  dateEnd: number[];
-  employees: ShortEmployeeInfo[];
-  employeeWorkingShifts: EmployeeWorkingShiftInfo[];
-  employeeTotalShifts: EmployeeTotalShiftInfo[];
-}
 
 const ByEmployees = () => {
   const [startDate, setStartDate] = useState<string | null>(null);
