@@ -5,7 +5,7 @@ import {
 } from '@tanstack/react-table';
 import dayjs from 'dayjs';
 import { convertToString } from '../../../../helpers/convertToString';
-import { getDatesBetween } from './getDatesBetween';
+import { getDatesBetween } from '../../helpers/getDatesBetween';
 import {
   DateTitle,
   EmployeeTitle,

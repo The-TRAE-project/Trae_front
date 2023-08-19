@@ -1,25 +1,54 @@
-import { Table } from '@mantine/core';
 import {
   flexRender,
   getCoreRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { ProjectsReport } from '../../../../store/apis/reports/types';
+import { useMemo } from 'react';
 import {
   Wrapper,
   ScrollWrapper,
   TableCellHeader,
   TableRow,
   TableCell,
+  Table,
 } from './styles';
+import { constructTable } from '../helpers/constructTable';
+import { ProjectInfo } from '../../../../store/apis/reports/types';
 
-export function ReportTable(reportData: ProjectsReport) {
-  const data: any[] = [];
-  const columns: any[] = [];
+export interface ProjectsReportTableData {
+  dateOfReportFormation: number[];
+  dateStart: number[];
+  dateEnd: number[];
+  projects: ProjectInfo[];
+}
+
+export function ReportTable({
+  dateOfReportFormation,
+  dateStart,
+  dateEnd,
+  projects,
+}: ProjectsReportTableData) {
+  const [tableData, tableColumns] = useMemo(() => {
+    return constructTable({
+      dateOfReportFormation,
+      dateStart,
+      dateEnd,
+      projects,
+    });
+  }, [dateOfReportFormation, dateStart, dateEnd, projects]);
+
+  // console.log(
+  //   'RAW_DATA: ',
+  //   dateOfReportFormation,
+  //   dateStart,
+  //   dateEnd,
+  //   projects
+  // );
+  // console.log('TRANSFORMED_DATA: ', tableData, tableColumns);
 
   const table = useReactTable({
-    data,
-    columns,
+    data: tableData,
+    columns: tableColumns,
     getCoreRowModel: getCoreRowModel(),
   });
 

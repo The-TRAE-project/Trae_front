@@ -11,8 +11,4 @@ export const LinkBtn = styled.button`
   background: var(--white);
   border: none;
   border-radius: var(--border-radius);
-
-  &:is(:hover, :active: :focus) {
-    outline: none;
-  }
 `;

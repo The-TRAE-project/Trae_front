@@ -84,11 +84,9 @@ const ByProjects = () => {
           endDate &&
           (!isGetLoading && !isFetching && !!isReportExist ? (
             <ReportTable
-              startPeriod={reportsByProjects.dateOfReportFormation}
-              endPeriod={reportsByProjects.endPeriod}
-              projectsForReportDtoList={
-                reportsByProjects.projectsForReportDtoList
-              }
+              dateStart={reportsByProjects.startPeriod}
+              dateEnd={reportsByProjects.endPeriod}
+              projects={reportsByProjects.projectsForReportDtoList}
               dateOfReportFormation={reportsByProjects.dateOfReportFormation}
             />
           ) : (
