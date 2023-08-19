@@ -126,6 +126,7 @@ export const TableMonthHeader = styled.div`
 export const TableDayHeader = styled.div`
   margin: auto;
   height: 47px;
+  width: 31px;
   line-height: 47px;
   text-align: center;
   vertical-align: middle;

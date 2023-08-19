@@ -60,14 +60,6 @@ export const TableCell = styled.td`
   border-bottom: 2px solid var(--green);
   min-width: 31px;
 
-  :has(> .autoClosed) {
-    background-color: var(--red);
-  }
-
-  .autoClosed {
-    color: var(--white);
-  }
-
   :first-child {
     width: 191px;
     border-right: 2px solid var(--green);
@@ -95,16 +87,10 @@ export const TableCellHeader = styled.th`
   padding: 0 1px;
   position: relative;
 
-  :nth-child(2) {
-    border-left: 2px solid var(--green);
-    border-right: none;
-    padding: 0 1px 0 0;
-  }
-
-  :nth-last-child(2) {
+  :nth-child(-n + 5) {
     border-right: 2px solid var(--green);
     border-left: none;
-    padding: 0 0 0 1px;
+    padding: 0;
   }
 `;
 
@@ -126,6 +112,7 @@ export const TableMonthHeader = styled.div`
 export const TableDayHeader = styled.div`
   margin: auto;
   height: 47px;
+  width: 31px;
   line-height: 47px;
   text-align: center;
   vertical-align: middle;
@@ -135,38 +122,4 @@ export const TableDayHeader = styled.div`
   color: var(--white);
   background: var(--orange);
   border-bottom-color: var(--green);
-`;
-
-export const LeftSideWrapper = styled.div`
-  position: relative;
-  width: 191px;
-`;
-
-export const HorizontalDivider = styled.div`
-  position: absolute;
-  top: -9px;
-  left: 6px;
-  width: 100%;
-  height: 2px;
-  background: var(--green);
-  transform: rotate(20deg);
-`;
-
-export const Title = styled.p`
-  font-weight: 600;
-  ${({ theme }) => theme.mixins.fontSize20}
-  color: var(--black);
-  text-align: center;
-`;
-
-export const DateTitle = styled(Title)`
-  position: absolute;
-  top: -30px;
-  right: 23px;
-`;
-
-export const EmployeeTitle = styled(Title)`
-  position: absolute;
-  bottom: -17px;
-  left: 0;
 `;
