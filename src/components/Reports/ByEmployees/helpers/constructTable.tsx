@@ -38,16 +38,16 @@ function constructTableData(data: EmployeesReportTableData) {
       data.employeeTotalShifts.find((shifts) => shifts.id === currentId)
         ?.totalPartsOfShift || 0;
 
-    const shifts = getDatesBetween(data.dateStart, data.dateEnd).map((d) => {
+    const shifts = getDatesBetween(data.dateStart, data.dateEnd).map((date) => {
       const currentShift = data.employeeWorkingShifts.find(
         (shift) =>
           shift.employeeId === currentId &&
-          convertToString(shift.shiftDate) === d
+          convertToString(shift.shiftDate) === date
       );
       return [
-        d,
+        date,
         {
-          shift: currentShift?.partOfShift || '',
+          shift: currentShift?.partOfShift || null,
           closed: currentShift?.autoClosed || false,
         },
       ];
@@ -127,11 +127,7 @@ function constructTableColumns(dateStart: number[], dateEnd: number[]) {
       ),
       id: 'employees',
     }),
-    columnHelper.group({
-      header: '',
-      id: 'shifts',
-      columns: constructDateColumns(),
-    }),
+    ...constructDateColumns(),
     columnHelper.accessor('totalShifts', {
       header: 'Итого смен',
       id: 'totalShifts',
