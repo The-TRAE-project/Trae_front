@@ -149,7 +149,7 @@ export const authSlice = createSlice({
         state.username = null;
         state.permission = null;
       })
-      // TODO:
+      // TODO: add roles to prevent admin unlogin
       .addCase(
         getUserRole.fulfilled,
         (state, { payload }: PayloadAction<UserRoleValues>) => {
