@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useForm, zodResolver } from '@mantine/form';
 import { Stack } from '@mantine/core';
 
+import { SortingState } from '@tanstack/react-table';
 import { useGetProjectsReportsQuery } from '../../../store/apis/reports';
 import {
   ProjectReportFormValues,
@@ -18,9 +19,23 @@ import FormHeader from '../FormHeader';
 import FormBody from './FormBody';
 import { ReportTable } from './ReportTable';
 
+export type SortTypes =
+  | 'contractDate'
+  | 'shipmentDate'
+  | 'number'
+  | 'customer'
+  | 'deviation'
+  | null;
+
 const ByProjects = () => {
   const [startDate, setStartDate] = useState<string | null>(null);
   const [endDate, setEndDate] = useState<string | null>(null);
+  const [sortType, setSortType] = useState<SortingState>([
+    {
+      id: 'contractDate',
+      desc: true,
+    },
+  ]);
 
   const {
     data: reportsByProjects,
@@ -47,7 +62,6 @@ const ByProjects = () => {
       return errors;
     },
   });
-  // const { startOfPeriod, endOfPeriod } = form.values;
 
   const { isLoading: isExcelExportLoading, exportToExcel } = useExportToExcel();
 
@@ -78,12 +92,18 @@ const ByProjects = () => {
       />
 
       <Stack spacing={40}>
-        <FormBody form={form} />
+        <FormBody
+          form={form}
+          isFormed={isReportExist}
+          sortType={sortType}
+          setSortType={setSortType}
+        />
 
         {startDate &&
           endDate &&
-          (!isGetLoading && !isFetching && !!isReportExist ? (
+          (!isGetLoading && !isFetching && isReportExist ? (
             <ReportTable
+              sortType={sortType}
               dateStart={reportsByProjects.startPeriod}
               dateEnd={reportsByProjects.endPeriod}
               projects={reportsByProjects.projectsForReportDtoList}

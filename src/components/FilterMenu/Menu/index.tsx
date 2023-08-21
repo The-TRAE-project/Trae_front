@@ -9,9 +9,16 @@ interface Props {
   onClick?: () => void;
   closeOnItemClick?: boolean;
   children: ReactNode;
+  isButton?: boolean;
 }
 
-const Menu = ({ onClick, closeOnItemClick = false, children }: Props) => {
+// TODO add styles for button variant
+const Menu = ({
+  onClick,
+  closeOnItemClick = false,
+  children,
+  isButton = false,
+}: Props) => {
   const {
     classes: { dropdown, label, item },
   } = useMenuStyles();
@@ -28,9 +35,13 @@ const Menu = ({ onClick, closeOnItemClick = false, children }: Props) => {
       }}
     >
       <MantineMenu.Target>
-        <UnstyledButton onClick={toggle} $isFilterIcon>
-          <Filter />
-        </UnstyledButton>
+        {isButton ? (
+          <div>Test</div>
+        ) : (
+          <UnstyledButton onClick={toggle} $isFilterIcon>
+            <Filter />
+          </UnstyledButton>
+        )}
       </MantineMenu.Target>
       <MantineMenu.Dropdown>{children}</MantineMenu.Dropdown>
     </MantineMenu>

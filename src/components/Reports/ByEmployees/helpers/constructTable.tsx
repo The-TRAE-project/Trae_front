@@ -77,7 +77,7 @@ function constructTableColumns(dateStart: number[], dateEnd: number[]) {
 
       const columnsForDays = new Array(
         currentMonth === lastDate.month() && currentYear === lastDate.year()
-          ? lastDate.date()
+          ? lastDate.date() - currentDate.date() + 1
           : currentDate.daysInMonth() - currentDate.date() + 1
       )
         .fill(0)

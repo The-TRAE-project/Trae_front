@@ -27,14 +27,14 @@ export const Table = styled.table`
     z-index: 2;
   }
 
-  thead th:first-child {
+  thead th:nth-child(-n + 5) {
     position: sticky;
     background-color: var(--white);
     left: 0;
     z-index: 3;
   }
 
-  tbody td:first-child {
+  tbody td:nth-child(-n + 5) {
     position: sticky;
     left: 0;
     background-color: var(--white);
@@ -46,34 +46,35 @@ export const TableRow = styled.tr`
   height: 97px;
 `;
 
-export const TableCellContent = styled.p`
+export const TableCellContent = styled.div<{
+  $isEnded?: boolean;
+  $inWork?: boolean;
+}>`
+  background-color: ${(props) =>
+    // eslint-disable-next-line no-nested-ternary
+    props.$isEnded ? 'red' : props.$inWork ? 'green' : 'white'};
+
+  height: 95px;
   font-family: var(--font-roboto);
   font-weight: 400;
   font-size: 18px;
   text-align: center;
   color: var(--black);
+  position: absolute;
+  left: 0;
+  top: 0;
 `;
 
 export const TableCell = styled.td`
-  border: 1px solid grey;
   border-top: 2px solid var(--green);
   border-bottom: 2px solid var(--green);
   min-width: 31px;
+  position: relative;
 
-  :first-child {
+  :nth-child(-n + 5) {
     width: 191px;
     border-right: 2px solid var(--green);
     border-left: none;
-    font-weight: 500;
-    font-size: 20px;
-    line-height: 23px;
-    color: var(--black);
-    text-align: center;
-  }
-
-  :last-child {
-    border-left: 2px solid var(--green);
-    border-right: none;
     font-weight: 500;
     font-size: 20px;
     line-height: 23px;

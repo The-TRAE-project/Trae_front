@@ -1,6 +1,9 @@
 import {
+  OnChangeFn,
+  SortingState,
   flexRender,
   getCoreRowModel,
+  getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
 import { useMemo } from 'react';
@@ -20,6 +23,8 @@ export interface ProjectsReportTableData {
   dateStart: number[];
   dateEnd: number[];
   projects: ProjectInfo[];
+  sortType?: SortingState;
+  setSorting?: OnChangeFn<SortingState>;
 }
 
 export function ReportTable({
@@ -27,6 +32,8 @@ export function ReportTable({
   dateStart,
   dateEnd,
   projects,
+  sortType,
+  setSorting,
 }: ProjectsReportTableData) {
   const [tableData, tableColumns] = useMemo(() => {
     return constructTable({
@@ -34,8 +41,9 @@ export function ReportTable({
       dateStart,
       dateEnd,
       projects,
+      sortType,
     });
-  }, [dateOfReportFormation, dateStart, dateEnd, projects]);
+  }, [dateOfReportFormation, dateStart, dateEnd, projects, sortType]);
 
   // console.log(
   //   'RAW_DATA: ',
@@ -49,7 +57,18 @@ export function ReportTable({
   const table = useReactTable({
     data: tableData,
     columns: tableColumns,
+    state: {
+      sorting: sortType,
+    },
+    onSortingChange: setSorting,
+    initialState: {
+      columnVisibility: {
+        contractDate: false,
+        shipmentDate: false,
+      },
+    },
     getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
   });
 
   return (
@@ -75,7 +94,7 @@ export function ReportTable({
           <tbody>
             {table.getRowModel().flatRows.map((row) => (
               <TableRow key={row.id}>
-                {row.getAllCells().map((cell) => (
+                {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id}>
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>

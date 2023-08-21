@@ -7,8 +7,13 @@ import dayjs from 'dayjs';
 import { ProjectsReportTableData } from '../ReportTable';
 import { convertMonthToString } from '../../../../helpers/convertMonthToString';
 import { convertToString } from '../../../../helpers/convertToString';
-import { TableDayHeader, TableMonthHeader } from '../ReportTable/styles';
+import {
+  TableCellContent,
+  TableDayHeader,
+  TableMonthHeader,
+} from '../ReportTable/styles';
 import { getDatesBetween } from '../../helpers/getDatesBetween';
+import Contract from '../../../svgs/Contract';
 
 interface TableData {
   [key: string]: string | number;
@@ -35,6 +40,7 @@ function constructTableData(data: ProjectsReportTableData) {
             isEnded: currentOperation?.isEnded,
             readyToAcceptance: currentOperation?.readyToAcceptance,
             name: currentOperation?.name,
+            // TODO: change length calculation
             length:
               project.operationPeriod / 24 + (project.operationPeriod % 24),
             isEndDateInContract,
@@ -50,6 +56,8 @@ function constructTableData(data: ProjectsReportTableData) {
     row.comment = comment;
     row.customer = customer;
     row.deviation = deviation;
+    row.contractDate = convertToString(project.endDateInContract);
+    row.shipmentDate = convertToString(project.plannedEndDate);
 
     return row;
   });
@@ -70,7 +78,7 @@ function constructTableColumns(dateStart: number[], dateEnd: number[]) {
 
       const columnsForDays = new Array(
         currentMonth === lastDate.month() && currentYear === lastDate.year()
-          ? lastDate.date()
+          ? lastDate.date() - currentDate.date() + 1
           : currentDate.daysInMonth() - currentDate.date() + 1
       )
         .fill(0)
@@ -81,8 +89,15 @@ function constructTableColumns(dateStart: number[], dateEnd: number[]) {
             accessorKey: currentDate.format('YYYY-MM-DD'),
             header: () => <TableDayHeader>{currentDay}</TableDayHeader>,
             // TODO: make full implementation of the cell contents
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             cell: (info: CellContext<TableData, any>) => (
-              <div>{info.getValue()?.name}</div>
+              <TableCellContent
+                $isEnded={info.getValue()?.isEnded}
+                $inWork={info.getValue()?.inWork}
+              >
+                {info.getValue()?.isEndDateInContract && <Contract />}
+                {info.getValue()?.name}
+              </TableCellContent>
             ),
           };
 
@@ -128,6 +143,18 @@ function constructTableColumns(dateStart: number[], dateEnd: number[]) {
       id: 'comment',
     }),
     ...constructDateColumns(),
+
+    columnHelper.accessor('contractDate', {
+      header: '1',
+      id: 'contractDate',
+      enableHiding: true,
+    }),
+
+    columnHelper.accessor('shipmentDate', {
+      header: '2',
+      id: 'shipmentDate',
+      enableHiding: true,
+    }),
   ];
 
   return columns;
