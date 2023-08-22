@@ -11,6 +11,7 @@ import {
   TableCellContent,
   TableDayHeader,
   TableMonthHeader,
+  TableStickyCellContent,
 } from '../ReportTable/styles';
 import { getDatesBetween } from '../../helpers/getDatesBetween';
 import Contract from '../../../svgs/Contract';
@@ -123,24 +124,41 @@ function constructTableColumns(dateStart: number[], dateEnd: number[]) {
 
   const columns = [
     columnHelper.accessor('number', {
-      header: '№',
+      header: () => <TableStickyCellContent>№</TableStickyCellContent>,
       id: 'number',
+      cell: (info: CellContext<TableData, string>) => (
+        <TableStickyCellContent>{info.getValue()}</TableStickyCellContent>
+      ),
     }),
     columnHelper.accessor('customer', {
-      header: 'Клиент',
+      header: () => <TableStickyCellContent>Клиент</TableStickyCellContent>,
       id: 'customer',
+      cell: (info: CellContext<TableData, string>) => (
+        <TableStickyCellContent>{info.getValue()}</TableStickyCellContent>
+      ),
     }),
     columnHelper.accessor('name', {
-      header: 'Изделие',
+      header: () => <TableStickyCellContent>Изделие</TableStickyCellContent>,
       id: 'name',
+      cell: (info: CellContext<TableData, string>) => (
+        <TableStickyCellContent>{info.getValue()}</TableStickyCellContent>
+      ),
     }),
     columnHelper.accessor('deviation', {
-      header: 'Отклонение',
+      header: () => <TableStickyCellContent>Отклонение</TableStickyCellContent>,
       id: 'deviation',
+      cell: (info: CellContext<TableData, string>) => (
+        <TableStickyCellContent>{info.getValue()}</TableStickyCellContent>
+      ),
     }),
     columnHelper.accessor('comment', {
-      header: 'Комментарий',
+      header: () => (
+        <TableStickyCellContent>Комментарий</TableStickyCellContent>
+      ),
       id: 'comment',
+      cell: (info: CellContext<TableData, string>) => (
+        <TableStickyCellContent>{info.getValue()}</TableStickyCellContent>
+      ),
     }),
     ...constructDateColumns(),
 

@@ -25,13 +25,19 @@ export const Table = styled.table`
     position: sticky;
     top: 0;
     z-index: 2;
-  }
 
-  thead th:first-child {
-    position: sticky;
-    background-color: var(--white);
-    left: 0;
-    z-index: 3;
+    th:first-child {
+      position: sticky;
+      background-color: var(--white);
+      left: 0;
+      z-index: 3;
+      min-width: 191px;
+    }
+
+    th:last-child {
+      min-width: 50px;
+      max-width: 50px;
+    }
   }
 
   tbody td:first-child {
@@ -39,6 +45,7 @@ export const Table = styled.table`
     left: 0;
     background-color: var(--white);
     z-index: 1;
+    min-width: 191px;
   }
 `;
 
@@ -70,7 +77,6 @@ export const TableCell = styled.td`
 
   :first-child {
     width: 191px;
-    border-right: 2px solid var(--green);
     border-left: none;
     font-weight: 500;
     font-size: 20px;
@@ -80,6 +86,7 @@ export const TableCell = styled.td`
   }
 
   :last-child {
+    min-width: 50px;
     border-left: 2px solid var(--green);
     border-right: none;
     font-weight: 500;
@@ -90,22 +97,30 @@ export const TableCell = styled.td`
   }
 `;
 
-// TODO: better border for header cells
 export const TableCellHeader = styled.th`
   padding: 0 1px;
   position: relative;
 
-  :nth-child(2) {
-    border-left: 2px solid var(--green);
-    border-right: none;
-    padding: 0 1px 0 0;
-  }
-
   :nth-last-child(2) {
-    border-right: 2px solid var(--green);
-    border-left: none;
     padding: 0 0 0 1px;
   }
+`;
+
+export const TableStickyCellContent = styled.div`
+  border-right: 2px solid var(--green);
+  width: 191px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  min-width: 100%;
+  min-height: 100%;
+`;
+
+export const TableRightHeaderContent = styled.div`
+  border-left: 2px solid var(--green);
+  min-width: 50px;
+  position: relative;
+  left: -2px;
 `;
 
 export const TableMonthHeader = styled.div`
@@ -135,17 +150,11 @@ export const TableDayHeader = styled.div`
   font-weight: 500;
   color: var(--white);
   background: var(--orange);
-  border-bottom-color: var(--green);
-`;
-
-export const LeftSideWrapper = styled.div`
-  position: relative;
-  width: 191px;
 `;
 
 export const HorizontalDivider = styled.div`
   position: absolute;
-  top: -9px;
+  top: 15px;
   left: 6px;
   width: 100%;
   height: 2px;
@@ -162,12 +171,12 @@ export const Title = styled.p`
 
 export const DateTitle = styled(Title)`
   position: absolute;
-  top: -30px;
+  top: -15px;
   right: 23px;
 `;
 
 export const EmployeeTitle = styled(Title)`
   position: absolute;
-  bottom: -17px;
-  left: 0;
+  bottom: 4px;
+  left: 3px;
 `;

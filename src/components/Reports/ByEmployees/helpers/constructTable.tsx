@@ -10,10 +10,11 @@ import {
   DateTitle,
   EmployeeTitle,
   HorizontalDivider,
-  LeftSideWrapper,
   TableCellContent,
   TableDayHeader,
   TableMonthHeader,
+  TableRightHeaderContent,
+  TableStickyCellContent,
 } from '../ReportTable/styles';
 import { convertMonthToString } from '../../../../helpers/convertMonthToString';
 import { EmployeesReportTableData } from '../ReportTable';
@@ -119,17 +120,22 @@ function constructTableColumns(dateStart: number[], dateEnd: number[]) {
   const columns = [
     columnHelper.accessor('employees', {
       header: () => (
-        <LeftSideWrapper>
+        <TableStickyCellContent>
           <HorizontalDivider />
           <DateTitle>Дата</DateTitle>
           <EmployeeTitle>Сотрудник</EmployeeTitle>
-        </LeftSideWrapper>
+        </TableStickyCellContent>
       ),
       id: 'employees',
+      cell: (info: CellContext<TableData, string>) => (
+        <TableStickyCellContent>{info.getValue()}</TableStickyCellContent>
+      ),
     }),
     ...constructDateColumns(),
     columnHelper.accessor('totalShifts', {
-      header: 'Итого смен',
+      header: () => (
+        <TableRightHeaderContent>Итого смен</TableRightHeaderContent>
+      ),
       id: 'totalShifts',
     }),
   ];

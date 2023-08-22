@@ -1,5 +1,38 @@
 import styled from 'styled-components';
 
+const rightPartTableWidths = (cellType: 'th' | 'td') => {
+  const sizes = [50, 150, 100, 100, 200];
+
+  let styles = '';
+
+  sizes.forEach((width, index) => {
+    styles += `${cellType}:nth-child(${index + 1}) {
+      min-width: ${width}px;
+      max-width: ${width}px;
+      word-break: break-all;
+      overflow-wrap: break-word;
+      padding: 0;
+      box-sizing: content-box;
+    }`;
+  });
+
+  return styles;
+};
+
+const rightPartTableOffsets = (cellType: 'th' | 'td') => {
+  const offsets = [0, 50, 200, 300, 400];
+
+  let styles = '';
+
+  offsets.forEach((offset, index) => {
+    styles += `${cellType}:nth-child(${index + 1}) {
+      left: ${offset}px;
+    }`;
+  });
+
+  return styles;
+};
+
 export const Wrapper = styled.section`
   width: fit-content;
   max-width: 100%;
@@ -25,20 +58,33 @@ export const Table = styled.table`
     position: sticky;
     top: 0;
     z-index: 2;
+
+    ${rightPartTableWidths('th')}
+    ${rightPartTableOffsets('th')}
+
+    th:nth-child(-n + 5) {
+      position: sticky;
+      background-color: var(--white);
+      z-index: 3;
+      padding: 0;
+    }
   }
 
-  thead th:nth-child(-n + 5) {
-    position: sticky;
-    background-color: var(--white);
-    left: 0;
-    z-index: 3;
-  }
+  tbody {
+    ${rightPartTableWidths('td')}
+    ${rightPartTableOffsets('td')}
 
-  tbody td:nth-child(-n + 5) {
-    position: sticky;
-    left: 0;
-    background-color: var(--white);
-    z-index: 1;
+    td:nth-child(-n + 5) {
+      position: sticky;
+      background-color: var(--white);
+      z-index: 1;
+
+      font-weight: 500;
+      font-size: 20px;
+      line-height: 23px;
+      color: var(--black);
+      text-align: center;
+    }
   }
 `;
 
@@ -65,34 +111,25 @@ export const TableCellContent = styled.div<{
   top: 0;
 `;
 
+export const TableStickyCellContent = styled.div`
+  border-right: 2px solid var(--green);
+  position: absolute;
+  left: 0;
+  top: 0;
+  min-width: 100%;
+  min-height: 100%;
+`;
+
 export const TableCell = styled.td`
   border-top: 2px solid var(--green);
   border-bottom: 2px solid var(--green);
   min-width: 31px;
   position: relative;
-
-  :nth-child(-n + 5) {
-    width: 191px;
-    border-right: 2px solid var(--green);
-    border-left: none;
-    font-weight: 500;
-    font-size: 20px;
-    line-height: 23px;
-    color: var(--black);
-    text-align: center;
-  }
 `;
 
-// TODO: better border for header cells
 export const TableCellHeader = styled.th`
   padding: 0 1px;
   position: relative;
-
-  :nth-child(-n + 5) {
-    border-right: 2px solid var(--green);
-    border-left: none;
-    padding: 0;
-  }
 `;
 
 export const TableMonthHeader = styled.div`
@@ -122,5 +159,4 @@ export const TableDayHeader = styled.div`
   font-weight: 500;
   color: var(--white);
   background: var(--orange);
-  border-bottom-color: var(--green);
 `;
