@@ -45,15 +45,6 @@ export function ReportTable({
     });
   }, [dateOfReportFormation, dateStart, dateEnd, projects, sortType]);
 
-  // console.log(
-  //   'RAW_DATA: ',
-  //   dateOfReportFormation,
-  //   dateStart,
-  //   dateEnd,
-  //   projects
-  // );
-  // console.log('TRANSFORMED_DATA: ', tableData, tableColumns);
-
   const table = useReactTable({
     data: tableData,
     columns: tableColumns,

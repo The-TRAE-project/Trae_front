@@ -91,7 +91,6 @@ export const useMultiSelectStyles = createStyles(() => ({
     lineHeight: '28px',
     color: 'var(--orange)',
     wordBreak: 'break-word',
-    // minWidth: 169,
     minHeight: 53,
     height: 'auto',
     background: 'var(--white)',
@@ -112,51 +111,6 @@ export const useMultiSelectStyles = createStyles(() => ({
         height: 25,
         minWidth: 25,
         minHeight: 25,
-      },
-    },
-  },
-  // TODO: DELETE?
-  valueOnHover: {
-    fontFamily: 'var(--font-roboto)',
-    fontWeight: 500,
-    fontSize: 28,
-    lineHeight: '33px',
-    color: 'var(--white-black)',
-    wordBreak: 'break-word',
-    // minWidth: 169,
-    minHeight: 53,
-    height: 'auto',
-    background: 'var(--white)',
-    padding: '10px 12px',
-    border: '1px solid var(--gray)',
-    borderRadius: 'var(--border-radius)',
-    gap: 14,
-
-    button: {
-      display: 'none',
-      width: 25,
-      height: 25,
-      minWidth: 25,
-      minHeight: 25,
-
-      svg: {
-        fontSize: 25,
-        width: 25,
-        height: 25,
-        minWidth: 25,
-        minHeight: 25,
-      },
-    },
-
-    '&:hover': {
-      button: {
-        display: 'block',
-      },
-    },
-
-    '&:focus': {
-      button: {
-        display: 'block',
       },
     },
   },

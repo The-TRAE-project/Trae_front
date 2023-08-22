@@ -17,6 +17,5 @@ export const compareValues = (
     commentary:
       project.comment === values.commentary ? null : values.commentary,
   };
-  // eslint-disable-next-line consistent-return
   return findDifference;
 };

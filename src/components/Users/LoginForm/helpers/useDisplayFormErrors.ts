@@ -38,8 +38,9 @@ export function useDisplayFormErrors(
       }
     };
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    error && handleError(error.error as string);
+    if (error !== null) {
+      handleError(error.error as string);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [error]);
 }
