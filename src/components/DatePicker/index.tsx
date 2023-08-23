@@ -2,6 +2,7 @@ import { Indicator } from '@mantine/core';
 import { DatePickerInput } from '@mantine/dates';
 import { FC } from 'react';
 
+import dayjs from 'dayjs';
 import { useDateInputStyles, useIndicatorStyles } from './styles';
 
 interface Props {
@@ -49,13 +50,13 @@ const DatePicker: FC<Props> = ({ title, disabled = false, ...props }) => {
       }}
       renderDay={(date) => {
         const data = date.getDate();
-
+        const isToday = dayjs(date).isSame(dayjs(), 'day');
         return (
           <Indicator
             size={6}
             color="red"
             position="bottom-center"
-            disabled={data !== new Date().getDate()}
+            disabled={!isToday}
             classNames={{ indicator }}
           >
             <div>{data}</div>

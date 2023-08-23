@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 const rightPartTableWidths = (cellType: 'th' | 'td') => {
-  const sizes = [50, 150, 100, 100, 200];
+  const sizes = [50, 150, 100, 70, 200];
 
   let styles = '';
 
@@ -20,7 +20,7 @@ const rightPartTableWidths = (cellType: 'th' | 'td') => {
 };
 
 const rightPartTableOffsets = (cellType: 'th' | 'td') => {
-  const offsets = [0, 50, 200, 300, 400];
+  const offsets = [0, 50, 200, 300, 370];
 
   let styles = '';
 
@@ -57,7 +57,7 @@ export const Table = styled.table`
     background-color: var(--white);
     position: sticky;
     top: 0;
-    z-index: 2;
+    z-index: 5;
 
     ${rightPartTableWidths('th')}
     ${rightPartTableOffsets('th')}
@@ -65,7 +65,7 @@ export const Table = styled.table`
     th:nth-child(-n + 5) {
       position: sticky;
       background-color: var(--white);
-      z-index: 3;
+      z-index: 6;
       padding: 0;
     }
   }
@@ -77,7 +77,7 @@ export const Table = styled.table`
     td:nth-child(-n + 5) {
       position: sticky;
       background-color: var(--white);
-      z-index: 1;
+      z-index: 4;
 
       font-weight: 500;
       font-size: 20px;
@@ -95,34 +95,95 @@ export const TableRow = styled.tr`
 export const TableCellContent = styled.div<{
   $isEnded?: boolean;
   $inWork?: boolean;
+  $readyToAcceptance?: boolean;
+  $length?: number;
+  $isEndDateInContract?: boolean;
 }>`
-  background-color: ${(props) =>
-    // eslint-disable-next-line no-nested-ternary
-    props.$isEnded ? 'red' : props.$inWork ? 'green' : 'white'};
+  background-color: ${(props) => {
+    if (props.$isEnded) {
+      return 'var(--green2)';
+    }
+    if (props.$readyToAcceptance) {
+      return 'var(--green)';
+    }
+    if (props.$inWork) {
+      return 'var(--orange)';
+    }
+    if (props.$length) {
+      return 'var(--white)';
+    }
+    return 'var(--grey2)';
+  }};
 
-  height: 95px;
+  border: ${(props) =>
+    !props.$isEnded &&
+    !props.$readyToAcceptance &&
+    !props.$inWork &&
+    props.$length
+      ? '2px solid var(--orange)'
+      : ''};
+  height: ${(props) => (props.$isEndDateInContract ? '29px' : '95px')};
+  color: ${(props) =>
+    props.$readyToAcceptance ? 'var(--white)' : 'var(--black)'};
+  width: ${(props) => `${(props.$length ?? 1) * 33}px`};
+
+  z-index: 3;
   font-family: var(--font-roboto);
   font-weight: 400;
   font-size: 18px;
-  text-align: center;
-  color: var(--black);
+  display: flex;
+  place-items: center;
+  justify-content: center;
+
   position: absolute;
   left: 0;
   top: 0;
 `;
 
-export const TableStickyCellContent = styled.div`
+export const OverdueWrapper = styled.div<{
+  $isOverdue?: boolean;
+}>`
+  overflow-x: hidden;
+  ${(props) => {
+    if (props.$isOverdue) {
+      return `
+        background-color: var(--white);
+        border-radius: 10px;
+        color: var(--red);
+      `;
+    }
+    return '';
+  }}
+`;
+
+export const TableStickyCellContent = styled.div<{
+  $isOverdueByProject?: boolean;
+  $isOverdueByOperations?: boolean;
+}>`
+  ${(props) => {
+    if (props.$isOverdueByProject) return 'background-color: var(--red);';
+    if (props.$isOverdueByOperations) return 'color: var(--red);';
+
+    return '';
+  }}
+
   border-right: 2px solid var(--green);
   position: absolute;
   left: 0;
   top: 0;
   min-width: 100%;
   min-height: 100%;
+  overflow-y: auto;
+
+  display: flex;
+  place-items: center;
+  justify-content: center;
 `;
 
 export const TableCell = styled.td`
   border-top: 2px solid var(--green);
   border-bottom: 2px solid var(--green);
+  background-color: var(--gray2);
   min-width: 31px;
   position: relative;
 `;
@@ -147,7 +208,9 @@ export const TableMonthHeader = styled.div`
   );
 `;
 
-export const TableDayHeader = styled.div`
+export const TableDayHeader = styled.div<{
+  $isToday?: boolean;
+}>`
   margin: auto;
   height: 47px;
   width: 31px;
@@ -157,6 +220,11 @@ export const TableDayHeader = styled.div`
   font-family: var(--font-roboto);
   font-size: 20px;
   font-weight: 500;
-  color: var(--white);
-  background: var(--orange);
+
+  ${(props) =>
+    props.$isToday
+      ? `color: var(--green);
+  background: var(--white);`
+      : `color: var(--white);
+  background: var(--orange);`}
 `;

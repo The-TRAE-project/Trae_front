@@ -8,42 +8,64 @@ import { ProjectsReportTableData } from '../ReportTable';
 import { convertMonthToString } from '../../../../helpers/convertMonthToString';
 import { convertToString } from '../../../../helpers/convertToString';
 import {
+  OverdueWrapper,
   TableCellContent,
   TableDayHeader,
   TableMonthHeader,
   TableStickyCellContent,
 } from '../ReportTable/styles';
 import { getDatesBetween } from '../../helpers/getDatesBetween';
-import Contract from '../../../svgs/Contract';
+import { ContractIcon } from '../ReportTable/ContractIcon';
+import { calculateDeviation } from '../../helpers/calculateDeviation';
 
 interface TableData {
-  [key: string]: string | number;
+  [key: string]: string | number | null | object;
 }
 
 function constructTableData(data: ProjectsReportTableData) {
   const result = Array.from(data.projects).map((project) => {
-    const { name, number, comment, customer } = project;
+    const {
+      name,
+      number,
+      comment,
+      customer,
+      id: currentId,
+      realEndDate,
+      endDateInContract,
+      operationPeriod,
+    } = project;
 
-    const deviation = 1; // TODO: calculate frrm dates?
+    const deviation = calculateDeviation(endDateInContract, realEndDate);
+
+    const isOverdueByProject = deviation !== null && deviation > 0;
+    let isOverdueByOperations = false;
 
     const operations = getDatesBetween(data.dateStart, data.dateEnd).map(
       (date) => {
         const currentOperation = project.operations.find(
           (operation) => convertToString(operation.startDate) === date
         );
-        const isEndDateInContract =
-          convertToString(project.endDateInContract) === date;
+        const isEndDateInContract = convertToString(endDateInContract) === date;
+        const isOverdue =
+          !!currentOperation &&
+          !!currentOperation.realEndDate &&
+          convertToString(currentOperation.plannedEndDate) <
+            convertToString(currentOperation.realEndDate);
+
+        isOverdueByOperations = isOverdue ? true : isOverdueByOperations;
         return [
           date,
           {
+            projectId: currentId,
             id: currentOperation?.id,
             inWork: currentOperation?.inWork,
             isEnded: currentOperation?.isEnded,
             readyToAcceptance: currentOperation?.readyToAcceptance,
             name: currentOperation?.name,
-            // TODO: change length calculation
-            length:
-              project.operationPeriod / 24 + (project.operationPeriod % 24),
+            isOverdue,
+            length: currentOperation?.id
+              ? Math.ceil(operationPeriod / 24)
+              : null,
             isEndDateInContract,
           },
         ];
@@ -53,7 +75,7 @@ function constructTableData(data: ProjectsReportTableData) {
     const row: TableData = Object.fromEntries(operations);
 
     row.name = name;
-    row.number = number;
+    row.number = { number, isOverdueByOperations, isOverdueByProject };
     row.comment = comment;
     row.customer = customer;
     row.deviation = deviation;
@@ -70,6 +92,7 @@ function constructTableColumns(dateStart: number[], dateEnd: number[]) {
   function constructDateColumns() {
     let currentDate = dayjs(convertToString(dateStart)).clone();
     const lastDate = dayjs(convertToString(dateEnd)).clone();
+    const todayDate = dayjs();
 
     const result: ColumnDef<TableData>[] = [];
 
@@ -86,18 +109,28 @@ function constructTableColumns(dateStart: number[], dateEnd: number[]) {
         // eslint-disable-next-line @typescript-eslint/no-loop-func
         .map(() => {
           const currentDay = currentDate.date();
+          const isToday = currentDate.isSame(todayDate, 'day');
           const currentCell = {
             accessorKey: currentDate.format('YYYY-MM-DD'),
-            header: () => <TableDayHeader>{currentDay}</TableDayHeader>,
+            header: () => (
+              <TableDayHeader $isToday={isToday}>{currentDay}</TableDayHeader>
+            ),
             // TODO: make full implementation of the cell contents
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             cell: (info: CellContext<TableData, any>) => (
               <TableCellContent
                 $isEnded={info.getValue()?.isEnded}
                 $inWork={info.getValue()?.inWork}
+                $readyToAcceptance={info.getValue()?.readyToAcceptance}
+                $length={info.getValue()?.length}
+                $isEndDateInContract={info.getValue()?.isEndDateInContract}
               >
-                {info.getValue()?.isEndDateInContract && <Contract />}
-                {info.getValue()?.name}
+                {info.getValue()?.isEndDateInContract && (
+                  <ContractIcon projectId={info.getValue()?.projectId} />
+                )}
+                <OverdueWrapper $isOverdue={info.getValue()?.isOverdue}>
+                  {info.getValue()?.name}
+                </OverdueWrapper>
               </TableCellContent>
             ),
           };
@@ -126,8 +159,13 @@ function constructTableColumns(dateStart: number[], dateEnd: number[]) {
     columnHelper.accessor('number', {
       header: () => <TableStickyCellContent>№</TableStickyCellContent>,
       id: 'number',
-      cell: (info: CellContext<TableData, string>) => (
-        <TableStickyCellContent>{info.getValue()}</TableStickyCellContent>
+      cell: (info: CellContext<TableData, any>) => (
+        <TableStickyCellContent
+          $isOverdueByProject={info.getValue()?.isOverdueByProject}
+          $isOverdueByOperations={info.getValue()?.isOverdueByOperations}
+        >
+          {info.getValue()?.number}
+        </TableStickyCellContent>
       ),
     }),
     columnHelper.accessor('customer', {

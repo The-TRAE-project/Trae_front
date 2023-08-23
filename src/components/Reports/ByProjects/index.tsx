@@ -12,7 +12,7 @@ import { useExportToExcel } from '../../../helpers/hooks/useExportToExcel';
 import { FormWrapper } from '../../styles';
 import Loader from '../../Loader';
 import {
-  DATE_1_AHEAD,
+  DATE_30_AHEAD,
   formatToQueryParamDate,
 } from '../helpers/formatToParamDate';
 import FormHeader from '../FormHeader';
@@ -54,7 +54,7 @@ const ByProjects = () => {
   const form = useForm<ProjectReportFormValues>({
     initialValues: {
       startOfPeriod: new Date(),
-      endOfPeriod: DATE_1_AHEAD,
+      endOfPeriod: DATE_30_AHEAD,
     },
     validate: (values) => {
       const resolver = zodResolver(ProjectReportSchema);

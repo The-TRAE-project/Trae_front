@@ -33,6 +33,7 @@ const DetailsHeader = ({ projectId, projectNumber, isEnded }: Props) => {
   const confirmTitle = `Завершить проект №${projectNumber}?`;
   const informTitle = `Проект №${projectNumber} завершен`;
 
+  // TODO add option to return to reports page
   const navigateToProjects = () => navigate(Paths.PROJECTS);
   const navigateToDeletePage = () => navigate(`/project/${projectId}/delete`);
 
