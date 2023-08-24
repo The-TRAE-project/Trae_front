@@ -24,6 +24,7 @@ const ProjectItem = ({ project, isOpOverdue, isPrOverdue }: Props) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const navigate = useNavigate();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [fromReports, setFromReports] = useLocalStorage<boolean>({
     key: LocalStorage.PROJECT_DETAILS_FROM_REPORTS,
   });

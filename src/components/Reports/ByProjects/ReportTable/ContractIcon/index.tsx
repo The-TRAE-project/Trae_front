@@ -10,6 +10,7 @@ interface Props {
 
 export const ContractIcon = ({ projectId }: Props) => {
   const navigate = useNavigate();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [fromReports, setFromReports] = useLocalStorage<boolean>({
     key: LocalStorage.PROJECT_DETAILS_FROM_REPORTS,
   });
