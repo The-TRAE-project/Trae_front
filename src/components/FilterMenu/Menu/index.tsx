@@ -1,7 +1,7 @@
 import { Menu as MantineMenu } from '@mantine/core';
 import { ReactNode } from 'react';
 
-import { UnstyledButton } from '../../styles';
+import { BgWhiteCardLinkBtn, UnstyledButton } from '../../styles';
 import Filter from '../../svgs/Filter';
 import { useMenuStyles } from './styles';
 
@@ -10,6 +10,7 @@ interface Props {
   closeOnItemClick?: boolean;
   children: ReactNode;
   isButton?: boolean;
+  title?: string;
 }
 
 // TODO add styles for button variant
@@ -18,6 +19,7 @@ const Menu = ({
   closeOnItemClick = false,
   children,
   isButton = false,
+  title,
 }: Props) => {
   const {
     classes: { dropdown, label, item },
@@ -25,6 +27,7 @@ const Menu = ({
 
   const toggle = () => onClick?.();
 
+  // TODO: complete styling for sorting button
   return (
     <MantineMenu
       closeOnItemClick={closeOnItemClick}
@@ -34,15 +37,18 @@ const Menu = ({
         item,
       }}
     >
-      <MantineMenu.Target>
-        {isButton ? (
-          <div>Test</div>
-        ) : (
-          <UnstyledButton onClick={toggle} $isFilterIcon>
-            <Filter />
-          </UnstyledButton>
-        )}
-      </MantineMenu.Target>
+      <div>
+        {isButton && <p>Сортировка</p>}
+        <MantineMenu.Target>
+          {isButton ? (
+            <BgWhiteCardLinkBtn onClick={toggle}>{title}</BgWhiteCardLinkBtn>
+          ) : (
+            <UnstyledButton onClick={toggle} $isFilterIcon>
+              <Filter />
+            </UnstyledButton>
+          )}
+        </MantineMenu.Target>
+      </div>
       <MantineMenu.Dropdown>{children}</MantineMenu.Dropdown>
     </MantineMenu>
   );

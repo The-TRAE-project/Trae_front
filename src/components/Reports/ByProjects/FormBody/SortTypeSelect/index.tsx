@@ -42,8 +42,10 @@ export function SortTypeSelect({ sortType, setSortType }: Props) {
     },
   ];
 
+  const title = filterValues.find((value) => value.isActive)?.title;
+
   return (
-    <Menu isButton>
+    <Menu isButton closeOnItemClick title={title}>
       {/* onClick={onClearInput}> */}
       {filterValues.map((filterValue) => (
         <MenuItem
