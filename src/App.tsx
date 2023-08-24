@@ -81,6 +81,36 @@ const App = () => {
               path={Paths.REPORTS_BY_PROJECTS}
               element={<ReportsByProjects />}
             />
+
+            <Route
+              path={Paths.REPORTS_BY_PROJECTS_PROJECT_DETAILS}
+              element={<ProjectDetails />}
+            />
+            <Route
+              path={Paths.REPORTS_BY_PROJECTS_PROJECT_STAGE}
+              element={<ProjectStage />}
+            />
+            <Route
+              path={Paths.REPORTS_BY_PROJECTS_PROJECT_EDIT_GENERAL_INFO}
+              element={<ProjectUpdateGeneralInfo />}
+            />
+            <Route
+              path={Paths.REPORTS_BY_PROJECTS_PROJECT_EDIT_END_DATE}
+              element={<ProjectUpdateEndDate />}
+            />
+            <Route
+              path={Paths.REPORTS_BY_PROJECTS_PROJECT_DELETE}
+              element={<ProjectDelete />}
+            />
+            <Route
+              path={Paths.REPORTS_BY_PROJECTS_PROJECT_NEW_STAGE}
+              element={<ProjectNewStage />}
+            />
+            <Route
+              path={Paths.REPORTS_BY_PROJECTS_PROJECT_INSERT_NEW_STAGE}
+              element={<ProjectInsertNewStage />}
+            />
+
             {/* Project routes */}
             <Route path={Paths.PROJECTS} element={<Projects />} />
             <Route path={Paths.PROJECT_CREATE} element={<CreateProject />} />

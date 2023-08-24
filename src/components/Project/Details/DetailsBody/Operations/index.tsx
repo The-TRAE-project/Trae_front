@@ -1,9 +1,11 @@
 import { useNavigate } from 'react-router-dom';
 
+import { useLocalStorage } from '@mantine/hooks';
 import { ProjectOperation } from '../../../../../store/apis/project/types';
 import StageCard from '../../../StageCard';
 import OperationCard from './OperationCard';
 import { Divider, Grid } from './styles';
+import { LocalStorage } from '../../../../../constants/localStorage';
 
 interface Props {
   projectId: number;
@@ -13,6 +15,9 @@ interface Props {
 
 const Operations = ({ projectOperations, isEnded, projectId }: Props) => {
   const navigate = useNavigate();
+  const [fromReports] = useLocalStorage<boolean>({
+    key: LocalStorage.PROJECT_DETAILS_FROM_REPORTS,
+  });
 
   const endedOperations = projectOperations.filter(
     (operation) => operation.isEnded
@@ -26,7 +31,12 @@ const Operations = ({ projectOperations, isEnded, projectId }: Props) => {
     (operation) => !operation.inWork && !operation.isEnded
   );
 
-  const navigateToNewStage = () => navigate(`/project/${projectId}/new-stage`);
+  const navigateToNewStage = () =>
+    navigate(
+      fromReports
+        ? `/reports/by-projects/project/${projectId}/new-stage`
+        : `/project/${projectId}/new-stage`
+    );
 
   return (
     <StageCard

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Stack } from '@mantine/core';
 
+import { useLocalStorage } from '@mantine/hooks';
 import { useAppSelector } from '../../../helpers/hooks/useAppSelector';
 import { useCloseProjectOperationMutation } from '../../../store/apis/project';
 import Loader from '../../Loader';
@@ -9,12 +10,16 @@ import ConfirmModal from '../../ConfirmModal';
 import FormHeader from '../../FormHeader';
 import { showErrorNotification } from '../../../helpers/showErrorNotification';
 import StageBody from './StageBody';
+import { LocalStorage } from '../../../constants/localStorage';
 
 const StageDetails = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const { id } = useParams();
   const navigate = useNavigate();
+  const [fromReports] = useLocalStorage<boolean>({
+    key: LocalStorage.PROJECT_DETAILS_FROM_REPORTS,
+  });
   const { projectStage } = useAppSelector((store) => store.project);
 
   const [closeOperation, { isLoading: isCloseLoading, isSuccess }] =
@@ -39,7 +44,12 @@ const StageDetails = () => {
     projectStage?.projectNumber
   } <br /> завершен `;
 
-  const navigateToBack = () => navigate(`/project/${id}/details`);
+  const navigateToBack = () =>
+    navigate(
+      fromReports
+        ? `/reports/by-projects/project/${id}/details`
+        : `/project/${id}/details`
+    );
 
   return (
     <>

@@ -4,6 +4,7 @@ export enum LocalStorage {
   USER_STATUS = 'user-status',
   USER_ROLE = 'user-role',
   USER_PAGE = 'user-page',
+  PROJECT_DETAILS_FROM_REPORTS = 'project-details-from-reports',
   PROJECT_SEARCH_PAGE = 'project-search-page',
   PROJECT_FILTER_PAGE = 'project-filter-page',
   PROJECT_FILTER_IS_ENDED = 'project-filter-is-ended',

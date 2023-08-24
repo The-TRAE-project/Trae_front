@@ -1,12 +1,14 @@
 import { Center, Stack } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
 
+import { useLocalStorage } from '@mantine/hooks';
 import { convertHoursToDays } from '../../../../../helpers/convertHoursToDays';
 import { Project } from '../../../../../store/apis/project/types';
 import { formatDate } from '../../../helpers/formatDate';
 import StageCard from '../../../StageCard';
 import { DateBadge } from '../../../styles';
 import { DateTitle, DateText, Grid } from './styles';
+import { LocalStorage } from '../../../../../constants/localStorage';
 
 interface Props {
   project: Project;
@@ -14,6 +16,9 @@ interface Props {
 
 const Dates = ({ project }: Props) => {
   const navigate = useNavigate();
+  const [fromReports] = useLocalStorage<boolean>({
+    key: LocalStorage.PROJECT_DETAILS_FROM_REPORTS,
+  });
 
   const {
     id,
@@ -27,7 +32,11 @@ const Dates = ({ project }: Props) => {
   } = project;
 
   const navigateToEditEndDate = () =>
-    navigate(`/project/${id}/editing-end-date`);
+    navigate(
+      fromReports
+        ? `/reports/by-projects/project/${id}/editing-end-date`
+        : `/project/${id}/editing-end-date`
+    );
 
   return (
     <StageCard

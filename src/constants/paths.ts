@@ -6,6 +6,19 @@ export const Paths = {
   REPORTS: '/reports',
   REPORTS_BY_EMPLOYEES: '/reports/by-employees',
   REPORTS_BY_PROJECTS: '/reports/by-projects',
+
+  REPORTS_BY_PROJECTS_PROJECT_DETAILS:
+    '/reports/by-projects/project/:id/details',
+  REPORTS_BY_PROJECTS_PROJECT_STAGE: '/reports/by-projects/project/:id/stage',
+  REPORTS_BY_PROJECTS_PROJECT_EDIT_GENERAL_INFO:
+    '/reports/by-projects/project/:id/editing-general-info',
+  REPORTS_BY_PROJECTS_PROJECT_EDIT_END_DATE:
+    '/reports/by-projects/project/:id/editing-end-date',
+  REPORTS_BY_PROJECTS_PROJECT_DELETE: '/reports/by-projects/project/:id/delete',
+  REPORTS_BY_PROJECTS_PROJECT_NEW_STAGE:
+    '/reports/by-projects/project/:id/new-stage',
+  REPORTS_BY_PROJECTS_PROJECT_INSERT_NEW_STAGE:
+    '/reports/by-projects/project/:id/insert-new-stage',
   // Admin Personal Cabinet paths
   PERSONAL_CABINET: '/personal-cabinet',
   PERSONAL_CABINET_EDITING: '/personal-cabinet/editing',

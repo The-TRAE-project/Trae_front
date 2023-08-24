@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useForm, zodResolver } from '@mantine/form';
 
 import dayjs from 'dayjs';
+import { useLocalStorage } from '@mantine/hooks';
 import { convertToDate } from '../../../helpers/convertToDate';
 import { useDisplayError } from '../../../helpers/hooks/useDisplayError';
 import { useOpenModal } from '../../../helpers/hooks/useOpenModal';
@@ -21,12 +22,16 @@ import InformModal from '../../InformModal';
 import FormHeader from '../../FormHeader';
 import { FormStack, InformModalText, TwoColumnGrid } from '../../styles';
 import { formatDate } from '../helpers/formatDate';
+import { LocalStorage } from '../../../constants/localStorage';
 
 const UpdateEndDateForm = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const { id } = useParams();
   const navigate = useNavigate();
+  const [fromReports] = useLocalStorage<boolean>({
+    key: LocalStorage.PROJECT_DETAILS_FROM_REPORTS,
+  });
 
   const {
     data: project,
@@ -80,7 +85,12 @@ const UpdateEndDateForm = () => {
 
   useOpenModal(setIsOpen, isSuccess);
 
-  const navigateToBack = () => navigate(`/project/${id}/details`);
+  const navigateToBack = () =>
+    navigate(
+      fromReports
+        ? `/reports/by-projects/project/${id}/details`
+        : `/project/${id}/details`
+    );
 
   const closeModal = () => {
     setIsOpen(false);

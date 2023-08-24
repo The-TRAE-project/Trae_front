@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useForm, zodResolver } from '@mantine/form';
 import { Stack } from '@mantine/core';
 
+import { useLocalStorage } from '@mantine/hooks';
 import {
   Project,
   UpdateProjectFormValues,
@@ -23,6 +24,7 @@ import { FormStack, InformModalText } from '../../styles';
 import { useSetDefaultValues } from './helpers/useSetDefaultValues';
 import { compareValues } from './helpers/compareValues';
 import FormBody from './FormBody';
+import { LocalStorage } from '../../../constants/localStorage';
 
 const UpdateGeneralInfo = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -30,6 +32,9 @@ const UpdateGeneralInfo = () => {
 
   const { id } = useParams();
   const navigate = useNavigate();
+  const [fromReports] = useLocalStorage<boolean>({
+    key: LocalStorage.PROJECT_DETAILS_FROM_REPORTS,
+  });
 
   const {
     data: project,
@@ -85,7 +90,12 @@ const UpdateGeneralInfo = () => {
     checkForEquality(customer, project?.customer) &&
     checkForEquality(commentary, project?.comment);
 
-  const navigateToBack = () => navigate(`/project/${id}/details`);
+  const navigateToBack = () =>
+    navigate(
+      fromReports
+        ? `/reports/by-projects/project/${id}/details`
+        : `/project/${id}/details`
+    );
 
   const closeModal = () => {
     setIsOpen(false);

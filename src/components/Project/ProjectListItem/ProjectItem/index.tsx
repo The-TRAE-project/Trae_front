@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { useLocalStorage } from '@mantine/hooks';
 import { Paths } from '../../../../constants/paths';
 import { showErrorNotification } from '../../../../helpers/showErrorNotification';
 import { useCloseProjectMutation } from '../../../../store/apis/project';
@@ -9,6 +10,7 @@ import { WorkTypeStatuses } from '../../../../store/apis/workTypes/types';
 import ConfirmModal from '../../../ConfirmModal';
 import { ProjectCustomer, ProjectName, ProjectNumber } from '../../../styles';
 import { Wrapper, ProjectFinishBtn, ProjectOperationName } from './styles';
+import { LocalStorage } from '../../../../constants/localStorage';
 
 interface Props {
   project: ProjectShortInfo;
@@ -22,6 +24,9 @@ const ProjectItem = ({ project, isOpOverdue, isPrOverdue }: Props) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const navigate = useNavigate();
+  const [fromReports, setFromReports] = useLocalStorage<boolean>({
+    key: LocalStorage.PROJECT_DETAILS_FROM_REPORTS,
+  });
 
   const [closeProject, { isSuccess, isLoading: isCloseLoading }] =
     useCloseProjectMutation();
@@ -34,7 +39,10 @@ const ProjectItem = ({ project, isOpOverdue, isPrOverdue }: Props) => {
   const isShipmentEnded =
     operation.name === WorkTypeStatuses.SHIPMENT && !isEnded;
 
-  const handleNavigateToDetails = () => navigate(`/project/${id}/details`);
+  const handleNavigateToDetails = () => {
+    setFromReports(false);
+    navigate(`/project/${id}/details`);
+  };
 
   const handleCloseProject = async () => {
     try {

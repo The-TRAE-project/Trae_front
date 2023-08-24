@@ -1,9 +1,11 @@
 import { useNavigate } from 'react-router-dom';
 import { Stack } from '@mantine/core';
 
+import { useLocalStorage } from '@mantine/hooks';
 import { Project } from '../../../../../store/apis/project/types';
 import InfoText from '../../../InfoText';
 import StageCard from '../../../StageCard';
+import { LocalStorage } from '../../../../../constants/localStorage';
 
 interface Props {
   project: Project;
@@ -11,11 +13,18 @@ interface Props {
 
 const GeneralInformation = ({ project }: Props) => {
   const navigate = useNavigate();
+  const [fromReports] = useLocalStorage<boolean>({
+    key: LocalStorage.PROJECT_DETAILS_FROM_REPORTS,
+  });
 
   const constructorFullName = `${project.managerDto.firstName} ${project.managerDto.lastName}`;
 
   const navigateToEditGeneralInfo = () =>
-    navigate(`/project/${project.id}/editing-general-info`);
+    navigate(
+      fromReports
+        ? `/reports/by-projects/project/${project.id}/editing-general-info`
+        : `/project/${project.id}/editing-general-info`
+    );
 
   return (
     <StageCard

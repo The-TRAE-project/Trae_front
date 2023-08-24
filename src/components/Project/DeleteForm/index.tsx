@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useForm, zodResolver } from '@mantine/form';
 
+import { useLocalStorage } from '@mantine/hooks';
 import { Paths } from '../../../constants/paths';
 import { useDisplayError } from '../../../helpers/hooks/useDisplayError';
 import { useOpenModal } from '../../../helpers/hooks/useOpenModal';
@@ -19,12 +20,16 @@ import Loader from '../../Loader';
 import InformModal from '../../InformModal';
 import FormHeader from '../../FormHeader';
 import { FormStack, TwoColumnGrid } from '../../styles';
+import { LocalStorage } from '../../../constants/localStorage';
 
 const DeleteForm = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const { id } = useParams();
   const navigate = useNavigate();
+  const [fromReports] = useLocalStorage<boolean>({
+    key: LocalStorage.PROJECT_DETAILS_FROM_REPORTS,
+  });
 
   const {
     data: project,
@@ -72,7 +77,8 @@ const DeleteForm = () => {
 
   useOpenModal(setIsOpen, isSuccess);
 
-  const navigateBack = () => navigate(Paths.PROJECTS);
+  const navigateBack = () =>
+    navigate(fromReports ? `/reports/by-projects` : Paths.PROJECTS);
 
   const closeModal = () => {
     setIsOpen(false);
@@ -95,7 +101,13 @@ const DeleteForm = () => {
               submitBtnText="Удалить"
               isSubmitBtnLoading={isDeleteLoading}
               isSubmitBtnDisabled={isDeleteLoading}
-              onBack={() => navigate(`/project/${id}/details`)}
+              onBack={() =>
+                navigate(
+                  fromReports
+                    ? `/reports/by-projects/project/${id}/details`
+                    : `/project/${id}/details`
+                )
+              }
             />
 
             <TwoColumnGrid>

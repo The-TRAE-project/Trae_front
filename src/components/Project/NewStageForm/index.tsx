@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useForm, zodResolver } from '@mantine/form';
 
+import { useLocalStorage } from '@mantine/hooks';
 import { useDisplayError } from '../../../helpers/hooks/useDisplayError';
 import { showErrorNotification } from '../../../helpers/showErrorNotification';
 import { useOpenModal } from '../../../helpers/hooks/useOpenModal';
@@ -19,12 +20,16 @@ import NumberInput from '../../NumberInput';
 import InformModal from '../../InformModal';
 import { FormStack, InformModalText, TwoColumnGrid } from '../../styles';
 import StageSelect from './StageSelect';
+import { LocalStorage } from '../../../constants/localStorage';
 
 const NewStageForm = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const { id } = useParams();
   const navigate = useNavigate();
+  const [fromReports] = useLocalStorage<boolean>({
+    key: LocalStorage.PROJECT_DETAILS_FROM_REPORTS,
+  });
 
   const {
     data: project,
@@ -71,7 +76,12 @@ const NewStageForm = () => {
 
   useOpenModal(setIsOpen, isSuccess);
 
-  const navigateBack = () => navigate(`/project/${id}/new-stage`);
+  const navigateBack = () =>
+    navigate(
+      fromReports
+        ? `/reports/by-projects/project/${id}/new-stage`
+        : `/project/${id}/new-stage`
+    );
 
   const closeModal = () => {
     form.reset();
