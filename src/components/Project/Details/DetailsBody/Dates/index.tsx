@@ -87,11 +87,7 @@ const Dates = ({ project }: Props) => {
         <Stack spacing={20}>
           <DateText>Договор</DateText>
           <Stack spacing={16} justify="space-between">
-            {startFirstOperationDate ? (
-              <DateText>{formatDate(startFirstOperationDate)}</DateText>
-            ) : (
-              <br />
-            )}
+            <br />
             {endDateInContract ? (
               <DateText $isWithBorder>{formatDate(endDateInContract)}</DateText>
             ) : (
