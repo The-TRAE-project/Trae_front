@@ -40,7 +40,7 @@ const ProjectSearchInput = ({
         onChange={(event) => setValue(event.target.value)}
         onKeyDown={handleKeyDown}
         onFocus={onClearFilter}
-        placeholder="№ проекта или фамилия клиента"
+        placeholder="№ проекта или наименование клиента"
       />
       <SearchIcon />
     </InputWrapper>
