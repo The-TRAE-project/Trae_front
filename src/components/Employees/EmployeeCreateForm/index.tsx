@@ -85,7 +85,7 @@ const EmployeeCreateForm = () => {
       <InformModal
         isOpen={isOpen}
         onClose={closeModal}
-        title={`${createdEmployee?.firstName} ${createdEmployee?.lastName} успешно добавлен`}
+        title={`${createdEmployee?.firstName} ${createdEmployee?.lastName} успешно добавлен(а)`}
         backPath={Paths.EMPLOYEES}
       >
         {!!createdEmployee && (
