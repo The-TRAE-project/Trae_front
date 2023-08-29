@@ -70,7 +70,7 @@ const CreateForm = () => {
       <InformModal
         isOpen={isOpen}
         onClose={closeModal}
-        title={`${form.values.firstName} ${form.values.lastName} успешно добавлен`}
+        title={`${form.values.firstName} ${form.values.lastName} успешно добавлен(а)`}
         backPath={Paths.OFFICE}
       >
         <Stack spacing={20}>
