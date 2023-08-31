@@ -58,7 +58,9 @@ const StageDetails = () => {
           <>
             <FormHeader
               isShowSubmitBtn={false}
-              isShowClickBtn={projectStage.inWork}
+              isShowClickBtn={
+                projectStage.inWork || projectStage.readyToAcceptance
+              }
               onClick={() => setIsOpen(true)}
               onBack={navigateToBack}
             />
