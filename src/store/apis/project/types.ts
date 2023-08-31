@@ -134,8 +134,8 @@ export interface FilterValues {
   elementPerPage?: string;
   page?: string;
   isEnded?: string;
-  isOnlyFirstOpWithoutAcceptance?: string;
-  isOnlyLastOpInWork?: string;
+  isOnlyFirstOpReadyToAcceptance?: string;
+  isOnlyLastOpReadyToAcceptance?: string;
   isCurrentOpInWorkOrReadyToAcceptance?: string;
   isOverdueProject?: string;
   isOverdueCurrentOpInProject?: string;

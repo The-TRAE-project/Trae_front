@@ -61,6 +61,7 @@ const ProjectItem = ({ project, isOpOverdue, isPrOverdue }: Props) => {
 
   const title = isEnded ? 'Проект выполнен' : operation.name;
 
+  // TODO: fix overdue red accent not showing
   return (
     <>
       <ConfirmModal
