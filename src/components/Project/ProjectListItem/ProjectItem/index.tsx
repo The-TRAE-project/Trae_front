@@ -82,7 +82,6 @@ const ProjectItem = ({ project, isOpOverdue, isPrOverdue }: Props) => {
         <ProjectCustomer>{customer}</ProjectCustomer>
         <ProjectName>{name}</ProjectName>
         <ProjectOperationName
-          onClick={(event) => event.stopPropagation()}
           className={
             projectEnded ||
             stageInWork ||
