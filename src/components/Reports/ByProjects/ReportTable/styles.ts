@@ -101,7 +101,7 @@ export const TableCellContent = styled.div<{
 }>`
   background-color: ${(props) => {
     if (props.$isEnded) {
-      return 'var(--green2)';
+      return 'var(--light-green)';
     }
     if (props.$readyToAcceptance) {
       return 'var(--green)';
@@ -124,7 +124,12 @@ export const TableCellContent = styled.div<{
       : ''};
   height: 95px;
   color: ${(props) =>
-    props.$readyToAcceptance ? 'var(--white)' : 'var(--black)'};
+    // eslint-disable-next-line no-nested-ternary
+    props.$readyToAcceptance || props.$inWork
+      ? 'var(--white)'
+      : props.$isEnded
+      ? 'var(--black)'
+      : 'var(--orange)'};
   width: ${(props) => `${(props.$length ?? 1) * 33}px`};
 
   z-index: 3;
@@ -161,7 +166,8 @@ export const TableStickyCellContent = styled.div<{
   $isOverdueByOperations?: boolean;
 }>`
   ${(props) => {
-    if (props.$isOverdueByProject) return 'background-color: var(--red);';
+    if (props.$isOverdueByProject)
+      return 'background-color: var(--red); color: var(--white);';
     if (props.$isOverdueByOperations) return 'color: var(--red);';
 
     return '';
