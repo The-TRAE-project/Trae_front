@@ -18,9 +18,28 @@ import { getDatesBetween } from '../../helpers/getDatesBetween';
 import { ContractIcon } from '../ReportTable/ContractIcon';
 import { calculateDeviation } from '../../helpers/calculateDeviation';
 import { getCeilLength } from './getCeilLength';
+import { getOperationStartDate } from './getOperationStartDate';
+
+interface OperationCellInfo {
+  isEndDateInContract: boolean;
+  projectId: number;
+  id: number;
+  inWork: boolean;
+  isEnded: boolean;
+  readyToAcceptance: boolean;
+  name: string;
+  isOverdue: boolean;
+  length: number | null;
+}
+
+interface NumberCellInfo {
+  number: number;
+  isOverdueByOperations: boolean;
+  isOverdueByProject: boolean;
+}
 
 interface TableData {
-  [key: string]: string | number | null | object;
+  [key: string]: string | number | null | OperationCellInfo | NumberCellInfo;
 }
 
 function constructTableData(data: ProjectsReportTableData) {
@@ -34,6 +53,7 @@ function constructTableData(data: ProjectsReportTableData) {
       realEndDate,
       endDateInContract,
       operationPeriod,
+      operations,
     } = project;
 
     const deviation = calculateDeviation(endDateInContract, realEndDate);
@@ -41,44 +61,58 @@ function constructTableData(data: ProjectsReportTableData) {
     const isOverdueByProject = deviation !== null && deviation > 0;
     let isOverdueByOperations = false;
 
-    const operations = getDatesBetween(data.dateStart, data.dateEnd).map(
-      (date) => {
-        const currentOperation = project.operations.find(
-          (operation) => convertToString(operation.startDate) === date
-        );
-        const isEndDateInContract = convertToString(endDateInContract) === date;
-        const isOverdue =
-          !!currentOperation &&
-          !!currentOperation.realEndDate &&
-          convertToString(currentOperation.plannedEndDate) <
-            convertToString(currentOperation.realEndDate);
+    const tableOperationsData: (string | OperationCellInfo)[][] =
+      getDatesBetween(data.dateStart, data.dateEnd).map((date) => {
+        return [date];
+      });
 
-        const length = getCeilLength(
-          data.dateStart,
-          data.dateEnd,
-          currentOperation,
-          operationPeriod
-        );
+    operations.forEach((currentOperation, operationIndex) => {
+      const isOverdue =
+        !!currentOperation &&
+        !!currentOperation.realEndDate &&
+        convertToString(currentOperation.plannedEndDate) <
+          convertToString(currentOperation.realEndDate);
 
-        isOverdueByOperations = isOverdue ? true : isOverdueByOperations;
-        return [
-          date,
-          {
-            projectId: currentId,
-            id: currentOperation?.id,
-            inWork: currentOperation?.inWork,
-            isEnded: currentOperation?.isEnded,
-            readyToAcceptance: currentOperation?.readyToAcceptance,
-            name: currentOperation?.name,
-            isOverdue,
-            length,
-            isEndDateInContract,
-          },
-        ];
+      const length =
+        operationIndex === operations.length - 1
+          ? 1
+          : getCeilLength(
+              data.dateStart,
+              data.dateEnd,
+              currentOperation,
+              operationPeriod
+            );
+
+      isOverdueByOperations = isOverdue ? true : isOverdueByOperations;
+      const startDate = getOperationStartDate(
+        data.dateStart,
+        currentOperation.startDate,
+        currentOperation.plannedEndDate
+      );
+
+      const index = tableOperationsData.findIndex(
+        (cell) => cell[0] === startDate
+      );
+
+      if (index >= 0) {
+        const isEndDateInContract =
+          convertToString(endDateInContract) === tableOperationsData[index][0];
+
+        tableOperationsData[index][1] = {
+          isEndDateInContract,
+          projectId: currentId,
+          id: currentOperation.id,
+          inWork: currentOperation.inWork,
+          isEnded: currentOperation.isEnded,
+          readyToAcceptance: currentOperation.readyToAcceptance,
+          name: currentOperation.name,
+          isOverdue,
+          length,
+        };
       }
-    );
+    });
 
-    const row: TableData = Object.fromEntries(operations);
+    const row: TableData = Object.fromEntries(tableOperationsData);
 
     row.name = name;
     row.number = { number, isOverdueByOperations, isOverdueByProject };
@@ -121,8 +155,7 @@ function constructTableColumns(dateStart: number[], dateEnd: number[]) {
             header: () => (
               <TableDayHeader $isToday={isToday}>{currentDay}</TableDayHeader>
             ),
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            cell: (info: CellContext<TableData, any>) => (
+            cell: (info: CellContext<TableData, OperationCellInfo>) => (
               <TableCellContent
                 $isEnded={info.getValue()?.isEnded}
                 $inWork={info.getValue()?.inWork}
@@ -164,7 +197,7 @@ function constructTableColumns(dateStart: number[], dateEnd: number[]) {
     columnHelper.accessor('number', {
       header: () => <TableStickyCellContent>№</TableStickyCellContent>,
       id: 'number',
-      cell: (info: CellContext<TableData, any>) => (
+      cell: (info: CellContext<TableData, NumberCellInfo>) => (
         <TableStickyCellContent
           $isOverdueByProject={info.getValue()?.isOverdueByProject}
           $isOverdueByOperations={info.getValue()?.isOverdueByOperations}

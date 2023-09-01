@@ -24,10 +24,12 @@ export function getCeilLength(
     .add(fullLength, 'd')
     .diff(maxDate, 'd');
 
-  const adjustedLength =
+  let adjustedLength =
     fullLength -
     (minDiffernce > 0 ? minDiffernce : 0) -
     (maxDiffernece > 0 ? maxDiffernece - 1 : 0);
+
+  adjustedLength = adjustedLength <= 0 ? 1 : adjustedLength;
 
   return adjustedLength;
 }

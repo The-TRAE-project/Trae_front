@@ -96,7 +96,7 @@ export const TableCellContent = styled.div<{
   $isEnded?: boolean;
   $inWork?: boolean;
   $readyToAcceptance?: boolean;
-  $length?: number;
+  $length?: number | null;
   $isEndDateInContract?: boolean;
 }>`
   background-color: ${(props) => {
