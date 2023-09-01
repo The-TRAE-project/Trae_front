@@ -122,7 +122,7 @@ export const TableCellContent = styled.div<{
     props.$length
       ? '2px solid var(--orange)'
       : ''};
-  height: ${(props) => (props.$isEndDateInContract ? '29px' : '95px')};
+  height: 95px;
   color: ${(props) =>
     props.$readyToAcceptance ? 'var(--white)' : 'var(--black)'};
   width: ${(props) => `${(props.$length ?? 1) * 33}px`};

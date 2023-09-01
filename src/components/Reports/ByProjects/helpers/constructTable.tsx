@@ -17,6 +17,7 @@ import {
 import { getDatesBetween } from '../../helpers/getDatesBetween';
 import { ContractIcon } from '../ReportTable/ContractIcon';
 import { calculateDeviation } from '../../helpers/calculateDeviation';
+import { getCeilLength } from './getCeilLength';
 
 interface TableData {
   [key: string]: string | number | null | object;
@@ -52,6 +53,13 @@ function constructTableData(data: ProjectsReportTableData) {
           convertToString(currentOperation.plannedEndDate) <
             convertToString(currentOperation.realEndDate);
 
+        const length = getCeilLength(
+          data.dateStart,
+          data.dateEnd,
+          currentOperation,
+          operationPeriod
+        );
+
         isOverdueByOperations = isOverdue ? true : isOverdueByOperations;
         return [
           date,
@@ -63,9 +71,7 @@ function constructTableData(data: ProjectsReportTableData) {
             readyToAcceptance: currentOperation?.readyToAcceptance,
             name: currentOperation?.name,
             isOverdue,
-            length: currentOperation?.id
-              ? Math.ceil(operationPeriod / 24)
-              : null,
+            length,
             isEndDateInContract,
           },
         ];
@@ -115,7 +121,6 @@ function constructTableColumns(dateStart: number[], dateEnd: number[]) {
             header: () => (
               <TableDayHeader $isToday={isToday}>{currentDay}</TableDayHeader>
             ),
-            // TODO: make full implementation of the cell contents
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             cell: (info: CellContext<TableData, any>) => (
               <TableCellContent

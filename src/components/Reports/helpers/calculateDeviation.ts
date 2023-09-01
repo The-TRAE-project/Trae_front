@@ -1,5 +1,4 @@
-import dayjs from 'dayjs';
-import { convertToString } from '../../../helpers/convertToString';
+import { convertToDayjs } from '../../../helpers/convertToDayjs';
 
 export const calculateDeviation = (
   plannedEnd: number[],
@@ -9,19 +8,13 @@ export const calculateDeviation = (
     return null;
   }
 
-  let plannedEndDate = dayjs(convertToString(plannedEnd));
-  let realEndDate = dayjs(convertToString(realEnd));
+  const plannedEndDate = convertToDayjs(plannedEnd);
+  const realEndDate = convertToDayjs(realEnd);
   let deviation = 0;
   if (plannedEndDate.isBefore(realEndDate)) {
-    while (plannedEndDate.isBefore(realEndDate)) {
-      deviation += 1;
-      plannedEndDate = plannedEndDate.add(1, 'day');
-    }
+    deviation = plannedEndDate.diff(realEndDate, 'd');
   } else {
-    while (realEndDate.isBefore(plannedEndDate)) {
-      deviation -= 1;
-      realEndDate = realEndDate.add(1, 'day');
-    }
+    deviation = realEndDate.diff(plannedEndDate, 'd');
   }
 
   return deviation;
