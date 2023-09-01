@@ -214,6 +214,33 @@ export const BgWhiteCardLinkBtn = styled.button`
   }
 `;
 
+export const BgWhiteMenuBtn = styled.button`
+  position: relative;
+  width: 100%;
+  height: var(--bg-white-card-ht);
+  font-weight: 600;
+  ${({ theme }) => theme.mixins.fontSize30};
+  color: var(--white-black);
+  border: none;
+  ${({ theme }) => theme.mixins.fCenter};
+  padding: var(--bg-white-card-ptb) var(--bg-white-card-plr);
+  background: var(--white);
+  border-radius: var(--border-radius);
+
+  &:is(:focus, :focus-within) {
+    outline: none;
+  }
+`;
+
+export const TitleMenuButton = styled.p`
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 28px;
+  color: var(--white);
+  margin-bottom: 13px;
+  padding-left: 14px;
+`;
+
 export const InformModalText = styled.p`
   font-family: var(--font-roboto);
   font-weight: 400;

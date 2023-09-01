@@ -1,7 +1,7 @@
 import { Menu as MantineMenu } from '@mantine/core';
 import { ReactNode } from 'react';
 
-import { BgWhiteCardLinkBtn, UnstyledButton } from '../../styles';
+import { BgWhiteMenuBtn, TitleMenuButton, UnstyledButton } from '../../styles';
 import Filter from '../../svgs/Filter';
 import { useMenuStyles } from './styles';
 
@@ -27,7 +27,7 @@ const Menu = ({
 
   const toggle = () => onClick?.();
 
-  // TODO: complete styling for sorting button
+  // TODO: button title to the left, add arrow
   return (
     <MantineMenu
       closeOnItemClick={closeOnItemClick}
@@ -38,10 +38,10 @@ const Menu = ({
       }}
     >
       <div>
-        {isButton && <p>Сортировка</p>}
+        {isButton && <TitleMenuButton>Сортировка</TitleMenuButton>}
         <MantineMenu.Target>
           {isButton ? (
-            <BgWhiteCardLinkBtn onClick={toggle}>{title}</BgWhiteCardLinkBtn>
+            <BgWhiteMenuBtn onClick={toggle}>{title}</BgWhiteMenuBtn>
           ) : (
             <UnstyledButton onClick={toggle} $isFilterIcon>
               <Filter />

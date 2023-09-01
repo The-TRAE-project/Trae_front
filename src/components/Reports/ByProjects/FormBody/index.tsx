@@ -22,7 +22,6 @@ const FormBody = ({ form, isFormed = false, sortType, setSortType }: Props) => {
       {isFormed && (
         <SortTypeSelect sortType={sortType} setSortType={setSortType} />
       )}
-
       <DatePicker
         {...form.getInputProps('startOfPeriod')}
         title="Дата начало"

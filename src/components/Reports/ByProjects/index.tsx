@@ -58,6 +58,7 @@ const ByProjects = () => {
   const { isLoading: isExcelExportLoading, exportToExcel } = useExportToExcel();
 
   const handleSubmit = (values: ProjectReportFormValues) => {
+    console.log(values);
     setStartDate(formatToQueryParamDate(values.startOfPeriod));
     setEndDate(formatToQueryParamDate(values.endOfPeriod));
   };
