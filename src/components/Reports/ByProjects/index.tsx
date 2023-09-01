@@ -19,14 +19,6 @@ import FormHeader from '../FormHeader';
 import FormBody from './FormBody';
 import { ReportTable } from './ReportTable';
 
-export type SortTypes =
-  | 'contractDate'
-  | 'shipmentDate'
-  | 'number'
-  | 'customer'
-  | 'deviation'
-  | null;
-
 const ByProjects = () => {
   const [startDate, setStartDate] = useState<string | null>(null);
   const [endDate, setEndDate] = useState<string | null>(null);
@@ -80,6 +72,7 @@ const ByProjects = () => {
     !!reportsByProjects &&
     reportsByProjects.projectsForReportDtoList.length > 0;
 
+  console.log(reportsByProjects);
   return (
     <FormWrapper onSubmit={form.onSubmit(handleSubmit)}>
       <FormHeader

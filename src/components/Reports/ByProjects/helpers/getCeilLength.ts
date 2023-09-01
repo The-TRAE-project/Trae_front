@@ -14,8 +14,12 @@ export function getCeilLength(
   const minDate = convertToDayjs(dateStart);
   const maxDate = convertToDayjs(dateEnd);
 
-  const fullLength = Math.ceil(hoursforOperation / 24);
-
+  const fullLength = operationInfo.isEnded
+    ? convertToDayjs(operationInfo.realEndDate as number[]).diff(
+        convertToDayjs(operationInfo.acceptanceDate as number[]),
+        'd'
+      )
+    : Math.ceil(hoursforOperation / 24);
   const minDiffernce = minDate.diff(
     convertToDayjs(operationInfo.startDate),
     'd'

@@ -1,14 +1,22 @@
 import { convertToDayjs } from '../../../../helpers/convertToDayjs';
 import { convertToString } from '../../../../helpers/convertToString';
+import { ProjectOperation } from '../../../../store/apis/reports/types';
 
 export function getOperationStartDate(
   repStartDate: number[],
-  opStartDate: number[],
-  opEndDate: number[]
+  operation: ProjectOperation
 ) {
   const reportStartDate = convertToDayjs(repStartDate);
-  const operationStartDate = convertToDayjs(opStartDate);
-  const operationEndDate = convertToDayjs(opEndDate);
+  const operationStartDate = convertToDayjs(
+    operation.isEnded
+      ? (operation.acceptanceDate as number[])
+      : operation.startDate
+  );
+  const operationEndDate = convertToDayjs(
+    operation.isEnded
+      ? (operation.realEndDate as number[])
+      : operation.plannedEndDate
+  );
 
   if (
     operationStartDate.isBefore(reportStartDate) &&
@@ -18,5 +26,9 @@ export function getOperationStartDate(
     return convertToString(repStartDate);
   }
 
-  return convertToString(opStartDate);
+  return convertToString(
+    operation.isEnded
+      ? (operation.acceptanceDate as number[])
+      : operation.startDate
+  );
 }

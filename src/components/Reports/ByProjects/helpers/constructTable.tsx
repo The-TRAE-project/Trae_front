@@ -19,6 +19,7 @@ import { ContractIcon } from '../ReportTable/ContractIcon';
 import { calculateDeviation } from '../../helpers/calculateDeviation';
 import { getCeilLength } from './getCeilLength';
 import { getOperationStartDate } from './getOperationStartDate';
+import { convertToDayjs } from '../../../../helpers/convertToDayjs';
 
 interface OperationCellInfo {
   isEndDateInContract: boolean;
@@ -43,7 +44,7 @@ interface TableData {
 }
 
 function constructTableData(data: ProjectsReportTableData) {
-  const result = Array.from(data.projects).map((project) => {
+  return data.projects.map((project) => {
     const {
       name,
       number,
@@ -58,12 +59,16 @@ function constructTableData(data: ProjectsReportTableData) {
 
     const deviation = calculateDeviation(endDateInContract, realEndDate);
 
-    const isOverdueByProject = deviation !== null && deviation > 0;
+    const isOverdueByProject = convertToDayjs(endDateInContract).isBefore(
+      dayjs()
+    );
     let isOverdueByOperations = false;
 
-    const tableOperationsData: (string | OperationCellInfo)[][] =
+    const tableOperationsData: (string | Partial<OperationCellInfo>)[][] =
       getDatesBetween(data.dateStart, data.dateEnd).map((date) => {
-        return [date];
+        const isEndDateInContract = convertToString(endDateInContract) === date;
+
+        return [date, { isEndDateInContract }];
       });
 
     operations.forEach((currentOperation, operationIndex) => {
@@ -84,11 +89,7 @@ function constructTableData(data: ProjectsReportTableData) {
             );
 
       isOverdueByOperations = isOverdue ? true : isOverdueByOperations;
-      const startDate = getOperationStartDate(
-        data.dateStart,
-        currentOperation.startDate,
-        currentOperation.plannedEndDate
-      );
+      const startDate = getOperationStartDate(data.dateStart, currentOperation);
 
       const index = tableOperationsData.findIndex(
         (cell) => cell[0] === startDate
@@ -124,8 +125,6 @@ function constructTableData(data: ProjectsReportTableData) {
 
     return row;
   });
-
-  return result;
 }
 
 function constructTableColumns(dateStart: number[], dateEnd: number[]) {
