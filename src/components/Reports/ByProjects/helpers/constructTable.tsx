@@ -50,7 +50,7 @@ function constructTableData(data: ProjectsReportTableData) {
       number,
       comment,
       customer,
-      id: currentId,
+      id: projectId,
       realEndDate,
       endDateInContract,
       operationPeriod,
@@ -68,7 +68,7 @@ function constructTableData(data: ProjectsReportTableData) {
       getDatesBetween(data.dateStart, data.dateEnd).map((date) => {
         const isEndDateInContract = convertToString(endDateInContract) === date;
 
-        return [date, { isEndDateInContract }];
+        return [date, { isEndDateInContract, projectId }];
       });
 
     operations.forEach((currentOperation, operationIndex) => {
@@ -101,7 +101,7 @@ function constructTableData(data: ProjectsReportTableData) {
 
         tableOperationsData[index][1] = {
           isEndDateInContract,
-          projectId: currentId,
+          projectId,
           id: currentOperation.id,
           inWork: currentOperation.inWork,
           isEnded: currentOperation.isEnded,
