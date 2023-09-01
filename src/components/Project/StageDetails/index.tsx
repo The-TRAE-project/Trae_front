@@ -38,7 +38,7 @@ const StageDetails = () => {
 
   const confirmTitle = `Завершить этап ${projectStage?.name.toLowerCase()} <br /> проект №${
     projectStage?.projectNumber
-  } `;
+  }?`;
 
   const informTitle = `Этап  ${projectStage?.name.toLowerCase()} проект №${
     projectStage?.projectNumber

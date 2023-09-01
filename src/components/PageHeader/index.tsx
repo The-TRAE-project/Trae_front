@@ -33,7 +33,7 @@ const PageHeader = ({
   isShowDashedBtn = false,
   onDashedBtnClick,
   isDashedBtnLoading = false,
-  dashedBtnText = 'Поменять пароль',
+  dashedBtnText = 'Изменить пароль',
 }: Props) => {
   const navigate = useNavigate();
 
