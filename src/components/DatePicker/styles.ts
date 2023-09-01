@@ -3,13 +3,13 @@ import { createStyles } from '@mantine/core';
 export const useDateInputStyles = createStyles(() => ({
   root: {
     '.mantine-Popover-dropdown': {
-      width: 312,
       display: 'flex',
       justifyContent: 'center',
-      alignItems: 'canter',
+      alignItems: 'center',
       padding: '24px 20px',
       borderRadius: 'var(--border-radius)',
       boxShadow: '0px 4px 4px var(--black-shadow)',
+      top: '370px !important',
     },
   },
 
