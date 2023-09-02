@@ -32,7 +32,5 @@ module.exports = {
     'import/no-cycle': 0,
     'react/jsx-no-bind': 0,
     'linebreak-style': 0,
-    'comma-dangle': 0,
-    '@typescript-eslint/comma-dangle': 'off',
   },
 };
