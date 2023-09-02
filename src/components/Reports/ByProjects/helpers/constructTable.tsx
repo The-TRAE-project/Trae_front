@@ -9,40 +9,43 @@ import { ProjectsReportTableData } from '../ReportTable';
 import { convertMonthToString } from '../../../../helpers/convertMonthToString';
 import { convertToString } from '../../../../helpers/convertToString';
 import {
-  OverdueWrapper,
-  TableCellContent,
   TableDayHeader,
   TableMonthHeader,
   TableStickyCellContent,
 } from '../ReportTable/styles';
 import { getDatesBetween } from '../../helpers/getDatesBetween';
-import { ContractIcon } from '../ReportTable/ContractIcon';
 import { calculateDeviation } from '../../helpers/calculateDeviation';
 import { getCeilLength } from './getCeilLength';
 import { getOperationStartDate } from './getOperationStartDate';
 import { convertToDayjs } from '../../../../helpers/convertToDayjs';
+import { DateCell } from '../ReportTable/DateCell/DateCell';
 
-interface OperationCellInfo {
-  isEndDateInContract: boolean;
+export interface OperationCellInfo {
   projectId: number;
   id: number;
+  name: string;
+  length: number | null;
   inWork: boolean;
   isEnded: boolean;
   readyToAcceptance: boolean;
-  name: string;
   isOverdue: boolean;
-  length: number | null;
+  isOverlapping: boolean;
+  isEndDateInContract: boolean;
 }
 
-interface NumberCellInfo {
+export interface NumberCellInfo {
   number: number;
   isOverdueByOperations: boolean;
   isOverdueByProject: boolean;
 }
 
-interface TableData {
-  [key: string]: string | number | null | OperationCellInfo | NumberCellInfo;
-  number: NumberCellInfo;
+export interface TableData {
+  [key: string]:
+    | string
+    | number
+    | null
+    | Partial<OperationCellInfo>
+    | NumberCellInfo;
 }
 
 function constructTableData(data: ProjectsReportTableData) {
@@ -66,7 +69,7 @@ function constructTableData(data: ProjectsReportTableData) {
     );
     let isOverdueByOperations = false;
 
-    const tableOperationsData: (string | Partial<OperationCellInfo>)[][] =
+    const tableOperationsData: [string, Partial<OperationCellInfo>][] =
       getDatesBetween(data.dateStart, data.dateEnd).map((date) => {
         const isEndDateInContract = convertToString(endDateInContract) === date;
 
@@ -75,10 +78,12 @@ function constructTableData(data: ProjectsReportTableData) {
 
     operations.forEach((currentOperation, operationIndex) => {
       const isOverdue =
-        !!currentOperation &&
-        !!currentOperation.realEndDate &&
-        convertToString(currentOperation.plannedEndDate) <
-          convertToString(currentOperation.realEndDate);
+        (currentOperation.isEnded &&
+          convertToString(currentOperation.plannedEndDate) <
+            convertToString(currentOperation.realEndDate as number[])) ||
+        ((currentOperation.inWork || currentOperation.readyToAcceptance) &&
+          convertToString(currentOperation.plannedEndDate) <
+            dayjs().format('YYYY-MM-DD'));
 
       const length =
         operationIndex === operations.length - 1
@@ -101,6 +106,8 @@ function constructTableData(data: ProjectsReportTableData) {
         const isEndDateInContract =
           convertToString(endDateInContract) === tableOperationsData[index][0];
 
+        const isOverlapping = tableOperationsData[index][1].id !== undefined;
+
         tableOperationsData[index][1] = {
           isEndDateInContract,
           projectId,
@@ -110,6 +117,7 @@ function constructTableData(data: ProjectsReportTableData) {
           readyToAcceptance: currentOperation.readyToAcceptance,
           name: currentOperation.name,
           isOverdue,
+          isOverlapping,
           length,
         };
       }
@@ -157,20 +165,16 @@ function constructTableColumns(dateStart: number[], dateEnd: number[]) {
               <TableDayHeader $isToday={isToday}>{currentDay}</TableDayHeader>
             ),
             cell: (info: CellContext<TableData, OperationCellInfo>) => (
-              <TableCellContent
-                $isEnded={info.getValue()?.isEnded}
-                $inWork={info.getValue()?.inWork}
-                $readyToAcceptance={info.getValue()?.readyToAcceptance}
-                $length={info.getValue()?.length}
-                $isEndDateInContract={info.getValue()?.isEndDateInContract}
-              >
-                {info.getValue()?.isEndDateInContract && (
-                  <ContractIcon projectId={info.getValue()?.projectId} />
-                )}
-                <OverdueWrapper $isOverdue={info.getValue()?.isOverdue}>
-                  {info.getValue()?.name}
-                </OverdueWrapper>
-              </TableCellContent>
+              <DateCell
+                isEndDateInContract={info.getValue().isEndDateInContract}
+                isEnded={info.getValue().isEnded}
+                isOverdue={info.getValue().isOverdue}
+                inWork={info.getValue().inWork}
+                readyToAcceptance={info.getValue().readyToAcceptance}
+                projectId={info.getValue().projectId}
+                length={info.getValue().length}
+                name={info.getValue().name}
+              />
             ),
           };
 
