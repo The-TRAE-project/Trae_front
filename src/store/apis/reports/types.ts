@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import { z } from 'zod';
 
 export interface ParamsForEmployeesReports {
@@ -6,20 +7,28 @@ export interface ParamsForEmployeesReports {
   employeeIds?: string;
 }
 
-export const EmployeeReportSchema = z.object({
-  employeeIds: z
-    .number()
-    .array()
-    .min(1, { message: 'Пожалуйста, выберите сотрудника' }),
-  startOfPeriod: z.date({
-    required_error: 'Пожалуйста, выберите дату начало',
-    invalid_type_error: 'Пожалуйста, выберите дату начало',
-  }),
-  endOfPeriod: z.date({
-    required_error: 'Пожалуйста, выберите дату окончания',
-    invalid_type_error: 'Пожалуйста, выберите дату окончания',
-  }),
-});
+export const EmployeeReportSchema = z
+  .object({
+    employeeIds: z
+      .number()
+      .array()
+      .min(1, { message: 'Пожалуйста, выберите сотрудника' }),
+    startOfPeriod: z.date({
+      required_error: 'Пожалуйста, выберите дату начало',
+      invalid_type_error: 'Пожалуйста, выберите дату начало',
+    }),
+    endOfPeriod: z.date({
+      required_error: 'Пожалуйста, выберите дату окончания',
+      invalid_type_error: 'Пожалуйста, выберите дату окончания',
+    }),
+  })
+  .refine(
+    (schema) =>
+      dayjs(schema.startOfPeriod).diff(dayjs(schema.endOfPeriod), 'd') <= -5,
+    {
+      message: 'Пожалуйста выберите промежуток больше недели',
+    }
+  );
 
 export type EmployeeReportFormValues = z.infer<typeof EmployeeReportSchema>;
 
@@ -54,16 +63,24 @@ export interface ParamsForProjectsReports {
   endOfPeriod: string | Date;
 }
 
-export const ProjectReportSchema = z.object({
-  startOfPeriod: z.date({
-    required_error: 'Пожалуйста, выберите дату начало',
-    invalid_type_error: 'Пожалуйста, выберите дату начало',
-  }),
-  endOfPeriod: z.date({
-    required_error: 'Пожалуйста, выберите дату окончания',
-    invalid_type_error: 'Пожалуйста, выберите дату окончания',
-  }),
-});
+export const ProjectReportSchema = z
+  .object({
+    startOfPeriod: z.date({
+      required_error: 'Пожалуйста, выберите дату начало',
+      invalid_type_error: 'Пожалуйста, выберите дату начало',
+    }),
+    endOfPeriod: z.date({
+      required_error: 'Пожалуйста, выберите дату окончания',
+      invalid_type_error: 'Пожалуйста, выберите дату окончания',
+    }),
+  })
+  .refine(
+    (schema) =>
+      dayjs(schema.startOfPeriod).diff(dayjs(schema.endOfPeriod), 'd') <= -5,
+    {
+      message: 'Пожалуйста выберите промежуток больше недели',
+    }
+  );
 
 export type ProjectReportFormValues = z.infer<typeof ProjectReportSchema>;
 
