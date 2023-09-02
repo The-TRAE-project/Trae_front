@@ -58,10 +58,6 @@ const GlobalStyles = createGlobalStyle`
     -webkit-appearance: none;
     margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
   }
-
-  input[type=number] {
-    -moz-appearance:textfield; /* Firefox */
-  }
 `;
 
 export default GlobalStyles;
