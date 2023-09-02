@@ -1,6 +1,7 @@
 import {
   CellContext,
   ColumnDef,
+  Row,
   createColumnHelper,
 } from '@tanstack/react-table';
 import dayjs from 'dayjs';
@@ -41,6 +42,7 @@ interface NumberCellInfo {
 
 interface TableData {
   [key: string]: string | number | null | OperationCellInfo | NumberCellInfo;
+  number: NumberCellInfo;
 }
 
 function constructTableData(data: ProjectsReportTableData) {
@@ -196,6 +198,20 @@ function constructTableColumns(dateStart: number[], dateEnd: number[]) {
     columnHelper.accessor('number', {
       header: () => <TableStickyCellContent>№</TableStickyCellContent>,
       id: 'number',
+      sortingFn: (
+        rowA: Row<TableData>,
+        rowB: Row<TableData>,
+        columnId: string
+      ): number => {
+        const aValue = rowA.getValue(columnId) as NumberCellInfo;
+        const bValue = rowB.getValue(columnId) as NumberCellInfo;
+        // eslint-disable-next-line no-nested-ternary
+        return aValue.number < bValue.number
+          ? -1
+          : aValue.number === bValue.number
+          ? 0
+          : 1;
+      },
       cell: (info: CellContext<TableData, NumberCellInfo>) => (
         <TableStickyCellContent
           $isOverdueByProject={info.getValue()?.isOverdueByProject}

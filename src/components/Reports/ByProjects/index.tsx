@@ -25,7 +25,7 @@ const ByProjects = () => {
   const [sortType, setSortType] = useState<SortingState>([
     {
       id: 'contractDate',
-      desc: true,
+      desc: false,
     },
   ]);
 
@@ -58,7 +58,6 @@ const ByProjects = () => {
   const { isLoading: isExcelExportLoading, exportToExcel } = useExportToExcel();
 
   const handleSubmit = (values: ProjectReportFormValues) => {
-    console.log(values);
     setStartDate(formatToQueryParamDate(values.startOfPeriod));
     setEndDate(formatToQueryParamDate(values.endOfPeriod));
   };
@@ -73,7 +72,6 @@ const ByProjects = () => {
     !!reportsByProjects &&
     reportsByProjects.projectsForReportDtoList.length > 0;
 
-  console.log(reportsByProjects);
   return (
     <FormWrapper onSubmit={form.onSubmit(handleSubmit)}>
       <FormHeader
