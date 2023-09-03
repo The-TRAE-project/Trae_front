@@ -1,72 +1,87 @@
-import { Group } from '@mantine/core';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useLocalStorage } from '@mantine/hooks';
+import { useLocation } from 'react-router-dom';
 
-import { useDate } from '../../../helpers/hooks/useDate';
+import { LocalStorage } from '../../../constants/localStorage';
 import { Paths } from '../../../constants/paths';
-import { colors } from '../../../constants/colors';
-import User from '../../svgs/User';
-import ArrowLeft from '../../svgs/ArrowLeft';
-import Home from '../../svgs/Home';
 import { Container } from '../../styles';
-import HeaderTitle from './HeaderTitle';
-import { Button, DisplayTime, Wrapper } from './styles';
+import NavbarItem from './NavbarItem';
+import { NavbarLink } from './types';
+import { List, Navbar, Wrapper } from './styles';
+
+const navbarList: NavbarLink[] = [
+  {
+    id: 1,
+    value: Paths.EMPLOYEES,
+    title: 'Сотрудники',
+    isShowLine: true,
+  },
+  {
+    id: 2,
+    value: Paths.OFFICE,
+    title: 'Офис',
+    isShowLine: true,
+  },
+  {
+    id: 3,
+    value: Paths.REPORTS,
+    title: 'Отчеты',
+    isShowLine: false,
+  },
+  {
+    id: 4,
+    value: Paths.PROJECTS,
+    title: 'Проекты',
+    isShowLine: true,
+  },
+  {
+    id: 5,
+    value: Paths.WORK_TYPES,
+    title: 'Типы работ',
+    isShowLine: true,
+  },
+  {
+    id: 6,
+    value: Paths.PERSONAL_CABINET,
+    title: '',
+    isShowLine: true,
+  },
+];
 
 const Header = () => {
+  const [list, setList] = useLocalStorage<NavbarLink[]>({
+    key: LocalStorage.NAVBAR_LIST,
+    defaultValue: navbarList,
+  });
+
   const location = useLocation();
-  const navigate = useNavigate();
-  const { date } = useDate();
 
-  const navigateToBack = () => navigate(-1);
-  const navigateToHome = () => navigate(Paths.MAIN);
+  useEffect(() => {
+    const previousItemIndex = list.findIndex((item) => {
+      const slicedPath = location.pathname.split('/');
+      return item.value.includes(slicedPath[1]);
+    });
 
-  function findCurrentPath(...arg: string[]) {
-    return arg.some((path) => path === location.pathname);
-  }
+    setList(
+      list.map((item) =>
+        item.id === previousItemIndex
+          ? { ...item, isShowLine: false }
+          : { ...item, isShowLine: true }
+      )
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location.pathname]);
 
   return (
     <Wrapper>
       <Container>
-        <Group position="apart">
-          <DisplayTime
-            color={
-              !findCurrentPath(Paths.PROJECTS)
-                ? colors.whiteBlack
-                : colors.white
-            }
-          >
-            {date}
-          </DisplayTime>
-          {findCurrentPath(Paths.MAIN) && (
-            <Button type="button">
-              <User />
-            </Button>
-          )}
-          {!findCurrentPath(Paths.MAIN) && (
-            <>
-              {!findCurrentPath(Paths.SELECTION) && <HeaderTitle />}
-
-              <Group spacing={40}>
-                {!findCurrentPath(Paths.SELECTION) && (
-                  <Button
-                    onClick={navigateToBack}
-                    type="button"
-                    aria-label="back step button"
-                  >
-                    <ArrowLeft />
-                  </Button>
-                )}
-
-                <Button
-                  onClick={navigateToHome}
-                  type="button"
-                  aria-label="home button"
-                >
-                  <Home />
-                </Button>
-              </Group>
-            </>
-          )}
-        </Group>
+        <Navbar>
+          <List>
+            {list.map((navbarLink) => (
+              <NavbarItem key={navbarLink.id} navbarLink={navbarLink} />
+            ))}
+          </List>
+        </Navbar>
       </Container>
     </Wrapper>
   );

@@ -1,25 +1,25 @@
 import { useEffect, useState } from 'react';
 
-export function useTimer(isStart: boolean, onClose: () => void) {
+export function useTimer(isStart: boolean, onClose: () => void, timer: number) {
   const [countDown, setCountDown] = useState(0);
 
   useEffect(() => {
-    let timerId: number | undefined;
+    let timerId: ReturnType<typeof setInterval> = setInterval(() => {});
 
     if (isStart) {
-      setCountDown(60 * 1.92);
+      setCountDown(timer);
       timerId = setInterval(() => {
-        setCountDown((prevTime) => prevTime - 1);
+        setCountDown((prevTime) => Math.floor(prevTime - 1));
       }, 1000);
     } else {
       clearInterval(timerId);
     }
 
     return () => clearInterval(timerId);
-  }, [isStart]);
+  }, [isStart, timer]);
 
   useEffect(() => {
-    if (Math.floor(countDown) < 0 && isStart) {
+    if (countDown < 0 && isStart) {
       onClose();
       setCountDown(0);
     }

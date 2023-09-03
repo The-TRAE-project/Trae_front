@@ -1,61 +1,52 @@
 import styled from 'styled-components';
 
-import { mediaQueries } from '../../../constants/breakpoints';
-
-type DisplayTimeProps = {
-  color: string;
-};
-
 export const Wrapper = styled.header`
   position: fixed;
   width: 100%;
-  z-index: 100;
-  @media ${mediaQueries.mqMedium} {
-    padding: 20px;
-    top: 44px;
-  }
+  z-index: 500;
 
-  @media ${mediaQueries.mqLarge} {
-    padding: 30px;
-    top: 54px;
-  }
-
-  @media ${mediaQueries.mqXlarge} {
-    padding: 40px;
-    top: 64px;
+  @media ${({ theme }) => theme.bp.bpLarge} {
+    top: 0px;
   }
 `;
 
-export const Button = styled.button`
-  background: none;
-  border: none;
-  text-align: center;
-  cursor: pointer;
-
-  svg {
-    @media ${mediaQueries.mqMedium} {
-      height: 30px;
-      width: 30px;
-    }
-
-    @media ${mediaQueries.mqLarge} {
-      height: 40px;
-      width: 40px;
-    }
-
-    @media ${mediaQueries.mqXlarge} {
-      width: 50px;
-      height: 50px;
-    }
-  }
+export const Navbar = styled.nav`
+  width: 100%;
+  background-color: var(--white);
+  border-radius: 0px 0px 15px 15px;
+  overflow: hidden;
+  filter: drop-shadow(0px 4px 4px var(--black-shadow));
 `;
 
-export const DisplayTime = styled.p`
-  font-family: 'Roboto', sans-serif;
-  font-weight: 500;
-  font-size: 54px;
-  line-height: 63px;
-  color: ${(props: DisplayTimeProps) => props.color};
-  opacity: 0.9;
-  margin: 0;
+export const List = styled.ul`
+  ${({ theme }) => theme.mixins.center};
+  overflow: hidden;
+
+  @media ${({ theme }) => theme.bp.bpLarge} {
+    height: 70px;
+  }
+
+  @media (min-width: 1500px) {
+    height: 72px;
+  }
+
+  @media (min-width: 1600px) {
+    height: 74px;
+  }
+
+  @media (min-width: 1700px) {
+    height: 78px;
+  }
+
+  @media (min-width: 1800px) {
+    height: 80px;
+  }
+
+  @media (min-width: 1850px) {
+    height: 84px;
+  }
+
+  @media ${({ theme }) => theme.bp.bpXlarge} {
+    height: 87px;
+  }
 `;

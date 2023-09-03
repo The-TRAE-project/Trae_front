@@ -1,0 +1,13 @@
+version: '3.9'
+services:
+  react-app:
+    image: traebuilds/frontend
+    container_name: trae_front
+    ports:
+      - '3000:80'
+    environment:
+      - VITE_BACK_API_URL=http://195.80.51.155:8088/api
+      - VITE_ACCESS_TOKEN=token
+      - VITE_ACCESS_TOKEN_EXPIRATION=49
+      - VITE_REFRESH_TOKEN=refresh
+      - VITE_REFRESH_TOKEN_EXPIRATION=30
