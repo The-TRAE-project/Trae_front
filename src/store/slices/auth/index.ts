@@ -3,10 +3,10 @@ import Cookies from 'js-cookie';
 
 import instance from '../../../config/axiosConfig';
 import {
-  A_TOKEN_EXPIRATION,
+  ACCESS_TOKEN_EXPIRATION,
+  REFRESH_TOKEN_EXPIRATION,
   TokenTypes,
 } from '../../../helpers/hooks/useCookies';
-import { RootState } from '../..';
 import {
   InitialState,
   LoginFormValues,
@@ -19,25 +19,27 @@ import {
 const initialState = {
   username: null,
   permission: null,
-  isLoggedIn: !!Cookies.get(TokenTypes.A_TOKEN),
+  isLoggedIn: !!Cookies.get(TokenTypes.ACCESS_TOKEN),
   isLoading: 'idle',
-  accessToken: Cookies.get(TokenTypes.A_TOKEN),
-  refreshToken: null,
+  accessToken: Cookies.get(TokenTypes.ACCESS_TOKEN),
+  refreshToken: Cookies.get(TokenTypes.REFRESH_TOKEN),
 } as InitialState;
 
 export const loginUser = createAsyncThunk(
   'auth/loginUser',
   async (value: LoginFormValues, { rejectWithValue }) => {
     try {
-      // console.log(instance.);
       const response = await instance.post<
         LoginFormValues,
         Response<TokenValue>
       >('/auth/login', value);
 
       if (response.data) {
-        Cookies.set(TokenTypes.A_TOKEN, response.data.accessToken, {
-          expires: A_TOKEN_EXPIRATION,
+        Cookies.set(TokenTypes.ACCESS_TOKEN, response.data.accessToken, {
+          expires: ACCESS_TOKEN_EXPIRATION,
+        });
+        Cookies.set(TokenTypes.REFRESH_TOKEN, response.data.refreshToken, {
+          expires: REFRESH_TOKEN_EXPIRATION,
         });
       }
 
@@ -51,9 +53,9 @@ export const loginUser = createAsyncThunk(
 
 export const logoutUser = createAsyncThunk(
   'auth/logoutUser',
-  async (_, { rejectWithValue, getState }) => {
+  async (_, { rejectWithValue }) => {
     try {
-      const { accessToken } = (getState() as RootState).auth;
+      const accessToken = Cookies.get(TokenTypes.ACCESS_TOKEN);
       const config = {
         headers: { Authorization: `Bearer ${accessToken}` },
       };
@@ -70,12 +72,12 @@ export const logoutUser = createAsyncThunk(
 
 export const getUserRole = createAsyncThunk(
   'auth/getUserRole',
-  async (name: string, { rejectWithValue, getState }) => {
+  async (name: string, { rejectWithValue }) => {
     try {
-      const token = (getState() as RootState).auth.accessToken;
+      const accessToken = Cookies.get(TokenTypes.ACCESS_TOKEN);
 
       const config = {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${accessToken}` },
       };
 
       const { data } = await instance.get<string, Response<Roles>>(
@@ -91,11 +93,31 @@ export const getUserRole = createAsyncThunk(
   }
 );
 
-export const getNewTokens = createAsyncThunk(
-  'auth/getNewTokens',
-  async (_, { rejectWithValue, getState }) => {
+export const getNewRefreshToken = createAsyncThunk(
+  'auth/getNewRefreshToken',
+  async (_, { rejectWithValue }) => {
     try {
-      const { refreshToken } = (getState() as RootState).auth;
+      const accessToken = Cookies.get(TokenTypes.ACCESS_TOKEN);
+      const refreshToken = Cookies.get(TokenTypes.REFRESH_TOKEN);
+      const config = {
+        headers: { Authorization: `Bearer ${accessToken}` },
+        refreshToken,
+      };
+
+      const { data } = await instance.post(`/auth/refresh`, config);
+      return data;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const getNewAccessToken = createAsyncThunk(
+  'auth/getNewAccessToken',
+  async (_, { rejectWithValue }) => {
+    try {
+      const refreshToken = Cookies.get(TokenTypes.REFRESH_TOKEN);
 
       const { data } = await instance.post(`/auth/token`, { refreshToken });
 
@@ -112,8 +134,8 @@ export const authSlice = createSlice({
   initialState,
   reducers: {
     setCredentials: (state, { payload }: PayloadAction<TokenValue>) => {
-      // state.isLoggedIn = !!payload.accessToken;
-      // state.accessToken = payload.accessToken;
+      state.isLoggedIn = !!payload.accessToken;
+      state.accessToken = payload.accessToken;
       state.refreshToken = payload.refreshToken;
     },
     clearUserState: (state) => {
@@ -136,8 +158,8 @@ export const authSlice = createSlice({
         (state, { payload }: PayloadAction<TokenValue>) => {
           if (state.isLoading === 'pending') {
             state.isLoading = 'idle';
-            state.accessToken = Cookies.get(TokenTypes.A_TOKEN) as string;
-            state.isLoggedIn = !!Cookies.get(TokenTypes.A_TOKEN);
+            state.accessToken = Cookies.get(TokenTypes.ACCESS_TOKEN) as string;
+            state.isLoggedIn = !!Cookies.get(TokenTypes.ACCESS_TOKEN);
             state.refreshToken = payload.refreshToken;
           }
         }
@@ -158,11 +180,18 @@ export const authSlice = createSlice({
         }
       )
       .addCase(
-        getNewTokens.fulfilled,
+        getNewAccessToken.fulfilled,
         (state, { payload }: PayloadAction<TokenValue>) => {
           state.isLoggedIn = !!payload.accessToken;
           state.accessToken = payload.accessToken;
           state.refreshToken = payload.refreshToken;
+        }
+      )
+      .addCase(
+        getNewRefreshToken.fulfilled,
+        (state, { payload }: PayloadAction<TokenValue>) => {
+          state.refreshToken = payload.refreshToken;
+          state.accessToken = payload.accessToken;
         }
       );
   },

@@ -21,7 +21,7 @@ export function useNavigateLoggedInUser() {
   const dispatch = useAppDispatch();
   const { permission } = useAppSelector((store) => store.auth);
 
-  const accessToken = Cookies.get(TokenTypes.A_TOKEN);
+  const accessToken = Cookies.get(TokenTypes.ACCESS_TOKEN);
 
   useEffect(() => {
     if (accessToken) {

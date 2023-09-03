@@ -49,8 +49,10 @@ Frontend part of TRAE.
 To run this project, you will need to add the following environment variables to your .env file
 
 `VITE_BACK_API_URL`
-`VITE_A_TOKEN`
-`VITE_A_TOKEN_EXPIRATION`
+`VITE_ACCESS_TOKEN`
+`VITE_ACCESS_TOKEN_EXPIRATION`
+`VITE_REFRESH_TOKEN`
+`VITE_REFRESH_TOKEN_EXPIRATION`
 
 ##### In development mode
 

@@ -1,8 +1,9 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
+import Cookies from 'js-cookie';
 import instance from '../../../config/axiosConfig';
-import { RootState } from '../..';
 import { InitialState } from './types';
+import { TokenTypes } from '../../../helpers/hooks/useCookies';
 
 const initialState = {
   isLoggedIn: false,
@@ -17,9 +18,9 @@ const initialState = {
 export const loginEmployee = createAsyncThunk(
   'employee/loginEmployee',
   // eslint-disable-next-line consistent-return
-  async (id: number, { rejectWithValue, getState }) => {
+  async (id: number, { rejectWithValue }) => {
     try {
-      const token = (getState() as RootState).auth.accessToken;
+      const token = Cookies.get(TokenTypes.ACCESS_TOKEN);
 
       const config = {
         headers: { Authorization: `Bearer ${token}` },
@@ -44,9 +45,9 @@ export const loginEmployee = createAsyncThunk(
 export const logoutEmployee = createAsyncThunk(
   'employee/logoutEmployee',
   // eslint-disable-next-line consistent-return
-  async (id: number, { rejectWithValue, getState }) => {
+  async (id: number, { rejectWithValue }) => {
     try {
-      const token = (getState() as RootState).auth.accessToken;
+      const token = Cookies.get(TokenTypes.ACCESS_TOKEN);
 
       const config = {
         headers: { Authorization: `Bearer ${token}` },

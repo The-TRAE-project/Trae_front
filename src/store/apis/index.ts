@@ -5,6 +5,7 @@ import {
   fetchBaseQuery,
 } from '@reduxjs/toolkit/query/react';
 
+import Cookies from 'js-cookie';
 import { RequestHeader } from '../../constants/requestHeader';
 import { removeItem } from '../../helpers/removeItem';
 import { LocalStorage } from '../../constants/localStorage';
@@ -13,18 +14,19 @@ import { TokenValue } from '../slices/auth/types';
 import { clearEmployeeState } from '../slices/employee';
 import { clearWorkTypeState } from '../slices/workType';
 import { clearProjectState } from '../slices/project';
-import { RootState } from '..';
+import { TokenTypes } from '../../helpers/hooks/useCookies';
+import instance from '../../config/axiosConfig';
 
 const baseQuery = fetchBaseQuery({
   baseUrl: import.meta.env.PROD
     ? import.meta.env.VITE_BACK_API_URL
     : import.meta.env.VITE_BACK_API_URL,
-  prepareHeaders: (headers, { getState }) => {
-    const token = (getState() as RootState).auth.accessToken;
-    if (token) {
+  prepareHeaders: (headers) => {
+    const accessToken = Cookies.get(TokenTypes.ACCESS_TOKEN);
+    if (accessToken) {
       headers.set(
         RequestHeader.AUTHORIZATION,
-        RequestHeader.AUTHORIZATION_PREFIX + token
+        RequestHeader.AUTHORIZATION_PREFIX + accessToken
       );
     }
     return headers;
@@ -39,18 +41,16 @@ const baseQueryWithReAuth = async (
   let result = await baseQuery(args, api, extraOptions);
 
   if (result?.error?.status === 401) {
-    const { refreshToken } = (api.getState() as RootState).auth;
+    const refreshToken = Cookies.get(TokenTypes.REFRESH_TOKEN);
 
-    const refreshResponse = await baseQuery(
-      { url: '/auth/token', method: 'POST' },
-      api,
-      {
-        refreshToken,
-      }
-    );
+    const refreshResponse = await instance.post(`/auth/token`, {
+      refreshToken,
+    });
 
     if (refreshResponse?.data) {
+      const { accessToken } = refreshResponse.data as TokenValue;
       api.dispatch(setCredentials(refreshResponse.data as TokenValue));
+      Cookies.set(TokenTypes.ACCESS_TOKEN, accessToken);
 
       result = await baseQuery(args, api, extraOptions);
     } else {

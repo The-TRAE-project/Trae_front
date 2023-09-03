@@ -29,7 +29,9 @@ const workTypeApi = reportsTags.injectEndpoints({
     }),
 
     getDashboardReport: build.query<DashboardReport, null>({
-      query: () => `/report/dashboard`,
+      query: () => {
+        return `/report/dashboard`;
+      },
       providesTags: ['Reports'],
     }),
   }),

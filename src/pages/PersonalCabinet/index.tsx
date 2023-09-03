@@ -8,7 +8,7 @@ import { clearWorkTypeState } from '../../store/slices/workType';
 import { clearProjectState } from '../../store/slices/project';
 import { useAppDispatch } from '../../helpers/hooks/useAppDispatch';
 import { removeItem } from '../../helpers/removeItem';
-import { useCookies } from '../../helpers/hooks/useCookies';
+import { useAccessCookies } from '../../helpers/hooks/useCookies';
 import SEO from '../../components/SEO';
 import PageHeader from '../../components/PageHeader';
 import UserDetails from '../../components/Users/UserDetails';
@@ -21,11 +21,11 @@ import {
 const PersonalCabinet = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { removeCookie } = useCookies();
+  const { removeAccessCookie } = useAccessCookies();
 
   const handleLogout = async () => {
     await dispatch(logoutUser());
-    removeCookie();
+    removeAccessCookie();
     dispatch(clearUserState());
     dispatch(clearEmployeeState());
     dispatch(clearWorkTypeState());

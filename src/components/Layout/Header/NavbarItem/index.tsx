@@ -18,7 +18,7 @@ const NavbarItem = ({ navbarLink }: Props) => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const handleNavigate = (itemPath: string) => navigate(itemPath);
+  const handleNavigate = async (itemPath: string) => navigate(itemPath);
 
   const definePathIsActive = (link: string, path: string) => {
     const slicedPath = path.split('/');

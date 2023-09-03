@@ -7,5 +7,7 @@ services:
       - '3000:80'
     environment:
       - VITE_BACK_API_URL=http://195.80.51.155:8088/api
-      - VITE_A_TOKEN=token
-      - VITE_A_TOKEN_EXPIRATION=49
+      - VITE_ACCESS_TOKEN=token
+      - VITE_ACCESS_TOKEN_EXPIRATION=49
+      - VITE_REFRESH_TOKEN=refresh
+      - VITE_REFRESH_TOKEN_EXPIRATION=30
