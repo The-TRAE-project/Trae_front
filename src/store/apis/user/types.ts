@@ -170,16 +170,19 @@ export type UserEditFormValues = z.infer<typeof UserEditSchema>;
 export const UserChangePasswordSchema = UserEditSchema.extend({
   oldPassword: z
     .string()
-    .min(3, {
-      message: 'Пароль должен быть не меньше 3 символов!',
+    .min(4, {
+      message: 'Пароль должен быть не меньше 4 символов!',
     })
-    .max(30, { message: 'Пароль должен быть не больше 30 символов!' }),
+    .max(14, { message: 'Пароль должен быть не больше 14 символов!' }),
   newPassword: z
     .string()
-    .min(3, {
-      message: 'Пароль должен быть не меньше 3 символов!',
+    .min(4, {
+      message: 'Пароль должен быть не меньше 4 символов!',
     })
-    .max(30, { message: 'Пароль должен быть не больше 30 символов!' }),
+    .max(14, { message: 'Пароль должен быть не больше 14 символов!' })
+    .regex(RegEx.password, {
+      message: 'Пароль должен содержать только английские буквы и цифры!',
+    }),
 });
 
 export type UserChangePasswordFormValues = z.infer<
