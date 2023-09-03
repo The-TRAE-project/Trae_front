@@ -10,6 +10,9 @@ export const useEmployeeSelectMenuStyles = createStyles(() => ({
     boxShadow: '0px 4px 4px var(--black-shadow)',
     borderRadius: 'var(--border-radius)',
     overflow: 'auto',
+    position: 'absolute',
+    left: '0px !important',
+    top: '120px !important',
   },
 
   item: {
