@@ -9,7 +9,9 @@ export const useDateInputStyles = createStyles(() => ({
       padding: '24px 20px',
       borderRadius: 'var(--border-radius)',
       boxShadow: '0px 4px 4px var(--black-shadow)',
-      top: '370px !important',
+      position: 'relative',
+      left: '0px !important',
+      top: '25px !important',
     },
   },
 
