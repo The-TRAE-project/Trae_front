@@ -10,6 +10,7 @@ export const HorizontalDivider = styled.span`
   display: inline-block;
   height: 2px;
   border: 1px solid var(--orange);
+  background-color: var(--orange);
   transform: rotate(90deg);
   transition: var(--transition);
   opacity: 1;
