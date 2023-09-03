@@ -13,8 +13,6 @@ interface Props {
   isLoading: boolean;
   projects: FilteredResponse<ProjectShortInfo[]> | undefined;
   isNotFoundBySearch?: boolean;
-  isOpOverdue?: boolean;
-  isPrOverdue?: boolean;
 }
 
 const ProjectListItem = ({
@@ -23,8 +21,6 @@ const ProjectListItem = ({
   isLoading,
   projects,
   isNotFoundBySearch,
-  isOpOverdue,
-  isPrOverdue,
 }: Props) => {
   const prevSlide = () => {
     if (page !== 0) {
@@ -48,8 +44,8 @@ const ProjectListItem = ({
                 <ProjectItem
                   key={project.id}
                   project={project}
-                  isOpOverdue={isOpOverdue}
-                  isPrOverdue={isPrOverdue}
+                  isOpOverdue={project.isOverdueByCurrentOperation}
+                  isPrOverdue={project.isOverdueByContractDate}
                 />
               ))}
             </Grid>

@@ -272,8 +272,6 @@ const Projects = () => {
                 setPage={setFilterPage}
                 isLoading={isFilterLoading}
                 projects={findProjectsByFilter}
-                isOpOverdue={paramIsCurrentOpOverdue}
-                isPrOverdue={paramIsCurrentPrOverdue}
               />
             )}
           </Stack>

@@ -126,6 +126,8 @@ export interface ProjectShortInfo {
   number: number;
   name: string;
   customer: string;
+  isOverdueByContractDate: boolean;
+  isOverdueByCurrentOperation: boolean;
   isEnded: boolean;
   operation: OperationShortInfo;
 }
