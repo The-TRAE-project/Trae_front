@@ -6,6 +6,7 @@ export const Paths = {
   REPORTS: '/reports',
   REPORTS_BY_EMPLOYEES: '/reports/by-employees',
   REPORTS_BY_PROJECTS: '/reports/by-projects',
+  REPORTS_BY_DEADLINES: '/reports/by-deadlines',
 
   REPORTS_BY_PROJECTS_PROJECT_DETAILS:
     '/reports/by-projects/project/:id/details',

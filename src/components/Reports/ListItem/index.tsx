@@ -17,7 +17,7 @@ const list = [
   {
     id: '3',
     title: 'Сроки',
-    path: '',
+    path: Paths.REPORTS_BY_DEADLINES,
   },
 ];
 
@@ -31,7 +31,6 @@ const ListItem = () => {
           <LinkBtn
             key={item.id}
             onClick={() => navigate(item.path)}
-            disabled={item.id === '3'}
             type="button"
           >
             {item.title}

@@ -49,6 +49,7 @@ const ProjectNewStage = lazy(() => import('./pages/ProjectNewStage'));
 const Reports = lazy(() => import('./pages/Reports'));
 const ReportsByEmployees = lazy(() => import('./pages/ReportsByEmployees'));
 const ReportsByProjects = lazy(() => import('./pages/ReportsByProjects'));
+const ReportsByDeadlines = lazy(() => import('./pages/ReportsByDeadlines'));
 
 const App = () => {
   const { isLoggedIn } = useAppSelector((store) => store.employee);
@@ -80,6 +81,10 @@ const App = () => {
             <Route
               path={Paths.REPORTS_BY_PROJECTS}
               element={<ReportsByProjects />}
+            />
+            <Route
+              path={Paths.REPORTS_BY_DEADLINES}
+              element={<ReportsByDeadlines />}
             />
 
             <Route

@@ -274,3 +274,8 @@ export interface ProjectStage {
   employeeFirstName: null | string;
   employeeLastName: null | string;
 }
+
+export interface ProjectsShortInfo {
+  projectId: number;
+  number: number;
+}

@@ -16,6 +16,7 @@ import {
   ProjectStage,
   ProjectBriefInfo,
   CloseProjectStageValue,
+  ProjectsShortInfo,
 } from './types';
 
 const projectTags = baseApi.enhanceEndpoints({
@@ -78,6 +79,11 @@ const projectApi = projectTags.injectEndpoints({
       providesTags: ['Projects', 'Project'],
     }),
 
+    getAllProjectsNumbers: build.query<ProjectsShortInfo[], void>({
+      query: () => `/project/projects/list`,
+      providesTags: ['Projects', 'Project'],
+    }),
+
     editProject: build.mutation<
       UpdateProjectFormValues,
       UpdateProjectFormValues
@@ -136,6 +142,7 @@ const projectApi = projectTags.injectEndpoints({
       },
       invalidatesTags: ['Projects'],
     }),
+
     // Terminal Workshop
     getStagesInWorkByEmployeeId: build.query<StageInWork[], number>({
       query: (employeeId) =>
@@ -186,6 +193,7 @@ export const {
   useCloseProjectOperationMutation,
   useGetProjectsQuery,
   useSearchProjectsQuery,
+  useGetAllProjectsNumbersQuery,
   useEditProjectMutation,
   useEditProjectEndDateMutation,
   useCloseProjectMutation,

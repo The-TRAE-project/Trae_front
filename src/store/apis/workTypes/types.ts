@@ -46,3 +46,9 @@ export interface ResponseWorkTypeValues {
 export enum WorkTypeStatuses {
   SHIPMENT = 'Отгрузка',
 }
+
+export interface OperationsTypesShortInfo {
+  id: number;
+  isActive: boolean;
+  name: string;
+}

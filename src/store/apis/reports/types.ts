@@ -127,3 +127,27 @@ export interface DashboardReport {
   countProjectsWithLastOpReadyToAcceptance: number;
   countProjectsWithOverdueCurrentOperation: number;
 }
+
+export interface ParamsForDeadlinesReports {
+  firstParameter: string;
+  secondParameter: string;
+  thirdParameter: string;
+  valueOfFirstParameter: string;
+  valuesOfSecondParameter: string;
+  valuesOfThirdParameter: string;
+}
+
+export interface DeadlinesReport {
+  firstRespId: number;
+  firstRespValue: string;
+  secondRespValues: {
+    secondRespId: number;
+    secondRespValue: string;
+    thirdRespValues: {
+      plannedEndDate: number[];
+      realEndDate: number[];
+      thirdRespId: number;
+      thirdRespValue: string;
+    }[];
+  }[];
+}
