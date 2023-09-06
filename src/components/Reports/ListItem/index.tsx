@@ -16,7 +16,7 @@ const list = [
   },
   {
     id: '3',
-    title: 'Сроки',
+    title: 'Аналитика',
     path: Paths.REPORTS_BY_DEADLINES,
   },
 ];
