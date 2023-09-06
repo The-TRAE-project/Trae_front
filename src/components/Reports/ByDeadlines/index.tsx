@@ -22,18 +22,18 @@ import {
 function chooseParameterValue(
   query: string,
   currentParameter: string,
-  firstParameter: string | null,
-  secondParameter: string | null,
-  thirdParameter: string | null,
-  valueOfFirstParameter: number | null,
+  firstParameter: string[] | null,
+  secondParameter: string[] | null,
+  thirdParameter: string[] | null,
+  valueOfFirstParameter: number[] | null,
   valuesOfSecondParameter: number[] | null,
   valuesOfThirdParameter: number[] | null
 ) {
-  if (firstParameter === currentParameter)
-    return `${query}${valueOfFirstParameter}`;
-  if (secondParameter === currentParameter)
+  if (firstParameter !== null && firstParameter[0] === currentParameter)
+    return `${query}${valueOfFirstParameter?.at(0)}`;
+  if (secondParameter !== null && secondParameter[0] === currentParameter)
     return `${query}${valuesOfSecondParameter?.join(',')}`;
-  if (thirdParameter === currentParameter)
+  if (thirdParameter !== null && thirdParameter[0] === currentParameter)
     return `${query}${valuesOfThirdParameter?.join(',')}`;
   return '';
 }
@@ -41,11 +41,11 @@ function chooseParameterValue(
 export function ByDeadlines() {
   const [queryParams, setQueryParams] =
     useState<DeadlinesReportFormValues | null>(null);
-  const [firstParameter, setFirstParameter] = useState<string | null>(null);
-  const [secondParameter, setSecondParameter] = useState<string | null>(null);
-  const [thirdParameter, setThirdParameter] = useState<string | null>(null);
+  const [firstParameter, setFirstParameter] = useState<string[] | null>(null);
+  const [secondParameter, setSecondParameter] = useState<string[] | null>(null);
+  const [thirdParameter, setThirdParameter] = useState<string[] | null>(null);
   const [valueOfFirstParameter, setValueOfFirstParameter] = useState<
-    number | null
+    number[] | null
   >(null);
   const [valuesOfSecondParameter, setValuesOfSecondParameter] = useState<
     number[] | null

@@ -29,6 +29,7 @@ interface Props {
   stateCallback: React.Dispatch<React.SetStateAction<any | null>>;
   error?: React.ReactNode;
   isRadio?: boolean;
+  isDisabled?: boolean;
 }
 
 function DropdownSelect({
@@ -38,6 +39,7 @@ function DropdownSelect({
   id,
   error,
   isRadio,
+  isDisabled,
   stateCallback,
 }: Props) {
   const [opened, setOpened] = useState<boolean>(false);
@@ -87,6 +89,7 @@ function DropdownSelect({
     <SelectWrapper>
       <SelectLabel>{label}</SelectLabel>
       <Menu
+        disabled={isDisabled}
         opened={opened}
         onChange={setOpened}
         closeOnItemClick={false}
@@ -97,7 +100,11 @@ function DropdownSelect({
       >
         <Menu.Target>
           <SelectDisplayInput>
-            <input {...form.getInputProps(id)} type="text" />
+            <input
+              {...form.getInputProps(id)}
+              type="text"
+              disabled={isDisabled}
+            />
             {isAllSelected ? (
               <SelectAllTitle>Все</SelectAllTitle>
             ) : (

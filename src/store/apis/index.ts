@@ -40,6 +40,8 @@ const baseQueryWithReAuth = async (
 ) => {
   let result = await baseQuery(args, api, extraOptions);
 
+  // console.log('BASE_QUERY:', result, args, api, extraOptions);
+
   if (result?.error?.status === 401) {
     const refreshToken = Cookies.get(TokenTypes.REFRESH_TOKEN);
 

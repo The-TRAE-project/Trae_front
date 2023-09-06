@@ -14,13 +14,15 @@ interface Props<T> {
   employees: EmployeesShortInfo[] | undefined;
   projects: ProjectsShortInfo[] | undefined;
   operations: OperationsShortInfo[] | undefined;
-  firstParameter: string | null;
-  secondParameter: string | null;
-  thirdParameter: string | null;
-  setFirstParameter: React.Dispatch<React.SetStateAction<string | null>>;
-  setSecondParameter: React.Dispatch<React.SetStateAction<string | null>>;
-  setThirdParameter: React.Dispatch<React.SetStateAction<string | null>>;
-  setValueOfFirstParameter: React.Dispatch<React.SetStateAction<number | null>>;
+  firstParameter: string[] | null;
+  secondParameter: string[] | null;
+  thirdParameter: string[] | null;
+  setFirstParameter: React.Dispatch<React.SetStateAction<string[] | null>>;
+  setSecondParameter: React.Dispatch<React.SetStateAction<string[] | null>>;
+  setThirdParameter: React.Dispatch<React.SetStateAction<string[] | null>>;
+  setValueOfFirstParameter: React.Dispatch<
+    React.SetStateAction<number[] | null>
+  >;
   setValuesOfSecondParameter: React.Dispatch<
     React.SetStateAction<number[] | null>
   >;
@@ -123,6 +125,7 @@ export function FormBody<T>({
         stateCallback={setFirstParameter}
       />
       <DropdownSelect
+        isDisabled={firstParameter === null}
         form={form}
         label="Критерий 2"
         items={ParametersChoices}
@@ -131,6 +134,7 @@ export function FormBody<T>({
         stateCallback={setSecondParameter}
       />
       <DropdownSelect
+        isDisabled={secondParameter === null}
         form={form}
         label="Критерий 3"
         items={ParametersChoices}
@@ -140,6 +144,7 @@ export function FormBody<T>({
       />
 
       <DropdownSelect
+        isDisabled={firstParameter === null}
         form={form}
         label="Критерий"
         items={
@@ -154,6 +159,7 @@ export function FormBody<T>({
       />
 
       <DropdownSelect
+        isDisabled={secondParameter === null}
         form={form}
         label="Критерий"
         items={
@@ -167,6 +173,7 @@ export function FormBody<T>({
         stateCallback={setValuesOfSecondParameter}
       />
       <DropdownSelect
+        isDisabled={thirdParameter === null}
         form={form}
         label="Критерий"
         items={
