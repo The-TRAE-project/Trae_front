@@ -129,8 +129,13 @@ export const EmployeeUpdateFormSchema = z.object({
 
 export type EmployeeUpdateFormValues = z.infer<typeof EmployeeUpdateFormSchema>;
 
-export interface EmployeeShortInfo {
+export interface EmployeesShortInfo {
   id: number;
   firstName: string;
   lastName: string;
+}
+
+export interface EmployeesShortInfoParams {
+  projectIds: string;
+  operationIds: string;
 }

@@ -5,7 +5,6 @@ import {
   ResponseWorkTypeValues,
   EditWorkTypeFormValues,
   WorkType,
-  OperationsTypesShortInfo,
 } from './types';
 
 const workTypeTags = baseApi.enhanceEndpoints({
@@ -52,11 +51,6 @@ const workTypeApi = workTypeTags.injectEndpoints({
       query: () => '/type-work/active/list',
       providesTags: ['WorkType'],
     }),
-
-    getAllOperationsNames: build.query<OperationsTypesShortInfo[], void>({
-      query: () => '/type-work/active/list-without-shipment',
-      providesTags: ['WorkType'],
-    }),
   }),
 });
 
@@ -65,5 +59,4 @@ export const {
   useCreateWorkTypeMutation,
   useEditWorkTypeMutation,
   useGetActiveWorkTypesQuery,
-  useGetAllOperationsNamesQuery,
 } = workTypeApi;

@@ -17,6 +17,9 @@ import {
   ProjectBriefInfo,
   CloseProjectStageValue,
   ProjectsShortInfo,
+  ProjectsShortInfoParams,
+  OperationsShortInfo,
+  OperationsShortInfoParams,
 } from './types';
 
 const projectTags = baseApi.enhanceEndpoints({
@@ -79,8 +82,18 @@ const projectApi = projectTags.injectEndpoints({
       providesTags: ['Projects', 'Project'],
     }),
 
-    getAllProjectsNumbers: build.query<ProjectsShortInfo[], void>({
-      query: () => `/project/projects/list`,
+    getProjectsInfo: build.query<ProjectsShortInfo[], ProjectsShortInfoParams>({
+      query: (query) =>
+        `/project/projects/list${query.startOfPeriod}${query.endOfPeriod}${query.employeeIds}${query.operationIds}`,
+      providesTags: ['Projects', 'Project'],
+    }),
+
+    getOperationsInfo: build.query<
+      OperationsShortInfo[],
+      OperationsShortInfoParams
+    >({
+      query: (query) =>
+        `/operation/operations/list${query.startOfPeriod}${query.endOfPeriod}${query.projectIds}${query.employeeIds}`,
       providesTags: ['Projects', 'Project'],
     }),
 
@@ -193,7 +206,8 @@ export const {
   useCloseProjectOperationMutation,
   useGetProjectsQuery,
   useSearchProjectsQuery,
-  useGetAllProjectsNumbersQuery,
+  useGetProjectsInfoQuery,
+  useGetOperationsInfoQuery,
   useEditProjectMutation,
   useEditProjectEndDateMutation,
   useCloseProjectMutation,

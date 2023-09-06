@@ -3,90 +3,205 @@ import { useState } from 'react';
 import { useForm, zodResolver } from '@mantine/form';
 import Loader from '../../Loader';
 import { FormWrapper } from '../../styles';
-import FormBody from '../ByEmployees/FormBody';
+import { FormBody } from './FormBody';
 import { ReportTable } from './ReportTable';
 import FormHeader from '../FormHeader';
 import { useGetDeadlinesReportsQuery } from '../../../store/apis/reports';
 import { DATE_30_AHEAD } from '../helpers/formatToParamDate';
 import { useExportToExcel } from '../../../helpers/hooks/useExportToExcel';
+import {
+  DeadlineReportSchema,
+  DeadlinesReportFormValues,
+} from '../../../store/apis/reports/types';
 import { useGetAllEmployeesWithoutPaginationQuery } from '../../../store/apis/employee';
-import { useGetAllProjectsNumbersQuery } from '../../../store/apis/project';
-import { useGetAllOperationsNamesQuery } from '../../../store/apis/workTypes';
+import {
+  useGetProjectsInfoQuery,
+  useGetOperationsInfoQuery,
+} from '../../../store/apis/project';
+
+function chooseParameterValue(
+  query: string,
+  currentParameter: string,
+  firstParameter: string | null,
+  secondParameter: string | null,
+  thirdParameter: string | null,
+  valueOfFirstParameter: number | null,
+  valuesOfSecondParameter: number[] | null,
+  valuesOfThirdParameter: number[] | null
+) {
+  if (firstParameter === currentParameter)
+    return `${query}${valueOfFirstParameter}`;
+  if (secondParameter === currentParameter)
+    return `${query}${valuesOfSecondParameter?.join(',')}`;
+  if (thirdParameter === currentParameter)
+    return `${query}${valuesOfThirdParameter?.join(',')}`;
+  return '';
+}
 
 export function ByDeadlines() {
-  const [startDate, setStartDate] = useState<string | null>(null);
-  const [endDate, setEndDate] = useState<string | null>(null);
+  const [queryParams, setQueryParams] =
+    useState<DeadlinesReportFormValues | null>(null);
+  const [firstParameter, setFirstParameter] = useState<string | null>(null);
+  const [secondParameter, setSecondParameter] = useState<string | null>(null);
+  const [thirdParameter, setThirdParameter] = useState<string | null>(null);
+  const [valueOfFirstParameter, setValueOfFirstParameter] = useState<
+    number | null
+  >(null);
+  const [valuesOfSecondParameter, setValuesOfSecondParameter] = useState<
+    number[] | null
+  >(null);
+  const [valuesOfThirdParameter, setValuesOfThirdParameter] = useState<
+    number[] | null
+  >(null);
 
-  // TODO: get all emplyees, all projects, all operations
-  // const { data: deadlines } = useGetAllEmployeesWithoutPaginationQuery();
+  const form = useForm<DeadlinesReportFormValues>({
+    initialValues: {
+      startOfPeriod: new Date(),
+      endOfPeriod: DATE_30_AHEAD,
+      isDatesActive: false,
+      firstParameter: [''],
+      secondParameter: [''],
+      thirdParameter: [''],
+      valueOfFirstParameter: [0],
+      valuesOfSecondParameter: [],
+      valuesOfThirdParameter: [],
+    },
+    validate: (values) => {
+      const resolver = zodResolver(DeadlineReportSchema);
+      const errors = resolver(values);
+      return errors;
+    },
+  });
 
-  // const form = useForm<DeadlinesReportFormValues>({
-  //   initialValues: {
-  //     startOfPeriod: new Date(),
-  //     endOfPeriod: DATE_30_AHEAD,
-  //   },
-  //   validate: (values) => {
-  //     const resolver = zodResolver(DeadlinesReportSchema);
-  //     const errors = resolver(values);
-  //     return errors;
-  //   },
-  // });
+  const employees = useGetAllEmployeesWithoutPaginationQuery({
+    projectIds: chooseParameterValue(
+      '?projectIds=',
+      'PROJECT',
+      firstParameter,
+      secondParameter,
+      thirdParameter,
+      valueOfFirstParameter,
+      valuesOfSecondParameter,
+      valuesOfThirdParameter
+    ),
+    operationIds: chooseParameterValue(
+      '?operationIds=',
+      'OPERATION',
+      firstParameter,
+      secondParameter,
+      thirdParameter,
+      valueOfFirstParameter,
+      valuesOfSecondParameter,
+      valuesOfThirdParameter
+    ),
+  }).data;
 
-  // useSetDefaultValue(form, employees);
+  const projects = useGetProjectsInfoQuery({
+    employeeIds: chooseParameterValue(
+      '?employeeIds=',
+      'EMPLOYEE',
+      firstParameter,
+      secondParameter,
+      thirdParameter,
+      valueOfFirstParameter,
+      valuesOfSecondParameter,
+      valuesOfThirdParameter
+    ),
+    operationIds: chooseParameterValue(
+      '?operationIds=',
+      'OPERATION',
+      firstParameter,
+      secondParameter,
+      thirdParameter,
+      valueOfFirstParameter,
+      valuesOfSecondParameter,
+      valuesOfThirdParameter
+    ),
+    startOfPeriod: '',
+    endOfPeriod: '',
+  }).data;
 
-  const employees = useGetAllEmployeesWithoutPaginationQuery();
-  const projects = useGetAllProjectsNumbersQuery();
-  const operations = useGetAllOperationsNamesQuery();
-  console.log(employees.data, projects.data, operations.data);
+  const operations = useGetOperationsInfoQuery({
+    employeeIds: chooseParameterValue(
+      '?employeeIds=',
+      'EMPLOYEE',
+      firstParameter,
+      secondParameter,
+      thirdParameter,
+      valueOfFirstParameter,
+      valuesOfSecondParameter,
+      valuesOfThirdParameter
+    ),
+    projectIds: chooseParameterValue(
+      '?projectIds=',
+      'PROJECT',
+      firstParameter,
+      secondParameter,
+      thirdParameter,
+      valueOfFirstParameter,
+      valuesOfSecondParameter,
+      valuesOfThirdParameter
+    ),
+    startOfPeriod: '',
+    endOfPeriod: '',
+  }).data;
 
-  const firstValue = employees.data ? employees.data[0].id : '';
-  const secondValue = projects.data
-    ? projects.data
-        .reduce((result, project) => {
-          result += `${project.number},`;
-          return result;
-        }, '[')
-        .slice(0, -1)
-        .concat(']')
-    : '';
+  // console.log(employees, projects, operations, queryParams);
 
+  // console.log(
+  //   firstParameter,
+  //   secondParameter,
+  //   thirdParameter,
+  //   valueOfFirstParameter,
+  //   valuesOfSecondParameter,
+  //   valuesOfThirdParameter
+  // );
   const {
     data: reportsByDeadlines,
     isLoading: isGetLoading,
     isFetching,
   } = useGetDeadlinesReportsQuery(
     {
-      firstParameter: '?firstParameter=EMPLOYEE',
-      secondParameter: '?secondParameter=PROJECT',
-      thirdParameter: '?thirdParameter=OPERATION',
-      valueOfFirstParameter: `?valueOfFirstParameter=${firstValue}`,
-      valuesOfSecondParameter: `?valuesOfSecondParameter=[1]`,
-      valuesOfThirdParameter: '?valuesOfThirdParameter=[1]',
+      firstParameter: queryParams ? queryParams?.firstParameter?.at(0) : '',
+      secondParameter: queryParams ? queryParams?.secondParameter?.at(0) : '',
+      thirdParameter: queryParams ? queryParams?.thirdParameter?.at(0) : '',
+      valueOfFirstParameter: queryParams
+        ? queryParams?.valueOfFirstParameter?.at(0)
+        : 0,
+      valuesOfSecondParameter: queryParams
+        ? queryParams?.valuesOfSecondParameter
+        : [0],
+      valuesOfThirdParameter: queryParams
+        ? queryParams?.valuesOfThirdParameter
+        : [0],
     },
     {
-      skip: true,
+      skip: queryParams === null,
     }
   );
-  console.log(reportsByDeadlines);
+  // console.log(
+  //   'REPORT_BY_DEDLINES: ',
+  //   isGetLoading || isFetching,
+  //   reportsByDeadlines,
+  //   queryParams
+  // );
 
   const { isLoading: isExcelExportLoading, exportToExcel } = useExportToExcel();
 
-  // const handleSubmit = (values: DeadlineReportFormValues) => {
-  //   setStartDate(formatToQueryParamDate(values.startOfPeriod));
-  //   setEndDate(formatToQueryParamDate(values.endOfPeriod));
-  // };
+  const handleSubmit = (values: DeadlinesReportFormValues) => {
+    setQueryParams(values);
+  };
 
   const handleExportToExcel = () => {
     if (!reportsByDeadlines) return;
 
-    exportToExcel('', 'Отчеты по сотрудникам', 'Employees');
+    exportToExcel('', 'Отчеты по срокам', 'Deadlines');
   };
 
   const isReportExist = !!reportsByDeadlines;
 
   return (
-    // <FormWrapper onSubmit={form.onSubmit(handleSubmit)}>
-    <FormWrapper>
+    <FormWrapper onSubmit={form.onSubmit(handleSubmit)}>
       <FormHeader
         isReportFormed={!!reportsByDeadlines}
         isFormBtnLoading={isFetching || isGetLoading}
@@ -97,13 +212,26 @@ export function ByDeadlines() {
       />
 
       <Stack spacing={40}>
-        {/* {employees ? (
-          <FormBody form={form} employees={employees} />
+        {employees && projects && operations ? (
+          <FormBody
+            form={form}
+            employees={employees}
+            projects={projects}
+            operations={operations}
+            firstParameter={firstParameter}
+            secondParameter={secondParameter}
+            thirdParameter={thirdParameter}
+            setFirstParameter={setFirstParameter}
+            setSecondParameter={setSecondParameter}
+            setThirdParameter={setThirdParameter}
+            setValueOfFirstParameter={setValueOfFirstParameter}
+            setValuesOfSecondParameter={setValuesOfSecondParameter}
+            setValuesOfThirdParameter={setValuesOfThirdParameter}
+          />
         ) : (
           <Loader size={80} isAbsoluteCentered />
-        )} */}
-        {startDate &&
-          endDate &&
+        )}
+        {!!reportsByDeadlines &&
           (!isGetLoading && !isFetching && !!reportsByDeadlines ? (
             <ReportTable />
           ) : (

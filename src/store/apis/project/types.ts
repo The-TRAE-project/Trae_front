@@ -279,3 +279,23 @@ export interface ProjectsShortInfo {
   projectId: number;
   number: number;
 }
+
+export interface ProjectsShortInfoParams {
+  employeeIds: string;
+  operationIds: string;
+  startOfPeriod: string;
+  endOfPeriod: string;
+}
+
+export interface OperationsShortInfo {
+  name: string;
+  operationId: number;
+  projectNumber: number;
+}
+
+export interface OperationsShortInfoParams {
+  employeeIds: string;
+  projectIds: string;
+  startOfPeriod: string;
+  endOfPeriod: string;
+}

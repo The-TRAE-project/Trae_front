@@ -27,7 +27,10 @@ const ByEmployees = () => {
   const [endDate, setEndDate] = useState<string | null>(null);
   const [employeeIds, setEmployeeIds] = useState<number[] | null>([]);
 
-  const { data: employees } = useGetAllEmployeesWithoutPaginationQuery();
+  const { data: employees } = useGetAllEmployeesWithoutPaginationQuery({
+    projectIds: '',
+    operationIds: '',
+  });
   const onlyEmployeesIds = employees ? selectOnlyIds(employees) : [];
 
   const form = useForm<EmployeeReportFormValues>({
