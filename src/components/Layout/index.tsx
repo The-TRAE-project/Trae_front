@@ -8,7 +8,6 @@ import 'dayjs/locale/ru';
 
 import { Roles } from '../../store/slices/auth/types';
 import { useAppSelector } from '../../helpers/hooks/useAppSelector';
-import { useNavigateLoggedInUser } from '../../helpers/hooks/useNavigateLoggedInUser';
 import { useClearLocalStorageByPath } from '../../helpers/hooks/useClearLocalStorageByPath';
 import { Paths } from '../../constants/paths';
 import GlobalStyles from '../../styles/GlobalStyles';
@@ -26,7 +25,6 @@ const Layout = ({ children }: Props) => {
   const location = useLocation();
   const { permission, isLoggedIn } = useAppSelector((store) => store.auth);
 
-  useNavigateLoggedInUser();
   useClearLocalStorageByPath();
 
   let header;

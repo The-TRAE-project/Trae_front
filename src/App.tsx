@@ -62,7 +62,6 @@ const App = () => {
       <Suspense fallback={<FullPageLoader />}>
         <Routes>
           <Route path={Paths.LOGIN} element={<Login />} />
-          <Route path="*" element={<Navigate to={Paths.LOGIN} replace />} />
 
           {/* Admin routes */}
           <Route
@@ -168,6 +167,10 @@ const App = () => {
               path={Paths.PERSONAL_CABINET_CHANGE_PASSWORD}
               element={<PersonalCabinetChangePassword />}
             />
+            <Route
+              path="*"
+              element={<Navigate to={Paths.DASHBOARD} replace />}
+            />
           </Route>
 
           {/* Employee routes */}
@@ -202,6 +205,11 @@ const App = () => {
                 element={<EmployeeStagesInWork />}
               />
             </Route>
+
+            <Route
+              path="*"
+              element={<Navigate to={Paths.EMPLOYEE_LOGIN} replace />}
+            />
           </Route>
 
           {/* Constructor routes */}
@@ -234,7 +242,14 @@ const App = () => {
               path={Paths.CONSTRUCTOR_PERSONAL_CABINET_CHANGE_PASSWORD}
               element={<PersonalCabinetChangePassword />}
             />
+
+            <Route
+              path="*"
+              element={<Navigate to={Paths.CONSTRUCTOR_MAIN_PAGE} replace />}
+            />
           </Route>
+
+          <Route path="*" element={<Navigate to={Paths.LOGIN} replace />} />
         </Routes>
       </Suspense>
     </Layout>
