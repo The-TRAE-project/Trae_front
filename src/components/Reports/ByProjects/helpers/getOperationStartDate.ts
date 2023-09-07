@@ -9,7 +9,9 @@ export function getOperationStartDate(
   const reportStartDate = convertToDayjs(repStartDate);
   const operationStartDate = convertToDayjs(
     operation.isEnded
-      ? (operation.acceptanceDate as number[])
+      ? ((operation.acceptanceDate !== null
+          ? operation.acceptanceDate
+          : operation.realEndDate) as number[])
       : operation.startDate
   );
   const operationEndDate = convertToDayjs(
@@ -28,7 +30,9 @@ export function getOperationStartDate(
 
   return convertToString(
     operation.isEnded
-      ? (operation.acceptanceDate as number[])
+      ? ((operation.acceptanceDate !== null
+          ? operation.acceptanceDate
+          : operation.realEndDate) as number[])
       : operation.startDate
   );
 }

@@ -4,7 +4,7 @@ import { ProjectOperation } from '../../../../store/apis/reports/types';
 export function getCeilLength(
   dateStart: number[],
   dateEnd: number[],
-  operationInfo: ProjectOperation | undefined,
+  operationInfo: ProjectOperation,
   hoursforOperation: number
 ) {
   if (operationInfo?.id === undefined) {
@@ -16,22 +16,26 @@ export function getCeilLength(
 
   const fullLength = operationInfo.isEnded
     ? convertToDayjs(operationInfo.realEndDate as number[]).diff(
-        convertToDayjs(operationInfo.acceptanceDate as number[]),
+        convertToDayjs(
+          (operationInfo.acceptanceDate !== null
+            ? operationInfo.acceptanceDate
+            : operationInfo.realEndDate) as number[]
+        ),
         'd'
       )
     : Math.ceil(hoursforOperation / 24);
-  const minDiffernce = minDate.diff(
+  const minDifference = minDate.diff(
     convertToDayjs(operationInfo.startDate),
     'd'
   );
-  const maxDiffernece = convertToDayjs(operationInfo.startDate)
+  const maxDifference = convertToDayjs(operationInfo.startDate)
     .add(fullLength, 'd')
     .diff(maxDate, 'd');
 
   let adjustedLength =
     fullLength -
-    (minDiffernce > 0 ? minDiffernce : 0) -
-    (maxDiffernece > 0 ? maxDiffernece - 1 : 0);
+    (minDifference > 0 ? minDifference : 0) -
+    (maxDifference > 0 ? maxDifference - 1 : 0);
 
   adjustedLength = adjustedLength <= 0 ? 1 : adjustedLength;
 
