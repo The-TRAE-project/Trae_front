@@ -28,22 +28,22 @@ const ListItem = () => {
   const list: DashboardListItem[] = [
     {
       id: '1',
-      title: 'Проектов в системе',
+      title: 'Проектов в системе',
       quantity: dashboardReport?.countNotEndedProjects,
     },
     {
       id: '2',
-      title: 'Проектов готовых к отгрузке',
+      title: 'Проектов готовых к отгрузке',
       quantity: dashboardReport?.countProjectsWithLastOpReadyToAcceptance,
     },
     {
       id: '3',
-      title: 'Сотрудников на смене',
+      title: 'Сотрудников на смене',
       quantity: dashboardReport?.countEmpsOnActiveWorkingShift,
     },
     {
       id: '4',
-      title: 'Просроченных проектов по этапу',
+      title: 'Просроченных проектов по этапу',
       quantity: dashboardReport?.countProjectsWithOverdueCurrentOperation,
     },
     {
