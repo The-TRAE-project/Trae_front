@@ -9,6 +9,8 @@ import Loader from '../Loader';
 import { Paths } from '../../constants/paths';
 import { DashedOrangeButton, UnstyledButton } from '../styles';
 import { Button, IconsGroup, Wrapper } from './styles';
+import { useAppSelector } from '../../helpers/hooks/useAppSelector';
+import { Roles } from '../../store/slices/auth/types';
 
 interface Props {
   isShowCreateBtn?: boolean;
@@ -36,8 +38,15 @@ const PageHeader = ({
   dashedBtnText = 'Изменить пароль',
 }: Props) => {
   const navigate = useNavigate();
+  const { permission } = useAppSelector((store) => store.auth);
 
-  const navigateToHome = () => navigate(Paths.DASHBOARD);
+  const navigateToHome = () => {
+    if (permission === Roles.ADMIN) {
+      navigate(Paths.DASHBOARD);
+    } else if (permission === Roles.CONSTRUCTOR) {
+      navigate(Paths.CONSTRUCTOR_MAIN_PAGE);
+    }
+  };
 
   const handleCreate = () => onCreate?.();
   const handleLogout = () => onExit?.();

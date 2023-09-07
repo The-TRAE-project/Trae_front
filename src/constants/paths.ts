@@ -46,6 +46,14 @@ export const Paths = {
   WORK_TYPES: '/work-types',
   WORK_TYPE_CREATE: '/work-type/create',
   WORK_TYPE_EDITING: '/work-type/editing',
+  // Constructor Role paths
+  CONSTRUCTOR_MAIN_PAGE: '/constructor',
+  CONSTRUCTOR_CREATE_PROJECT: '/construcor/create-project',
+  CONSTRUCTOR_PERSONAL_CABINET: '/construcor/personal-cabinet',
+  CONSTRUCTOR_PERSONAL_CABINET_EDITING: '/construcor/personal-cabinet/editing',
+  CONSTRUCTOR_PERSONAL_CABINET_CHANGE_PASSWORD:
+    '/construcor/personal-cabinet/change-password',
+
   // Terminal Workshop paths
   EMPLOYEE_LOGIN: '/employee-login',
   EMPLOYEE_MAIN: '/employee-main',

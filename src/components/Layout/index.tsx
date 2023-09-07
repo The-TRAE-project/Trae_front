@@ -16,6 +16,7 @@ import theme from '../../styles/theme';
 import EmployeeHeader from './EmployeeHeader';
 import Header from './Header';
 import { ContentWrapper, Wrapper } from './styles';
+import { ConstructorHeader } from './ConstructorHeader';
 
 type Props = {
   children: ReactNode;
@@ -27,6 +28,22 @@ const Layout = ({ children }: Props) => {
 
   useNavigateLoggedInUser();
   useClearLocalStorageByPath();
+
+  let header;
+
+  switch (permission) {
+    case Roles.EMPLOYEE:
+      header = <EmployeeHeader />;
+      break;
+    case Roles.ADMIN:
+      header = <Header />;
+      break;
+    case Roles.CONSTRUCTOR:
+      header = <ConstructorHeader />;
+      break;
+    default:
+      header = '';
+  }
 
   return (
     <ThemeProvider theme={theme}>
@@ -49,9 +66,7 @@ const Layout = ({ children }: Props) => {
           <Notifications />
           <GlobalStyles />
           <Wrapper>
-            {location.pathname !== Paths.LOGIN &&
-              isLoggedIn &&
-              (permission === Roles.EMPLOYEE ? <EmployeeHeader /> : <Header />)}
+            {location.pathname !== Paths.LOGIN && isLoggedIn && header}
             <ContentWrapper>{children}</ContentWrapper>
           </Wrapper>
         </DatesProvider>

@@ -14,7 +14,7 @@ import traeLogo from '../../assets/traeLogo.svg';
 import { Paths } from '../../constants/paths';
 import SEO from '../../components/SEO';
 import ConfirmModal from '../../components/Employees/ConfirmModal';
-import Button from '../../components/Employees/Button';
+import Button from '../../components/Button';
 import {
   ApartContainer,
   TraeLogoImageWrapper,
@@ -48,7 +48,7 @@ const EmployeeMain = () => {
     setIsOpen(false);
     dispatch(setTimer(121));
   };
-  // TODO: add employee and admin roles
+
   const handleLogOut = async () => {
     try {
       if (!employee) return;

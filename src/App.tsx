@@ -51,6 +51,8 @@ const ReportsByEmployees = lazy(() => import('./pages/ReportsByEmployees'));
 const ReportsByProjects = lazy(() => import('./pages/ReportsByProjects'));
 const ReportsByDeadlines = lazy(() => import('./pages/ReportsByDeadlines'));
 
+const ConstructorMainPage = lazy(() => import('./pages/ConstructorMainPage'));
+
 const App = () => {
   const { isLoggedIn } = useAppSelector((store) => store.employee);
   const { permission } = useAppSelector((store) => store.auth);
@@ -200,6 +202,38 @@ const App = () => {
                 element={<EmployeeStagesInWork />}
               />
             </Route>
+          </Route>
+
+          {/* Constructor routes */}
+          <Route
+            element={
+              <ProtectedRoute
+                isAllowed={permission === Roles.CONSTRUCTOR}
+                redirectPath={Paths.LOGIN}
+              />
+            }
+          >
+            <Route
+              path={Paths.CONSTRUCTOR_MAIN_PAGE}
+              element={<ConstructorMainPage />}
+            />
+            <Route
+              path={Paths.CONSTRUCTOR_CREATE_PROJECT}
+              element={<CreateProject />}
+            />
+
+            <Route
+              path={Paths.CONSTRUCTOR_PERSONAL_CABINET}
+              element={<PersonalCabinet />}
+            />
+            <Route
+              path={Paths.CONSTRUCTOR_PERSONAL_CABINET_EDITING}
+              element={<PersonalCabinetEditing />}
+            />
+            <Route
+              path={Paths.CONSTRUCTOR_PERSONAL_CABINET_CHANGE_PASSWORD}
+              element={<PersonalCabinetChangePassword />}
+            />
           </Route>
         </Routes>
       </Suspense>

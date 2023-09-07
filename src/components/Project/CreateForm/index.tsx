@@ -18,9 +18,12 @@ import Textarea from '../../Textarea';
 import FormHeader from '../../FormHeader';
 import { FormWrapper, TwoColumnGrid } from '../../styles';
 import StageSelect from './StageSelect';
+import { useAppSelector } from '../../../helpers/hooks/useAppSelector';
+import { Roles } from '../../../store/slices/auth/types';
 
 const CreateForm = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const { permission } = useAppSelector((store) => store.auth);
 
   const navigate = useNavigate();
   const form = useForm<CreateProjectFormValues>({
@@ -46,9 +49,20 @@ const CreateForm = () => {
 
   const closeModal = () => {
     setIsOpen(false);
-    navigate(Paths.PROJECTS);
+    if (permission === Roles.ADMIN) {
+      navigate(Paths.PROJECTS);
+    } else if (permission === Roles.CONSTRUCTOR) {
+      navigate(Paths.CONSTRUCTOR_MAIN_PAGE);
+    }
     form.reset();
   };
+
+  let backPath = '';
+  if (permission === Roles.ADMIN) {
+    backPath = Paths.DASHBOARD;
+  } else if (permission === Roles.CONSTRUCTOR) {
+    backPath = Paths.CONSTRUCTOR_MAIN_PAGE;
+  }
 
   return (
     <>
@@ -56,14 +70,14 @@ const CreateForm = () => {
         isOpen={isOpen}
         onClose={closeModal}
         title={`Проект №${form.values.number} успешно добавлен`}
-        backPath={Paths.PROJECTS}
+        backPath={backPath}
       />
 
       <FormWrapper onSubmit={form.onSubmit(handleSubmit)}>
         <FormHeader
           isSubmitBtnDisabled={isLoading}
           isSubmitBtnLoading={isLoading}
-          onBack={() => navigate(Paths.PROJECTS)}
+          onBack={() => navigate(backPath)}
         />
 
         <TwoColumnGrid>
