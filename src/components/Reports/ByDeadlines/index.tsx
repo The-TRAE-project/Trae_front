@@ -232,8 +232,16 @@ export function ByDeadlines() {
           <Loader size={80} isAbsoluteCentered />
         )}
         {!!reportsByDeadlines &&
+          !!firstParameter &&
+          !!secondParameter &&
+          !!thirdParameter &&
           (!isGetLoading && !isFetching && !!reportsByDeadlines ? (
-            <ReportTable />
+            <ReportTable
+              reportsByDeadlines={reportsByDeadlines}
+              firstParameter={firstParameter[0]}
+              secondParameter={secondParameter[0]}
+              thirdParameter={thirdParameter[0]}
+            />
           ) : (
             <Loader size={80} isAbsoluteCentered />
           ))}
