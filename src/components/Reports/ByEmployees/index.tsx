@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useForm, zodResolver } from '@mantine/form';
 import { Stack } from '@mantine/core';
 
@@ -21,6 +21,7 @@ import { useSetDefaultValue } from './helpers/useSetDefaultValue';
 import FormBody from './FormBody';
 import { ReportTable } from './ReportTable';
 import { prepareToExcel } from './helpers/prepareToExcel';
+import { EmployeesShortInfo } from '../../../store/apis/employee/types';
 
 const ByEmployees = () => {
   const [startDate, setStartDate] = useState<string | null>(null);
@@ -31,7 +32,20 @@ const ByEmployees = () => {
     projectIds: '',
     operationIds: '',
   });
-  const onlyEmployeesIds = employees ? selectOnlyIds(employees) : [];
+
+  const { sortedEmployees, onlyEmployeesIds } = useMemo((): {
+    sortedEmployees: EmployeesShortInfo[] | undefined;
+    onlyEmployeesIds: number[];
+  } => {
+    const sorted = employees
+      ? [...employees].sort((a, b) => a.firstName.localeCompare(b.firstName))
+      : undefined;
+
+    return {
+      sortedEmployees: sorted,
+      onlyEmployeesIds: sorted ? selectOnlyIds(sorted) : [],
+    };
+  }, [employees]);
 
   const form = useForm<EmployeeReportFormValues>({
     initialValues: {
@@ -46,7 +60,7 @@ const ByEmployees = () => {
     },
   });
 
-  useSetDefaultValue(form, employees);
+  useSetDefaultValue(form, sortedEmployees);
 
   const {
     data: reportsByEmployees,
@@ -103,8 +117,8 @@ const ByEmployees = () => {
       />
 
       <Stack spacing={40}>
-        {employees ? (
-          <FormBody form={form} employees={employees} />
+        {sortedEmployees ? (
+          <FormBody form={form} employees={sortedEmployees} />
         ) : (
           <Loader size={80} isAbsoluteCentered />
         )}

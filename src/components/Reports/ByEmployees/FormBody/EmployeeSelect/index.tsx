@@ -10,11 +10,11 @@ import {
   ErrorMessage,
   SelectArrow,
   SelectDisplayInput,
-  SelectLabel,
   SelectWrapper,
 } from '../../../../styles';
 import {
   SelectAllTitle,
+  SelectLabel,
   SelectedEmployee,
   useEmployeeSelectMenuStyles,
 } from './styles';

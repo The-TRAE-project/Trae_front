@@ -24,6 +24,16 @@ export const useEmployeeSelectMenuStyles = createStyles(() => ({
   },
 }));
 
+export const SelectLabel = styled.p`
+  font-size: 24px;
+  font-weight: 400;
+  color: var(--white);
+  padding-left: 14px;
+
+  line-height: 28px;
+  margin-bottom: 13;
+`;
+
 export const SelectAllTitle = styled.h6`
   font-family: var(--font-roboto);
   font-weight: 500;

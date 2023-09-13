@@ -28,6 +28,13 @@ export const EmployeeReportSchema = z
     {
       message: 'Пожалуйста выберите промежуток больше недели',
     }
+  )
+  .refine(
+    (schema) =>
+      dayjs(schema.startOfPeriod).diff(dayjs(schema.endOfPeriod), 'd') >= -365,
+    {
+      message: 'Пожалуйста выберите промежуток меньше года',
+    }
   );
 
 export type EmployeeReportFormValues = z.infer<typeof EmployeeReportSchema>;
