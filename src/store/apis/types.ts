@@ -13,3 +13,11 @@ export interface FilterValues {
   isActive?: string;
   typeWorkId?: string;
 }
+
+export interface Token {
+  UUID: string;
+  exp: number;
+  iss: string;
+  sub: string;
+  username: string;
+}

@@ -16,6 +16,7 @@ import { clearWorkTypeState } from '../slices/workType';
 import { clearProjectState } from '../slices/project';
 import { TokenTypes } from '../../helpers/hooks/useCookies';
 import instance from '../../config/axiosConfig';
+import { isRefreshTokenNearExpiration } from '../../helpers/isRefreshTokenNearExpiration';
 
 const baseQuery = fetchBaseQuery({
   baseUrl: import.meta.env.PROD
@@ -39,20 +40,30 @@ const baseQueryWithReAuth = async (
   extraOptions: object
 ) => {
   let result = await baseQuery(args, api, extraOptions);
+  const refreshToken = Cookies.get(TokenTypes.REFRESH_TOKEN);
 
-  // console.log('BASE_QUERY:', result, args, api, extraOptions);
+  console.log('BASE_QUERY:', result, args, api, extraOptions, new Date());
 
   if (result?.error?.status === 401) {
-    const refreshToken = Cookies.get(TokenTypes.REFRESH_TOKEN);
-
-    const refreshResponse = await instance.post(`/auth/token`, {
+    const accessResponse = await instance.post(`/auth/token`, {
       refreshToken,
     });
 
-    if (refreshResponse?.data) {
-      const { accessToken } = refreshResponse.data as TokenValue;
-      api.dispatch(setCredentials(refreshResponse.data as TokenValue));
+    if (accessResponse?.data) {
+      const { accessToken } = accessResponse.data as TokenValue;
+      api.dispatch(setCredentials(accessResponse.data as TokenValue));
       Cookies.set(TokenTypes.ACCESS_TOKEN, accessToken);
+
+      if (isRefreshTokenNearExpiration()) {
+        const refreshResponse = await instance.post(`/auth/refresh`, {
+          refreshToken,
+        });
+
+        const { refreshToken: newRefreshToken } =
+          refreshResponse.data as TokenValue;
+        api.dispatch(setCredentials(refreshResponse.data as TokenValue));
+        Cookies.set(TokenTypes.REFRESH_TOKEN, newRefreshToken);
+      }
 
       result = await baseQuery(args, api, extraOptions);
     } else {
