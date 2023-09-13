@@ -9,7 +9,8 @@ import { Button, Title } from './styles';
 interface Props {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: () => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  onSubmit: (() => void) | ((values: any) => void);
   onCallAtTheEnd?: () => void;
   isSuccess: boolean;
   isLoading: boolean;

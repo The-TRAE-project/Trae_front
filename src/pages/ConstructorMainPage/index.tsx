@@ -27,7 +27,7 @@ const ConstructorMainPage = () => {
             <Image src={traeLogo} alt="logo" />
           </TraeLogoImageWrapper>
 
-          <Stack spacing={40}>
+          <Stack h={400} justify="center">
             <Button
               title="Добавить проект"
               onClick={() => navigate('/construcor/create-project')}

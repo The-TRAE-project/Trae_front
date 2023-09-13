@@ -37,7 +37,10 @@ const Layout = ({ children }: Props) => {
       header = <Header />;
       break;
     case Roles.CONSTRUCTOR:
-      header = <ConstructorHeader />;
+      header =
+        location.pathname === Paths.CONSTRUCTOR_MAIN_PAGE ? (
+          <ConstructorHeader />
+        ) : null;
       break;
     default:
       header = '';

@@ -20,6 +20,7 @@ import { FormWrapper, TwoColumnGrid } from '../../styles';
 import StageSelect from './StageSelect';
 import { useAppSelector } from '../../../helpers/hooks/useAppSelector';
 import { Roles } from '../../../store/slices/auth/types';
+import ConfirmModal from '../../ConfirmModal';
 
 const CreateForm = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -64,20 +65,39 @@ const CreateForm = () => {
     backPath = Paths.CONSTRUCTOR_MAIN_PAGE;
   }
 
+  const navigateToBack = () => navigate(backPath);
+
+  const confirmTitle = `Добавить проект №${form.values.number}?`;
+
+  const informTitle = `Проект №${form.values.number} успешно добавлен`;
+
   return (
     <>
-      <InformModal
-        isOpen={isOpen}
-        onClose={closeModal}
-        title={`Проект №${form.values.number} успешно добавлен`}
-        backPath={backPath}
-      />
-
+      {permission === Roles.ADMIN ? (
+        <InformModal
+          isOpen={isOpen}
+          onClose={closeModal}
+          title={`Проект №${form.values.number} успешно добавлен`}
+          backPath={backPath}
+        />
+      ) : (
+        <ConfirmModal
+          isOpen={isOpen}
+          onClose={() => setIsOpen(false)}
+          onSubmit={handleSubmit}
+          onCallAtTheEnd={navigateToBack}
+          isSuccess={isSuccess}
+          isLoading={isLoading}
+          confirmTitle={confirmTitle}
+          informTitle={informTitle}
+          onBack={navigateToBack}
+        />
+      )}
       <FormWrapper onSubmit={form.onSubmit(handleSubmit)}>
         <FormHeader
           isSubmitBtnDisabled={isLoading}
           isSubmitBtnLoading={isLoading}
-          onBack={() => navigate(backPath)}
+          onBack={navigateToBack}
         />
 
         <TwoColumnGrid>
