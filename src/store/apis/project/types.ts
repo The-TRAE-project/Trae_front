@@ -1,5 +1,6 @@
 import { z } from 'zod';
 
+import dayjs from 'dayjs';
 import { RegEx } from '../../../constants/regex';
 import { Roles } from '../../slices/auth/types';
 
@@ -52,10 +53,14 @@ export const CreateProjectSchema = z.object({
   operations: OperationSchema.array().min(1, {
     message: 'Пожалуйста, выберите тип работ',
   }),
-  plannedEndDate: z.date({
-    required_error: 'Пожалуйста, выберите дату',
-    invalid_type_error: 'Не правильный формат даты',
-  }),
+  plannedEndDate: z
+    .date({
+      required_error: 'Пожалуйста, выберите дату',
+      invalid_type_error: 'Не правильный формат даты',
+    })
+    .refine((plannedEndDate) => dayjs(plannedEndDate).diff(dayjs()) >= 0, {
+      message: 'Пожалуйста выберите дату в будущем',
+    }),
 });
 
 export type CreateProjectFormValues = z.infer<typeof CreateProjectSchema>;
