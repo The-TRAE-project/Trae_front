@@ -13,7 +13,6 @@ interface Props {
   title?: string;
 }
 
-// TODO add styles for button variant
 const Menu = ({
   onClick,
   closeOnItemClick = false,

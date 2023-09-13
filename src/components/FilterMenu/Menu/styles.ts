@@ -5,7 +5,7 @@ export const useMenuStyles = createStyles(() => ({
     left: '0px !important',
     width: '369px !important',
     maxWidth: 369,
-    maxHeight: 528,
+    maxHeight: 700,
     border: 'none',
     background: 'var(--white)',
     padding: 'var(--menu-ptb) var(--menu-plr)',
