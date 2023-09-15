@@ -24,6 +24,7 @@ import { LocalStorage } from '../../../constants/localStorage';
 
 const DeleteForm = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isProjectDeleted, setIsProjectDeleted] = useState<boolean>(false);
 
   const { id } = useParams();
   const navigate = useNavigate();
@@ -36,7 +37,9 @@ const DeleteForm = () => {
     isLoading: isGetLoading,
     error,
     isError,
-  } = useGetProjectByIdQuery(Number(id as string));
+  } = useGetProjectByIdQuery(Number(id as string), {
+    skip: isProjectDeleted,
+  });
   const [deleteProject, { isLoading: isDeleteLoading, isSuccess }] =
     useDeleteProjectMutation();
 
@@ -53,9 +56,7 @@ const DeleteForm = () => {
 
   useDisplayError(error, isError);
 
-  const handleUpdateProjectEndDate = async (
-    values: ProjectDeleteFormValues
-  ) => {
+  const handleDeleteProject = async (values: ProjectDeleteFormValues) => {
     try {
       if (!project) return;
 
@@ -68,6 +69,7 @@ const DeleteForm = () => {
       }
 
       await deleteProject(project.id).unwrap();
+      setIsProjectDeleted(true);
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
@@ -94,7 +96,7 @@ const DeleteForm = () => {
         onBack={navigateBack}
       />
 
-      <FormStack onSubmit={form.onSubmit(handleUpdateProjectEndDate)}>
+      <FormStack onSubmit={form.onSubmit(handleDeleteProject)}>
         {!isGetLoading && !!project ? (
           <>
             <FormHeader

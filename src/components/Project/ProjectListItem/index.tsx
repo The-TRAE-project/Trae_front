@@ -34,6 +34,10 @@ const ProjectListItem = ({
     }
   };
 
+  if (projects !== undefined && projects.content.length === 0) {
+    setPage(0);
+  }
+
   return (
     <Wrapper>
       {!isLoading && !!projects ? (

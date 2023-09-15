@@ -66,7 +66,6 @@ const UpdateEndDateForm = () => {
   ) => {
     try {
       if (!project) return;
-      // TODO: MUST probably delete addition of 24 hours
       const newDate = dayjs(
         values.newPlannedAndContractEndDate?.getTime() as number
       )
