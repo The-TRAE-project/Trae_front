@@ -315,6 +315,7 @@ export const useModalStyles = createStyles(() => ({
 
   header: {
     marginBottom: 4,
+    position: 'relative',
   },
 
   title: {
