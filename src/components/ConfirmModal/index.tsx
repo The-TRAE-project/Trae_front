@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, ReactNode } from 'react';
 import { Group, Stack } from '@mantine/core';
 
 import Loader from '../Loader';
@@ -17,6 +17,7 @@ interface Props {
   confirmTitle: string;
   informTitle: string;
   onBack: () => void;
+  details?: ReactNode;
 }
 
 const ConfirmModal = ({
@@ -29,6 +30,7 @@ const ConfirmModal = ({
   confirmTitle,
   informTitle,
   onBack,
+  details,
 }: Props) => {
   const [isInform, setIsInform] = useState<boolean>(false);
 
@@ -44,11 +46,11 @@ const ConfirmModal = ({
     setIsInform(false);
     onCallAtTheEnd?.();
   };
-
   return (
     <>
       <Modal isOpen={isOpen} onClose={onClose} onBack={onBack}>
         <Stack spacing={40} align="center">
+          {details || null}
           <Title dangerouslySetInnerHTML={{ __html: confirmTitle }} />
           <Group spacing={40}>
             <Button
