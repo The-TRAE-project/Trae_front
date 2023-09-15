@@ -22,6 +22,7 @@ export interface MenuItemData {
 }
 
 interface Props {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   form: UseFormReturnType<any, (values: any) => any>;
   items: MenuItemData[];
   label: string;
@@ -52,7 +53,7 @@ function DropdownSelect({
   } = useDropdownSelectMenuStyles();
 
   const ids = form.values[id];
-  const isAllSelected = ids ? ids.length === items.length : false;
+  const isAllSelected = ids && items ? ids.length === items.length : false;
 
   const handleSetItemIds = (menuItem: MenuItemData) => {
     form.setFieldValue(id, []);
@@ -78,12 +79,10 @@ function DropdownSelect({
   };
 
   const handleSelectAll = () => {
-    form.setFieldValue(
-      id,
-      items.map((i) => i.id)
-    );
-    stateCallback(items.map((i) => i.id));
+    form.setFieldValue(id, items ? items.map((i) => i.id) : []);
+    stateCallback(items ? items.map((i) => i.id) : []);
   };
+  console.log(ids, items, selectedMenuItems);
 
   return (
     <SelectWrapper>
