@@ -47,7 +47,9 @@ export const useSelectMenuStyles = createStyles(() => ({
     maxWidth: 620,
     minHeight: 438,
     padding: '30px 25px',
-    top: '130px !important',
+    position: 'relative',
+    top: '15px !important',
+    left: '0px !important',
   },
 
   divider: {
