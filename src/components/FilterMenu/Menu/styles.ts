@@ -1,4 +1,5 @@
 import { createStyles } from '@mantine/core';
+import styled from 'styled-components';
 
 export const useMenuStyles = createStyles(() => ({
   dropdown: {
@@ -30,3 +31,11 @@ export const useMenuStyles = createStyles(() => ({
     lineHeight: 'var(--fs-24-lh)',
   },
 }));
+
+export const ButtonTitle = styled.span`
+  font-family: var(--font-roboto);
+  font-size: 28px;
+  font-style: 'normal';
+  font-weight: 500;
+  line-height: 'normal';
+`;

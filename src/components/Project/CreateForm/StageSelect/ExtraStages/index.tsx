@@ -130,6 +130,7 @@ const ExtraStages = ({
           label="Типы работ"
           placeholder="Типы работ"
           rightSection={<IoIosArrowUp size={24} />}
+          styles={{ rightSection: { pointerEvents: 'none' } }}
           classNames={{
             label,
             input,

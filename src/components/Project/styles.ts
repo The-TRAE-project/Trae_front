@@ -119,6 +119,9 @@ export const useExtraStageInputStyles = createStyles(() => ({
     fontWeight: 400,
     lineHeight: '23px',
     color: 'var(--black)',
+    ':focus + div': {
+      transform: 'rotate(0deg)',
+    },
   },
 
   error: {
