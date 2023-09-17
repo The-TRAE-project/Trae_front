@@ -31,8 +31,6 @@ export function FormBody({ form, employees, projects, operations }: Props) {
     ],
     []
   );
-  const test = form.values;
-  console.log(test);
 
   const selectEmployees = useMemo(
     () =>
