@@ -93,7 +93,7 @@ const ByProjects = () => {
 
         {startDate &&
           endDate &&
-          !form.isValid() &&
+          form.isValid() &&
           (!isGetLoading && !isFetching && isReportExist ? (
             <ReportTable
               sortType={sortType}
