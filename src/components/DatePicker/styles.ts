@@ -34,10 +34,7 @@ export const useDateInputStyles = createStyles(() => ({
     },
 
     ':disabled': {
-      background: `linear-gradient(
-            268.17deg,
-            var(--white-gradient) 0%,
-            var(--black-gradient) 104.24%); !important`,
+      background: 'var(--gray-shadow)',
       opacity: '1',
       color: 'rgba(0,0,0,0) !important',
 

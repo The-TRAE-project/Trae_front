@@ -12,7 +12,7 @@ export const useDropdownSelectMenuStyles = createStyles(() => ({
     overflow: 'auto',
     position: 'absolute',
     left: '0px !important',
-    top: '120x !important',
+    top: '120px !important',
   },
 
   item: {

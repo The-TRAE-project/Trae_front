@@ -96,12 +96,6 @@ export const WrapperGradientGreen = styled.section.attrs(
   })
 )`
   min-height: ${(props) => props.$size};
-  background: linear-gradient(
-    264.53deg,
-    var(--gradient-green1) 2.46%,
-    var(--gradient-green2) 70.65%
-  );
-  overflow: auto;
 
   @media ${({ theme }) => theme.bp.bpLarge} {
     padding: 108px 0 40px;
@@ -112,19 +106,19 @@ export const WrapperGradientGreen = styled.section.attrs(
   }
 
   @media (min-width: 1600px) {
-    padding: 120px 0 55px;
+    padding: 120px 0 50px;
   }
 
   @media (min-width: 1750px) {
-    padding: 130px 0 65px;
+    padding: 130px 0 55px;
   }
 
   @media (min-width: 1850px) {
-    padding: 140px 0 75px;
+    padding: 140px 0 60px;
   }
 
   @media ${({ theme }) => theme.bp.bpXlarge} {
-    padding: 148px 0 80px;
+    padding: 148px 0 65px;
   }
 `;
 
@@ -447,13 +441,8 @@ export const SelectDisplayInput = styled.div<SelectDisplayInputProps>`
   padding: 11px 84px 11px 22px;
   border-radius: var(--border-radius);
   background: ${(props) =>
-      props.$disabled
-        ? `linear-gradient(
-            268.17deg,
-            var(--white-gradient) 0%,
-            var(--black-gradient) 104.24%);`
-        : 'var(--white);'}
-    input {
+    props.$disabled ? 'var(--gray-shadow)' : 'var(--white);'};
+  input {
     display: none;
   }
 
@@ -475,12 +464,14 @@ export const SelectDisplayInput = styled.div<SelectDisplayInputProps>`
 
 type SelectArrowProps = {
   $isOpen?: boolean;
+  $isDisabled?: boolean;
 };
 
 export const SelectArrow = styled(IoIosArrowUp)`
   position: absolute;
   right: 29px;
   transform: ${(props: SelectArrowProps) =>
-    props.$isOpen ? 'rotate(180deg)' : 'rotate(0)'};
-  color: var(--white-black);
+    props.$isOpen && !props.$isDisabled ? 'rotate(0)' : 'rotate(180deg)'};
+  color: ${(props: SelectArrowProps) =>
+    props.$isDisabled ? 'var(--white)' : 'var(--white-black)'};
 `;

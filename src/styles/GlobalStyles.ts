@@ -18,8 +18,15 @@ const GlobalStyles = createGlobalStyle`
   }
 
   body {
-    margin: 0;
     padding: 0;
+    background: linear-gradient(
+      264.53deg,
+      var(--gradient-green1) 2.46%,
+      var(--gradient-green2) 70.65%
+    );
+
+    margin: 0 calc(-1 * (100vw - 100%)) 0 0 !important;
+    overflow-x: hidden;
   }
 
   h1,

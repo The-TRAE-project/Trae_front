@@ -10,11 +10,11 @@ interface Props {
 
 export const CheckboxInput = ({ checked, onChange }: Props) => {
   const {
-    classes: { input, icon, body },
+    classes: { input, icon, body, inner },
   } = useCheckboxStyles();
   return (
     <Checkbox
-      classNames={{ input, icon, body }}
+      classNames={{ input, icon, body, inner }}
       icon={Check}
       checked={checked}
       onChange={onChange}
