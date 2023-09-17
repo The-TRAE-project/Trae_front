@@ -27,8 +27,6 @@ interface Props {
   items: MenuItemData[];
   label: string;
   id: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  stateCallback: React.Dispatch<React.SetStateAction<any | null>>;
   error?: React.ReactNode;
   isRadio?: boolean;
   isDisabled?: boolean;
@@ -42,7 +40,6 @@ function DropdownSelect({
   error,
   isRadio,
   isDisabled,
-  stateCallback,
 }: Props) {
   const [opened, setOpened] = useState<boolean>(false);
   const [selectedMenuItems, setSelectedMenuItems] = useState<MenuItemData[]>(
@@ -66,7 +63,6 @@ function DropdownSelect({
         id,
         newMenuItem.map((i) => i.id)
       );
-      stateCallback(newMenuItem.map((i) => i.id));
     } else if (selectedMenuItems.includes(menuItem)) {
       const filteredMenuItems =
         selectedMenuItems?.filter((it) => it.id !== menuItem.id) || [];
@@ -75,13 +71,11 @@ function DropdownSelect({
         filteredMenuItems.map((i) => i.id)
       );
       setSelectedMenuItems(filteredMenuItems);
-      stateCallback(filteredMenuItems.map((i) => i.id));
     }
   };
 
   const handleSelectAll = () => {
     form.setFieldValue(id, items ? items.map((i) => i.id) : []);
-    stateCallback(items ? items.map((i) => i.id) : []);
   };
 
   return (
@@ -113,7 +107,7 @@ function DropdownSelect({
                 </SelectedMenuItem>
               ))
             )}
-            <SelectArrow $isOpen={opened} size={34} />
+            <SelectArrow $isOpen={opened} size={34} $isDisabled={isDisabled} />
           </SelectDisplayInput>
         </Menu.Target>
         {error && <ErrorMessage>{error}</ErrorMessage>}

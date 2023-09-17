@@ -29,11 +29,26 @@ function chooseParameterValue(
   valuesOfSecondParameter: number[] | null,
   valuesOfThirdParameter: number[] | null
 ) {
-  if (firstParameter !== null && firstParameter[0] === currentParameter)
-    return `${query}${valueOfFirstParameter?.at(0)}`;
-  if (secondParameter !== null && secondParameter[0] === currentParameter)
-    return `${query}${valuesOfSecondParameter?.join(',')}`;
-  if (thirdParameter !== null && thirdParameter[0] === currentParameter)
+  if (
+    firstParameter !== null &&
+    firstParameter[0] === currentParameter &&
+    valueOfFirstParameter &&
+    valueOfFirstParameter.length > 0
+  )
+    return `${query}${valueOfFirstParameter.join(',')}`;
+  if (
+    secondParameter !== null &&
+    secondParameter[0] === currentParameter &&
+    valuesOfSecondParameter &&
+    valuesOfSecondParameter.length > 0
+  )
+    return `${query}${valuesOfSecondParameter.join(',')}`;
+  if (
+    thirdParameter !== null &&
+    thirdParameter[0] === currentParameter &&
+    valuesOfThirdParameter &&
+    valuesOfThirdParameter.length > 0
+  )
     return `${query}${valuesOfThirdParameter?.join(',')}`;
   return '';
 }
@@ -41,19 +56,6 @@ function chooseParameterValue(
 export function ByDeadlines() {
   const [queryParams, setQueryParams] =
     useState<DeadlinesReportFormValues | null>(null);
-  const [firstParameter, setFirstParameter] = useState<string[] | null>(null);
-  const [secondParameter, setSecondParameter] = useState<string[] | null>(null);
-  const [thirdParameter, setThirdParameter] = useState<string[] | null>(null);
-  const [valueOfFirstParameter, setValueOfFirstParameter] = useState<
-    number[] | null
-  >(null);
-  const [valuesOfSecondParameter, setValuesOfSecondParameter] = useState<
-    number[] | null
-  >(null);
-  const [valuesOfThirdParameter, setValuesOfThirdParameter] = useState<
-    number[] | null
-  >(null);
-
   const form = useForm<DeadlinesReportFormValues>({
     initialValues: {
       startOfPeriod: new Date(),
@@ -62,7 +64,7 @@ export function ByDeadlines() {
       firstParameter: [''],
       secondParameter: [''],
       thirdParameter: [''],
-      valueOfFirstParameter: [0],
+      valueOfFirstParameter: [],
       valuesOfSecondParameter: [],
       valuesOfThirdParameter: [],
     },
@@ -77,22 +79,22 @@ export function ByDeadlines() {
     projectIds: chooseParameterValue(
       '?projectIds=',
       'PROJECT',
-      firstParameter,
-      secondParameter,
-      thirdParameter,
-      valueOfFirstParameter,
-      valuesOfSecondParameter,
-      valuesOfThirdParameter
+      form.values.firstParameter,
+      form.values.secondParameter,
+      form.values.thirdParameter,
+      form.values.valueOfFirstParameter,
+      form.values.valuesOfSecondParameter,
+      form.values.valuesOfThirdParameter
     ),
     operationIds: chooseParameterValue(
       '?operationIds=',
       'OPERATION',
-      firstParameter,
-      secondParameter,
-      thirdParameter,
-      valueOfFirstParameter,
-      valuesOfSecondParameter,
-      valuesOfThirdParameter
+      form.values.firstParameter,
+      form.values.secondParameter,
+      form.values.thirdParameter,
+      form.values.valueOfFirstParameter,
+      form.values.valuesOfSecondParameter,
+      form.values.valuesOfThirdParameter
     ),
   }).data;
 
@@ -100,22 +102,22 @@ export function ByDeadlines() {
     employeeIds: chooseParameterValue(
       '?employeeIds=',
       'EMPLOYEE',
-      firstParameter,
-      secondParameter,
-      thirdParameter,
-      valueOfFirstParameter,
-      valuesOfSecondParameter,
-      valuesOfThirdParameter
+      form.values.firstParameter,
+      form.values.secondParameter,
+      form.values.thirdParameter,
+      form.values.valueOfFirstParameter,
+      form.values.valuesOfSecondParameter,
+      form.values.valuesOfThirdParameter
     ),
     operationIds: chooseParameterValue(
       '?operationIds=',
       'OPERATION',
-      firstParameter,
-      secondParameter,
-      thirdParameter,
-      valueOfFirstParameter,
-      valuesOfSecondParameter,
-      valuesOfThirdParameter
+      form.values.firstParameter,
+      form.values.secondParameter,
+      form.values.thirdParameter,
+      form.values.valueOfFirstParameter,
+      form.values.valuesOfSecondParameter,
+      form.values.valuesOfThirdParameter
     ),
     startOfPeriod: '',
     endOfPeriod: '',
@@ -125,22 +127,22 @@ export function ByDeadlines() {
     employeeIds: chooseParameterValue(
       '?employeeIds=',
       'EMPLOYEE',
-      firstParameter,
-      secondParameter,
-      thirdParameter,
-      valueOfFirstParameter,
-      valuesOfSecondParameter,
-      valuesOfThirdParameter
+      form.values.firstParameter,
+      form.values.secondParameter,
+      form.values.thirdParameter,
+      form.values.valueOfFirstParameter,
+      form.values.valuesOfSecondParameter,
+      form.values.valuesOfThirdParameter
     ),
     projectIds: chooseParameterValue(
       '?projectIds=',
       'PROJECT',
-      firstParameter,
-      secondParameter,
-      thirdParameter,
-      valueOfFirstParameter,
-      valuesOfSecondParameter,
-      valuesOfThirdParameter
+      form.values.firstParameter,
+      form.values.secondParameter,
+      form.values.thirdParameter,
+      form.values.valueOfFirstParameter,
+      form.values.valuesOfSecondParameter,
+      form.values.valuesOfThirdParameter
     ),
     startOfPeriod: '',
     endOfPeriod: '',
@@ -162,33 +164,34 @@ export function ByDeadlines() {
     isFetching,
   } = useGetDeadlinesReportsQuery(
     {
-      firstParameter: queryParams ? queryParams?.firstParameter?.at(0) : '',
-      secondParameter: queryParams ? queryParams?.secondParameter?.at(0) : '',
-      thirdParameter: queryParams ? queryParams?.thirdParameter?.at(0) : '',
+      firstParameter: queryParams ? queryParams.firstParameter[0] : '',
+      secondParameter: queryParams ? queryParams.secondParameter[0] : '',
+      thirdParameter: queryParams ? queryParams.thirdParameter[0] : '',
       valueOfFirstParameter: queryParams
-        ? queryParams?.valueOfFirstParameter?.at(0)
+        ? queryParams.valueOfFirstParameter[0]
         : 0,
       valuesOfSecondParameter: queryParams
-        ? queryParams?.valuesOfSecondParameter
+        ? queryParams.valuesOfSecondParameter
         : [0],
       valuesOfThirdParameter: queryParams
-        ? queryParams?.valuesOfThirdParameter
+        ? queryParams.valuesOfThirdParameter
         : [0],
     },
     {
       skip: queryParams === null,
     }
   );
-  // console.log(
-  //   'REPORT_BY_DEDLINES: ',
-  //   isGetLoading || isFetching,
-  //   reportsByDeadlines,
-  //   queryParams
-  // );
+  console.log(
+    'REPORT_BY_DEDLINES: ',
+    isGetLoading || isFetching,
+    reportsByDeadlines,
+    queryParams
+  );
 
   const { isLoading: isExcelExportLoading, exportToExcel } = useExportToExcel();
 
   const handleSubmit = (values: DeadlinesReportFormValues) => {
+    console.log('SUBMIT VALUES ', values);
     setQueryParams(values);
   };
 
@@ -199,6 +202,9 @@ export function ByDeadlines() {
   };
 
   const isReportExist = !!reportsByDeadlines;
+  const firstParameter = form.values.firstParameter[0];
+  const secondParameter = form.values.secondParameter[0];
+  const thirdParameter = form.values.thirdParameter[0];
 
   return (
     <FormWrapper onSubmit={form.onSubmit(handleSubmit)}>
@@ -218,15 +224,6 @@ export function ByDeadlines() {
             employees={employees}
             projects={projects}
             operations={operations}
-            firstParameter={firstParameter}
-            secondParameter={secondParameter}
-            thirdParameter={thirdParameter}
-            setFirstParameter={setFirstParameter}
-            setSecondParameter={setSecondParameter}
-            setThirdParameter={setThirdParameter}
-            setValueOfFirstParameter={setValueOfFirstParameter}
-            setValuesOfSecondParameter={setValuesOfSecondParameter}
-            setValuesOfThirdParameter={setValuesOfThirdParameter}
           />
         ) : (
           <Loader size={80} isAbsoluteCentered />
@@ -235,12 +232,13 @@ export function ByDeadlines() {
           !!firstParameter &&
           !!secondParameter &&
           !!thirdParameter &&
+          form.isValid() &&
           (!isGetLoading && !isFetching && !!reportsByDeadlines ? (
             <ReportTable
               reportsByDeadlines={reportsByDeadlines}
-              firstParameter={firstParameter[0]}
-              secondParameter={secondParameter[0]}
-              thirdParameter={thirdParameter[0]}
+              firstParameter={firstParameter}
+              secondParameter={secondParameter}
+              thirdParameter={thirdParameter}
             />
           ) : (
             <Loader size={80} isAbsoluteCentered />

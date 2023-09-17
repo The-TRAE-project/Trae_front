@@ -1,5 +1,5 @@
 import { UseFormReturnType } from '@mantine/form';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import DropdownSelect, { MenuItemData } from '../../../DropdownSelect';
 import {
   OperationsShortInfo,
@@ -8,44 +8,21 @@ import {
 import { ThreeColumnGrid } from '../../../styles';
 import { EmployeesShortInfo } from '../../../../store/apis/employee/types';
 import DatePicker from '../../../DatePicker';
+import { CheckboxInput } from '../../../CheckboxInput';
+import { DeadlinesReportFormValues } from '../../../../store/apis/reports/types';
 
-interface Props<T> {
-  form: UseFormReturnType<T, (values: T) => T>;
+interface Props {
+  form: UseFormReturnType<
+    DeadlinesReportFormValues,
+    (values: DeadlinesReportFormValues) => DeadlinesReportFormValues
+  >;
   employees: EmployeesShortInfo[] | undefined;
   projects: ProjectsShortInfo[] | undefined;
   operations: OperationsShortInfo[] | undefined;
-  firstParameter: string[] | null;
-  secondParameter: string[] | null;
-  thirdParameter: string[] | null;
-  setFirstParameter: React.Dispatch<React.SetStateAction<string[] | null>>;
-  setSecondParameter: React.Dispatch<React.SetStateAction<string[] | null>>;
-  setThirdParameter: React.Dispatch<React.SetStateAction<string[] | null>>;
-  setValueOfFirstParameter: React.Dispatch<
-    React.SetStateAction<number[] | null>
-  >;
-  setValuesOfSecondParameter: React.Dispatch<
-    React.SetStateAction<number[] | null>
-  >;
-  setValuesOfThirdParameter: React.Dispatch<
-    React.SetStateAction<number[] | null>
-  >;
 }
 
-export function FormBody<T>({
-  form,
-  employees,
-  projects,
-  operations,
-  firstParameter,
-  secondParameter,
-  thirdParameter,
-  setFirstParameter,
-  setSecondParameter,
-  setThirdParameter,
-  setValueOfFirstParameter,
-  setValuesOfSecondParameter,
-  setValuesOfThirdParameter,
-}: Props<T>) {
+export function FormBody({ form, employees, projects, operations }: Props) {
+  const [isDatesActive, setIsDatesActive] = useState(false);
   const ParametersChoices = useMemo(
     () => [
       { id: 'EMPLOYEE', value: 'Сотрудник' },
@@ -54,6 +31,8 @@ export function FormBody<T>({
     ],
     []
   );
+  const test = form.values;
+  console.log(test);
 
   const selectEmployees = useMemo(
     () =>
@@ -96,95 +75,112 @@ export function FormBody<T>({
     ];
   }, [selectEmployees, selectOperations, selectProjects]);
 
-  // console.log('SELECT_OPERATIONS_FINAL: ', operations);
-  // console.log(
-  //   'PARAMETERS CHOOSEN: ',
-  //   firstParameter,
-  //   secondParameter,
-  //   thirdParameter
-  // );
+  const labels = [
+    ParametersChoices.find((item) => item.id === form.values.firstParameter[0])
+      ?.value || 'Критерий',
+    ParametersChoices.find((item) => item.id === form.values.secondParameter[0])
+      ?.value || 'Критерий',
+    ParametersChoices.find((item) => item.id === form.values.thirdParameter[0])
+      ?.value || 'Критерий',
+  ];
   // TODO: Order of choosing parameters
   return (
     <ThreeColumnGrid>
       <DatePicker
         {...form.getInputProps('startOfPeriod')}
         title="Дата начало"
+        disabled={!isDatesActive}
       />
       <DatePicker
         {...form.getInputProps('endOfPeriod')}
         title="Дата окончания"
+        disabled={!isDatesActive}
       />
 
-      <div>Сделать чекбокс</div>
+      <CheckboxInput
+        checked={isDatesActive}
+        onChange={(event) => setIsDatesActive(event.currentTarget.checked)}
+      />
       <DropdownSelect
         form={form}
         label="Критерий 1"
         items={ParametersChoices}
         error={form.errors.firstParameter}
         id="firstParameter"
-        stateCallback={setFirstParameter}
       />
       <DropdownSelect
-        isDisabled={firstParameter === null}
+        isDisabled={
+          form.values.firstParameter[0] === '' ||
+          form.values.valueOfFirstParameter === null ||
+          form.values.valueOfFirstParameter.length === 0
+        }
         form={form}
         label="Критерий 2"
-        items={ParametersChoices}
+        items={ParametersChoices.filter(
+          (item) => item.id !== form.values.firstParameter[0]
+        )}
         error={form.errors.secondParameter}
         id="secondParameter"
-        stateCallback={setSecondParameter}
       />
       <DropdownSelect
-        isDisabled={secondParameter === null}
+        isDisabled={
+          form.values.secondParameter[0] === '' ||
+          form.values.valuesOfSecondParameter === null ||
+          form.values.valuesOfSecondParameter?.length === 0
+        }
         form={form}
         label="Критерий 3"
-        items={ParametersChoices}
+        items={ParametersChoices.filter(
+          (item) =>
+            item.id !== form.values.firstParameter[0] &&
+            item.id !== form.values.secondParameter[0]
+        )}
         error={form.errors.thirdParameter}
         id="thirdParameter"
-        stateCallback={setThirdParameter}
       />
 
       <DropdownSelect
-        isDisabled={firstParameter === null}
+        isDisabled={form.values.firstParameter[0] === ''}
         form={form}
-        label="Критерий"
+        label={labels[0]}
         items={
-          firstParameter
-            ? (selectOrder.find((item) => item.id === firstParameter[0])
-                ?.value as MenuItemData[])
+          form.values.firstParameter[0] !== ''
+            ? (selectOrder.find(
+                (item) => item.id === form.values.firstParameter[0]
+              )?.value as MenuItemData[])
             : []
         }
         error={form.errors.valueOfFirstParameter}
         id="valueOfFirstParameter"
-        stateCallback={setValueOfFirstParameter}
       />
 
       <DropdownSelect
-        isDisabled={secondParameter === null}
+        isDisabled={form.values.secondParameter[0] === ''}
         form={form}
-        label="Критерий"
+        label={labels[1]}
         items={
-          secondParameter
-            ? (selectOrder.find((item) => item.id === secondParameter[0])
-                ?.value as MenuItemData[])
+          form.values.secondParameter[0] !== ''
+            ? (selectOrder.find(
+                (item) => item.id === form.values.secondParameter[0]
+              )?.value as MenuItemData[])
             : []
         }
         error={form.errors.valuesOfSecondParameter}
         id="valuesOfSecondParameter"
-        stateCallback={setValuesOfSecondParameter}
       />
       <DropdownSelect
-        isDisabled={thirdParameter === null}
+        isDisabled={form.values.thirdParameter[0] === ''}
         form={form}
-        label="Критерий"
+        label={labels[2]}
         items={
-          thirdParameter
-            ? (selectOrder.find((item) => item.id === thirdParameter[0])
-                ?.value as MenuItemData[])
+          form.values.thirdParameter[0] !== ''
+            ? (selectOrder.find(
+                (item) => item.id === form.values.thirdParameter[0]
+              )?.value as MenuItemData[])
             : []
         }
         error={form.errors.valuesOfThirdParameter}
         id="valuesOfThirdParameter"
-        stateCallback={setValuesOfThirdParameter}
       />
     </ThreeColumnGrid>
   );
