@@ -73,7 +73,7 @@ const ByEmployees = () => {
       employeeIds: employeeIds?.length ? `&employeeIds=${employeeIds}` : '',
     },
     {
-      skip: !startDate && !endDate && !employeeIds?.length,
+      skip: !startDate && !endDate && !employeeIds?.length && !form.isValid(),
     }
   );
 
@@ -125,6 +125,7 @@ const ByEmployees = () => {
         {startDate &&
           endDate &&
           employeeIds?.length &&
+          form.isValid() &&
           (!isGetLoading && !isFetching && !!reportsByEmployees ? (
             <ReportTable
               dateStart={reportsByEmployees.startPeriod}

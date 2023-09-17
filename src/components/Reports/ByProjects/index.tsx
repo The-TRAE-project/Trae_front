@@ -29,20 +29,6 @@ const ByProjects = () => {
     },
   ]);
 
-  const {
-    data: reportsByProjects,
-    isLoading: isGetLoading,
-    isFetching,
-  } = useGetProjectsReportsQuery(
-    {
-      startOfPeriod: startDate ? `?startOfPeriod=${startDate}` : '',
-      endOfPeriod: endDate ? `&endOfPeriod=${endDate}` : '',
-    },
-    {
-      skip: !startDate && !endDate,
-    }
-  );
-
   const form = useForm<ProjectReportFormValues>({
     initialValues: {
       startOfPeriod: new Date(),
@@ -54,6 +40,20 @@ const ByProjects = () => {
       return errors;
     },
   });
+
+  const {
+    data: reportsByProjects,
+    isLoading: isGetLoading,
+    isFetching,
+  } = useGetProjectsReportsQuery(
+    {
+      startOfPeriod: startDate ? `?startOfPeriod=${startDate}` : '',
+      endOfPeriod: endDate ? `&endOfPeriod=${endDate}` : '',
+    },
+    {
+      skip: !startDate && !endDate && !form.isValid(),
+    }
+  );
 
   const { isLoading: isExcelExportLoading, exportToExcel } = useExportToExcel();
 
@@ -93,6 +93,7 @@ const ByProjects = () => {
 
         {startDate &&
           endDate &&
+          !form.isValid() &&
           (!isGetLoading && !isFetching && isReportExist ? (
             <ReportTable
               sortType={sortType}
