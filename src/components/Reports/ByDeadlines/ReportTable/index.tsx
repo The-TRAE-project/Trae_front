@@ -1,10 +1,12 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import {
+  SortingState,
   flexRender,
   getCoreRowModel,
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { DeadlinesReport } from '../../../../store/apis/reports/types';
 import {
   ScrollWrapper,
@@ -29,6 +31,13 @@ export function ReportTable({
   secondParameter,
   thirdParameter,
 }: DeadlinesReportTableData) {
+  const [sortType, setSortType] = useState<SortingState>([
+    {
+      id: firstParameter,
+      desc: false,
+    },
+  ]);
+
   const [tableData, tableColumns] = useMemo(
     () =>
       constructTable({
@@ -36,6 +45,7 @@ export function ReportTable({
         firstParameter,
         secondParameter,
         thirdParameter,
+        setSortType,
       }),
     [reportsByDeadlines, firstParameter, secondParameter, thirdParameter]
   );
@@ -43,7 +53,12 @@ export function ReportTable({
   const table = useReactTable({
     data: tableData,
     columns: tableColumns,
+    state: {
+      sorting: sortType,
+    },
+    onSortingChange: setSortType,
     getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
   });
 
   return (
@@ -55,12 +70,25 @@ export function ReportTable({
               <tr key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
                   <TableCellHeader key={header.id} colSpan={header.colSpan}>
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
+                    {header.isPlaceholder ? null : (
+                      <div
+                        {...{
+                          className: header.column.getCanSort()
+                            ? 'cursor-pointer select-none'
+                            : '',
+                          onClick: header.column.getToggleSortingHandler(),
+                        }}
+                      >
+                        {flexRender(
                           header.column.columnDef.header,
                           header.getContext()
                         )}
+                        {{
+                          asc: ' 🔼',
+                          desc: ' 🔽',
+                        }[header.column.getIsSorted() as string] ?? null}
+                      </div>
+                    )}
                   </TableCellHeader>
                 ))}
               </tr>

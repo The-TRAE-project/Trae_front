@@ -1,4 +1,8 @@
-import { ColumnDef, createColumnHelper } from '@tanstack/react-table';
+import {
+  ColumnDef,
+  SortingState,
+  createColumnHelper,
+} from '@tanstack/react-table';
 import { DeadlinesReportTableData } from '../ReportTable';
 import { convertToString } from '../../../../helpers/convertToString';
 import { calculateDeviation } from '../../helpers/calculateDeviation';
@@ -7,7 +11,11 @@ interface TableData {
   [key: string]: string | number | null;
 }
 
-function constructTableData(data: DeadlinesReportTableData): TableData[] {
+type ConstructTableProps = DeadlinesReportTableData & {
+  setSortType: React.Dispatch<React.SetStateAction<SortingState>>;
+};
+
+function constructTableData(data: ConstructTableProps): TableData[] {
   const result = data.reportsByDeadlines.secondRespValues
     .map((secondRespValue) => {
       return secondRespValue.thirdRespValues.map((thirdRespValue) => {
@@ -55,7 +63,7 @@ function tableColumnHeader(parameterName: string) {
   }
 }
 
-function constructTableColumns(data: DeadlinesReportTableData) {
+function constructTableColumns(data: ConstructTableProps) {
   const columnHelper = createColumnHelper<TableData>();
 
   const columns = [
@@ -89,7 +97,7 @@ function constructTableColumns(data: DeadlinesReportTableData) {
 }
 
 export function constructTable(
-  props: DeadlinesReportTableData
+  props: ConstructTableProps
 ): [TableData[], ColumnDef<TableData, string | number | null>[]] {
   const data = constructTableData(props);
   const columns = constructTableColumns(props);

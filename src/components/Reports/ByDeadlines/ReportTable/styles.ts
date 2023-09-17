@@ -2,11 +2,11 @@ import styled from 'styled-components';
 
 export const Wrapper = styled.section`
   width: fit-content;
-  max-width: 100%;
+  width: 100%;
   max-height: 535px;
   background: var(--white);
   border-radius: var(--border-radius) var(--border-radius) 0 0;
-  padding: 36px 8px 10px 8px;
+  padding: 43px 40px 10px 40px;
   display: flex;
   align-items: stretch;
 `;
@@ -48,9 +48,12 @@ export const TableCellContent = styled.div`
 `;
 
 export const TableCell = styled.td`
-  border: 2px solid var(--green);
+  border-top: 2px solid var(--green);
+  :nth-child(-n + 5) {
+    border-right: 2px solid var(--green);
+  }
   background-color: var(--white);
-  min-width: 31px;
+  min-width: 190px;
   position: relative;
 
   font-weight: 500;
@@ -61,6 +64,9 @@ export const TableCell = styled.td`
 `;
 
 export const TableCellHeader = styled.th`
-  padding: 0 1px;
   position: relative;
+
+  :nth-child(-n + 5) {
+    border-right: 2px solid var(--green);
+  }
 `;

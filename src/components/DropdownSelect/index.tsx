@@ -27,6 +27,7 @@ interface Props {
   items: MenuItemData[];
   label: string;
   id: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   stateCallback: React.Dispatch<React.SetStateAction<any | null>>;
   error?: React.ReactNode;
   isRadio?: boolean;
@@ -82,7 +83,6 @@ function DropdownSelect({
     form.setFieldValue(id, items ? items.map((i) => i.id) : []);
     stateCallback(items ? items.map((i) => i.id) : []);
   };
-  console.log(ids, items, selectedMenuItems);
 
   return (
     <SelectWrapper>
@@ -98,13 +98,13 @@ function DropdownSelect({
         }}
       >
         <Menu.Target>
-          <SelectDisplayInput>
+          <SelectDisplayInput $disabled={isDisabled}>
             <input
               {...form.getInputProps(id)}
               type="text"
               disabled={isDisabled}
             />
-            {isAllSelected ? (
+            {isAllSelected && !isDisabled ? (
               <SelectAllTitle>Все</SelectAllTitle>
             ) : (
               selectedMenuItems.map((selectedMenuItem) => (

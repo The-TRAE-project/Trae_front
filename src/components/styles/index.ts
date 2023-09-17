@@ -434,9 +434,10 @@ export const SelectLabel = styled.p`
 
 type SelectDisplayInputProps = {
   $isFs28?: boolean;
+  $disabled?: boolean;
 };
 
-export const SelectDisplayInput = styled.div`
+export const SelectDisplayInput = styled.div<SelectDisplayInputProps>`
   position: relative;
   min-height: 73px;
   ${({ theme }) => theme.mixins.center};
@@ -444,16 +445,21 @@ export const SelectDisplayInput = styled.div`
   column-gap: 22px;
   row-gap: 16px;
   padding: 11px 84px 11px 22px;
-  background: var(--white);
   border-radius: var(--border-radius);
-
-  input {
+  background: ${(props) =>
+      props.$disabled
+        ? `linear-gradient(
+            268.17deg,
+            var(--white-gradient) 0%,
+            var(--black-gradient) 104.24%);`
+        : 'var(--white);'}
+    input {
     display: none;
   }
 
   p {
     font-family: var(--font-roboto);
-    ${(props: SelectDisplayInputProps) =>
+    ${(props) =>
       props.$isFs28
         ? css`
             ${({ theme }) => theme.mixins.fontSize28};
