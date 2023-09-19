@@ -6,6 +6,8 @@ import {
 } from '@reduxjs/toolkit/query/react';
 
 import Cookies from 'js-cookie';
+import jwtDecode from 'jwt-decode';
+import axios from 'axios';
 import { RequestHeader } from '../../constants/requestHeader';
 import { removeItem } from '../../helpers/removeItem';
 import { LocalStorage } from '../../constants/localStorage';
@@ -15,8 +17,8 @@ import { clearEmployeeState } from '../slices/employee';
 import { clearWorkTypeState } from '../slices/workType';
 import { clearProjectState } from '../slices/project';
 import { TokenTypes } from '../../helpers/hooks/useCookies';
-import instance from '../../config/axiosConfig';
 import { isRefreshTokenNearExpiration } from '../../helpers/isRefreshTokenNearExpiration';
+import { Token } from './types';
 
 const baseQuery = fetchBaseQuery({
   baseUrl: import.meta.env.PROD
@@ -41,13 +43,36 @@ const baseQueryWithReAuth = async (
 ) => {
   let result = await baseQuery(args, api, extraOptions);
   const refreshToken = Cookies.get(TokenTypes.REFRESH_TOKEN);
+  const accessTokenOld = Cookies.get(TokenTypes.ACCESS_TOKEN);
 
-  console.log('BASE_QUERY:', result, args, api, extraOptions, new Date());
+  // console.log('BASE_QUERY:', result, args, api, extraOptions, new Date());
+  // console.log(
+  //   'REFRESH_TOKEN',
+  //   refreshToken,
+  //   refreshToken ? jwtDecode(refreshToken) : undefined,
+  //   refreshToken
+  //     ? new Date(jwtDecode<Token>(refreshToken).exp * 1000)
+  //     : undefined
+  // );
+  // console.log(
+  //   'ACCESS_TOKEN',
+  //   accessTokenOld,
+  //   accessTokenOld ? jwtDecode(accessTokenOld) : undefined,
+  //   accessTokenOld
+  //     ? new Date(jwtDecode<Token>(accessTokenOld).exp * 1000)
+  //     : undefined
+  // );
 
   if (result?.error?.status === 401) {
-    const accessResponse = await instance.post(`/auth/token`, {
-      refreshToken,
+    const accessResponse = await axios({
+      method: 'post',
+      url: `${import.meta.env.VITE_BACK_API_URL}/auth/token`,
+      headers: {},
+      data: {
+        refreshToken,
+      },
     });
+    // console.log('NEW_ACCESS_TOKEN', accessResponse.data);
 
     if (accessResponse?.data) {
       const { accessToken } = accessResponse.data as TokenValue;
@@ -55,10 +80,18 @@ const baseQueryWithReAuth = async (
       Cookies.set(TokenTypes.ACCESS_TOKEN, accessToken);
 
       if (isRefreshTokenNearExpiration()) {
-        const refreshResponse = await instance.post(`/auth/refresh`, {
-          refreshToken,
+        const refreshResponse = await axios({
+          method: 'post',
+          url: `${import.meta.env.VITE_BACK_API_URL}/auth/refresh`,
+          headers: {
+            Authorization: RequestHeader.AUTHORIZATION_PREFIX + accessToken,
+          },
+          data: {
+            refreshToken,
+          },
         });
 
+        // console.log('NEW_REFRESH_TOKEN', refreshResponse.data);
         const { refreshToken: newRefreshToken } =
           refreshResponse.data as TokenValue;
         api.dispatch(setCredentials(refreshResponse.data as TokenValue));
