@@ -1,4 +1,5 @@
 import { baseApi } from '..';
+import { buildParams } from '../../../helpers/buildParams';
 import { FilteredResponse } from '../types';
 import {
   CreateProjectFormValues,
@@ -83,8 +84,15 @@ const projectApi = projectTags.injectEndpoints({
     }),
 
     getProjectsInfo: build.query<ProjectsShortInfo[], ProjectsShortInfoParams>({
-      query: (query) =>
-        `/project/projects/list${query.startOfPeriod}${query.endOfPeriod}${query.employeeIds}${query.operationIds}`,
+      query: (query) => {
+        const params = buildParams({
+          employeeIds: query.employeeIds,
+          operationIds: query.operationIds,
+          startOfPeriod: query.startOfPeriod,
+          endOfPeriod: query.endOfPeriod,
+        });
+        return `/project/projects/list${params}`;
+      },
       providesTags: ['Projects', 'Project'],
     }),
 
@@ -92,8 +100,15 @@ const projectApi = projectTags.injectEndpoints({
       OperationsShortInfo[],
       OperationsShortInfoParams
     >({
-      query: (query) =>
-        `/operation/operations/list${query.startOfPeriod}${query.endOfPeriod}${query.projectIds}${query.employeeIds}`,
+      query: (query) => {
+        const params = buildParams({
+          employeeIds: query.employeeIds,
+          projectIds: query.projectIds,
+          startOfPeriod: query.startOfPeriod,
+          endOfPeriod: query.endOfPeriod,
+        });
+        return `/operation/operations/list${params}`;
+      },
       providesTags: ['Projects', 'Project'],
     }),
 

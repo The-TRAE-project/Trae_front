@@ -1,4 +1,5 @@
 import { baseApi } from '..';
+import { buildParams } from '../../../helpers/buildParams';
 import { FilteredResponse, FilterValues } from '../types';
 import {
   Employee,
@@ -50,8 +51,14 @@ const employeeApi = employeeTags.injectEndpoints({
       EmployeesShortInfo[],
       EmployeesShortInfoParams
     >({
-      query: (query) =>
-        `/employee/employees/list${query.projectIds}${query.operationIds}`,
+      query: (query) => {
+        const params = buildParams({
+          projectIds: query.projectIds,
+          operationIds: query.operationIds,
+        });
+
+        return `/employee/employees/list${params}`;
+      },
       providesTags: ['Employee'],
     }),
   }),
