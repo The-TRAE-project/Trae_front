@@ -30,7 +30,11 @@ export const Wrapper = styled.div`
 export const ProjectOperationName = styled.p`
   font-weight: 600;
   ${({ theme }) => theme.mixins.fontSize30};
+  width: 182px;
   text-align: center;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: wrap;
 
   &.stageInWork {
     color: var(--orange);
