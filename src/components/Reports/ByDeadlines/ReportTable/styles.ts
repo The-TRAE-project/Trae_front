@@ -1,3 +1,4 @@
+import { IoIosArrowUp } from 'react-icons/io';
 import styled from 'styled-components';
 
 export const Wrapper = styled.section`
@@ -69,4 +70,27 @@ export const TableCellHeader = styled.th`
   :nth-child(-n + 5) {
     border-right: 2px solid var(--green);
   }
+`;
+
+export const SortButton = styled.button`
+  border: none;
+  width: 100%;
+  height: 100%;
+  background-color: var(--white);
+  color: var(--black);
+  text-align: center;
+  font-family: var(--font-raleway);
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+`;
+
+type SortArrowProps = { $isOpen: boolean };
+
+export const SortArrow = styled(IoIosArrowUp)`
+  position: relative;
+  top: 5px;
+  transform: ${(props: SortArrowProps) =>
+    props.$isOpen ? 'rotate(0)' : 'rotate(180deg)'};
 `;

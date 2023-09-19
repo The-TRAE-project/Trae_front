@@ -20,9 +20,9 @@ function constructTableData(data: ConstructTableProps): TableData[] {
     .map((secondRespValue) => {
       return secondRespValue.thirdRespValues.map((thirdRespValue) => {
         return Object.fromEntries([
-          [data.firstParameter, data.reportsByDeadlines.firstRespValue],
-          [data.secondParameter, secondRespValue.secondRespValue],
-          [data.thirdParameter, thirdRespValue.thirdRespValue],
+          [data.firstParameter.id, data.reportsByDeadlines.firstRespValue],
+          [data.secondParameter.id, secondRespValue.secondRespValue],
+          [data.thirdParameter.id, thirdRespValue.thirdRespValue],
           [
             'date-plan',
             thirdRespValue.plannedEndDate
@@ -50,34 +50,21 @@ function constructTableData(data: ConstructTableProps): TableData[] {
   return result;
 }
 
-function tableColumnHeader(parameterName: string) {
-  switch (parameterName) {
-    case 'EMPLOYEE':
-      return 'Сотрудник';
-    case 'PROJECT':
-      return 'Проект';
-    case 'OPERATION':
-      return 'Этапы';
-    default:
-      return '';
-  }
-}
-
 function constructTableColumns(data: ConstructTableProps) {
   const columnHelper = createColumnHelper<TableData>();
 
   const columns = [
-    columnHelper.accessor(data.firstParameter, {
-      header: tableColumnHeader(data.firstParameter),
-      id: data.firstParameter,
+    columnHelper.accessor(data.firstParameter.id, {
+      header: data.firstParameter.value,
+      id: data.firstParameter.id,
     }),
-    columnHelper.accessor(data.secondParameter, {
-      header: tableColumnHeader(data.secondParameter),
-      id: data.secondParameter,
+    columnHelper.accessor(data.secondParameter.id, {
+      header: data.secondParameter.value,
+      id: data.secondParameter.id,
     }),
-    columnHelper.accessor(data.thirdParameter, {
-      header: tableColumnHeader(data.thirdParameter),
-      id: data.thirdParameter,
+    columnHelper.accessor(data.thirdParameter.id, {
+      header: data.thirdParameter.value,
+      id: data.thirdParameter.id,
     }),
     columnHelper.accessor('date-plan', {
       header: 'Дата окончания план',

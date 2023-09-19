@@ -10,6 +10,8 @@ import { useMemo, useState } from 'react';
 import { DeadlinesReport } from '../../../../store/apis/reports/types';
 import {
   ScrollWrapper,
+  SortArrow,
+  SortButton,
   Table,
   TableCell,
   TableCellHeader,
@@ -20,9 +22,9 @@ import { constructTable } from '../helpers/constructTable';
 
 export type DeadlinesReportTableData = {
   reportsByDeadlines: DeadlinesReport;
-  firstParameter: string;
-  secondParameter: string;
-  thirdParameter: string;
+  firstParameter: { id: string; value: string };
+  secondParameter: { id: string; value: string };
+  thirdParameter: { id: string; value: string };
 };
 
 export function ReportTable({
@@ -33,7 +35,7 @@ export function ReportTable({
 }: DeadlinesReportTableData) {
   const [sortType, setSortType] = useState<SortingState>([
     {
-      id: firstParameter,
+      id: firstParameter.id,
       desc: false,
     },
   ]);
@@ -71,23 +73,16 @@ export function ReportTable({
                 {headerGroup.headers.map((header) => (
                   <TableCellHeader key={header.id} colSpan={header.colSpan}>
                     {header.isPlaceholder ? null : (
-                      <div
-                        {...{
-                          className: header.column.getCanSort()
-                            ? 'cursor-pointer select-none'
-                            : '',
-                          onClick: header.column.getToggleSortingHandler(),
-                        }}
-                      >
+                      <SortButton onClick={() => header.column.toggleSorting()}>
                         {flexRender(
                           header.column.columnDef.header,
                           header.getContext()
                         )}
-                        {{
-                          asc: ' 🔼',
-                          desc: ' 🔽',
-                        }[header.column.getIsSorted() as string] ?? null}
-                      </div>
+                        <SortArrow
+                          $isOpen={header.column.getIsSorted() === 'desc'}
+                          size={24}
+                        />
+                      </SortButton>
                     )}
                   </TableCellHeader>
                 ))}

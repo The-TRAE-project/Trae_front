@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Menu } from '@mantine/core';
 import { UseFormReturnType } from '@mantine/form';
 
@@ -21,7 +21,7 @@ export interface MenuItemData {
   value: number | string;
 }
 
-interface Props {
+export interface DropdownSelectProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   form: UseFormReturnType<any, (values: any) => any>;
   items: MenuItemData[];
@@ -30,6 +30,7 @@ interface Props {
   error?: React.ReactNode;
   isRadio?: boolean;
   isDisabled?: boolean;
+  partialReset?: () => void;
 }
 
 function DropdownSelect({
@@ -40,43 +41,52 @@ function DropdownSelect({
   error,
   isRadio,
   isDisabled,
-}: Props) {
+  partialReset,
+}: DropdownSelectProps) {
   const [opened, setOpened] = useState<boolean>(false);
-  const [selectedMenuItems, setSelectedMenuItems] = useState<MenuItemData[]>(
-    []
-  );
 
   const {
     classes: { dropdown, item },
   } = useDropdownSelectMenuStyles();
 
-  const ids = form.values[id];
-  const isAllSelected = ids && items ? ids.length === items.length : false;
+  const handleSetItem = useCallback(
+    (newMenuItem: MenuItemData) => {
+      form.setFieldValue(id, [newMenuItem]);
+    },
+    [form, id]
+  );
+
+  useEffect(() => {
+    if (items.length === 1 && !isDisabled) {
+      handleSetItem(items[0]);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isDisabled]);
+
+  const selectedMenuItems = form.values[id];
 
   const handleSetItemIds = (menuItem: MenuItemData) => {
     form.setFieldValue(id, []);
-
-    if (!selectedMenuItems.includes(menuItem)) {
+    if (!selectedMenuItems.find((it: MenuItemData) => it.id === menuItem.id)) {
       const newMenuItem = [...selectedMenuItems, menuItem];
-      setSelectedMenuItems(newMenuItem);
-      form.setFieldValue(
-        id,
-        newMenuItem.map((i) => i.id)
-      );
-    } else if (selectedMenuItems.includes(menuItem)) {
+      form.setFieldValue(id, newMenuItem);
+    } else if (
+      selectedMenuItems.find((it: MenuItemData) => it.id === menuItem.id)
+    ) {
       const filteredMenuItems =
-        selectedMenuItems?.filter((it) => it.id !== menuItem.id) || [];
-      form.setFieldValue(
-        id,
-        filteredMenuItems.map((i) => i.id)
-      );
-      setSelectedMenuItems(filteredMenuItems);
+        selectedMenuItems?.filter(
+          (it: MenuItemData) => it.id !== menuItem.id
+        ) || [];
+      form.setFieldValue(id, filteredMenuItems);
     }
   };
 
   const handleSelectAll = () => {
-    form.setFieldValue(id, items ? items.map((i) => i.id) : []);
+    form.setFieldValue(id, items || []);
   };
+
+  const ids = form.values[id];
+  const isAllSelected = ids && items ? ids.length === items.length : false;
 
   return (
     <SelectWrapper>
@@ -98,14 +108,18 @@ function DropdownSelect({
               type="text"
               disabled={isDisabled}
             />
-            {isAllSelected && !isDisabled ? (
+            {isAllSelected && !isDisabled && !isRadio ? (
               <SelectAllTitle>Все</SelectAllTitle>
             ) : (
-              selectedMenuItems.map((selectedMenuItem) => (
-                <SelectedMenuItem key={selectedMenuItem.id}>
-                  {selectedMenuItem.value}
-                </SelectedMenuItem>
-              ))
+              selectedMenuItems.map((selectedMenuItem: MenuItemData) => {
+                const result =
+                  selectedMenuItem.value !== '' ? (
+                    <SelectedMenuItem key={selectedMenuItem.id}>
+                      {selectedMenuItem.value}
+                    </SelectedMenuItem>
+                  ) : null;
+                return result;
+              })
             )}
             <SelectArrow $isOpen={opened} size={34} $isDisabled={isDisabled} />
           </SelectDisplayInput>
@@ -113,20 +127,38 @@ function DropdownSelect({
         {error && <ErrorMessage>{error}</ErrorMessage>}
 
         <Menu.Dropdown>
-          <MenuItem
-            title="Все"
-            onClick={handleSelectAll}
-            isActive={isAllSelected}
-          />
+          {!isRadio && (
+            <MenuItem
+              title="Все"
+              onClick={handleSelectAll}
+              isActive={isAllSelected}
+            />
+          )}
 
           {items.map((currentItem) => (
             <MenuItem
               key={currentItem.id}
               title={`${currentItem.value}`}
-              onClick={() => handleSetItemIds(currentItem)}
+              onClick={() => {
+                if (isRadio) {
+                  handleSetItem(currentItem);
+                } else {
+                  handleSetItemIds(currentItem);
+                }
+                if (
+                  form.values[id].length !== 0 &&
+                  form.values[id][0].id !== '' &&
+                  !!partialReset
+                ) {
+                  partialReset();
+                }
+              }}
               isActive={
-                selectedMenuItems.includes(currentItem) && !isAllSelected
+                !!selectedMenuItems.find(
+                  (it: MenuItemData) => it.id === currentItem.id
+                ) && !isAllSelected
               }
+              isCircle={isRadio}
             />
           ))}
         </Menu.Dropdown>

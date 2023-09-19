@@ -142,47 +142,62 @@ export interface DashboardReport {
   countProjectsWithOverdueCurrentOperation: number;
 }
 
-export const DeadlineReportSchema = z
-  .object({
-    startOfPeriod: z.date({
-      required_error: 'Пожалуйста, выберите дату начало',
-      invalid_type_error: 'Пожалуйста, выберите дату начало',
-    }),
-    endOfPeriod: z.date({
-      required_error: 'Пожалуйста, выберите дату окончания',
-      invalid_type_error: 'Пожалуйста, выберите дату окончания',
-    }),
-    isDatesActive: z.boolean(),
-    firstParameter: z.string().array().optional(),
-    secondParameter: z.string().array().optional(),
-    thirdParameter: z.string().array().optional(),
-    valueOfFirstParameter: z.number().array().optional(),
-    valuesOfSecondParameter: z.number().array().optional(),
-    valuesOfThirdParameter: z.number().array().optional(),
-  })
-  .refine(
-    (schema) =>
-      dayjs(schema.startOfPeriod).diff(dayjs(schema.endOfPeriod), 'd') <= -5,
-    {
-      message: 'Пожалуйста выберите промежуток больше недели',
-    }
-  );
+export const DeadlineReportSchema = z.object({
+  startOfPeriod: z.date().optional(),
+  endOfPeriod: z.date().optional(),
+  isDatesActive: z.boolean(),
+  firstParameter: z
+    .object({
+      id: z.string(),
+      value: z.string(),
+    })
+    .array(),
+  secondParameter: z
+    .object({
+      id: z.string(),
+      value: z.string(),
+    })
+    .array(),
+  thirdParameter: z
+    .object({
+      id: z.string(),
+      value: z.string(),
+    })
+    .array(),
+  valueOfFirstParameter: z
+    .object({
+      id: z.number(),
+      value: z.union([z.string(), z.number()]),
+    })
+    .array(),
+  valuesOfSecondParameter: z
+    .object({
+      id: z.number(),
+      value: z.union([z.string(), z.number()]),
+    })
+    .array(),
+  valuesOfThirdParameter: z
+    .object({
+      id: z.number(),
+      value: z.union([z.string(), z.number()]),
+    })
+    .array(),
+});
 
 export type DeadlinesReportFormValues = z.infer<typeof DeadlineReportSchema>;
 
-export type DedlineParametersNames =
-  | 'EMPLOYEE'
-  | 'PROJECT'
-  | 'OPERATION'
-  | string;
+export interface ParameterData {
+  id: number | string;
+  value: number | string;
+}
 
 export interface ParamsForDeadlinesReports {
-  firstParameter?: DedlineParametersNames;
-  secondParameter?: DedlineParametersNames;
-  thirdParameter?: DedlineParametersNames;
-  valueOfFirstParameter?: number;
-  valuesOfSecondParameter?: number[] | null;
-  valuesOfThirdParameter?: number[] | null;
+  firstParameter: string;
+  secondParameter: string;
+  thirdParameter: string;
+  valueOfFirstParameter: number;
+  valuesOfSecondParameter: number[];
+  valuesOfThirdParameter: number[];
 }
 
 export interface DeadlinesReport {
