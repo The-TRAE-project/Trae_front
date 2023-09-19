@@ -42,11 +42,11 @@ const EmployeeSelect = ({ form, employees }: Props) => {
 
   const handleSetEmployeeIds = (employee: EmployeesShortInfo) => {
     form.setFieldValue('employeeIds', []);
-    if (!selectedEmployees.includes(employee)) {
+    if (!selectedEmployees.find((it) => it.id === employee.id)) {
       const newEmployees = [...selectedEmployees, employee];
       setSelectedEmployees(newEmployees);
       form.setFieldValue('employeeIds', selectOnlyIds(newEmployees));
-    } else if (selectedEmployees.includes(employee)) {
+    } else if (selectedEmployees.find((it) => it.id === employee.id)) {
       const filteredEmployees =
         selectedEmployees?.filter((it) => it.id !== employee.id) || [];
       form.setFieldValue('employeeIds', selectOnlyIds(filteredEmployees));
@@ -101,7 +101,10 @@ const EmployeeSelect = ({ form, employees }: Props) => {
               key={employee.id}
               title={`${employee.firstName} ${employee.lastName}`}
               onClick={() => handleSetEmployeeIds(employee)}
-              isActive={selectedEmployees.includes(employee) && !isAllSelected}
+              isActive={
+                !!selectedEmployees.find((it) => it.id === employee.id) &&
+                !isAllSelected
+              }
             />
           ))}
         </Menu.Dropdown>
