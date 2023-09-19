@@ -1,9 +1,14 @@
 import { Menu as MantineMenu } from '@mantine/core';
-import { ReactNode } from 'react';
+import { ReactNode, useState } from 'react';
 
-import { BgWhiteMenuBtn, TitleMenuButton, UnstyledButton } from '../../styles';
+import {
+  BgWhiteMenuBtn,
+  TitleMenuButton,
+  UnstyledButton,
+  SelectArrow,
+} from '../../styles';
 import Filter from '../../svgs/Filter';
-import { useMenuStyles } from './styles';
+import { ButtonTitle, useMenuStyles } from './styles';
 
 interface Props {
   onClick?: () => void;
@@ -13,7 +18,6 @@ interface Props {
   title?: string;
 }
 
-// TODO add styles for button variant
 const Menu = ({
   onClick,
   closeOnItemClick = false,
@@ -24,8 +28,12 @@ const Menu = ({
   const {
     classes: { dropdown, label, item },
   } = useMenuStyles();
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
-  const toggle = () => onClick?.();
+  const toggle = () => {
+    setIsOpen(() => !isOpen);
+    onClick?.();
+  };
 
   // TODO: button title to the left, add arrow
   return (
@@ -41,7 +49,10 @@ const Menu = ({
         {isButton && <TitleMenuButton>Сортировка</TitleMenuButton>}
         <MantineMenu.Target>
           {isButton ? (
-            <BgWhiteMenuBtn onClick={toggle}>{title}</BgWhiteMenuBtn>
+            <BgWhiteMenuBtn onClick={toggle}>
+              <ButtonTitle>{title}</ButtonTitle>
+              <SelectArrow $isOpen={isOpen} />
+            </BgWhiteMenuBtn>
           ) : (
             <UnstyledButton onClick={toggle} $isFilterIcon>
               <Filter />

@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-useless-fragment */
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm, zodResolver } from '@mantine/form';
@@ -8,7 +9,6 @@ import {
 } from '../../../store/apis/project/types';
 import { useCreateProjectMutation } from '../../../store/apis/project';
 import { showErrorNotification } from '../../../helpers/showErrorNotification';
-import { useOpenModal } from '../../../helpers/hooks/useOpenModal';
 import { Paths } from '../../../constants/paths';
 import DatePicker from '../../DatePicker';
 import TextInput from '../../TextInput';
@@ -18,9 +18,15 @@ import Textarea from '../../Textarea';
 import FormHeader from '../../FormHeader';
 import { FormWrapper, TwoColumnGrid } from '../../styles';
 import StageSelect from './StageSelect';
+import { useAppSelector } from '../../../helpers/hooks/useAppSelector';
+import { Roles } from '../../../store/slices/auth/types';
+import ConfirmModal from '../../ConfirmModal';
+import { ProjectSummary } from './ProjectSummary';
 
 const CreateForm = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const { permission } = useAppSelector((store) => store.auth);
+  // const [isSuccessTest, setIsSuccessTest] = useState<boolean>(false);
 
   const navigate = useNavigate();
   const form = useForm<CreateProjectFormValues>({
@@ -36,73 +42,153 @@ const CreateForm = () => {
   const handleSubmit = async (values: CreateProjectFormValues) => {
     try {
       await createProject(values).unwrap();
+      setIsOpen(true);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       showErrorNotification(err?.data?.status, err?.data?.error);
     }
   };
 
-  useOpenModal(setIsOpen, isSuccess);
-
   const closeModal = () => {
     setIsOpen(false);
-    navigate(Paths.PROJECTS);
+    if (permission === Roles.ADMIN) {
+      navigate(Paths.PROJECTS);
+    } else if (permission === Roles.CONSTRUCTOR) {
+      navigate(Paths.CONSTRUCTOR_MAIN_PAGE);
+    }
     form.reset();
   };
 
+  let backPath = '';
+  if (permission === Roles.ADMIN) {
+    backPath = Paths.DASHBOARD;
+  } else if (permission === Roles.CONSTRUCTOR) {
+    backPath = Paths.CONSTRUCTOR_MAIN_PAGE;
+  }
+
+  const navigateToBack = () => navigate(backPath);
+
+  const confirmTitle = `Добавить проект №${form.values.number}?`;
+  const informTitle = `Проект №${form.values.number} успешно добавлен`;
+
   return (
     <>
-      <InformModal
-        isOpen={isOpen}
-        onClose={closeModal}
-        title={`Проект №${form.values.number} успешно добавлен`}
-        backPath={Paths.PROJECTS}
-      />
+      {permission === Roles.ADMIN ? (
+        <>
+          <InformModal
+            isOpen={isOpen}
+            onClose={closeModal}
+            title={informTitle}
+            backPath={backPath}
+          />
+          <FormWrapper onSubmit={form.onSubmit(handleSubmit)}>
+            <FormHeader
+              isSubmitBtnDisabled={isLoading}
+              isSubmitBtnLoading={isLoading}
+              onBack={navigateToBack}
+            />
 
-      <FormWrapper onSubmit={form.onSubmit(handleSubmit)}>
-        <FormHeader
-          isSubmitBtnDisabled={isLoading}
-          isSubmitBtnLoading={isLoading}
-          onBack={() => navigate(Paths.PROJECTS)}
-        />
-
-        <TwoColumnGrid>
-          <NumberInput
-            {...form.getInputProps('number')}
-            label="Номер проекта"
-            placeholder="Номер проекта"
-            min={0}
-            max={999}
-            minLength={1}
-            maxLength={3}
+            <TwoColumnGrid>
+              <NumberInput
+                {...form.getInputProps('number')}
+                label="Номер проекта"
+                placeholder="Номер проекта"
+                min={0}
+                max={999}
+                minLength={1}
+                maxLength={3}
+              />
+              <TextInput
+                {...form.getInputProps('name')}
+                label="Наименование изделия"
+                placeholder="Наименование изделия"
+                minLength={2}
+                maxLength={30}
+              />
+              <TextInput
+                {...form.getInputProps('customer')}
+                label="Клиент"
+                placeholder="Клиент"
+                minLength={2}
+                maxLength={30}
+              />
+              <DatePicker
+                {...form.getInputProps('plannedEndDate')}
+                title="Дата окончания проекта (договор)"
+              />
+              <Textarea
+                {...form.getInputProps('comment')}
+                label="Комментарий"
+                placeholder="Комментарий"
+                maxLength={1000}
+              />
+              <StageSelect form={form} isSuccess={isSuccess} />
+            </TwoColumnGrid>
+          </FormWrapper>
+        </>
+      ) : (
+        <>
+          <ConfirmModal
+            isOpen={isOpen}
+            onClose={closeModal}
+            onSubmit={form.onSubmit(handleSubmit)}
+            onCallAtTheEnd={navigateToBack}
+            isSuccess={isSuccess}
+            isLoading={isLoading}
+            confirmTitle={confirmTitle}
+            informTitle={informTitle}
+            onBack={navigateToBack}
+            details={<ProjectSummary {...form.values} />}
           />
-          <TextInput
-            {...form.getInputProps('name')}
-            label="Наименование изделия"
-            placeholder="Наименование изделия"
-            minLength={2}
-            maxLength={30}
+          <FormHeader
+            isShowClickBtn
+            clickBtnText="Сохранить"
+            isShowSubmitBtn={false}
+            onBack={navigateToBack}
+            onClick={() => {
+              if (form.validate().hasErrors === false) {
+                setIsOpen(true);
+              }
+            }}
           />
-          <TextInput
-            {...form.getInputProps('customer')}
-            label="Клиент"
-            placeholder="Клиент"
-            minLength={2}
-            maxLength={30}
-          />
-          <DatePicker
-            {...form.getInputProps('plannedEndDate')}
-            title="Дата окончания проекта (договор)"
-          />
-          <Textarea
-            {...form.getInputProps('comment')}
-            label="Комментарий"
-            placeholder="Комментарий"
-            maxLength={1000}
-          />
-          <StageSelect form={form} isSuccess={isSuccess} />
-        </TwoColumnGrid>
-      </FormWrapper>
+          <TwoColumnGrid>
+            <NumberInput
+              {...form.getInputProps('number')}
+              label="Номер проекта"
+              placeholder="Номер проекта"
+              min={0}
+              max={999}
+              minLength={1}
+              maxLength={3}
+            />
+            <TextInput
+              {...form.getInputProps('name')}
+              label="Наименование изделия"
+              placeholder="Наименование изделия"
+              minLength={2}
+              maxLength={30}
+            />
+            <TextInput
+              {...form.getInputProps('customer')}
+              label="Клиент"
+              placeholder="Клиент"
+              minLength={2}
+              maxLength={30}
+            />
+            <DatePicker
+              {...form.getInputProps('plannedEndDate')}
+              title="Дата окончания проекта (договор)"
+            />
+            <Textarea
+              {...form.getInputProps('comment')}
+              label="Комментарий"
+              placeholder="Комментарий"
+              maxLength={1000}
+            />
+            <StageSelect form={form} isSuccess={isSuccess} />
+          </TwoColumnGrid>
+        </>
+      )}
     </>
   );
 };

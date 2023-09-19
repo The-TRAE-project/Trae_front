@@ -1,6 +1,5 @@
 import { UseFormReturnType } from '@mantine/form';
-
-import { EmployeeShortInfo } from '../../../../store/apis/employee/types';
+import { EmployeesShortInfo } from '../../../../store/apis/employee/types';
 import { EmployeeReportFormValues } from '../../../../store/apis/reports/types';
 import DatePicker from '../../../DatePicker';
 import { ThreeColumnGrid } from '../../../styles';
@@ -11,7 +10,7 @@ interface Props {
     EmployeeReportFormValues,
     (values: EmployeeReportFormValues) => EmployeeReportFormValues
   >;
-  employees: EmployeeShortInfo[];
+  employees: EmployeesShortInfo[];
 }
 
 const FormBody = ({ form, employees }: Props) => {

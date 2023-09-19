@@ -6,6 +6,8 @@ import { Paths } from '../../constants/paths';
 import Loader from '../Loader';
 import { OrangeButton, UnstyledButton } from '../styles';
 import { DeleteButton } from './styles';
+import { useAppSelector } from '../../helpers/hooks/useAppSelector';
+import { Roles } from '../../store/slices/auth/types';
 
 interface Props {
   onBack: () => void;
@@ -33,9 +35,17 @@ const FormHeader = ({
   onDelete,
 }: Props) => {
   const navigate = useNavigate();
+  const { permission } = useAppSelector((store) => store.auth);
 
   const handleClick = () => onClick?.();
   const handleDelete = () => onDelete?.();
+  const handleNavigate = () => {
+    if (permission === Roles.ADMIN) {
+      navigate(Paths.DASHBOARD);
+    } else if (permission === Roles.CONSTRUCTOR) {
+      navigate(Paths.CONSTRUCTOR_MAIN_PAGE);
+    }
+  };
 
   return (
     <Group position="apart" spacing={100}>
@@ -43,7 +53,7 @@ const FormHeader = ({
         <UnstyledButton onClick={onBack} type="button">
           <BsArrowLeft size={50} color="var(--orange)" />
         </UnstyledButton>
-        <UnstyledButton onClick={() => navigate(Paths.DASHBOARD)} type="button">
+        <UnstyledButton onClick={handleNavigate} type="button">
           <BsFillHouseFill size={44} color="var(--orange)" />
         </UnstyledButton>
       </Group>

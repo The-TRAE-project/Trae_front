@@ -6,6 +6,8 @@ import { BsArrowLeft, BsFillHouseFill } from 'react-icons/bs';
 import { Paths } from '../../constants/paths';
 import { UnstyledButton, useModalStyles } from '../styles';
 import { Title } from './styles';
+import { useAppSelector } from '../../helpers/hooks/useAppSelector';
+import { Roles } from '../../store/slices/auth/types';
 
 interface Props {
   isOpen: boolean;
@@ -26,6 +28,7 @@ const InformModal = ({
 }: Props) => {
   const navigate = useNavigate();
   const { classes } = useModalStyles();
+  const { permission } = useAppSelector((store) => store.auth);
 
   const navigateBack = () => {
     onClose();
@@ -37,7 +40,11 @@ const InformModal = ({
 
   const navigateToHome = () => {
     onClose();
-    navigate(Paths.DASHBOARD);
+    if (permission === Roles.ADMIN) {
+      navigate(Paths.DASHBOARD);
+    } else if (permission === Roles.CONSTRUCTOR) {
+      navigate(Paths.CONSTRUCTOR_MAIN_PAGE);
+    }
   };
 
   return (

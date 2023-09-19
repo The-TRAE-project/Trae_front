@@ -17,6 +17,7 @@ import {
   setAdditionalOperation,
 } from '../helpers/setAdditionalOperation';
 import { Plus } from './styles';
+import { ModifiedWorkType } from '../helpers/useModifyWorkTypes';
 
 interface Props {
   additionalOperation: AdditionalOperation;
@@ -25,9 +26,11 @@ interface Props {
   ids: number[];
   additionalOperations: AdditionalOperation[];
   setAdditionalOperations: Dispatch<SetStateAction<AdditionalOperation[]>>;
+  selectedOperations: ModifiedWorkType[];
 }
 
 const ExtraStages = ({
+  selectedOperations,
   additionalOperation,
   handleSelectOperation,
   checkIsOperationSelected,
@@ -39,8 +42,16 @@ const ExtraStages = ({
 
   const form = useForm<CreateOperationFormValues>({
     initialValues: {
-      name: '',
-      typeWorkId: '',
+      name: selectedOperations
+        ? selectedOperations.find(
+            (item) => item.idx === additionalOperation.idx
+          )?.name || ''
+        : '',
+      typeWorkId: selectedOperations
+        ? selectedOperations
+            .find((item) => item.idx === additionalOperation.idx)
+            ?.typeWorkId.toString() || ''
+        : '',
     },
     validate: (values) => {
       const resolver = zodResolver(OperationCreateSchema);
@@ -119,6 +130,7 @@ const ExtraStages = ({
           label="Типы работ"
           placeholder="Типы работ"
           rightSection={<IoIosArrowUp size={24} />}
+          styles={{ rightSection: { pointerEvents: 'none' } }}
           classNames={{
             label,
             input,

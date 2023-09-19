@@ -11,12 +11,21 @@ import {
   EditDetailsButton,
   Wrapper,
 } from './styles';
+import { useAppSelector } from '../../../helpers/hooks/useAppSelector';
+import { Roles } from '../../../store/slices/auth/types';
 
 const UserDetails = () => {
   const navigate = useNavigate();
+  const { permission } = useAppSelector((store) => store.auth);
   const { data: user, isLoading } = useGetUserAdditionalInformationQuery();
 
-  const navigateToEditing = () => navigate(Paths.PERSONAL_CABINET_EDITING);
+  const navigateToEditing = () => {
+    if (permission === Roles.ADMIN) {
+      navigate(Paths.PERSONAL_CABINET_EDITING);
+    } else if (permission === Roles.CONSTRUCTOR) {
+      navigate(Paths.CONSTRUCTOR_PERSONAL_CABINET_EDITING);
+    }
+  };
 
   return (
     <Wrapper>

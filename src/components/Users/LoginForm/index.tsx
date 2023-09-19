@@ -52,6 +52,8 @@ const Login = () => {
         navigate(Paths.EMPLOYEE_LOGIN, { replace: true });
       } else if (permission === Roles.ADMIN) {
         navigate(Paths.DASHBOARD, { replace: true });
+      } else if (permission === Roles.CONSTRUCTOR) {
+        navigate(Paths.CONSTRUCTOR_MAIN_PAGE, { replace: true });
       }
 
       form.reset();

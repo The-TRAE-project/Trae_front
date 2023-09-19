@@ -3,18 +3,18 @@ import { Menu } from '@mantine/core';
 import { UseFormReturnType } from '@mantine/form';
 
 import { EmployeeReportFormValues } from '../../../../../store/apis/reports/types';
-import { EmployeeShortInfo } from '../../../../../store/apis/employee/types';
+import { EmployeesShortInfo } from '../../../../../store/apis/employee/types';
 import { selectOnlyIds } from '../../../../../helpers/selectOnlyIds';
 import MenuItem from '../../../../FilterMenu/MenuItem';
 import {
   ErrorMessage,
   SelectArrow,
   SelectDisplayInput,
-  SelectLabel,
   SelectWrapper,
 } from '../../../../styles';
 import {
   SelectAllTitle,
+  SelectLabel,
   SelectedEmployee,
   useEmployeeSelectMenuStyles,
 } from './styles';
@@ -24,13 +24,13 @@ interface Props {
     EmployeeReportFormValues,
     (values: EmployeeReportFormValues) => EmployeeReportFormValues
   >;
-  employees: EmployeeShortInfo[];
+  employees: EmployeesShortInfo[];
 }
 
 const EmployeeSelect = ({ form, employees }: Props) => {
   const [opened, setOpened] = useState<boolean>(false);
   const [selectedEmployees, setSelectedEmployees] = useState<
-    EmployeeShortInfo[]
+    EmployeesShortInfo[]
   >([]);
 
   const {
@@ -40,13 +40,13 @@ const EmployeeSelect = ({ form, employees }: Props) => {
   const { employeeIds } = form.values;
   const isAllSelected = employeeIds.length === employees.length;
 
-  const handleSetEmployeeIds = (employee: EmployeeShortInfo) => {
+  const handleSetEmployeeIds = (employee: EmployeesShortInfo) => {
     form.setFieldValue('employeeIds', []);
-    if (!selectedEmployees.includes(employee)) {
+    if (!selectedEmployees.find((it) => it.id === employee.id)) {
       const newEmployees = [...selectedEmployees, employee];
       setSelectedEmployees(newEmployees);
       form.setFieldValue('employeeIds', selectOnlyIds(newEmployees));
-    } else if (selectedEmployees.includes(employee)) {
+    } else if (selectedEmployees.find((it) => it.id === employee.id)) {
       const filteredEmployees =
         selectedEmployees?.filter((it) => it.id !== employee.id) || [];
       form.setFieldValue('employeeIds', selectOnlyIds(filteredEmployees));
@@ -59,7 +59,7 @@ const EmployeeSelect = ({ form, employees }: Props) => {
 
   return (
     <SelectWrapper>
-      <SelectLabel>Сотрудники</SelectLabel>
+      <SelectLabel>Сотрудник</SelectLabel>
       <Menu
         opened={opened}
         onChange={setOpened}
@@ -101,7 +101,10 @@ const EmployeeSelect = ({ form, employees }: Props) => {
               key={employee.id}
               title={`${employee.firstName} ${employee.lastName}`}
               onClick={() => handleSetEmployeeIds(employee)}
-              isActive={selectedEmployees.includes(employee) && !isAllSelected}
+              isActive={
+                !!selectedEmployees.find((it) => it.id === employee.id) &&
+                !isAllSelected
+              }
             />
           ))}
         </Menu.Dropdown>

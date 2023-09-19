@@ -146,6 +146,7 @@ const StageSelect = ({ form, isSuccess }: Props) => {
                   ids={ids}
                   additionalOperations={additionalOperations}
                   setAdditionalOperations={setAdditionalOperations}
+                  selectedOperations={selectedOperations}
                 />
               ))}
           </Stack>

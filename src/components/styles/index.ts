@@ -96,12 +96,6 @@ export const WrapperGradientGreen = styled.section.attrs(
   })
 )`
   min-height: ${(props) => props.$size};
-  background: linear-gradient(
-    264.53deg,
-    var(--gradient-green1) 2.46%,
-    var(--gradient-green2) 70.65%
-  );
-  overflow: auto;
 
   @media ${({ theme }) => theme.bp.bpLarge} {
     padding: 108px 0 40px;
@@ -112,19 +106,19 @@ export const WrapperGradientGreen = styled.section.attrs(
   }
 
   @media (min-width: 1600px) {
-    padding: 120px 0 55px;
+    padding: 120px 0 50px;
   }
 
   @media (min-width: 1750px) {
-    padding: 130px 0 65px;
+    padding: 130px 0 55px;
   }
 
   @media (min-width: 1850px) {
-    padding: 140px 0 75px;
+    padding: 140px 0 60px;
   }
 
   @media ${({ theme }) => theme.bp.bpXlarge} {
-    padding: 148px 0 80px;
+    padding: 148px 0 65px;
   }
 `;
 
@@ -315,6 +309,7 @@ export const useModalStyles = createStyles(() => ({
 
   header: {
     marginBottom: 4,
+    position: 'relative',
   },
 
   title: {
@@ -433,9 +428,10 @@ export const SelectLabel = styled.p`
 
 type SelectDisplayInputProps = {
   $isFs28?: boolean;
+  $disabled?: boolean;
 };
 
-export const SelectDisplayInput = styled.div`
+export const SelectDisplayInput = styled.div<SelectDisplayInputProps>`
   position: relative;
   min-height: 73px;
   ${({ theme }) => theme.mixins.center};
@@ -443,16 +439,16 @@ export const SelectDisplayInput = styled.div`
   column-gap: 22px;
   row-gap: 16px;
   padding: 11px 84px 11px 22px;
-  background: var(--white);
   border-radius: var(--border-radius);
-
+  background: ${(props) =>
+    props.$disabled ? 'var(--gray-shadow)' : 'var(--white);'};
   input {
     display: none;
   }
 
   p {
     font-family: var(--font-roboto);
-    ${(props: SelectDisplayInputProps) =>
+    ${(props) =>
       props.$isFs28
         ? css`
             ${({ theme }) => theme.mixins.fontSize28};
@@ -468,12 +464,14 @@ export const SelectDisplayInput = styled.div`
 
 type SelectArrowProps = {
   $isOpen?: boolean;
+  $isDisabled?: boolean;
 };
 
 export const SelectArrow = styled(IoIosArrowUp)`
   position: absolute;
   right: 29px;
   transform: ${(props: SelectArrowProps) =>
-    props.$isOpen ? 'rotate(180deg)' : 'rotate(0)'};
-  color: var(--white-black);
+    props.$isOpen && !props.$isDisabled ? 'rotate(0)' : 'rotate(180deg)'};
+  color: ${(props: SelectArrowProps) =>
+    props.$isDisabled ? 'var(--white)' : 'var(--white-black)'};
 `;

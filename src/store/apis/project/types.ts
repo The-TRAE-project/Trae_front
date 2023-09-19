@@ -1,5 +1,6 @@
 import { z } from 'zod';
 
+import dayjs from 'dayjs';
 import { RegEx } from '../../../constants/regex';
 import { Roles } from '../../slices/auth/types';
 
@@ -48,14 +49,19 @@ export const CreateProjectSchema = z.object({
   comment: z
     .string()
     .max(1000, { message: 'Комментарий должен быть не больше 1000 символов' })
-    .nullable(),
+    .nullable()
+    .optional(),
   operations: OperationSchema.array().min(1, {
     message: 'Пожалуйста, выберите тип работ',
   }),
-  plannedEndDate: z.date({
-    required_error: 'Пожалуйста, выберите дату',
-    invalid_type_error: 'Не правильный формат даты',
-  }),
+  plannedEndDate: z
+    .date({
+      required_error: 'Пожалуйста, выберите дату',
+      invalid_type_error: 'Не правильный формат даты',
+    })
+    .refine((plannedEndDate) => dayjs(plannedEndDate).diff(dayjs()) >= 0, {
+      message: 'Пожалуйста выберите дату в будущем',
+    }),
 });
 
 export type CreateProjectFormValues = z.infer<typeof CreateProjectSchema>;
@@ -273,4 +279,29 @@ export interface ProjectStage {
   inWork: boolean;
   employeeFirstName: null | string;
   employeeLastName: null | string;
+}
+
+export interface ProjectsShortInfo {
+  projectId: number;
+  number: number;
+}
+
+export interface ProjectsShortInfoParams {
+  employeeIds: string;
+  operationIds: string;
+  startOfPeriod: string;
+  endOfPeriod: string;
+}
+
+export interface OperationsShortInfo {
+  name: string;
+  operationId: number;
+  projectNumber: number;
+}
+
+export interface OperationsShortInfoParams {
+  employeeIds: string;
+  projectIds: string;
+  startOfPeriod: string;
+  endOfPeriod: string;
 }

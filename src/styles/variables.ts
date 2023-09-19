@@ -30,6 +30,7 @@ const variables = css`
     --gray-shadow: rgba(255, 255, 255, 0.2);
 
     --font-roboto: 'Roboto', sans-serif;
+    --font-raleway: 'Raleway', sans-serif;
     --fz-xxs: 12px;
     --fz-xs: 13px;
     --fz-sm: 14px;

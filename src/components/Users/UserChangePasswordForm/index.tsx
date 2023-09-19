@@ -16,11 +16,12 @@ import InformModal from '../../InformModal';
 import TextInput from '../../TextInput';
 import FormHeader from '../../FormHeader';
 import { FormWrapper, InformModalText } from '../../styles';
+import { Roles } from '../../../store/slices/auth/types';
 
 const UserChangePasswordForm = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
-  const { username } = useAppSelector((store) => store.auth);
+  const { username, permission } = useAppSelector((store) => store.auth);
   const navigate = useNavigate();
 
   const [editUser, { data: editedUser, isLoading: isEditLoading, isSuccess }] =
@@ -64,12 +65,25 @@ const UserChangePasswordForm = () => {
 
   useOpenModal(setIsOpen, isSuccess);
 
-  const navigateBack = () => navigate(Paths.PERSONAL_CABINET);
+  const navigateBack = () => {
+    if (permission === Roles.ADMIN) {
+      navigate(Paths.PERSONAL_CABINET);
+    } else if (permission === Roles.CONSTRUCTOR) {
+      navigate(Paths.CONSTRUCTOR_PERSONAL_CABINET);
+    }
+  };
 
   const closeModal = () => {
     setIsOpen(false);
     navigateBack();
   };
+
+  let backPath = '';
+  if (permission === Roles.ADMIN) {
+    backPath = Paths.PERSONAL_CABINET;
+  } else if (permission === Roles.CONSTRUCTOR) {
+    backPath = Paths.CONSTRUCTOR_PERSONAL_CABINET;
+  }
 
   return (
     <>
@@ -77,7 +91,7 @@ const UserChangePasswordForm = () => {
         isOpen={isOpen}
         onClose={closeModal}
         title="Изменения сохранены"
-        backPath={Paths.PERSONAL_CABINET}
+        backPath={backPath}
       >
         <InformModalText>
           Новый пароль : <strong>{editedUser?.password}</strong>

@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const Wrapper = styled.header`
   position: fixed;
-  width: 100%;
+  width: 100vw;
   z-index: 500;
 
   @media ${({ theme }) => theme.bp.bpLarge} {

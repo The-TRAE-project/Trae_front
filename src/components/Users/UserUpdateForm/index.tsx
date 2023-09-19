@@ -30,11 +30,12 @@ import {
 } from '../../styles';
 import { useSetDefaultValues } from './helpers/useSetDefaultValues';
 import { compareValues } from './helpers/compareValues';
+import { Roles } from '../../../store/slices/auth/types';
 
 const UserUpdateForm = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
-  const { username } = useAppSelector((store) => store.auth);
+  const { username, permission } = useAppSelector((store) => store.auth);
   const navigate = useNavigate();
 
   const { data: user, isLoading: isGetLoading } =
@@ -86,12 +87,25 @@ const UserUpdateForm = () => {
     checkForEquality(middleName, user?.middleName) &&
     checkForEquality(phone, user?.phone);
 
-  const navigateBack = () => navigate(Paths.PERSONAL_CABINET);
+  const navigateBack = () => {
+    if (permission === Roles.ADMIN) {
+      navigate(Paths.PERSONAL_CABINET);
+    } else if (permission === Roles.CONSTRUCTOR) {
+      navigate(Paths.CONSTRUCTOR_PERSONAL_CABINET);
+    }
+  };
 
   const closeModal = () => {
     setIsOpen(false);
     navigateBack();
   };
+
+  let backPath = '';
+  if (permission === Roles.ADMIN) {
+    backPath = Paths.PERSONAL_CABINET;
+  } else if (permission === Roles.CONSTRUCTOR) {
+    backPath = Paths.CONSTRUCTOR_PERSONAL_CABINET;
+  }
 
   const handlePaste = (value: string) => form.setFieldValue('phone', value);
 
@@ -101,7 +115,7 @@ const UserUpdateForm = () => {
         isOpen={isOpen}
         onClose={closeModal}
         title="Изменения сохранены"
-        backPath={Paths.PERSONAL_CABINET}
+        backPath={backPath}
       >
         <Stack spacing={20}>
           {!!editedUser && (

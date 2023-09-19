@@ -28,6 +28,13 @@ export const EmployeeReportSchema = z
     {
       message: 'Пожалуйста выберите промежуток больше недели',
     }
+  )
+  .refine(
+    (schema) =>
+      dayjs(schema.startOfPeriod).diff(dayjs(schema.endOfPeriod), 'd') >= -365,
+    {
+      message: 'Пожалуйста выберите промежуток меньше года',
+    }
   );
 
 export type EmployeeReportFormValues = z.infer<typeof EmployeeReportSchema>;
@@ -80,6 +87,13 @@ export const ProjectReportSchema = z
     {
       message: 'Пожалуйста выберите промежуток больше недели',
     }
+  )
+  .refine(
+    (schema) =>
+      dayjs(schema.startOfPeriod).diff(dayjs(schema.endOfPeriod), 'd') >= -365,
+    {
+      message: 'Пожалуйста выберите промежуток меньше года',
+    }
   );
 
 export type ProjectReportFormValues = z.infer<typeof ProjectReportSchema>;
@@ -126,4 +140,77 @@ export interface DashboardReport {
   countOverdueProjects: number;
   countProjectsWithLastOpReadyToAcceptance: number;
   countProjectsWithOverdueCurrentOperation: number;
+}
+
+export const DeadlineReportSchema = z.object({
+  startOfPeriod: z.date().optional(),
+  endOfPeriod: z.date().optional(),
+  isDatesActive: z.boolean(),
+  firstParameter: z
+    .object({
+      id: z.string(),
+      value: z.string(),
+    })
+    .array(),
+  secondParameter: z
+    .object({
+      id: z.string(),
+      value: z.string(),
+    })
+    .array(),
+  thirdParameter: z
+    .object({
+      id: z.string(),
+      value: z.string(),
+    })
+    .array(),
+  valueOfFirstParameter: z
+    .object({
+      id: z.number(),
+      value: z.union([z.string(), z.number()]),
+    })
+    .array(),
+  valuesOfSecondParameter: z
+    .object({
+      id: z.number(),
+      value: z.union([z.string(), z.number()]),
+    })
+    .array(),
+  valuesOfThirdParameter: z
+    .object({
+      id: z.number(),
+      value: z.union([z.string(), z.number()]),
+    })
+    .array(),
+});
+
+export type DeadlinesReportFormValues = z.infer<typeof DeadlineReportSchema>;
+
+export interface ParameterData {
+  id: number | string;
+  value: number | string;
+}
+
+export interface ParamsForDeadlinesReports {
+  firstParameter: string;
+  secondParameter: string;
+  thirdParameter: string;
+  valueOfFirstParameter: number;
+  valuesOfSecondParameter: number[];
+  valuesOfThirdParameter: number[];
+}
+
+export interface DeadlinesReport {
+  firstRespId: number;
+  firstRespValue: string;
+  secondRespValues: {
+    secondRespId: number;
+    secondRespValue: string;
+    thirdRespValues: {
+      plannedEndDate: number[];
+      realEndDate: number[];
+      thirdRespId: number;
+      thirdRespValue: string;
+    }[];
+  }[];
 }

@@ -17,11 +17,14 @@ import {
   ContentStack,
   WrapperGradientGreen,
 } from '../../components/styles';
+import { Roles } from '../../store/slices/auth/types';
+import { useAppSelector } from '../../helpers/hooks/useAppSelector';
 
 const PersonalCabinet = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { removeAccessCookie } = useAccessCookies();
+  const { permission } = useAppSelector((store) => store.auth);
 
   const handleLogout = async () => {
     await dispatch(logoutUser());
@@ -34,8 +37,13 @@ const PersonalCabinet = () => {
     navigate(Paths.LOGIN, { replace: true });
   };
 
-  const navigateToChangePassword = () =>
-    navigate(Paths.PERSONAL_CABINET_CHANGE_PASSWORD);
+  const navigateToChangePassword = () => {
+    if (permission === Roles.ADMIN) {
+      navigate(Paths.PERSONAL_CABINET_CHANGE_PASSWORD);
+    } else if (permission === Roles.CONSTRUCTOR) {
+      navigate(Paths.CONSTRUCTOR_PERSONAL_CABINET_CHANGE_PASSWORD);
+    }
+  };
 
   return (
     <>

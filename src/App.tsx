@@ -49,6 +49,9 @@ const ProjectNewStage = lazy(() => import('./pages/ProjectNewStage'));
 const Reports = lazy(() => import('./pages/Reports'));
 const ReportsByEmployees = lazy(() => import('./pages/ReportsByEmployees'));
 const ReportsByProjects = lazy(() => import('./pages/ReportsByProjects'));
+const ReportsByDeadlines = lazy(() => import('./pages/ReportsByDeadlines'));
+
+const ConstructorMainPage = lazy(() => import('./pages/ConstructorMainPage'));
 
 const App = () => {
   const { isLoggedIn } = useAppSelector((store) => store.employee);
@@ -59,7 +62,6 @@ const App = () => {
       <Suspense fallback={<FullPageLoader />}>
         <Routes>
           <Route path={Paths.LOGIN} element={<Login />} />
-          <Route path="*" element={<Navigate to={Paths.LOGIN} replace />} />
 
           {/* Admin routes */}
           <Route
@@ -80,6 +82,10 @@ const App = () => {
             <Route
               path={Paths.REPORTS_BY_PROJECTS}
               element={<ReportsByProjects />}
+            />
+            <Route
+              path={Paths.REPORTS_BY_DEADLINES}
+              element={<ReportsByDeadlines />}
             />
 
             <Route
@@ -161,6 +167,10 @@ const App = () => {
               path={Paths.PERSONAL_CABINET_CHANGE_PASSWORD}
               element={<PersonalCabinetChangePassword />}
             />
+            <Route
+              path="*"
+              element={<Navigate to={Paths.DASHBOARD} replace />}
+            />
           </Route>
 
           {/* Employee routes */}
@@ -195,7 +205,51 @@ const App = () => {
                 element={<EmployeeStagesInWork />}
               />
             </Route>
+
+            <Route
+              path="*"
+              element={<Navigate to={Paths.EMPLOYEE_LOGIN} replace />}
+            />
           </Route>
+
+          {/* Constructor routes */}
+          <Route
+            element={
+              <ProtectedRoute
+                isAllowed={permission === Roles.CONSTRUCTOR}
+                redirectPath={Paths.LOGIN}
+              />
+            }
+          >
+            <Route
+              path={Paths.CONSTRUCTOR_MAIN_PAGE}
+              element={<ConstructorMainPage />}
+            />
+            <Route
+              path={Paths.CONSTRUCTOR_CREATE_PROJECT}
+              element={<CreateProject />}
+            />
+
+            <Route
+              path={Paths.CONSTRUCTOR_PERSONAL_CABINET}
+              element={<PersonalCabinet />}
+            />
+            <Route
+              path={Paths.CONSTRUCTOR_PERSONAL_CABINET_EDITING}
+              element={<PersonalCabinetEditing />}
+            />
+            <Route
+              path={Paths.CONSTRUCTOR_PERSONAL_CABINET_CHANGE_PASSWORD}
+              element={<PersonalCabinetChangePassword />}
+            />
+
+            <Route
+              path="*"
+              element={<Navigate to={Paths.CONSTRUCTOR_MAIN_PAGE} replace />}
+            />
+          </Route>
+
+          <Route path="*" element={<Navigate to={Paths.LOGIN} replace />} />
         </Routes>
       </Suspense>
     </Layout>

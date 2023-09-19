@@ -171,6 +171,7 @@ function constructTableColumns(dateStart: number[], dateEnd: number[]) {
                 isOverdue={info.getValue().isOverdue}
                 inWork={info.getValue().inWork}
                 readyToAcceptance={info.getValue().readyToAcceptance}
+                isOverlapping={info.getValue().isOverlapping}
                 projectId={info.getValue().projectId}
                 length={info.getValue().length}
                 name={info.getValue().name}

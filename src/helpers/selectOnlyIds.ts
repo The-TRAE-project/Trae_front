@@ -1,4 +1,2 @@
-import { EmployeeShortInfo } from '../store/apis/employee/types';
-
-export const selectOnlyIds = (data: EmployeeShortInfo[]) =>
+export const selectOnlyIds = (data: { id: number }[]) =>
   data.map((item) => item.id);

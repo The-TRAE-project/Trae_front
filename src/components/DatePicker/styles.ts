@@ -1,4 +1,5 @@
 import { createStyles } from '@mantine/core';
+import styled from 'styled-components';
 
 export const useDateInputStyles = createStyles(() => ({
   root: {
@@ -9,9 +10,9 @@ export const useDateInputStyles = createStyles(() => ({
       padding: '24px 20px',
       borderRadius: 'var(--border-radius)',
       boxShadow: '0px 4px 4px var(--black-shadow)',
-      position: 'relative',
+      position: 'absolute',
       left: '0px !important',
-      top: '25px !important',
+      top: '130px !important',
     },
   },
 
@@ -30,6 +31,16 @@ export const useDateInputStyles = createStyles(() => ({
 
     '&::focus': {
       outline: 'none',
+    },
+
+    ':disabled': {
+      background: 'var(--gray-shadow)',
+      opacity: '1',
+      color: 'rgba(0,0,0,0) !important',
+
+      '> span': {
+        color: 'inherit',
+      },
     },
   },
 
@@ -130,3 +141,7 @@ export const useIndicatorStyles = createStyles(() => ({
     borderRadius: '6px !important',
   },
 }));
+
+export const Wrapper = styled.div`
+  position: relative;
+`;

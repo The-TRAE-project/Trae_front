@@ -8,7 +8,6 @@ import 'dayjs/locale/ru';
 
 import { Roles } from '../../store/slices/auth/types';
 import { useAppSelector } from '../../helpers/hooks/useAppSelector';
-import { useNavigateLoggedInUser } from '../../helpers/hooks/useNavigateLoggedInUser';
 import { useClearLocalStorageByPath } from '../../helpers/hooks/useClearLocalStorageByPath';
 import { Paths } from '../../constants/paths';
 import GlobalStyles from '../../styles/GlobalStyles';
@@ -16,6 +15,7 @@ import theme from '../../styles/theme';
 import EmployeeHeader from './EmployeeHeader';
 import Header from './Header';
 import { ContentWrapper, Wrapper } from './styles';
+import { ConstructorHeader } from './ConstructorHeader';
 
 type Props = {
   children: ReactNode;
@@ -25,8 +25,26 @@ const Layout = ({ children }: Props) => {
   const location = useLocation();
   const { permission, isLoggedIn } = useAppSelector((store) => store.auth);
 
-  useNavigateLoggedInUser();
   useClearLocalStorageByPath();
+
+  let header;
+
+  switch (permission) {
+    case Roles.EMPLOYEE:
+      header = <EmployeeHeader />;
+      break;
+    case Roles.ADMIN:
+      header = <Header />;
+      break;
+    case Roles.CONSTRUCTOR:
+      header =
+        location.pathname === Paths.CONSTRUCTOR_MAIN_PAGE ? (
+          <ConstructorHeader />
+        ) : null;
+      break;
+    default:
+      header = '';
+  }
 
   return (
     <ThemeProvider theme={theme}>
@@ -49,9 +67,7 @@ const Layout = ({ children }: Props) => {
           <Notifications />
           <GlobalStyles />
           <Wrapper>
-            {location.pathname !== Paths.LOGIN &&
-              isLoggedIn &&
-              (permission === Roles.EMPLOYEE ? <EmployeeHeader /> : <Header />)}
+            {location.pathname !== Paths.LOGIN && isLoggedIn && header}
             <ContentWrapper>{children}</ContentWrapper>
           </Wrapper>
         </DatesProvider>

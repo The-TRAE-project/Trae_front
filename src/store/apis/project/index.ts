@@ -1,4 +1,5 @@
 import { baseApi } from '..';
+import { buildParams } from '../../../helpers/buildParams';
 import { FilteredResponse } from '../types';
 import {
   CreateProjectFormValues,
@@ -16,6 +17,10 @@ import {
   ProjectStage,
   ProjectBriefInfo,
   CloseProjectStageValue,
+  ProjectsShortInfo,
+  ProjectsShortInfoParams,
+  OperationsShortInfo,
+  OperationsShortInfoParams,
 } from './types';
 
 const projectTags = baseApi.enhanceEndpoints({
@@ -78,6 +83,35 @@ const projectApi = projectTags.injectEndpoints({
       providesTags: ['Projects', 'Project'],
     }),
 
+    getProjectsInfo: build.query<ProjectsShortInfo[], ProjectsShortInfoParams>({
+      query: (query) => {
+        const params = buildParams({
+          employeeIds: query.employeeIds,
+          operationIds: query.operationIds,
+          startOfPeriod: query.startOfPeriod,
+          endOfPeriod: query.endOfPeriod,
+        });
+        return `/project/projects/list${params}`;
+      },
+      providesTags: ['Projects', 'Project'],
+    }),
+
+    getOperationsInfo: build.query<
+      OperationsShortInfo[],
+      OperationsShortInfoParams
+    >({
+      query: (query) => {
+        const params = buildParams({
+          employeeIds: query.employeeIds,
+          projectIds: query.projectIds,
+          startOfPeriod: query.startOfPeriod,
+          endOfPeriod: query.endOfPeriod,
+        });
+        return `/operation/operations/list${params}`;
+      },
+      providesTags: ['Projects', 'Project'],
+    }),
+
     editProject: build.mutation<
       UpdateProjectFormValues,
       UpdateProjectFormValues
@@ -136,6 +170,7 @@ const projectApi = projectTags.injectEndpoints({
       },
       invalidatesTags: ['Projects'],
     }),
+
     // Terminal Workshop
     getStagesInWorkByEmployeeId: build.query<StageInWork[], number>({
       query: (employeeId) =>
@@ -186,6 +221,8 @@ export const {
   useCloseProjectOperationMutation,
   useGetProjectsQuery,
   useSearchProjectsQuery,
+  useGetProjectsInfoQuery,
+  useGetOperationsInfoQuery,
   useEditProjectMutation,
   useEditProjectEndDateMutation,
   useCloseProjectMutation,

@@ -10,12 +10,7 @@ export const calculateDeviation = (
 
   const plannedEndDate = convertToDayjs(plannedEnd);
   const realEndDate = convertToDayjs(realEnd);
-  let deviation = 0;
-  if (plannedEndDate.isBefore(realEndDate)) {
-    deviation = plannedEndDate.diff(realEndDate, 'd');
-  } else {
-    deviation = realEndDate.diff(plannedEndDate, 'd');
-  }
+  const deviation = plannedEndDate.diff(realEndDate, 'd');
 
   return deviation;
 };
