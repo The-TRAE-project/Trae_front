@@ -12,6 +12,7 @@ import {
   DeadlineReportSchema,
   DeadlinesReportFormValues,
 } from '../../../store/apis/reports/types';
+import { prepareToExcel } from './helpers/prepareToExcel';
 
 export function ByDeadlines() {
   const [queryParams, setQueryParams] = useState<DeadlinesReportFormValues>({
@@ -74,7 +75,16 @@ export function ByDeadlines() {
   const handleExportToExcel = () => {
     if (!reportsByDeadlines) return;
 
-    exportToExcel('', 'Отчеты по срокам', 'Deadlines');
+    exportToExcel(
+      prepareToExcel({
+        reportsByDeadlines,
+        firstParameter: form.values.firstParameter[0].value,
+        secondParameter: form.values.secondParameter[0].value,
+        thirdParameter: form.values.thirdParameter[0].value,
+      }),
+      'Отчеты по срокам',
+      'Deadlines'
+    );
   };
 
   const isReportExist = !!reportsByDeadlines;

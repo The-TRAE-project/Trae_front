@@ -5,8 +5,11 @@ export function useExportToExcel() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const exportToExcel = async (
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    data: any,
+    data: {
+      header: string[][] | string[];
+      body: (string | number | null)[][];
+      styles: (string | number | null)[][];
+    },
     fileName: string,
     type: 'Employees' | 'Projects' | 'Deadlines'
   ) => {
@@ -23,18 +26,23 @@ export function useExportToExcel() {
       },
     });
 
-    switch (type) {
-      case 'Employees':
-        workSheet.addRows(data.header);
-        workSheet.addRows(data.body);
-        break;
-      case 'Projects':
-        break;
-      case 'Deadlines':
-        break;
-      default:
-        break;
-    }
+    workSheet.addRows(data.header);
+    workSheet.addRows(data.body);
+
+    // switch (type) {
+    //   case 'Employees':
+    //     break;
+    //   case 'Projects':
+    //     workSheet.addRows(data.header);
+    //     workSheet.addRows(data.body);
+    //     break;
+    //   case 'Deadlines':
+    //     workSheet.addRows(data.header);
+    //     workSheet.addRows(data.body);
+    //     break;
+    //   default:
+    //     break;
+    // }
     // TODO add parameters as second argumant
     const buffer = await workBook.xlsx.writeBuffer();
 

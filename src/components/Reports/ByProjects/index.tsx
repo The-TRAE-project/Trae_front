@@ -18,6 +18,7 @@ import {
 import FormHeader from '../FormHeader';
 import FormBody from './FormBody';
 import { ReportTable } from './ReportTable';
+import { prepareToExcel } from './helpers/prepareToExcel';
 
 const ByProjects = () => {
   const [startDate, setStartDate] = useState<string | null>(null);
@@ -65,7 +66,17 @@ const ByProjects = () => {
   const handleExportToExcel = () => {
     if (!reportsByProjects) return;
 
-    exportToExcel(reportsByProjects, 'Отчеты по проектам', 'Projects');
+    exportToExcel(
+      prepareToExcel({
+        sortType,
+        dateStart: reportsByProjects.startPeriod,
+        dateEnd: reportsByProjects.endPeriod,
+        projects: reportsByProjects.projectsForReportDtoList,
+        dateOfReportFormation: reportsByProjects.dateOfReportFormation,
+      }),
+      'Отчеты по проектам',
+      'Projects'
+    );
   };
 
   const isReportExist =
@@ -79,7 +90,7 @@ const ByProjects = () => {
         isFormBtnLoading={isFetching || isGetLoading}
         isFormBtnDisabled={isFetching || isGetLoading}
         isExportToExcelLoading={isExcelExportLoading}
-        isExportToExcelBtnDisabled
+        isExportToExcelBtnDisabled={!isReportExist}
         onExportToExcel={handleExportToExcel}
       />
 
