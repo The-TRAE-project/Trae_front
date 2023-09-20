@@ -95,10 +95,10 @@ const Projects = () => {
       isOverdueCurrentOpInProject: paramIsCurrentOpOverdue
         ? `&isOverdueCurrentOpInProject=${paramIsCurrentOpOverdue}`
         : '',
-      isOnlyFirstOpReadyToAcceptance: paramIsFirstNoAcceptance // TODO wrong name
+      isOnlyFirstOpReadyToAcceptance: paramIsFirstNoAcceptance
         ? `&isOnlyFirstOpReadyToAcceptance=${paramIsFirstNoAcceptance}`
         : '',
-      isOnlyLastOpReadyToAcceptance: paramIsLastInWork // TODO wrong name
+      isOnlyLastOpReadyToAcceptance: paramIsLastInWork
         ? `&isOnlyLastOpReadyToAcceptance=${paramIsLastInWork}`
         : '',
       isOverdueProject: paramIsCurrentPrOverdue

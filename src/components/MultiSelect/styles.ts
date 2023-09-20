@@ -1,5 +1,5 @@
 import { createStyles } from '@mantine/core';
-// TODO: better handling of focue and dropdown position
+// TODO: better handling of focus and dropdown position
 export const useMultiSelectStyles = createStyles(() => ({
   dropdown: {
     width: 357,
