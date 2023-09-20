@@ -35,7 +35,6 @@ const Menu = ({
     onClick?.();
   };
 
-  // TODO: button title to the left, add arrow
   return (
     <MantineMenu
       closeOnItemClick={closeOnItemClick}
