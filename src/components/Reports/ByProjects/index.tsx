@@ -21,14 +21,19 @@ import { ReportTable } from './ReportTable';
 import { prepareToExcel } from './helpers/prepareToExcel';
 
 const ByProjects = () => {
-  const [startDate, setStartDate] = useState<string | null>(null);
-  const [endDate, setEndDate] = useState<string | null>(null);
   const [sortType, setSortType] = useState<SortingState>([
     {
       id: 'contractDate',
       desc: false,
     },
   ]);
+  const [queryParams, setQueryParams] = useState<
+    | {
+        startOfPeriod: string;
+        endOfPeriod: string;
+      }
+    | undefined
+  >(undefined);
 
   const form = useForm<ProjectReportFormValues>({
     initialValues: {
@@ -48,19 +53,25 @@ const ByProjects = () => {
     isFetching,
   } = useGetProjectsReportsQuery(
     {
-      startOfPeriod: startDate ? `?startOfPeriod=${startDate}` : '',
-      endOfPeriod: endDate ? `&endOfPeriod=${endDate}` : '',
+      startOfPeriod: queryParams?.startOfPeriod
+        ? `?startOfPeriod=${queryParams.startOfPeriod}`
+        : '',
+      endOfPeriod: queryParams?.endOfPeriod
+        ? `&endOfPeriod=${queryParams.endOfPeriod}`
+        : '',
     },
     {
-      skip: !startDate && !endDate && !form.isValid(),
+      skip: !queryParams || !form.isValid(),
     }
   );
 
   const { isLoading: isExcelExportLoading, exportToExcel } = useExportToExcel();
 
   const handleSubmit = (values: ProjectReportFormValues) => {
-    setStartDate(formatToQueryParamDate(values.startOfPeriod));
-    setEndDate(formatToQueryParamDate(values.endOfPeriod));
+    setQueryParams({
+      startOfPeriod: formatToQueryParamDate(values.startOfPeriod),
+      endOfPeriod: formatToQueryParamDate(values.endOfPeriod),
+    });
   };
 
   const handleExportToExcel = () => {
@@ -83,6 +94,9 @@ const ByProjects = () => {
     !!reportsByProjects &&
     reportsByProjects.projectsForReportDtoList.length > 0;
 
+  const showBody = !!queryParams && form.isValid();
+  const showTable = !isGetLoading && !isFetching && isReportExist;
+
   return (
     <FormWrapper onSubmit={form.onSubmit(handleSubmit)}>
       <FormHeader
@@ -102,10 +116,8 @@ const ByProjects = () => {
           setSortType={setSortType}
         />
 
-        {startDate &&
-          endDate &&
-          form.isValid() &&
-          (!isGetLoading && !isFetching && isReportExist ? (
+        {showBody &&
+          (showTable ? (
             <ReportTable
               sortType={sortType}
               dateStart={reportsByProjects.startPeriod}

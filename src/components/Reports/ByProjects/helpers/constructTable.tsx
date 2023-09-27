@@ -8,17 +8,13 @@ import dayjs from 'dayjs';
 import { ProjectsReportTableData } from '../ReportTable';
 import { convertMonthToString } from '../../../../helpers/convertMonthToString';
 import { convertToString } from '../../../../helpers/convertToString';
-import {
-  TableDayHeader,
-  TableMonthHeader,
-  TableStickyCellContent,
-} from '../ReportTable/styles';
 import { getDatesBetween } from '../../helpers/getDatesBetween';
 import { calculateDeviation } from '../../helpers/calculateDeviation';
 import { getCeilLength } from './getCeilLength';
 import { getOperationStartDate } from './getOperationStartDate';
 import { convertToDayjs } from '../../../../helpers/convertToDayjs';
 import { DateCell } from '../ReportTable/DateCell/DateCell';
+import styles from '../ReportTable/ReportTable.module.scss';
 
 export interface OperationCellInfo {
   projectId: number;
@@ -61,6 +57,7 @@ function constructTableData(data: ProjectsReportTableData) {
       operationPeriod,
       operations,
     } = project;
+    const endDateInContractAsString = convertToString(endDateInContract);
 
     const deviation = calculateDeviation(endDateInContract, realEndDate);
 
@@ -69,12 +66,13 @@ function constructTableData(data: ProjectsReportTableData) {
     );
     let isOverdueByOperations = false;
 
-    const tableOperationsData: [string, Partial<OperationCellInfo>][] =
-      getDatesBetween(data.dateStart, data.dateEnd).map((date) => {
-        const isEndDateInContract = convertToString(endDateInContract) === date;
+    const row: TableData = {};
 
-        return [date, { isEndDateInContract, projectId }];
-      });
+    getDatesBetween(data.dateStart, data.dateEnd).forEach((date) => {
+      const isEndDateInContract = endDateInContractAsString === date;
+
+      row[date] = { isEndDateInContract, projectId };
+    });
 
     operations.forEach((currentOperation, operationIndex) => {
       const isOverdue =
@@ -98,17 +96,15 @@ function constructTableData(data: ProjectsReportTableData) {
       isOverdueByOperations = isOverdue ? true : isOverdueByOperations;
       const startDate = getOperationStartDate(data.dateStart, currentOperation);
 
-      const index = tableOperationsData.findIndex(
-        (cell) => cell[0] === startDate
-      );
+      const isInReport = row[startDate] !== undefined;
 
-      if (index >= 0) {
-        const isEndDateInContract =
-          convertToString(endDateInContract) === tableOperationsData[index][0];
+      if (isInReport) {
+        const isEndDateInContract = endDateInContractAsString === startDate;
 
-        const isOverlapping = tableOperationsData[index][1].id !== undefined;
+        const isOverlapping =
+          (row[startDate] as Partial<OperationCellInfo>).id !== undefined;
 
-        tableOperationsData[index][1] = {
+        row[startDate] = {
           isEndDateInContract,
           projectId,
           id: currentOperation.id,
@@ -122,8 +118,6 @@ function constructTableData(data: ProjectsReportTableData) {
         };
       }
     });
-
-    const row: TableData = Object.fromEntries(tableOperationsData);
 
     row.name = name;
     row.number = { number, isOverdueByOperations, isOverdueByProject };
@@ -162,7 +156,13 @@ function constructTableColumns(dateStart: number[], dateEnd: number[]) {
           const currentCell = {
             accessorKey: currentDate.format('YYYY-MM-DD'),
             header: () => (
-              <TableDayHeader $isToday={isToday}>{currentDay}</TableDayHeader>
+              <div
+                className={`${styles.table__header_day} ${
+                  isToday ? styles.table__header_day__today : ''
+                }`}
+              >
+                {currentDay}
+              </div>
             ),
             cell: (info: CellContext<TableData, OperationCellInfo>) => (
               <DateCell
@@ -186,9 +186,9 @@ function constructTableColumns(dateStart: number[], dateEnd: number[]) {
       result.push({
         id: `${currentYear}-${currentMonth}`,
         header: () => (
-          <TableMonthHeader>
+          <div className={styles.table__header_month}>
             {convertMonthToString(currentMonth)}
-          </TableMonthHeader>
+          </div>
         ),
         columns: columnsForDays,
       });
@@ -201,7 +201,7 @@ function constructTableColumns(dateStart: number[], dateEnd: number[]) {
 
   const columns = [
     columnHelper.accessor('number', {
-      header: () => <TableStickyCellContent>№</TableStickyCellContent>,
+      header: () => <div className={styles.table__stickyCell}>№</div>,
       id: 'number',
       sortingFn: (
         rowA: Row<TableData>,
@@ -218,42 +218,47 @@ function constructTableColumns(dateStart: number[], dateEnd: number[]) {
           : 1;
       },
       cell: (info: CellContext<TableData, NumberCellInfo>) => (
-        <TableStickyCellContent
-          $isOverdueByProject={info.getValue()?.isOverdueByProject}
-          $isOverdueByOperations={info.getValue()?.isOverdueByOperations}
+        <div
+          className={`${styles.table__stickyCell} ${
+            info.getValue()?.isOverdueByProject
+              ? styles.table__stickyCell_overdueProject
+              : ''
+          } ${
+            info.getValue()?.isOverdueByOperations
+              ? styles.table__stickyCell_ovedueOperations
+              : ''
+          }`}
         >
           {info.getValue()?.number}
-        </TableStickyCellContent>
+        </div>
       ),
     }),
     columnHelper.accessor('customer', {
-      header: () => <TableStickyCellContent>Клиент</TableStickyCellContent>,
+      header: () => <div className={styles.table__stickyCell}>Клиент</div>,
       id: 'customer',
       cell: (info: CellContext<TableData, string>) => (
-        <TableStickyCellContent>{info.getValue()}</TableStickyCellContent>
+        <div className={styles.table__stickyCell}>{info.getValue()}</div>
       ),
     }),
     columnHelper.accessor('name', {
-      header: () => <TableStickyCellContent>Изделие</TableStickyCellContent>,
+      header: () => <div className={styles.table__stickyCell}>Изделие</div>,
       id: 'name',
       cell: (info: CellContext<TableData, string>) => (
-        <TableStickyCellContent>{info.getValue()}</TableStickyCellContent>
+        <div className={styles.table__stickyCell}>{info.getValue()}</div>
       ),
     }),
     columnHelper.accessor('deviation', {
-      header: () => <TableStickyCellContent>Отклонение</TableStickyCellContent>,
+      header: () => <div className={styles.table__stickyCell}>Отклонение</div>,
       id: 'deviation',
       cell: (info: CellContext<TableData, string>) => (
-        <TableStickyCellContent>{info.getValue()}</TableStickyCellContent>
+        <div className={styles.table__stickyCell}>{info.getValue()}</div>
       ),
     }),
     columnHelper.accessor('comment', {
-      header: () => (
-        <TableStickyCellContent>Комментарий</TableStickyCellContent>
-      ),
+      header: () => <div className={styles.table__stickyCell}>Комментарий</div>,
       id: 'comment',
       cell: (info: CellContext<TableData, string>) => (
-        <TableStickyCellContent>{info.getValue()}</TableStickyCellContent>
+        <div className={styles.table__stickyCell}>{info.getValue()}</div>
       ),
     }),
     ...constructDateColumns(),

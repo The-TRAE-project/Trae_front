@@ -86,11 +86,13 @@ export const SortButton = styled.button`
   line-height: normal;
 `;
 
-type SortArrowProps = { $isOpen: boolean };
+type SortArrowProps = { $isOpen: boolean; $isActive: boolean };
 
 export const SortArrow = styled(IoIosArrowUp)`
   position: relative;
   top: 5px;
+  color: ${(props: SortArrowProps) =>
+    props.$isActive ? 'var(--orange)' : 'var(--black)'};
   transform: ${(props: SortArrowProps) =>
     props.$isOpen ? 'rotate(0)' : 'rotate(180deg)'};
 `;

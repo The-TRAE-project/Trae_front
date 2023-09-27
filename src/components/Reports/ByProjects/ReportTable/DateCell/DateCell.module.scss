@@ -1,0 +1,9 @@
+.dateCell__wrapper {
+  overflow-x: hidden;
+
+  &_overdue {
+    background-color: var(--white);
+    border-radius: 10px;
+    color: var(--red);
+  }
+}

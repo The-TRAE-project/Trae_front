@@ -7,16 +7,10 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 import { useMemo } from 'react';
-import {
-  Wrapper,
-  ScrollWrapper,
-  TableCellHeader,
-  TableRow,
-  TableCell,
-  Table,
-} from './styles';
+import { Wrapper, ScrollWrapper, Table } from './styles';
 import { constructTable } from '../helpers/constructTable';
 import { ProjectInfo } from '../../../../store/apis/reports/types';
+import styles from './ReportTable.module.scss';
 
 export interface ProjectsReportTableData {
   dateOfReportFormation: number[];
@@ -41,9 +35,8 @@ export function ReportTable({
       dateStart,
       dateEnd,
       projects,
-      sortType,
     });
-  }, [dateOfReportFormation, dateStart, dateEnd, projects, sortType]);
+  }, [dateOfReportFormation, dateStart, dateEnd, projects]);
 
   const table = useReactTable({
     data: tableData,
@@ -70,27 +63,31 @@ export function ReportTable({
             {table.getHeaderGroups().map((headerGroup) => (
               <tr key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
-                  <TableCellHeader key={header.id} colSpan={header.colSpan}>
+                  <th
+                    key={header.id}
+                    colSpan={header.colSpan}
+                    className={styles.table__header}
+                  >
                     {header.isPlaceholder
                       ? null
                       : flexRender(
                           header.column.columnDef.header,
                           header.getContext()
                         )}
-                  </TableCellHeader>
+                  </th>
                 ))}
               </tr>
             ))}
           </thead>
           <tbody>
             {table.getRowModel().flatRows.map((row) => (
-              <TableRow key={row.id}>
+              <tr key={row.id} className={styles.table__row}>
                 {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id}>
+                  <td key={cell.id} className={styles.table__cell}>
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
+                  </td>
                 ))}
-              </TableRow>
+              </tr>
             ))}
           </tbody>
         </Table>

@@ -1,12 +1,11 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import {
-  SortingState,
   flexRender,
   getCoreRowModel,
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { DeadlinesReport } from '../../../../store/apis/reports/types';
 import {
   ScrollWrapper,
@@ -33,13 +32,6 @@ export function ReportTable({
   secondParameter,
   thirdParameter,
 }: DeadlinesReportTableData) {
-  const [sortType, setSortType] = useState<SortingState>([
-    {
-      id: firstParameter.id,
-      desc: false,
-    },
-  ]);
-
   const [tableData, tableColumns] = useMemo(
     () =>
       constructTable({
@@ -47,7 +39,6 @@ export function ReportTable({
         firstParameter,
         secondParameter,
         thirdParameter,
-        setSortType,
       }),
     [reportsByDeadlines, firstParameter, secondParameter, thirdParameter]
   );
@@ -55,10 +46,6 @@ export function ReportTable({
   const table = useReactTable({
     data: tableData,
     columns: tableColumns,
-    state: {
-      sorting: sortType,
-    },
-    onSortingChange: setSortType,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
   });
@@ -79,6 +66,7 @@ export function ReportTable({
                           header.getContext()
                         )}
                         <SortArrow
+                          $isActive={header.column.getIsSorted() !== false}
                           $isOpen={header.column.getIsSorted() === 'desc'}
                           size={24}
                         />

@@ -1,11 +1,10 @@
-import React from 'react';
-import { IconInfo } from './styles';
 import { AdditionalInfo } from '../../../../svgs/AdditionalInfo';
+import styles from './AdditionalIconInfo.module.scss';
 
 export const AdditionalInfoIcon = () => {
   return (
-    <IconInfo>
+    <div className={styles.icon}>
       <AdditionalInfo />
-    </IconInfo>
+    </div>
   );
 };

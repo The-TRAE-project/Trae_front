@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useLocalStorage } from '@mantine/hooks';
-import { WrapperIcon } from './styles';
 import { LocalStorage } from '../../../../../constants/localStorage';
+import styles from './TableIcon.module.scss';
 
 interface Props {
   projectId: number;
@@ -21,8 +21,12 @@ export const TableIcon = ({ projectId, icon }: Props) => {
   };
 
   return (
-    <WrapperIcon type="button" onClick={handleNavigateToDetails}>
+    <button
+      type="button"
+      onClick={handleNavigateToDetails}
+      className={styles.icon__wrapper}
+    >
       {icon}
-    </WrapperIcon>
+    </button>
   );
 };

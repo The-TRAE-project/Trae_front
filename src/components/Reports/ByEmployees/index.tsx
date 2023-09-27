@@ -73,7 +73,7 @@ const ByEmployees = () => {
       employeeIds: employeeIds?.length ? `&employeeIds=${employeeIds}` : '',
     },
     {
-      skip: !startDate && !endDate && !employeeIds?.length && !form.isValid(),
+      skip: !startDate || !endDate || !employeeIds?.length || !form.isValid(),
     }
   );
 

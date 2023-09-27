@@ -1,8 +1,4 @@
-import {
-  ColumnDef,
-  SortingState,
-  createColumnHelper,
-} from '@tanstack/react-table';
+import { ColumnDef, createColumnHelper } from '@tanstack/react-table';
 import { DeadlinesReportTableData } from '../ReportTable';
 import { convertToString } from '../../../../helpers/convertToString';
 import { calculateDeviation } from '../../helpers/calculateDeviation';
@@ -11,40 +7,29 @@ interface TableData {
   [key: string]: string | number | null;
 }
 
-type ConstructTableProps = DeadlinesReportTableData & {
-  setSortType: React.Dispatch<React.SetStateAction<SortingState>>;
-};
+type ConstructTableProps = DeadlinesReportTableData;
 
 function constructTableData(data: ConstructTableProps): TableData[] {
   const result = data.reportsByDeadlines.secondRespValues
-    .map((secondRespValue) => {
-      return secondRespValue.thirdRespValues.map((thirdRespValue) => {
-        return Object.fromEntries([
-          [data.firstParameter.id, data.reportsByDeadlines.firstRespValue],
-          [data.secondParameter.id, secondRespValue.secondRespValue],
-          [data.thirdParameter.id, thirdRespValue.thirdRespValue],
-          [
-            'date-plan',
-            thirdRespValue.plannedEndDate
-              ? convertToString(thirdRespValue.plannedEndDate)
-              : '',
-          ],
-          [
-            'date-fact',
+    .map((secondRespValue) =>
+      secondRespValue.thirdRespValues.map((thirdRespValue) => {
+        return {
+          [data.firstParameter.id]: data.reportsByDeadlines.firstRespValue,
+          [data.secondParameter.id]: secondRespValue.secondRespValue,
+          [data.thirdParameter.id]: thirdRespValue.thirdRespValue,
+          'date-plan': thirdRespValue.plannedEndDate
+            ? convertToString(thirdRespValue.plannedEndDate)
+            : '',
+          'date-fact': thirdRespValue.realEndDate
+            ? convertToString(thirdRespValue.realEndDate)
+            : '',
+          deviation: calculateDeviation(
+            thirdRespValue.plannedEndDate,
             thirdRespValue.realEndDate
-              ? convertToString(thirdRespValue.realEndDate)
-              : '',
-          ],
-          [
-            'deviation',
-            calculateDeviation(
-              thirdRespValue.plannedEndDate,
-              thirdRespValue.realEndDate
-            ),
-          ],
-        ]);
-      });
-    })
+          ),
+        };
+      })
+    )
     .flat();
 
   return result;

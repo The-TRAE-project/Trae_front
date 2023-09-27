@@ -25,9 +25,7 @@ interface TableCell {
 }
 
 interface TableData {
-  employees: string;
-  totalShifts: number;
-  [key: string]: string | number | [string, TableCell];
+  [key: string]: string | number | TableCell;
 }
 
 function constructTableData(data: EmployeesReportTableData) {
@@ -39,22 +37,19 @@ function constructTableData(data: EmployeesReportTableData) {
       data.employeeTotalShifts.find((shifts) => shifts.id === currentId)
         ?.totalPartsOfShift || 0;
 
-    const shifts = getDatesBetween(data.dateStart, data.dateEnd).map((date) => {
+    const row: TableData = {};
+
+    getDatesBetween(data.dateStart, data.dateEnd).forEach((date) => {
       const currentShift = data.employeeWorkingShifts.find(
         (shift) =>
           shift.employeeId === currentId &&
           convertToString(shift.shiftDate) === date
       );
-      return [
-        date,
-        {
-          shift: currentShift?.partOfShift || null,
-          closed: currentShift?.autoClosed || false,
-        },
-      ];
+      row[date] = {
+        shift: currentShift?.partOfShift || '',
+        closed: currentShift?.autoClosed || false,
+      };
     });
-
-    const row: TableData = Object.fromEntries(shifts);
 
     row.employees = name;
     row.totalShifts = totalShifts ?? 0;

@@ -1,8 +1,9 @@
 import Delivery from '../../../../svgs/Delivery';
-import { TableIcon } from '../ContractIcon';
+import { TableIcon } from '../TableIcon';
 import Contract from '../../../../svgs/Contract';
-import { TableCellContent, OverdueWrapper } from '../styles';
+import { TableCellContent } from '../styles';
 import { AdditionalInfoIcon } from '../AdditionalInfoIcon';
+import styles from './DateCell.module.scss';
 
 interface Props {
   isOverdue?: boolean;
@@ -53,9 +54,13 @@ export function DateCell({
       {isOverlapping && (
         <TableIcon projectId={projectId} icon={AdditionalInfoIcon()} />
       )}
-      <OverdueWrapper $isOverdue={isOverdue}>
+      <div
+        className={`${styles.dateCell__wrapper} ${
+          isOverdue ? styles.dateCell__wrapper_overdue : ''
+        }`}
+      >
         {name === 'Отгрузка' ? <Delivery color={color} /> : name}
-      </OverdueWrapper>
+      </div>
     </TableCellContent>
   );
 }

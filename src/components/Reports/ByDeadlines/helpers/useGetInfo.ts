@@ -44,7 +44,7 @@ export function useGetInfo(values: DeadlinesReportFormValues) {
         (values.secondParameter[0].id === 'EMPLOYEE' &&
           values.thirdParameter[0].id !== ''),
     }
-  ).data;
+  );
 
   const projects = useGetProjectsInfoQuery(
     {
@@ -63,7 +63,7 @@ export function useGetInfo(values: DeadlinesReportFormValues) {
         (values.secondParameter[0].id === 'PROJECT' &&
           values.thirdParameter[0].id !== ''),
     }
-  ).data;
+  );
 
   const operations = useGetOperationsInfoQuery(
     {
@@ -79,6 +79,10 @@ export function useGetInfo(values: DeadlinesReportFormValues) {
         (values.secondParameter[0].id === 'OPERATION' &&
           values.thirdParameter[0].id !== ''),
     }
-  ).data;
-  return { employees, projects, operations };
+  );
+  return {
+    employees: employees.data,
+    projects: projects.data,
+    operations: operations.data,
+  };
 }
