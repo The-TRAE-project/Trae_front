@@ -29,34 +29,48 @@ export function FormBody({ form }: Props) {
 
   const selectEmployees = useMemo(
     () =>
-      employees?.map((employee) => {
-        return {
-          id: employee.id,
-          value: `${employee.firstName} ${employee.lastName}`,
-        };
-      }),
+      employees
+        ?.map((employee) => {
+          return {
+            id: employee.id,
+            value: `${employee.firstName} ${employee.lastName}`,
+          };
+        })
+        .sort((a, b) => {
+          // eslint-disable-next-line no-nested-ternary
+          return a.value < b.value ? -1 : a.value === b.value ? 0 : 1;
+        }),
     [employees]
   );
 
   const selectProjects = useMemo(
     () =>
-      projects?.map((project) => {
-        return {
-          id: project.projectId,
-          value: project.number,
-        };
-      }),
+      projects
+        ?.map((project) => {
+          return {
+            id: project.projectId,
+            value: project.number,
+          };
+        })
+        .sort((a, b) => {
+          return a.value - b.value;
+        }),
     [projects]
   );
 
   const selectOperations = useMemo(
     () =>
-      operations?.map((operation) => {
-        return {
-          id: operation.operationId,
-          value: `${operation.name} ${operation.projectNumber}`,
-        };
-      }),
+      operations
+        ?.map((operation) => {
+          return {
+            id: operation.operationId,
+            value: `${operation.name} ${operation.projectNumber}`,
+          };
+        })
+        .sort((a, b) => {
+          // eslint-disable-next-line no-nested-ternary
+          return a.value < b.value ? -1 : a.value === b.value ? 0 : 1;
+        }),
     [operations]
   );
 
