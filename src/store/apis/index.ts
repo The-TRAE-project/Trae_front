@@ -6,7 +6,6 @@ import {
 } from '@reduxjs/toolkit/query/react';
 
 import Cookies from 'js-cookie';
-import jwtDecode from 'jwt-decode';
 import axios from 'axios';
 import { RequestHeader } from '../../constants/requestHeader';
 import { removeItem } from '../../helpers/removeItem';
@@ -18,7 +17,6 @@ import { clearWorkTypeState } from '../slices/workType';
 import { clearProjectState } from '../slices/project';
 import { TokenTypes } from '../../helpers/hooks/useCookies';
 import { isRefreshTokenNearExpiration } from '../../helpers/isRefreshTokenNearExpiration';
-import { Token } from './types';
 
 const baseQuery = fetchBaseQuery({
   baseUrl: import.meta.env.PROD
@@ -43,25 +41,8 @@ const baseQueryWithReAuth = async (
 ) => {
   let result = await baseQuery(args, api, extraOptions);
   const refreshToken = Cookies.get(TokenTypes.REFRESH_TOKEN);
-  const accessTokenOld = Cookies.get(TokenTypes.ACCESS_TOKEN);
 
-  // console.log('BASE_QUERY:', result, args, api, extraOptions, new Date());
-  // console.log(
-  //   'REFRESH_TOKEN',
-  //   refreshToken,
-  //   refreshToken ? jwtDecode(refreshToken) : undefined,
-  //   refreshToken
-  //     ? new Date(jwtDecode<Token>(refreshToken).exp * 1000)
-  //     : undefined
-  // );
-  // console.log(
-  //   'ACCESS_TOKEN',
-  //   accessTokenOld,
-  //   accessTokenOld ? jwtDecode(accessTokenOld) : undefined,
-  //   accessTokenOld
-  //     ? new Date(jwtDecode<Token>(accessTokenOld).exp * 1000)
-  //     : undefined
-  // );
+  console.log('BASE_QUERY:', result, args, api, extraOptions, new Date());
 
   if (result?.error?.status === 401) {
     const accessResponse = await axios({
@@ -72,7 +53,6 @@ const baseQueryWithReAuth = async (
         refreshToken,
       },
     });
-    // console.log('NEW_ACCESS_TOKEN', accessResponse.data);
 
     if (accessResponse?.data) {
       const { accessToken } = accessResponse.data as TokenValue;
@@ -91,7 +71,6 @@ const baseQueryWithReAuth = async (
           },
         });
 
-        // console.log('NEW_REFRESH_TOKEN', refreshResponse.data);
         const { refreshToken: newRefreshToken } =
           refreshResponse.data as TokenValue;
         api.dispatch(setCredentials(refreshResponse.data as TokenValue));

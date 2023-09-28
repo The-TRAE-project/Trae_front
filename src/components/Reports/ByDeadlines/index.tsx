@@ -107,9 +107,9 @@ export function ByDeadlines() {
         <FormBody form={form} />
 
         {!!reportsByDeadlines &&
-          !!firstParameter &&
-          !!secondParameter &&
-          !!thirdParameter &&
+          firstParameter.id !== '' &&
+          secondParameter.id !== '' &&
+          thirdParameter.id !== '' &&
           form.isValid() &&
           (!isGetLoading && !isFetching && !!reportsByDeadlines ? (
             <ReportTable

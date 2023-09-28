@@ -1,4 +1,4 @@
-import { Menu as MantineMenu, Checkbox } from '@mantine/core';
+import { Menu, Checkbox } from '@mantine/core';
 import {
   Group,
   Title,
@@ -25,7 +25,7 @@ const MenuItem = ({ title, onClick, isActive, isCircle = false }: Props) => {
   const input = isCircle ? circleInput : squareInput;
 
   return (
-    <MantineMenu.Item onClick={onClick}>
+    <Menu.Item onClick={onClick}>
       <Group>
         <Checkbox
           readOnly
@@ -34,7 +34,7 @@ const MenuItem = ({ title, onClick, isActive, isCircle = false }: Props) => {
         />
         <Title $active={isActive}>{title}</Title>
       </Group>
-    </MantineMenu.Item>
+    </Menu.Item>
   );
 };
 
