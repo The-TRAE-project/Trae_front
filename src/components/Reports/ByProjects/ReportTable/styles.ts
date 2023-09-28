@@ -43,10 +43,6 @@ export const Wrapper = styled.section`
   align-items: stretch;
 `;
 
-export const ScrollWrapper = styled.div`
-  overflow: auto;
-`;
-
 export const Table = styled.table`
   border-collapse: collapse;
   border-spacing: 0;
@@ -85,57 +81,4 @@ export const Table = styled.table`
       text-align: center;
     }
   }
-`;
-
-export const TableCellContent = styled.div<{
-  $isEnded?: boolean;
-  $inWork?: boolean;
-  $readyToAcceptance?: boolean;
-  $length?: number | null;
-  $isEndDateInContract?: boolean;
-}>`
-  background-color: ${(props) => {
-    if (props.$isEnded) {
-      return 'var(--light-green)';
-    }
-    if (props.$readyToAcceptance) {
-      return 'var(--green)';
-    }
-    if (props.$inWork) {
-      return 'var(--orange)';
-    }
-    if (props.$length) {
-      return 'var(--white)';
-    }
-    return 'var(--grey2)';
-  }};
-
-  border: ${(props) =>
-    !props.$isEnded &&
-    !props.$readyToAcceptance &&
-    !props.$inWork &&
-    props.$length
-      ? '2px solid var(--orange)'
-      : ''};
-  height: 95px;
-  color: ${(props) =>
-    // eslint-disable-next-line no-nested-ternary
-    props.$readyToAcceptance || props.$inWork
-      ? 'var(--white)'
-      : props.$isEnded
-      ? 'var(--black)'
-      : 'var(--orange)'};
-  width: ${(props) => `${(props.$length ?? 1) * 33}px`};
-
-  z-index: 3;
-  font-family: var(--font-roboto);
-  font-weight: 400;
-  font-size: 18px;
-  display: flex;
-  place-items: center;
-  justify-content: center;
-
-  position: absolute;
-  left: 0;
-  top: 0;
 `;

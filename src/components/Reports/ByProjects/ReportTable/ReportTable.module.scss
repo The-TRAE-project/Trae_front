@@ -1,6 +1,6 @@
 .table {
-  &__row {
-    height: 97px;
+  &__scroll {
+    overflow: auto;
   }
 
   &__cell {

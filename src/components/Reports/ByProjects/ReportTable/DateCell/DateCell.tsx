@@ -1,7 +1,6 @@
 import Delivery from '../../../../svgs/Delivery';
 import { TableIcon } from '../TableIcon';
 import Contract from '../../../../svgs/Contract';
-import { TableCellContent } from '../styles';
 import { AdditionalInfoIcon } from '../AdditionalInfoIcon';
 import styles from './DateCell.module.scss';
 
@@ -41,12 +40,13 @@ export function DateCell({
   }
 
   return (
-    <TableCellContent
-      $isEnded={isEnded}
-      $inWork={inWork}
-      $readyToAcceptance={readyToAcceptance}
-      $length={length}
-      $isEndDateInContract={isEndDateInContract}
+    <div
+      className={`${styles.dateCell} ${isEnded ? styles.dateCell_ended : ''} ${
+        inWork ? styles.dateCell_inWork : ''
+      } ${readyToAcceptance ? styles.dateCell_available : ''} ${
+        length ? styles.dateCell_operation : ''
+      }`}
+      style={{ width: `${33 * (length ?? 1)}px` }}
     >
       {isEndDateInContract && (
         <TableIcon projectId={projectId} icon={Contract()} />
@@ -61,6 +61,6 @@ export function DateCell({
       >
         {name === 'Отгрузка' ? <Delivery color={color} /> : name}
       </div>
-    </TableCellContent>
+    </div>
   );
 }

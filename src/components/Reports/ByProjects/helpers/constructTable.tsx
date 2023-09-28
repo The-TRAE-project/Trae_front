@@ -41,10 +41,13 @@ export interface TableData {
     | number
     | null
     | Partial<OperationCellInfo>
-    | NumberCellInfo;
+    | NumberCellInfo
+    | OperationCellInfo;
 }
 
 function constructTableData(data: ProjectsReportTableData) {
+  const todayDate = dayjs().format('YYYY-MM-DD');
+
   return data.projects.map((project) => {
     const {
       name,
@@ -75,13 +78,14 @@ function constructTableData(data: ProjectsReportTableData) {
     });
 
     operations.forEach((currentOperation, operationIndex) => {
+      const plannedEndDate = convertToString(currentOperation.plannedEndDate);
+
       const isOverdue =
         (currentOperation.isEnded &&
-          convertToString(currentOperation.plannedEndDate) <
+          plannedEndDate <
             convertToString(currentOperation.realEndDate as number[])) ||
         ((currentOperation.inWork || currentOperation.readyToAcceptance) &&
-          convertToString(currentOperation.plannedEndDate) <
-            dayjs().format('YYYY-MM-DD'));
+          plannedEndDate < todayDate);
 
       const length =
         operationIndex === operations.length - 1
@@ -124,7 +128,7 @@ function constructTableData(data: ProjectsReportTableData) {
     row.comment = comment;
     row.customer = customer;
     row.deviation = deviation;
-    row.contractDate = convertToString(project.endDateInContract);
+    row.contractDate = endDateInContractAsString;
     row.shipmentDate = convertToString(project.plannedEndDate);
 
     return row;
@@ -133,8 +137,8 @@ function constructTableData(data: ProjectsReportTableData) {
 
 function constructTableColumns(dateStart: number[], dateEnd: number[]) {
   function constructDateColumns() {
-    let currentDate = dayjs(convertToString(dateStart)).clone();
-    const lastDate = dayjs(convertToString(dateEnd)).clone();
+    let currentDate = convertToDayjs(dateStart);
+    const lastDate = convertToDayjs(dateEnd);
     const todayDate = dayjs();
 
     const result: ColumnDef<TableData>[] = [];
@@ -143,45 +147,49 @@ function constructTableColumns(dateStart: number[], dateEnd: number[]) {
       const currentMonth = currentDate.month();
       const currentYear = currentDate.year();
 
-      const columnsForDays = new Array(
+      const columnsForDays: {
+        accessorKey: string;
+        header: () => JSX.Element;
+        cell: (info: CellContext<TableData, OperationCellInfo>) => JSX.Element;
+      }[] = [];
+
+      const length =
         currentMonth === lastDate.month() && currentYear === lastDate.year()
           ? lastDate.date() - currentDate.date() + 1
-          : currentDate.daysInMonth() - currentDate.date() + 1
-      )
-        .fill(0)
-        // eslint-disable-next-line @typescript-eslint/no-loop-func
-        .map(() => {
-          const currentDay = currentDate.date();
-          const isToday = currentDate.isSame(todayDate, 'day');
-          const currentCell = {
-            accessorKey: currentDate.format('YYYY-MM-DD'),
-            header: () => (
-              <div
-                className={`${styles.table__header_day} ${
-                  isToday ? styles.table__header_day__today : ''
-                }`}
-              >
-                {currentDay}
-              </div>
-            ),
-            cell: (info: CellContext<TableData, OperationCellInfo>) => (
-              <DateCell
-                isEndDateInContract={info.getValue().isEndDateInContract}
-                isEnded={info.getValue().isEnded}
-                isOverdue={info.getValue().isOverdue}
-                inWork={info.getValue().inWork}
-                readyToAcceptance={info.getValue().readyToAcceptance}
-                isOverlapping={info.getValue().isOverlapping}
-                projectId={info.getValue().projectId}
-                length={info.getValue().length}
-                name={info.getValue().name}
-              />
-            ),
-          };
+          : currentDate.daysInMonth() - currentDate.date() + 1;
 
-          currentDate = currentDate.add(1, 'day');
-          return currentCell;
+      for (let i = 0; i < length; i += 1) {
+        const currentDay = currentDate.date();
+        const isToday = currentDate.isSame(todayDate, 'day');
+
+        columnsForDays.push({
+          accessorKey: currentDate.format('YYYY-MM-DD'),
+          header: () => (
+            <div
+              className={`${styles.table__header_day} ${
+                isToday ? styles.table__header_day__today : ''
+              }`}
+            >
+              {currentDay}
+            </div>
+          ),
+          cell: (info: CellContext<TableData, OperationCellInfo>) => (
+            <DateCell
+              isEndDateInContract={info.getValue().isEndDateInContract}
+              isEnded={info.getValue().isEnded}
+              isOverdue={info.getValue().isOverdue}
+              inWork={info.getValue().inWork}
+              readyToAcceptance={info.getValue().readyToAcceptance}
+              isOverlapping={info.getValue().isOverlapping}
+              projectId={info.getValue().projectId}
+              length={info.getValue().length}
+              name={info.getValue().name}
+            />
+          ),
         });
+
+        currentDate = currentDate.add(1, 'day');
+      }
 
       result.push({
         id: `${currentYear}-${currentMonth}`,
