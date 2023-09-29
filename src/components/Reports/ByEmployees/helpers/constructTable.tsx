@@ -24,7 +24,7 @@ interface TableCell {
   closed: boolean;
 }
 
-interface TableData {
+export interface TableData {
   [key: string]: string | number | TableCell;
 }
 
@@ -99,7 +99,7 @@ function constructTableColumns(dateStart: number[], dateEnd: number[]) {
       result.push({
         id: `${currentYear}-${currentMonth}`,
         header: () => (
-          <TableMonthHeader>
+          <TableMonthHeader $span={columnsForDays.length}>
             {convertMonthToString(currentMonth)}
           </TableMonthHeader>
         ),

@@ -24,9 +24,14 @@ import { prepareToExcel } from './helpers/prepareToExcel';
 import { EmployeesShortInfo } from '../../../store/apis/employee/types';
 
 const ByEmployees = () => {
-  const [startDate, setStartDate] = useState<string | null>(null);
-  const [endDate, setEndDate] = useState<string | null>(null);
-  const [employeeIds, setEmployeeIds] = useState<number[] | null>([]);
+  const [queryParams, setQueryParams] = useState<
+    | {
+        startOfPeriod: string;
+        endOfPeriod: string;
+        employeeIds: number[];
+      }
+    | undefined
+  >(undefined);
 
   const { data: employees } = useGetAllEmployeesWithoutPaginationQuery({
     projectIds: '',
@@ -68,21 +73,30 @@ const ByEmployees = () => {
     isFetching,
   } = useGetEmployeesReportsQuery(
     {
-      startOfPeriod: startDate ? `?startOfPeriod=${startDate}` : '',
-      endOfPeriod: endDate ? `&endOfPeriod=${endDate}` : '',
-      employeeIds: employeeIds?.length ? `&employeeIds=${employeeIds}` : '',
+      startOfPeriod: queryParams?.startOfPeriod
+        ? `?startOfPeriod=${queryParams.startOfPeriod}`
+        : '',
+      endOfPeriod: queryParams?.endOfPeriod
+        ? `&endOfPeriod=${queryParams.endOfPeriod}`
+        : '',
+      employeeIds:
+        queryParams?.employeeIds && queryParams.employeeIds.length > 0
+          ? `&employeeIds=${queryParams?.employeeIds}`
+          : '',
     },
     {
-      skip: !startDate || !endDate || !employeeIds?.length || !form.isValid(),
+      skip: !queryParams || !form.isValid(),
     }
   );
 
   const { isLoading: isExcelExportLoading, exportToExcel } = useExportToExcel();
 
   const handleSubmit = (values: EmployeeReportFormValues) => {
-    setStartDate(formatToQueryParamDate(values.startOfPeriod));
-    setEndDate(formatToQueryParamDate(values.endOfPeriod));
-    setEmployeeIds(values.employeeIds);
+    setQueryParams({
+      startOfPeriod: formatToQueryParamDate(values.startOfPeriod),
+      endOfPeriod: formatToQueryParamDate(values.endOfPeriod),
+      employeeIds: values.employeeIds,
+    });
   };
 
   const handleExportToExcel = () => {
@@ -101,9 +115,11 @@ const ByEmployees = () => {
     );
   };
 
-  const isReportExist =
-    !!reportsByEmployees &&
-    reportsByEmployees.employeeIdTotalPartsDtoList.length > 0;
+  const isReportExist = !!reportsByEmployees;
+
+  const showBody = !!queryParams && form.isValid();
+  const showTable = !isGetLoading && !isFetching && isReportExist;
+
   // TODO: add error on date picked futher than 1 year
   return (
     <FormWrapper onSubmit={form.onSubmit(handleSubmit)}>
@@ -122,11 +138,8 @@ const ByEmployees = () => {
         ) : (
           <Loader size={80} isAbsoluteCentered />
         )}
-        {startDate &&
-          endDate &&
-          employeeIds?.length &&
-          form.isValid() &&
-          (!isGetLoading && !isFetching && !!reportsByEmployees ? (
+        {showBody &&
+          (showTable ? (
             <ReportTable
               dateStart={reportsByEmployees.startPeriod}
               dateEnd={reportsByEmployees.endPeriod}

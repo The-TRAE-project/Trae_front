@@ -65,7 +65,7 @@ export function ReportTable({
     count: rows.length,
     getScrollElement: () => tableContainerRef.current,
     estimateSize: () => 97,
-    overscan: 20,
+    overscan: 30,
   });
 
   const virtualRows = rowVirtualizer.getVirtualItems();
@@ -80,62 +80,60 @@ export function ReportTable({
   return (
     <Wrapper>
       <div ref={tableContainerRef} className={styles.table__scroll}>
-        <div style={{ height: `${rowVirtualizer.getTotalSize()}px` }}>
-          <Table>
-            <thead>
-              {table.getHeaderGroups().map((headerGroup) => (
-                <tr key={headerGroup.id}>
-                  {headerGroup.headers.map((header) => (
-                    <th
-                      key={header.id}
-                      colSpan={header.colSpan}
-                      className={styles.table__header}
-                    >
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </th>
+        <Table>
+          <thead>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <tr key={headerGroup.id}>
+                {headerGroup.headers.map((header) => (
+                  <th
+                    key={header.id}
+                    colSpan={header.colSpan}
+                    className={styles.table__header}
+                  >
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                  </th>
+                ))}
+              </tr>
+            ))}
+          </thead>
+          <tbody>
+            {paddingTop > 0 && (
+              <tr>
+                <td style={{ height: `${paddingTop}px` }} />
+              </tr>
+            )}
+            {rowVirtualizer.getVirtualItems().map((virtualRow) => {
+              const row = rows[virtualRow.index] as Row<TableData>;
+              return (
+                <tr
+                  key={row.id}
+                  style={{
+                    height: `${virtualRow.size}px`,
+                  }}
+                >
+                  {row.getVisibleCells().map((cell) => (
+                    <td key={cell.id} className={styles.table__cell}>
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </td>
                   ))}
                 </tr>
-              ))}
-            </thead>
-            <tbody>
-              {paddingTop > 0 && (
-                <tr>
-                  <td style={{ height: `${paddingTop}px` }} />
-                </tr>
-              )}
-              {rowVirtualizer.getVirtualItems().map((virtualRow) => {
-                const row = rows[virtualRow.index] as Row<TableData>;
-                return (
-                  <tr
-                    key={row.id}
-                    style={{
-                      height: `${virtualRow.size}px`,
-                    }}
-                  >
-                    {row.getVisibleCells().map((cell) => (
-                      <td key={cell.id} className={styles.table__cell}>
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
-                        )}
-                      </td>
-                    ))}
-                  </tr>
-                );
-              })}
-              {paddingBottom > 0 && (
-                <tr>
-                  <td style={{ height: `${paddingBottom}px` }} />
-                </tr>
-              )}
-            </tbody>
-          </Table>
-        </div>
+              );
+            })}
+            {paddingBottom > 0 && (
+              <tr>
+                <td style={{ height: `${paddingBottom}px` }} />
+              </tr>
+            )}
+          </tbody>
+        </Table>
       </div>
     </Wrapper>
   );
