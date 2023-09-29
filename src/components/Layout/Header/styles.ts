@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const Wrapper = styled.header`
   position: fixed;
   width: 100vw;
-  z-index: 500;
+  z-index: 199;
 
   @media ${({ theme }) => theme.bp.bpLarge} {
     top: 0px;

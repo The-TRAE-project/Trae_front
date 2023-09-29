@@ -15,6 +15,7 @@ import { getOperationStartDate } from './getOperationStartDate';
 import { convertToDayjs } from '../../../../helpers/convertToDayjs';
 import { DateCell } from '../ReportTable/DateCell/DateCell';
 import styles from '../ReportTable/ReportTable.module.scss';
+import { TableMonthHeader } from '../ReportTable/styles';
 
 export interface OperationCellInfo {
   projectId: number;
@@ -194,9 +195,9 @@ function constructTableColumns(dateStart: number[], dateEnd: number[]) {
       result.push({
         id: `${currentYear}-${currentMonth}`,
         header: () => (
-          <div className={styles.table__header_month}>
+          <TableMonthHeader $span={columnsForDays.length}>
             {convertMonthToString(currentMonth)}
-          </div>
+          </TableMonthHeader>
         ),
         columns: columnsForDays,
       });
@@ -256,7 +257,13 @@ function constructTableColumns(dateStart: number[], dateEnd: number[]) {
       ),
     }),
     columnHelper.accessor('deviation', {
-      header: () => <div className={styles.table__stickyCell}>Отклонение</div>,
+      header: () => (
+        <div
+          className={`${styles.table__stickyCell} ${styles.table__stickyCell_deviation}`}
+        >
+          Отклонение
+        </div>
+      ),
       id: 'deviation',
       cell: (info: CellContext<TableData, string>) => (
         <div className={styles.table__stickyCell}>{info.getValue()}</div>

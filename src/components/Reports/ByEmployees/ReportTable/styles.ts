@@ -65,7 +65,7 @@ export const TableCell = styled.td`
   border: 1px solid grey;
   border-top: 2px solid var(--green);
   border-bottom: 2px solid var(--green);
-  min-width: 31px;
+  width: 31px;
 
   :has(> .autoClosed) {
     background-color: var(--red);
@@ -123,8 +123,16 @@ export const TableRightHeaderContent = styled.div`
   left: -2px;
 `;
 
-export const TableMonthHeader = styled.div`
+interface TableMonthHeaderProps {
+  $span: number;
+}
+
+export const TableMonthHeader = styled.div<TableMonthHeaderProps>`
   height: 100%;
+  ${(props) => `width: ${props.$span * 32 + props.$span - 1}px;`}
+  overflow: hidden;
+  text-overflow: ellipsis;
+
   font-weight: 700;
   line-height: 23px;
   padding: 6px 0;
@@ -141,7 +149,7 @@ export const TableMonthHeader = styled.div`
 export const TableDayHeader = styled.div`
   margin: auto;
   height: 47px;
-  width: 31px;
+  width: 100%;
   line-height: 47px;
   text-align: center;
   vertical-align: middle;

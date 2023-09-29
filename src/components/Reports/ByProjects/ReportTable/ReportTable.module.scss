@@ -19,7 +19,7 @@
   &__header_day {
     margin: auto;
     height: 47px;
-    width: 31px;
+    width: 100%;
     line-height: 47px;
     text-align: center;
     vertical-align: middle;
@@ -35,34 +35,18 @@
     }
   }
 
-  &__header_month {
-    height: 100%;
-    font-weight: 700;
-    line-height: 23px;
-    padding: 6px 0;
-    border: none;
-    color: var(--white);
-    border-radius: 15px 15px 0px 0px;
-    background: linear-gradient(
-      97.03deg,
-      var(--green) 7.5%,
-      var(--gradient-green3) 94.35%
-    );
-  }
-
   &__stickyCell {
-
     border-right: 2px solid var(--green);
     position: absolute;
-    left: 0;
     top: 0;
-    min-width: 100%;
-    min-height: 100%;
-    overflow-y: auto;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
 
     display: flex;
-    place-items: center;
-    justify-content: center;
+    place-items: safe center;
+    justify-content: safe center;
 
     &_overdueProject {
       background-color: var(--red); 
@@ -71,6 +55,10 @@
 
     &_overdueOperations {
       color: var(--red);
+    }
+
+    &_deviation {
+      overflow: visible;
     }
   }
 }

@@ -3,8 +3,7 @@ import styled, { css } from 'styled-components';
 export const Grid = styled.div`
   position: relative;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 10px;
+  grid-template-columns: 33.3% 33.3% 33.3%;
   padding: 0 40px;
   overflow: hidden;
 `;
@@ -24,12 +23,12 @@ export const Divider = styled.div`
   ${(props: DividerProps) =>
     props.$isLeft &&
     css`
-      left: -165px;
+      left: -170px;
     `}
 
   ${(props: DividerProps) =>
     props.$isRight &&
     css`
-      right: -165px;
+      right: -170px;
     `}
 `;

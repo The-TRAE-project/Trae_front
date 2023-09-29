@@ -324,7 +324,7 @@ export const useModalStyles = createStyles(() => ({
 
   body: {
     padding: '32px 0 !important',
-    height: '40.5vh',
+    maxHeight: '40.5vh',
   },
 }));
 // TODO:
