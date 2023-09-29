@@ -1,8 +1,10 @@
+import { useState } from 'react';
 import Delivery from '../../../../svgs/Delivery';
 import { TableIcon } from '../TableIcon';
 import Contract from '../../../../svgs/Contract';
 import { AdditionalInfoIcon } from '../AdditionalInfoIcon';
 import styles from './DateCell.module.scss';
+import BoxTail from '../../../../svgs/BoxTail';
 
 interface Props {
   isOverdue?: boolean;
@@ -27,6 +29,8 @@ export function DateCell({
   projectId,
   name,
 }: Props) {
+  const [showClue, setShowClue] = useState<boolean>(false);
+
   let color;
 
   if (isOverdue) {
@@ -41,25 +45,38 @@ export function DateCell({
 
   return (
     <div
-      className={`${styles.dateCell} ${isEnded ? styles.dateCell_ended : ''} ${
-        inWork ? styles.dateCell_inWork : ''
-      } ${readyToAcceptance ? styles.dateCell_available : ''} ${
-        length ? styles.dateCell_operation : ''
-      }`}
-      style={{ width: `${33 * (length ?? 1)}px` }}
+      onMouseEnter={length && length <= 2 ? () => setShowClue(true) : undefined}
+      onMouseLeave={
+        length && length <= 2 ? () => setShowClue(false) : undefined
+      }
     >
-      {isEndDateInContract && (
-        <TableIcon projectId={projectId} icon={Contract()} />
-      )}
-      {isOverlapping && (
-        <TableIcon projectId={projectId} icon={AdditionalInfoIcon()} />
+      {showClue && (
+        <div className={styles.dateCell__clue}>
+          {name}
+          <BoxTail className={styles.dateCell__clue_tail} />
+        </div>
       )}
       <div
-        className={`${styles.dateCell__wrapper} ${
-          isOverdue ? styles.dateCell__wrapper_overdue : ''
-        }`}
+        className={`${styles.dateCell} ${
+          isEnded ? styles.dateCell_ended : ''
+        } ${inWork ? styles.dateCell_inWork : ''} ${
+          readyToAcceptance ? styles.dateCell_available : ''
+        } ${length ? styles.dateCell_operation : ''}`}
+        style={{ width: `${33 * (length ?? 1)}px` }}
       >
-        {name === 'Отгрузка' ? <Delivery color={color} /> : name}
+        {isEndDateInContract && (
+          <TableIcon projectId={projectId} icon={Contract()} />
+        )}
+        {isOverlapping && (
+          <TableIcon projectId={projectId} icon={AdditionalInfoIcon()} />
+        )}
+        <div
+          className={`${styles.dateCell__wrapper} ${
+            isOverdue ? styles.dateCell__wrapper_overdue : ''
+          }`}
+        >
+          {name === 'Отгрузка' ? <Delivery color={color} /> : name}
+        </div>
       </div>
     </div>
   );
