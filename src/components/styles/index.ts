@@ -273,14 +273,34 @@ export const FormWrapper = styled.form`
 `;
 
 export const ErrorMessage = styled.p`
-  display: block;
+  display: inline-flex;
+  align-items: center;
+
+  position: absolute;
+  top: -36px;
+  right: 0px;
+  align-self: end;
+
+  width: fit-content;
+  min-height: 35px;
+  padding: 8px 10px;
+
+  background-color: var(--white);
+  border-radius: 15px;
   font-family: var(--font-roboto);
-  ${({ theme }) => theme.mixins.fontSize24};
+  font-size: 24px;
   font-weight: 500;
+  line-height: 26px;
   word-break: break-word;
   color: var(--red);
   letter-spacing: 1px;
-  margin-top: -6px;
+
+  &::after {
+    content: url("data:image/svg+xml,%3Csvg width='25' height='9' viewBox='0 0 25 9' fill='none' xmlns='http://www.w3.org/2000/svg' %3E%3Cpath d='M11 9C9 3 2.83333 0.5 0 0H24.5L11 9Z' fill='white' /%3E%3C/svg%3E");
+    position: absolute;
+    bottom: -14px;
+    left: 30%;
+  }
 `;
 
 export const useModalStyles = createStyles(() => ({

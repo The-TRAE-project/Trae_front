@@ -33,6 +33,7 @@ export const useMultiSelectStyles = createStyles(() => ({
   },
 
   inputLabel: {
+    order: 2,
     fontWeight: 400,
     fontSize: 24,
     lineHeight: '28px',
@@ -41,7 +42,29 @@ export const useMultiSelectStyles = createStyles(() => ({
     paddingLeft: 14,
   },
 
+  wrapper: {
+    order: 3,
+  },
+
+  root: {
+    position: 'relative',
+    display: 'flex',
+    flexDirection: 'column',
+  },
+
   error: {
+    order: 1,
+
+    position: 'relative',
+    right: '0px',
+    alignSelf: 'end',
+
+    width: 'fit-content',
+    minHeight: '35px',
+    padding: '8px 10px',
+
+    backgroundColor: 'var(--white)',
+    borderRadius: '15px',
     fontFamily: 'var(--font-roboto)',
     fontSize: 24,
     fontWeight: 500,
@@ -49,8 +72,14 @@ export const useMultiSelectStyles = createStyles(() => ({
     wordBreak: 'break-word',
     color: 'var(--red)',
     letterSpacing: '1px',
-  },
 
+    '&::after': {
+      content: `url("data:image/svg+xml,%3Csvg width='25' height='9' viewBox='0 0 25 9' fill='none' xmlns='http://www.w3.org/2000/svg' %3E%3Cpath d='M11 9C9 3 2.83333 0.5 0 0H24.5L11 9Z' fill='white' /%3E%3C/svg%3E")`,
+      position: 'absolute',
+      bottom: '-14px',
+      left: '30%',
+    },
+  },
   itemsWrapper: {
     maxWidth: 370,
     maxHeight: 254,

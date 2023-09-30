@@ -17,6 +17,7 @@ const DatePicker: FC<Props> = ({ title, disabled = false, ...props }) => {
       input,
       label,
       error,
+      wrapper,
 
       calendarHeaderControl,
       calendarHeaderLevel,
@@ -40,6 +41,7 @@ const DatePicker: FC<Props> = ({ title, disabled = false, ...props }) => {
         valueFormat="DD.MM.YYYY"
         classNames={{
           root,
+          wrapper,
           calendarHeaderControl,
           calendarHeaderLevel,
           weekday,
