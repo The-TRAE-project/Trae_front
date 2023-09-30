@@ -5,6 +5,7 @@ import Contract from '../../../../svgs/Contract';
 import { AdditionalInfoIcon } from '../AdditionalInfoIcon';
 import styles from './DateCell.module.scss';
 import BoxTail from '../../../../svgs/BoxTail';
+import { InformationClue } from '../../../../InformationClue';
 
 interface Props {
   isOverdue?: boolean;
@@ -50,12 +51,7 @@ export function DateCell({
         length && length <= 2 ? () => setShowClue(false) : undefined
       }
     >
-      {showClue && (
-        <div className={styles.dateCell__clue}>
-          {name}
-          <BoxTail className={styles.dateCell__clue_tail} />
-        </div>
-      )}
+      {showClue && <InformationClue text={name || ''} />}
       <div
         className={`${styles.dateCell} ${
           isEnded ? styles.dateCell_ended : ''
