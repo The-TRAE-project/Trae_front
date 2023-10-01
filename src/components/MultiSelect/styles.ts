@@ -11,6 +11,7 @@ export const useMultiSelectStyles = createStyles(() => ({
     position: 'relative',
     top: '15px !important',
     left: '0px !important',
+    order: 4,
   },
 
   input: {

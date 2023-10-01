@@ -169,7 +169,14 @@ export function FormBody({ form }: Props) {
 
       <CheckboxInput
         checked={isDatesActive}
-        onChange={(event) => setIsDatesActive(event.currentTarget.checked)}
+        onChange={(event) => {
+          reset.firstParameter();
+          form.setValues({
+            startOfPeriod: undefined,
+            endOfPeriod: undefined,
+          });
+          setIsDatesActive(event.currentTarget.checked);
+        }}
       />
       <DropdownSelect
         form={form}

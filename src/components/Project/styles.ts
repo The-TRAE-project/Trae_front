@@ -50,6 +50,7 @@ export const useSelectMenuStyles = createStyles(() => ({
     position: 'relative',
     top: '15px !important',
     left: '0px !important',
+    order: 4,
   },
 
   divider: {
@@ -176,6 +177,7 @@ export const useExtraStageInputStyles = createStyles(() => ({
     background: 'var(--white)',
     boxShadow: '2px -1px 4px rgba(0, 0, 0, 0.25)',
     borderRadius: 'var(--border-radius)',
+    order: 4,
   },
 
   dropdownItem: {

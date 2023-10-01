@@ -49,11 +49,10 @@ const UpdateEndDateForm = () => {
       newPlannedAndContractEndDate: project?.endDateInContract
         ? convertToDate(project?.endDateInContract as number[])
         : null,
+      currentContractEndDate: convertToDate(project?.endDateInContract),
     },
     validate: (values) => {
-      const resolver = zodResolver(
-        UpdateEndDateSchema.omit({ projectId: true })
-      );
+      const resolver = zodResolver(UpdateEndDateSchema);
       const errors = resolver(values);
       return errors;
     },
@@ -98,8 +97,9 @@ const UpdateEndDateForm = () => {
 
   const isDisabled =
     project?.endDateInContract &&
-    convertToDate(project?.endDateInContract as number[]).getTime() ===
-      form.values.newPlannedAndContractEndDate?.getTime();
+    (
+      convertToDate(project?.endDateInContract as number[]) as Date
+    ).getTime() === form.values.newPlannedAndContractEndDate?.getTime();
 
   return (
     <>

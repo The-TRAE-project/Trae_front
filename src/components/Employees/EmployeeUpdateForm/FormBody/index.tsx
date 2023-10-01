@@ -41,6 +41,7 @@ const FormBody = ({ employee, form, isUpdate }: Props) => {
       error,
       item,
       itemsWrapper,
+      wrapper,
       value,
       root,
     },
@@ -194,6 +195,7 @@ const FormBody = ({ employee, form, isUpdate }: Props) => {
                 error,
                 item,
                 root,
+                wrapper,
                 itemsWrapper,
                 value,
               }}

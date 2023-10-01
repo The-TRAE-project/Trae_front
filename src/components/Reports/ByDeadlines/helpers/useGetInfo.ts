@@ -61,7 +61,8 @@ export function useGetInfo(values: DeadlinesReportFormValues) {
         (values.firstParameter[0].id === 'PROJECT' &&
           values.secondParameter[0].id !== '') ||
         (values.secondParameter[0].id === 'PROJECT' &&
-          values.thirdParameter[0].id !== ''),
+          values.thirdParameter[0].id !== '') ||
+        (values.startOfPeriod ? !values.endOfPeriod : !!values.endOfPeriod),
     }
   );
 
@@ -77,7 +78,8 @@ export function useGetInfo(values: DeadlinesReportFormValues) {
         (values.firstParameter[0].id === 'OPERATION' &&
           values.secondParameter[0].id !== '') ||
         (values.secondParameter[0].id === 'OPERATION' &&
-          values.thirdParameter[0].id !== ''),
+          values.thirdParameter[0].id !== '') ||
+        (values.startOfPeriod ? !values.endOfPeriod : !!values.endOfPeriod),
     }
   );
   return {

@@ -14,8 +14,8 @@ export const EmployeeReportSchema = z
       .array()
       .min(1, { message: 'Пожалуйста, выберите сотрудника' }),
     startOfPeriod: z.date({
-      required_error: 'Пожалуйста, выберите дату начало',
-      invalid_type_error: 'Пожалуйста, выберите дату начало',
+      required_error: 'Пожалуйста, выберите дату начала',
+      invalid_type_error: 'Пожалуйста, выберите дату начала',
     }),
     endOfPeriod: z.date({
       required_error: 'Пожалуйста, выберите дату окончания',
@@ -73,8 +73,8 @@ export interface ParamsForProjectsReports {
 export const ProjectReportSchema = z
   .object({
     startOfPeriod: z.date({
-      required_error: 'Пожалуйста, выберите дату начало',
-      invalid_type_error: 'Пожалуйста, выберите дату начало',
+      required_error: 'Пожалуйста, выберите дату начала',
+      invalid_type_error: 'Пожалуйста, выберите дату начала',
     }),
     endOfPeriod: z.date({
       required_error: 'Пожалуйста, выберите дату окончания',
@@ -86,6 +86,7 @@ export const ProjectReportSchema = z
       dayjs(schema.startOfPeriod).diff(dayjs(schema.endOfPeriod), 'd') <= -5,
     {
       message: 'Пожалуйста выберите промежуток больше недели',
+      path: ['endOfPeriod'],
     }
   )
   .refine(
@@ -93,6 +94,7 @@ export const ProjectReportSchema = z
       dayjs(schema.startOfPeriod).diff(dayjs(schema.endOfPeriod), 'd') >= -365,
     {
       message: 'Пожалуйста выберите промежуток меньше года',
+      path: ['endOfPeriod'],
     }
   );
 
@@ -142,53 +144,102 @@ export interface DashboardReport {
   countProjectsWithOverdueCurrentOperation: number;
 }
 
-export const DeadlineReportSchema = z.object({
-  startOfPeriod: z.date().optional(),
-  endOfPeriod: z.date().optional(),
-  isDatesActive: z.boolean(),
-  firstParameter: z
-    .object({
-      id: z.string(),
-      value: z.string(),
-    })
-    .array()
-    .nonempty(),
-  secondParameter: z
-    .object({
-      id: z.string(),
-      value: z.string(),
-    })
-    .array()
-    .nonempty(),
-  thirdParameter: z
-    .object({
-      id: z.string(),
-      value: z.string(),
-    })
-    .array()
-    .nonempty(),
-  valueOfFirstParameter: z
-    .object({
-      id: z.number(),
-      value: z.union([z.string(), z.number()]),
-    })
-    .array()
-    .nonempty(),
-  valuesOfSecondParameter: z
-    .object({
-      id: z.number(),
-      value: z.union([z.string(), z.number()]),
-    })
-    .array()
-    .nonempty(),
-  valuesOfThirdParameter: z
-    .object({
-      id: z.number(),
-      value: z.union([z.string(), z.number()]),
-    })
-    .array()
-    .nonempty(),
-});
+export const DeadlineReportSchema = z
+  .object({
+    startOfPeriod: z
+      .date({
+        required_error: 'Пожалуйста, выберите дату начала',
+        invalid_type_error: 'Пожалуйста, выберите дату начала',
+      })
+      .optional(),
+    endOfPeriod: z
+      .date({
+        required_error: 'Пожалуйста, выберите дату окончания',
+        invalid_type_error: 'Пожалуйста, выберите дату окончания',
+      })
+      .optional(),
+    isDatesActive: z.boolean(),
+    firstParameter: z
+      .object({
+        id: z.string(),
+        value: z.string(),
+      })
+      .array()
+      .nonempty(),
+    secondParameter: z
+      .object({
+        id: z.string(),
+        value: z.string(),
+      })
+      .array()
+      .nonempty(),
+    thirdParameter: z
+      .object({
+        id: z.string(),
+        value: z.string(),
+      })
+      .array()
+      .nonempty(),
+    valueOfFirstParameter: z
+      .object({
+        id: z.number(),
+        value: z.union([z.string(), z.number()]),
+      })
+      .array()
+      .nonempty('Выберите хотя бы одно значение критерия'),
+    valuesOfSecondParameter: z
+      .object({
+        id: z.number(),
+        value: z.union([z.string(), z.number()]),
+      })
+      .array()
+      .nonempty('Выберите хотя бы одно значение критерия'),
+    valuesOfThirdParameter: z
+      .object({
+        id: z.number(),
+        value: z.union([z.string(), z.number()]),
+      })
+      .array()
+      .nonempty('Выберите хотя бы одно значение критерия'),
+  })
+  .refine(
+    (schema) =>
+      schema.startOfPeriod === undefined ||
+      schema.endOfPeriod === undefined ||
+      dayjs(schema.startOfPeriod).diff(dayjs(schema.endOfPeriod), 'd') <= -5,
+    {
+      message: 'Пожалуйста выберите промежуток больше недели',
+      path: ['endOfPeriod'],
+    }
+  )
+  .refine(
+    (schema) =>
+      schema.startOfPeriod === undefined ||
+      schema.endOfPeriod === undefined ||
+      dayjs(schema.startOfPeriod).diff(dayjs(schema.endOfPeriod), 'd') >= -365,
+    {
+      message: 'Пожалуйста выберите промежуток меньше года',
+      path: ['endOfPeriod'],
+    }
+  )
+  .refine(
+    (schema) =>
+      schema.isDatesActive === false ||
+      (schema.isDatesActive && schema.startOfPeriod !== undefined),
+    {
+      message: 'Пожалуйста, выберите дату начала',
+      path: ['startOfPeriod'],
+    }
+  )
+  .refine(
+    (schema) =>
+      schema.isDatesActive === false ||
+      (schema.isDatesActive && schema.endOfPeriod !== undefined),
+    {
+      message: 'Пожалуйста, выберите дату окончания',
+      path: ['endOfPeriod'],
+    }
+  );
 
 type ParameterValue = {
   id: number;
