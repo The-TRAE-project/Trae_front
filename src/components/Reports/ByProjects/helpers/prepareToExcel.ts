@@ -5,6 +5,14 @@ import { ProjectsReportTableData } from '../ReportTable';
 import { calculateDeviation } from '../../helpers/calculateDeviation';
 import { getDatesBetween } from '../../helpers/getDatesBetween';
 import { getOperationStartDate } from './getOperationStartDate';
+import { convertNumberToColumn } from '../../helpers/convertNumberToColumn';
+import { getCeilLength } from './getCeilLength';
+import { convertToDayjs } from '../../../../helpers/convertToDayjs';
+import {
+  ExcelAligmentStyle,
+  ExcelBorderStyle,
+  ExcelStylesForReports,
+} from '../../../../helpers/hooks/useExportToExcel';
 
 function constructExcelHeader(dateStart: number[], dateEnd: number[]) {
   let currentDate = dayjs(convertToString(dateStart)).clone();
@@ -20,7 +28,10 @@ function constructExcelHeader(dateStart: number[], dateEnd: number[]) {
     result[1].push(currentDate.date().toString());
     currentDate = currentDate.add(1, 'day');
 
-    if (prevMonth !== currentDate.month()) {
+    if (
+      prevMonth !== currentDate.month() &&
+      !currentDate.isAfter(lastDate, 'day')
+    ) {
       result[0].push(convertMonthToString(currentDate.month()));
       prevMonth = currentDate.month();
     } else {
@@ -32,6 +43,8 @@ function constructExcelHeader(dateStart: number[], dateEnd: number[]) {
 }
 
 function constructExcelBody(data: ProjectsReportTableData) {
+  const datesArray = getDatesBetween(data.dateStart, data.dateEnd);
+
   const result: (string | number | null)[][] = data.projects.map((project) => {
     const {
       name,
@@ -43,21 +56,10 @@ function constructExcelBody(data: ProjectsReportTableData) {
       operations,
     } = project;
 
-    let row = [
-      number,
-      customer,
-      name,
-      calculateDeviation(endDateInContract, realEndDate),
-      comment,
-    ];
-
-    const tableOperationsData: [string, string][] = getDatesBetween(
-      data.dateStart,
-      data.dateEnd
-    ).map((date) => {
+    const tableOperationsData: [string, string][] = datesArray.map((date) => {
       const isEndDateInContract = convertToString(endDateInContract) === date;
 
-      return [date, isEndDateInContract ? 'Контракт' : ''];
+      return [date, isEndDateInContract ? '*' : ''];
     });
 
     operations.forEach((currentOperation) => {
@@ -71,13 +73,20 @@ function constructExcelBody(data: ProjectsReportTableData) {
         const isEndDateInContract =
           convertToString(endDateInContract) === tableOperationsData[index][0];
 
-        tableOperationsData[index][1] = `${
-          isEndDateInContract ? 'Контракт ' : ''
-        }${currentOperation.name}`;
+        tableOperationsData[index][1] = `${isEndDateInContract ? '* ' : ''}${
+          currentOperation.name
+        }`;
       }
     });
 
-    row = [...row, ...tableOperationsData.map((operation) => operation[1])];
+    const row = [
+      number,
+      customer,
+      name,
+      calculateDeviation(endDateInContract, realEndDate),
+      comment,
+      ...tableOperationsData.map((operation) => operation[1]),
+    ];
 
     return row;
   });
@@ -86,9 +95,223 @@ function constructExcelBody(data: ProjectsReportTableData) {
 }
 
 function constructExcelStyles(data: ProjectsReportTableData) {
-  const result: (string | number | null)[][] = [];
+  const todayDate = dayjs().format('YYYY-MM-DD');
+  const cellName = { column: 0, row: 1 };
+  const datesArray = getDatesBetween(data.dateStart, data.dateEnd);
+  const cellsStyles: { [key: string]: ExcelStylesForReports } = {};
 
-  return result;
+  const border: ExcelBorderStyle = {
+    top: { style: 'thin', color: { argb: 'FF42894D' } },
+    left: { style: 'thin', color: { argb: 'FF42894D' } },
+    bottom: { style: 'thin', color: { argb: 'FF42894D' } },
+    right: { style: 'thin', color: { argb: 'FF42894D' } },
+  };
+  const alignment: ExcelAligmentStyle = {
+    vertical: 'middle',
+    horizontal: 'center',
+  };
+
+  // Months row
+  for (let i = 1; i <= 5; i += 1) {
+    const currentColumn = cellName.column;
+    cellsStyles[`${convertNumberToColumn(currentColumn)}1`] = {
+      border,
+    };
+    cellName.column += 1;
+  }
+  datesArray.forEach(() => {
+    const currentColumn = cellName.column;
+    cellsStyles[`${convertNumberToColumn(currentColumn)}1`] = {
+      alignment,
+      font: {
+        name: 'Raleway',
+        color: { argb: 'FFFFFFFF' },
+        bold: true,
+      },
+      fill: {
+        type: 'pattern',
+        pattern: 'solid',
+        fgColor: { argb: 'FF42894D' },
+      },
+      border,
+    };
+    cellName.column += 1;
+  });
+  cellName.column = 0;
+  cellName.row = 2;
+
+  // Days row
+  for (let i = 1; i <= 5; i += 1) {
+    const currentColumn = cellName.column;
+    cellsStyles[`${convertNumberToColumn(currentColumn)}2`] = {
+      font: {
+        name: 'Raleway',
+      },
+      alignment,
+      border,
+    };
+    cellName.column += 1;
+  }
+  datesArray.forEach((date) => {
+    const currentColumn = cellName.column;
+    cellsStyles[`${convertNumberToColumn(currentColumn)}2`] = {
+      alignment,
+      font: {
+        color: { argb: date === todayDate ? 'FF42894D' : 'FFFFFFFF' },
+        name: 'Roboto',
+        bold: true,
+      },
+      fill: {
+        type: 'pattern',
+        pattern: 'solid',
+        fgColor: {
+          argb: date === todayDate ? 'FFFFFFFF' : 'FFFF9A4A',
+        },
+      },
+      border,
+    };
+    cellName.column += 1;
+  });
+  cellName.column = 0;
+  cellName.row = 3;
+
+  // Data rows
+  data.projects.forEach((project) => {
+    const { endDateInContract, operationPeriod, operations } = project;
+
+    const isOverdueByProject = convertToDayjs(endDateInContract).isBefore(
+      dayjs()
+    );
+    let isOverdueByOperations = false;
+    const rowNumber = cellName.row;
+
+    for (let i = 1; i <= 5; i += 1) {
+      const currentColumn = cellName.column;
+      cellsStyles[`${convertNumberToColumn(currentColumn)}${rowNumber}`] = {
+        font: {
+          name: 'Raleway',
+        },
+        alignment: {
+          vertical: 'middle',
+          horizontal: 'center',
+        },
+        border,
+      };
+      cellName.column += 1;
+    }
+
+    datesArray.forEach((date) => {
+      const currentOperation = operations.findLast((op) => {
+        const startDate = getOperationStartDate(data.dateStart, op);
+        return startDate === date;
+      });
+
+      cellsStyles[`${convertNumberToColumn(cellName.column)}${rowNumber}`] = {
+        font: {
+          name: 'Roboto',
+          size: 20,
+        },
+        fill: {
+          type: 'pattern',
+          pattern: 'solid',
+          fgColor: { argb: '80909491' },
+        },
+        alignment,
+        border,
+      };
+
+      if (currentOperation !== undefined) {
+        const plannedEndDate = convertToString(currentOperation.plannedEndDate);
+
+        const isOverdue =
+          (currentOperation.isEnded &&
+            plannedEndDate <
+              convertToString(currentOperation.realEndDate as number[])) ||
+          ((currentOperation.inWork || currentOperation.readyToAcceptance) &&
+            plannedEndDate < todayDate);
+
+        isOverdueByOperations = isOverdue ? true : isOverdueByOperations;
+
+        const nextOperation = operations.find((op) => {
+          return (
+            op.priority >= currentOperation.priority &&
+            convertToDayjs(op.startDate).isAfter(
+              convertToDayjs(currentOperation.startDate)
+            )
+          );
+        });
+        const length =
+          currentOperation.name === 'Отгрузка'
+            ? 1
+            : getCeilLength(
+                data.dateStart,
+                data.dateEnd,
+                currentOperation,
+                operationPeriod,
+                nextOperation
+              );
+        let backgroundColor = '';
+        let textColor = '';
+
+        if (currentOperation.readyToAcceptance) {
+          backgroundColor = 'FF42894D';
+          textColor = 'FFFFFFFF';
+        } else if (currentOperation.inWork) {
+          backgroundColor = 'FFFF9A4A';
+          textColor = 'FFFFFFFF';
+        } else if (currentOperation.isEnded) {
+          backgroundColor = 'FF83CC8C';
+          textColor = 'FF000000';
+        } else {
+          backgroundColor = 'FFFFFFFF';
+          textColor = 'FFFF9A4A';
+        }
+
+        cellsStyles[`${convertNumberToColumn(cellName.column)}${rowNumber}`] = {
+          alignment: {
+            vertical: 'middle',
+            horizontal: 'center',
+          },
+          font: {
+            name: 'Roboto',
+            size: 14,
+            color: { argb: textColor },
+          },
+          fill: {
+            type: 'pattern',
+            pattern: 'solid',
+            fgColor: { argb: backgroundColor },
+          },
+          border,
+          length,
+        };
+      }
+
+      cellName.column += 1;
+    });
+
+    cellsStyles[`A${rowNumber}`].fill = {
+      type: 'pattern',
+      pattern: 'solid',
+      fgColor: { argb: isOverdueByProject ? 'FFDA1212' : 'FFFFFFFF' },
+    };
+    cellsStyles[`A${rowNumber}`].font = {
+      name: 'Raleway',
+      color: {
+        // eslint-disable-next-line no-nested-ternary
+        argb: isOverdueByProject
+          ? 'FFFFFFFF'
+          : isOverdueByOperations
+          ? 'FFDA1212'
+          : '',
+      },
+    };
+
+    cellName.row += 1;
+    cellName.column = 0;
+  });
+
+  return cellsStyles;
 }
 
 export function prepareToExcel(data: ProjectsReportTableData) {

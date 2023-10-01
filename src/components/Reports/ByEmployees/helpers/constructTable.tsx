@@ -29,6 +29,8 @@ export interface TableData {
 }
 
 function constructTableData(data: EmployeesReportTableData) {
+  const datesArray = getDatesBetween(data.dateStart, data.dateEnd);
+
   const result = Array.from(data.employees).map((emp) => {
     const { id: currentId } = emp;
     const name = `${emp.firstName} ${emp.lastName}`;
@@ -39,7 +41,7 @@ function constructTableData(data: EmployeesReportTableData) {
 
     const row: TableData = {};
 
-    getDatesBetween(data.dateStart, data.dateEnd).forEach((date) => {
+    datesArray.forEach((date) => {
       const currentShift = data.employeeWorkingShifts.find(
         (shift) =>
           shift.employeeId === currentId &&

@@ -48,6 +48,7 @@ export interface TableData {
 
 function constructTableData(data: ProjectsReportTableData) {
   const todayDate = dayjs().format('YYYY-MM-DD');
+  const datesArray = getDatesBetween(data.dateStart, data.dateEnd);
 
   return data.projects.map((project) => {
     const {
@@ -72,7 +73,7 @@ function constructTableData(data: ProjectsReportTableData) {
 
     const row: TableData = {};
 
-    getDatesBetween(data.dateStart, data.dateEnd).forEach((date) => {
+    datesArray.forEach((date) => {
       const isEndDateInContract = endDateInContractAsString === date;
 
       row[date] = { isEndDateInContract, projectId };
@@ -88,22 +89,30 @@ function constructTableData(data: ProjectsReportTableData) {
         ((currentOperation.inWork || currentOperation.readyToAcceptance) &&
           plannedEndDate < todayDate);
 
-      const length =
-        operationIndex === operations.length - 1
-          ? 1
-          : getCeilLength(
-              data.dateStart,
-              data.dateEnd,
-              currentOperation,
-              operationPeriod
-            );
-
       isOverdueByOperations = isOverdue ? true : isOverdueByOperations;
       const startDate = getOperationStartDate(data.dateStart, currentOperation);
 
       const isInReport = row[startDate] !== undefined;
 
       if (isInReport) {
+        const nextOperation = operations.find((op) => {
+          return (
+            op.priority >= currentOperation.priority &&
+            convertToDayjs(op.startDate).isAfter(
+              convertToDayjs(currentOperation.startDate)
+            )
+          );
+        });
+        const length =
+          operationIndex === operations.length - 1
+            ? 1
+            : getCeilLength(
+                data.dateStart,
+                data.dateEnd,
+                currentOperation,
+                operationPeriod,
+                nextOperation
+              );
         const isEndDateInContract = endDateInContractAsString === startDate;
 
         const isOverlapping =

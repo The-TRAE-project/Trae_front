@@ -1,4 +1,9 @@
 import { convertToString } from '../../../../helpers/convertToString';
+import {
+  ExcelAligmentStyle,
+  ExcelBorderStyle,
+  ExcelStylesForReports,
+} from '../../../../helpers/hooks/useExportToExcel';
 import { DeadlinesReport } from '../../../../store/apis/reports/types';
 import { calculateDeviation } from '../../helpers/calculateDeviation';
 
@@ -53,9 +58,53 @@ function constructExcelBody(data: DeadlinesReport) {
 }
 
 function constructExcelStyles(data: DeadlinesReport) {
-  const result: (string | number | null)[][] = [];
+  const cellName = { column: 1, row: 1 };
+  const columnArray = ['A', 'B', 'C', 'D', 'E', 'F'];
+  const cellsStyles: { [key: string]: ExcelStylesForReports } = {};
 
-  return result;
+  const border: ExcelBorderStyle = {
+    top: { style: 'thin', color: { argb: 'FF42894D' } },
+    left: { style: 'thin', color: { argb: 'FF42894D' } },
+    bottom: { style: 'thin', color: { argb: 'FF42894D' } },
+    right: { style: 'thin', color: { argb: 'FF42894D' } },
+  };
+  const alignment: ExcelAligmentStyle = {
+    vertical: 'middle',
+    horizontal: 'center',
+  };
+
+  // Header row
+  columnArray.forEach((currentColumn) => {
+    cellsStyles[`${currentColumn}1`] = {
+      alignment,
+      font: {
+        name: 'Raleway',
+        size: 13,
+      },
+      border,
+    };
+  });
+  cellName.column = 1;
+  cellName.row = 2;
+
+  // Data rows
+  data.secondRespValues.forEach((secondRespValue) => {
+    return secondRespValue.thirdRespValues.forEach(() => {
+      const currentRow = cellName.row;
+      columnArray.forEach((currentColumn) => {
+        cellsStyles[`${currentColumn}${currentRow}`] = {
+          alignment,
+          font: {
+            name: 'Raleway',
+          },
+          border,
+        };
+      });
+      cellName.row += 1;
+    });
+  });
+
+  return cellsStyles;
 }
 
 export function prepareToExcel({
