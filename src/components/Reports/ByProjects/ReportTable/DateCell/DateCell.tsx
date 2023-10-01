@@ -4,7 +4,6 @@ import { TableIcon } from '../TableIcon';
 import Contract from '../../../../svgs/Contract';
 import { AdditionalInfoIcon } from '../AdditionalInfoIcon';
 import styles from './DateCell.module.scss';
-import BoxTail from '../../../../svgs/BoxTail';
 import { InformationClue } from '../../../../InformationClue';
 
 interface Props {
@@ -46,9 +45,9 @@ export function DateCell({
 
   return (
     <div
-      onMouseEnter={length && length <= 2 ? () => setShowClue(true) : undefined}
+      onMouseEnter={length && length <= 3 ? () => setShowClue(true) : undefined}
       onMouseLeave={
-        length && length <= 2 ? () => setShowClue(false) : undefined
+        length && length <= 3 ? () => setShowClue(false) : undefined
       }
     >
       {showClue && <InformationClue text={name || ''} />}

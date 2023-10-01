@@ -46,7 +46,7 @@ function DropdownSelect({
   const [opened, setOpened] = useState<boolean>(false);
 
   const {
-    classes: { dropdown, item },
+    classes: { dropdown },
   } = useDropdownSelectMenuStyles();
 
   const handleSetItem = useCallback(
@@ -113,7 +113,6 @@ function DropdownSelect({
         closeOnItemClick={false}
         classNames={{
           dropdown,
-          item,
         }}
       >
         <Menu.Target>

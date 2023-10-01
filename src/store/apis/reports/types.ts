@@ -151,45 +151,66 @@ export const DeadlineReportSchema = z.object({
       id: z.string(),
       value: z.string(),
     })
-    .array(),
+    .array()
+    .nonempty(),
   secondParameter: z
     .object({
       id: z.string(),
       value: z.string(),
     })
-    .array(),
+    .array()
+    .nonempty(),
   thirdParameter: z
     .object({
       id: z.string(),
       value: z.string(),
     })
-    .array(),
+    .array()
+    .nonempty(),
   valueOfFirstParameter: z
     .object({
       id: z.number(),
       value: z.union([z.string(), z.number()]),
     })
-    .array(),
+    .array()
+    .nonempty(),
   valuesOfSecondParameter: z
     .object({
       id: z.number(),
       value: z.union([z.string(), z.number()]),
     })
-    .array(),
+    .array()
+    .nonempty(),
   valuesOfThirdParameter: z
     .object({
       id: z.number(),
       value: z.union([z.string(), z.number()]),
     })
-    .array(),
+    .array()
+    .nonempty(),
 });
 
-export type DeadlinesReportFormValues = z.infer<typeof DeadlineReportSchema>;
-
-export interface ParameterData {
-  id: number | string;
+type ParameterValue = {
+  id: number;
   value: number | string;
-}
+};
+
+type ParameterData = {
+  id: string;
+  value: string;
+};
+
+export type DeadlinesReportFormValues = {
+  startOfPeriod?: Date | undefined;
+  endOfPeriod?: Date | undefined;
+  isDatesActive?: boolean | undefined;
+  firstParameter: ParameterData[];
+  secondParameter: ParameterData[];
+  thirdParameter: ParameterData[];
+  valueOfFirstParameter: ParameterValue[];
+  valuesOfSecondParameter: ParameterValue[];
+  valuesOfThirdParameter: ParameterValue[];
+};
 
 export interface ParamsForDeadlinesReports {
   firstParameter: string;

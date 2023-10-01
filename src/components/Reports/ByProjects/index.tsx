@@ -19,6 +19,7 @@ import FormHeader from '../FormHeader';
 import FormBody from './FormBody';
 import { ReportTable } from './ReportTable';
 import { prepareToExcel } from './helpers/prepareToExcel';
+import { useDisplayError } from '../../../helpers/hooks/useDisplayError';
 
 const ByProjects = () => {
   const [sortType, setSortType] = useState<SortingState>([
@@ -51,6 +52,8 @@ const ByProjects = () => {
     data: reportsByProjects,
     isLoading: isGetLoading,
     isFetching,
+    error,
+    isError,
   } = useGetProjectsReportsQuery(
     {
       startOfPeriod: queryParams?.startOfPeriod
@@ -64,6 +67,8 @@ const ByProjects = () => {
       skip: !queryParams || !form.isValid(),
     }
   );
+
+  useDisplayError(error, isError);
 
   const { isLoading: isExcelExportLoading, exportToExcel } = useExportToExcel();
 

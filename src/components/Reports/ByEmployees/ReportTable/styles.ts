@@ -107,6 +107,10 @@ export const TableCellHeader = styled.th`
 `;
 
 export const TableStickyCellContent = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   border-right: 2px solid var(--green);
   width: 191px;
   position: absolute;

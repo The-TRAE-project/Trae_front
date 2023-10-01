@@ -276,10 +276,10 @@ export const ErrorMessage = styled.p`
   display: inline-flex;
   align-items: center;
 
-  position: absolute;
-  top: -36px;
+  position: relative;
   right: 0px;
   align-self: end;
+  order: 1;
 
   width: fit-content;
   min-height: 35px;
@@ -444,6 +444,7 @@ export const SelectLabel = styled.p`
   font-weight: 400;
   color: var(--white);
   padding-left: 14px;
+  order: 2;
 `;
 
 type SelectDisplayInputProps = {
@@ -462,6 +463,8 @@ export const SelectDisplayInput = styled.div<SelectDisplayInputProps>`
   border-radius: var(--border-radius);
   background: ${(props) =>
     props.$disabled ? 'var(--gray-shadow)' : 'var(--white);'};
+  order: 2;
+
   input {
     display: none;
   }

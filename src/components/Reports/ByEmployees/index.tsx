@@ -22,6 +22,7 @@ import FormBody from './FormBody';
 import { ReportTable } from './ReportTable';
 import { prepareToExcel } from './helpers/prepareToExcel';
 import { EmployeesShortInfo } from '../../../store/apis/employee/types';
+import { useDisplayError } from '../../../helpers/hooks/useDisplayError';
 
 const ByEmployees = () => {
   const [queryParams, setQueryParams] = useState<
@@ -71,6 +72,8 @@ const ByEmployees = () => {
     data: reportsByEmployees,
     isLoading: isGetLoading,
     isFetching,
+    error,
+    isError,
   } = useGetEmployeesReportsQuery(
     {
       startOfPeriod: queryParams?.startOfPeriod
@@ -88,6 +91,8 @@ const ByEmployees = () => {
       skip: !queryParams || !form.isValid(),
     }
   );
+
+  useDisplayError(error, isError);
 
   const { isLoading: isExcelExportLoading, exportToExcel } = useExportToExcel();
 

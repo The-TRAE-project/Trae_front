@@ -13,6 +13,7 @@ import {
   DeadlinesReportFormValues,
 } from '../../../store/apis/reports/types';
 import { prepareToExcel } from './helpers/prepareToExcel';
+import { useDisplayError } from '../../../helpers/hooks/useDisplayError';
 
 export function ByDeadlines() {
   const [queryParams, setQueryParams] = useState<DeadlinesReportFormValues>({
@@ -22,7 +23,6 @@ export function ByDeadlines() {
     valueOfFirstParameter: [{ id: 0, value: 0 }],
     valuesOfSecondParameter: [],
     valuesOfThirdParameter: [],
-    isDatesActive: false,
   });
 
   const form = useForm<DeadlinesReportFormValues>({
@@ -48,6 +48,8 @@ export function ByDeadlines() {
     data: reportsByDeadlines,
     isLoading: isGetLoading,
     isFetching,
+    error,
+    isError,
   } = useGetDeadlinesReportsQuery(
     {
       firstParameter: queryParams.firstParameter[0].id,
@@ -65,6 +67,8 @@ export function ByDeadlines() {
       skip: queryParams.firstParameter[0].id === '',
     }
   );
+
+  useDisplayError(error, isError);
 
   const { isLoading: isExcelExportLoading, exportToExcel } = useExportToExcel();
 
