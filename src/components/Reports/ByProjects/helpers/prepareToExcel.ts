@@ -13,6 +13,7 @@ import {
   ExcelBorderStyle,
   ExcelStylesForReports,
 } from '../../../../helpers/hooks/useExportToExcel';
+import { ProjectOperation } from '../../../../store/apis/reports/types';
 
 function constructExcelHeader(dateStart: number[], dateEnd: number[]) {
   let currentDate = dayjs(convertToString(dateStart)).clone();
@@ -202,10 +203,14 @@ function constructExcelStyles(data: ProjectsReportTableData) {
     }
 
     datesArray.forEach((date) => {
-      const currentOperation = operations.findLast((op) => {
-        const startDate = getOperationStartDate(data.dateStart, op);
-        return startDate === date;
-      });
+      const currentOperation = operations.reduce(
+        (result: undefined | ProjectOperation, op) => {
+          const startDate = getOperationStartDate(data.dateStart, op);
+          result = startDate === date ? op : result;
+          return result;
+        },
+        undefined
+      );
 
       cellsStyles[`${convertNumberToColumn(cellName.column)}${rowNumber}`] = {
         font: {
