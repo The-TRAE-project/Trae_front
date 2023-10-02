@@ -10,7 +10,17 @@ interface Props {
 
 const MultiSelect = ({ label, data, defaultValue, ...props }: Props) => {
   const {
-    classes: { dropdown, input, inputLabel, error, item, itemsWrapper, value },
+    classes: {
+      dropdown,
+      input,
+      inputLabel,
+      error,
+      item,
+      itemsWrapper,
+      value,
+      root,
+      wrapper,
+    },
   } = useMultiSelectStyles();
 
   return (
@@ -28,6 +38,8 @@ const MultiSelect = ({ label, data, defaultValue, ...props }: Props) => {
         item,
         itemsWrapper,
         value,
+        root,
+        wrapper,
       }}
     />
   );

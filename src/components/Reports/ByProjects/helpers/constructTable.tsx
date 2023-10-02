@@ -8,17 +8,14 @@ import dayjs from 'dayjs';
 import { ProjectsReportTableData } from '../ReportTable';
 import { convertMonthToString } from '../../../../helpers/convertMonthToString';
 import { convertToString } from '../../../../helpers/convertToString';
-import {
-  TableDayHeader,
-  TableMonthHeader,
-  TableStickyCellContent,
-} from '../ReportTable/styles';
 import { getDatesBetween } from '../../helpers/getDatesBetween';
 import { calculateDeviation } from '../../helpers/calculateDeviation';
 import { getCeilLength } from './getCeilLength';
 import { getOperationStartDate } from './getOperationStartDate';
 import { convertToDayjs } from '../../../../helpers/convertToDayjs';
 import { DateCell } from '../ReportTable/DateCell/DateCell';
+import styles from '../ReportTable/ReportTable.module.scss';
+import { TableMonthHeader } from '../ReportTable/styles';
 
 export interface OperationCellInfo {
   projectId: number;
@@ -45,10 +42,14 @@ export interface TableData {
     | number
     | null
     | Partial<OperationCellInfo>
-    | NumberCellInfo;
+    | NumberCellInfo
+    | OperationCellInfo;
 }
 
 function constructTableData(data: ProjectsReportTableData) {
+  const todayDate = dayjs().format('YYYY-MM-DD');
+  const datesArray = getDatesBetween(data.dateStart, data.dateEnd);
+
   return data.projects.map((project) => {
     const {
       name,
@@ -61,6 +62,7 @@ function constructTableData(data: ProjectsReportTableData) {
       operationPeriod,
       operations,
     } = project;
+    const endDateInContractAsString = convertToString(endDateInContract);
 
     const deviation = calculateDeviation(endDateInContract, realEndDate);
 
@@ -69,46 +71,54 @@ function constructTableData(data: ProjectsReportTableData) {
     );
     let isOverdueByOperations = false;
 
-    const tableOperationsData: [string, Partial<OperationCellInfo>][] =
-      getDatesBetween(data.dateStart, data.dateEnd).map((date) => {
-        const isEndDateInContract = convertToString(endDateInContract) === date;
+    const row: TableData = {};
 
-        return [date, { isEndDateInContract, projectId }];
-      });
+    datesArray.forEach((date) => {
+      const isEndDateInContract = endDateInContractAsString === date;
+
+      row[date] = { isEndDateInContract, projectId };
+    });
 
     operations.forEach((currentOperation, operationIndex) => {
+      const plannedEndDate = convertToString(currentOperation.plannedEndDate);
+
       const isOverdue =
         (currentOperation.isEnded &&
-          convertToString(currentOperation.plannedEndDate) <
+          plannedEndDate <
             convertToString(currentOperation.realEndDate as number[])) ||
         ((currentOperation.inWork || currentOperation.readyToAcceptance) &&
-          convertToString(currentOperation.plannedEndDate) <
-            dayjs().format('YYYY-MM-DD'));
-
-      const length =
-        operationIndex === operations.length - 1
-          ? 1
-          : getCeilLength(
-              data.dateStart,
-              data.dateEnd,
-              currentOperation,
-              operationPeriod
-            );
+          plannedEndDate < todayDate);
 
       isOverdueByOperations = isOverdue ? true : isOverdueByOperations;
       const startDate = getOperationStartDate(data.dateStart, currentOperation);
 
-      const index = tableOperationsData.findIndex(
-        (cell) => cell[0] === startDate
-      );
+      const isInReport = row[startDate] !== undefined;
 
-      if (index >= 0) {
-        const isEndDateInContract =
-          convertToString(endDateInContract) === tableOperationsData[index][0];
+      if (isInReport) {
+        const nextOperation = operations.find((op) => {
+          return (
+            op.priority >= currentOperation.priority &&
+            convertToDayjs(op.startDate).isAfter(
+              convertToDayjs(currentOperation.startDate)
+            )
+          );
+        });
+        const length =
+          operationIndex === operations.length - 1
+            ? 1
+            : getCeilLength(
+                data.dateStart,
+                data.dateEnd,
+                currentOperation,
+                operationPeriod,
+                nextOperation
+              );
+        const isEndDateInContract = endDateInContractAsString === startDate;
 
-        const isOverlapping = tableOperationsData[index][1].id !== undefined;
+        const isOverlapping =
+          (row[startDate] as Partial<OperationCellInfo>).id !== undefined;
 
-        tableOperationsData[index][1] = {
+        row[startDate] = {
           isEndDateInContract,
           projectId,
           id: currentOperation.id,
@@ -123,14 +133,12 @@ function constructTableData(data: ProjectsReportTableData) {
       }
     });
 
-    const row: TableData = Object.fromEntries(tableOperationsData);
-
     row.name = name;
     row.number = { number, isOverdueByOperations, isOverdueByProject };
     row.comment = comment;
     row.customer = customer;
     row.deviation = deviation;
-    row.contractDate = convertToString(project.endDateInContract);
+    row.contractDate = endDateInContractAsString;
     row.shipmentDate = convertToString(project.plannedEndDate);
 
     return row;
@@ -139,8 +147,8 @@ function constructTableData(data: ProjectsReportTableData) {
 
 function constructTableColumns(dateStart: number[], dateEnd: number[]) {
   function constructDateColumns() {
-    let currentDate = dayjs(convertToString(dateStart)).clone();
-    const lastDate = dayjs(convertToString(dateEnd)).clone();
+    let currentDate = convertToDayjs(dateStart);
+    const lastDate = convertToDayjs(dateEnd);
     const todayDate = dayjs();
 
     const result: ColumnDef<TableData>[] = [];
@@ -149,44 +157,54 @@ function constructTableColumns(dateStart: number[], dateEnd: number[]) {
       const currentMonth = currentDate.month();
       const currentYear = currentDate.year();
 
-      const columnsForDays = new Array(
+      const columnsForDays: {
+        accessorKey: string;
+        header: () => JSX.Element;
+        cell: (info: CellContext<TableData, OperationCellInfo>) => JSX.Element;
+      }[] = [];
+
+      const length =
         currentMonth === lastDate.month() && currentYear === lastDate.year()
           ? lastDate.date() - currentDate.date() + 1
-          : currentDate.daysInMonth() - currentDate.date() + 1
-      )
-        .fill(0)
-        // eslint-disable-next-line @typescript-eslint/no-loop-func
-        .map(() => {
-          const currentDay = currentDate.date();
-          const isToday = currentDate.isSame(todayDate, 'day');
-          const currentCell = {
-            accessorKey: currentDate.format('YYYY-MM-DD'),
-            header: () => (
-              <TableDayHeader $isToday={isToday}>{currentDay}</TableDayHeader>
-            ),
-            cell: (info: CellContext<TableData, OperationCellInfo>) => (
-              <DateCell
-                isEndDateInContract={info.getValue().isEndDateInContract}
-                isEnded={info.getValue().isEnded}
-                isOverdue={info.getValue().isOverdue}
-                inWork={info.getValue().inWork}
-                readyToAcceptance={info.getValue().readyToAcceptance}
-                isOverlapping={info.getValue().isOverlapping}
-                projectId={info.getValue().projectId}
-                length={info.getValue().length}
-                name={info.getValue().name}
-              />
-            ),
-          };
+          : currentDate.daysInMonth() - currentDate.date() + 1;
 
-          currentDate = currentDate.add(1, 'day');
-          return currentCell;
+      for (let i = 0; i < length; i += 1) {
+        const currentDay = currentDate.date();
+        const isToday = currentDate.isSame(todayDate, 'day');
+
+        columnsForDays.push({
+          accessorKey: currentDate.format('YYYY-MM-DD'),
+          header: () => (
+            <div
+              className={`${styles.table__header_day} ${
+                isToday ? styles.table__header_day__today : ''
+              }`}
+            >
+              {currentDay}
+            </div>
+          ),
+          cell: (info: CellContext<TableData, OperationCellInfo>) => (
+            <DateCell
+              isEndDateInContract={info.getValue().isEndDateInContract}
+              isEnded={info.getValue().isEnded}
+              isOverdue={info.getValue().isOverdue}
+              inWork={info.getValue().inWork}
+              readyToAcceptance={info.getValue().readyToAcceptance}
+              isOverlapping={info.getValue().isOverlapping}
+              projectId={info.getValue().projectId}
+              length={info.getValue().length}
+              name={info.getValue().name}
+            />
+          ),
         });
+
+        currentDate = currentDate.add(1, 'day');
+      }
 
       result.push({
         id: `${currentYear}-${currentMonth}`,
         header: () => (
-          <TableMonthHeader>
+          <TableMonthHeader $span={columnsForDays.length}>
             {convertMonthToString(currentMonth)}
           </TableMonthHeader>
         ),
@@ -201,7 +219,7 @@ function constructTableColumns(dateStart: number[], dateEnd: number[]) {
 
   const columns = [
     columnHelper.accessor('number', {
-      header: () => <TableStickyCellContent>№</TableStickyCellContent>,
+      header: () => <div className={styles.table__stickyCell}>№</div>,
       id: 'number',
       sortingFn: (
         rowA: Row<TableData>,
@@ -218,42 +236,53 @@ function constructTableColumns(dateStart: number[], dateEnd: number[]) {
           : 1;
       },
       cell: (info: CellContext<TableData, NumberCellInfo>) => (
-        <TableStickyCellContent
-          $isOverdueByProject={info.getValue()?.isOverdueByProject}
-          $isOverdueByOperations={info.getValue()?.isOverdueByOperations}
+        <div
+          className={`${styles.table__stickyCell} ${
+            info.getValue()?.isOverdueByProject
+              ? styles.table__stickyCell_overdueProject
+              : ''
+          } ${
+            info.getValue()?.isOverdueByOperations
+              ? styles.table__stickyCell_ovedueOperations
+              : ''
+          }`}
         >
           {info.getValue()?.number}
-        </TableStickyCellContent>
+        </div>
       ),
     }),
     columnHelper.accessor('customer', {
-      header: () => <TableStickyCellContent>Клиент</TableStickyCellContent>,
+      header: () => <div className={styles.table__stickyCell}>Клиент</div>,
       id: 'customer',
       cell: (info: CellContext<TableData, string>) => (
-        <TableStickyCellContent>{info.getValue()}</TableStickyCellContent>
+        <div className={styles.table__stickyCell}>{info.getValue()}</div>
       ),
     }),
     columnHelper.accessor('name', {
-      header: () => <TableStickyCellContent>Изделие</TableStickyCellContent>,
+      header: () => <div className={styles.table__stickyCell}>Изделие</div>,
       id: 'name',
       cell: (info: CellContext<TableData, string>) => (
-        <TableStickyCellContent>{info.getValue()}</TableStickyCellContent>
+        <div className={styles.table__stickyCell}>{info.getValue()}</div>
       ),
     }),
     columnHelper.accessor('deviation', {
-      header: () => <TableStickyCellContent>Отклонение</TableStickyCellContent>,
+      header: () => (
+        <div
+          className={`${styles.table__stickyCell} ${styles.table__stickyCell_deviation}`}
+        >
+          Отклонение
+        </div>
+      ),
       id: 'deviation',
       cell: (info: CellContext<TableData, string>) => (
-        <TableStickyCellContent>{info.getValue()}</TableStickyCellContent>
+        <div className={styles.table__stickyCell}>{info.getValue()}</div>
       ),
     }),
     columnHelper.accessor('comment', {
-      header: () => (
-        <TableStickyCellContent>Комментарий</TableStickyCellContent>
-      ),
+      header: () => <div className={styles.table__stickyCell}>Комментарий</div>,
       id: 'comment',
       cell: (info: CellContext<TableData, string>) => (
-        <TableStickyCellContent>{info.getValue()}</TableStickyCellContent>
+        <div className={styles.table__stickyCell}>{info.getValue()}</div>
       ),
     }),
     ...constructDateColumns(),

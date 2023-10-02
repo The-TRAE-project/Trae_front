@@ -8,6 +8,10 @@ export const Button = styled.button`
   background: transparent;
   border: 1px solid var(--gray);
   border-radius: var(--border-radius);
+  text-overflow: ellipsis;
+  overflow-x: hidden;
+  max-width: 80%;
+  width: fit-content;
 
   &.isEnded {
     font-weight: 500;

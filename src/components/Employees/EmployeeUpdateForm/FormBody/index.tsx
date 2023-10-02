@@ -34,7 +34,17 @@ interface Props {
 const FormBody = ({ employee, form, isUpdate }: Props) => {
   const { data: workTypes } = useGetActiveWorkTypesQuery();
   const {
-    classes: { dropdown, input, inputLabel, error, item, itemsWrapper, value },
+    classes: {
+      dropdown,
+      input,
+      inputLabel,
+      error,
+      item,
+      itemsWrapper,
+      wrapper,
+      value,
+      root,
+    },
   } = useMultiSelectStyles();
 
   const workTypesSelectItems: SelectItem[] = workTypes
@@ -184,6 +194,8 @@ const FormBody = ({ employee, form, isUpdate }: Props) => {
                 label: inputLabel,
                 error,
                 item,
+                root,
+                wrapper,
                 itemsWrapper,
                 value,
               }}

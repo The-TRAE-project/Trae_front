@@ -65,6 +65,20 @@ const GlobalStyles = createGlobalStyle`
     -webkit-appearance: none;
     margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
   }
+
+  ::-webkit-scrollbar {
+    width: 16px;
+  }
+
+  ::-webkit-scrollbar-track {
+    border-radius: 15px;
+    background-color: rgba(42, 48, 43, 0.2);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    border-radius: 15px; 
+    background-color: rgba(42, 48, 43, 0.4);
+  }
 `;
 
 export default GlobalStyles;

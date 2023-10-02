@@ -29,104 +29,103 @@ export function FormBody({ form }: Props) {
 
   const selectEmployees = useMemo(
     () =>
-      employees?.map((employee) => {
-        return {
-          id: employee.id,
-          value: `${employee.firstName} ${employee.lastName}`,
-        };
-      }),
+      employees
+        ?.map((employee) => {
+          return {
+            id: employee.id,
+            value: `${employee.firstName} ${employee.lastName}`,
+          };
+        })
+        .sort((a, b) => {
+          // eslint-disable-next-line no-nested-ternary
+          return a.value < b.value ? -1 : a.value === b.value ? 0 : 1;
+        }),
     [employees]
   );
 
   const selectProjects = useMemo(
     () =>
-      projects?.map((project) => {
-        return {
-          id: project.projectId,
-          value: project.number,
-        };
-      }),
+      projects
+        ?.map((project) => {
+          return {
+            id: project.projectId,
+            value: project.number,
+          };
+        })
+        .sort((a, b) => {
+          return a.value - b.value;
+        }),
     [projects]
   );
 
   const selectOperations = useMemo(
     () =>
-      operations?.map((operation) => {
-        return {
-          id: operation.operationId,
-          value: operation.name,
-        };
-      }),
+      operations
+        ?.map((operation) => {
+          return {
+            id: operation.operationId,
+            value: `${operation.name} ${operation.projectNumber}`,
+          };
+        })
+        .sort((a, b) => {
+          // eslint-disable-next-line no-nested-ternary
+          return a.value < b.value ? -1 : a.value === b.value ? 0 : 1;
+        }),
     [operations]
   );
 
-  const selectOrder = useMemo(() => {
-    return [
-      { id: 'EMPLOYEE', value: selectEmployees },
-      { id: 'PROJECT', value: selectProjects },
-      { id: 'OPERATION', value: selectOperations },
-    ];
-  }, [selectEmployees, selectOperations, selectProjects]);
+  const labels = {
+    firstParameter:
+      parametersChoices.find(
+        (item) => item.id === form.values.firstParameter[0].id
+      )?.value || 'Критерий',
+    secondParameter:
+      parametersChoices.find(
+        (item) => item.id === form.values.secondParameter[0].id
+      )?.value || 'Критерий',
+    thirdParameter:
+      parametersChoices.find(
+        (item) => item.id === form.values.thirdParameter[0].id
+      )?.value || 'Критерий',
+  };
 
-  const labels = useMemo(() => {
-    return {
-      firstParameter:
-        parametersChoices.find(
+  const selectOrder = [
+    { id: 'EMPLOYEE', value: selectEmployees },
+    { id: 'PROJECT', value: selectProjects },
+    { id: 'OPERATION', value: selectOperations },
+  ];
+
+  const firstParameter = parametersChoices;
+  const secondParameter = parametersChoices.filter(
+    (item) => item.id !== form.values.firstParameter[0].id
+  );
+
+  const thirdParameter = parametersChoices.filter(
+    (item) =>
+      item.id !== form.values.firstParameter[0].id &&
+      item.id !== form.values.secondParameter[0].id
+  );
+
+  const valueOfFirstParameter =
+    form.values.firstParameter[0].id !== ''
+      ? (selectOrder.find(
           (item) => item.id === form.values.firstParameter[0].id
-        )?.value || 'Критерий',
-      secondParameter:
-        parametersChoices.find(
-          (item) => item.id === form.values.secondParameter[0].id
-        )?.value || 'Критерий',
-      thirdParameter:
-        parametersChoices.find(
-          (item) => item.id === form.values.thirdParameter[0].id
-        )?.value || 'Критерий',
-    };
-  }, [
-    parametersChoices,
-    form.values.firstParameter,
-    form.values.secondParameter,
-    form.values.thirdParameter,
-  ]);
+        )?.value as MenuItemData[])
+      : [];
 
-  const items = useMemo(() => {
-    return {
-      firstParameter: parametersChoices,
-      secondParameter: parametersChoices.filter(
-        (item) => item.id !== form.values.firstParameter[0].id
-      ),
-      thirdParameter: parametersChoices.filter(
-        (item) =>
-          item.id !== form.values.firstParameter[0].id &&
-          item.id !== form.values.secondParameter[0].id
-      ),
-      valueOfFirstParameter:
-        form.values.firstParameter[0].id !== ''
-          ? (selectOrder.find(
-              (item) => item.id === form.values.firstParameter[0].id
-            )?.value as MenuItemData[])
-          : [],
-      valuesOfSecondParameter:
-        form.values.secondParameter[0].id !== ''
-          ? (selectOrder.find(
-              (item) => item.id === form.values.secondParameter[0].id
-            )?.value as MenuItemData[])
-          : [],
-      valuesOfThirdParameter:
-        form.values.thirdParameter[0].id !== ''
-          ? (selectOrder.find(
-              (item) => item.id === form.values.thirdParameter[0].id
-            )?.value as MenuItemData[])
-          : [],
-    };
-  }, [
-    form.values.firstParameter,
-    form.values.secondParameter,
-    form.values.thirdParameter,
-    parametersChoices,
-    selectOrder,
-  ]);
+  const valuesOfSecondParameter =
+    form.values.secondParameter[0].id !== ''
+      ? (selectOrder.find(
+          (item) => item.id === form.values.secondParameter[0].id
+        )?.value as MenuItemData[])
+      : [];
+
+  const valuesOfThirdParameter =
+    form.values.thirdParameter[0].id !== ''
+      ? (selectOrder.find(
+          (item) => item.id === form.values.thirdParameter[0].id
+        )?.value as MenuItemData[])
+      : [];
 
   const reset = {
     firstParameter: () => {
@@ -170,12 +169,19 @@ export function FormBody({ form }: Props) {
 
       <CheckboxInput
         checked={isDatesActive}
-        onChange={(event) => setIsDatesActive(event.currentTarget.checked)}
+        onChange={(event) => {
+          reset.firstParameter();
+          form.setValues({
+            startOfPeriod: undefined,
+            endOfPeriod: undefined,
+          });
+          setIsDatesActive(event.currentTarget.checked);
+        }}
       />
       <DropdownSelect
         form={form}
         label="Критерий 1"
-        items={items.firstParameter}
+        items={firstParameter}
         error={form.errors.firstParameter}
         id="firstParameter"
         isRadio
@@ -188,7 +194,7 @@ export function FormBody({ form }: Props) {
         }
         form={form}
         label="Критерий 2"
-        items={items.secondParameter}
+        items={secondParameter}
         error={form.errors.secondParameter}
         id="secondParameter"
         isRadio
@@ -202,7 +208,7 @@ export function FormBody({ form }: Props) {
         }
         form={form}
         label="Критерий 3"
-        items={items.thirdParameter}
+        items={thirdParameter}
         error={form.errors.thirdParameter}
         id="thirdParameter"
         isRadio
@@ -212,7 +218,7 @@ export function FormBody({ form }: Props) {
         isDisabled={form.values.firstParameter[0].id === ''}
         form={form}
         label={labels.firstParameter}
-        items={items.valueOfFirstParameter}
+        items={valueOfFirstParameter}
         error={form.errors.valueOfFirstParameter}
         id="valueOfFirstParameter"
         isRadio
@@ -223,7 +229,7 @@ export function FormBody({ form }: Props) {
         isDisabled={form.values.secondParameter[0].id === ''}
         form={form}
         label={labels.secondParameter}
-        items={items.valuesOfSecondParameter}
+        items={valuesOfSecondParameter}
         error={form.errors.valuesOfSecondParameter}
         id="valuesOfSecondParameter"
       />
@@ -231,7 +237,7 @@ export function FormBody({ form }: Props) {
         isDisabled={form.values.thirdParameter[0].id === ''}
         form={form}
         label={labels.thirdParameter}
-        items={items.valuesOfThirdParameter}
+        items={valuesOfThirdParameter}
         error={form.errors.valuesOfThirdParameter}
         id="valuesOfThirdParameter"
       />

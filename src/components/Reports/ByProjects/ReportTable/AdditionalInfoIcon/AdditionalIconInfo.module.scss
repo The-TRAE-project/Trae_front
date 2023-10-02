@@ -1,6 +1,4 @@
-import styled from 'styled-components';
-
-export const IconInfo = styled.div`
+.icon {
   background-color: var(--white);
   border: 2px solid var(--green);
   height: 29px;
@@ -9,4 +7,4 @@ export const IconInfo = styled.div`
   justify-content: center;
   align-items: center;
   width: 27px;
-`;
+}

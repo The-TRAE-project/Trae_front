@@ -27,14 +27,20 @@ export type CreateOperationFormValues = z.infer<typeof OperationCreateSchema>;
 
 export const CreateProjectSchema = z.object({
   customer: z
-    .string()
+    .string({
+      required_error: 'Пожалуйста, заполните поле наименование клиента!',
+      invalid_type_error: 'Не правильный формат наименование клиента!',
+    })
     .regex(RegEx.name, {
       message: 'Имя клиента должно быть не больше 30 символов',
     })
     .min(3, { message: 'Имя клиента должно быть не меньше 3 символов' })
     .max(30, { message: 'Имя клиента должно быть не больше 30 символов' }),
   name: z
-    .string()
+    .string({
+      required_error: 'Пожалуйста, заполните поле наименование изделия!',
+      invalid_type_error: 'Не правильный формат наименование изделия!',
+    })
     .regex(RegEx.name, {
       message: 'Имя проекта должо быть не больше 30 символов',
     })
@@ -193,15 +199,27 @@ export interface ReturnUpdatedEndDateValues {
   updatedPlannedAndContractEndDate: Date | number[];
 }
 
-export const UpdateEndDateSchema = z.object({
-  projectId: z.number().min(3, { message: 'Укажите id проекта!' }),
-  newPlannedAndContractEndDate: z
-    .date({
-      required_error: 'Пожалуйста, выберите дату',
-      invalid_type_error: 'Не правильный формат даты',
-    })
-    .nullable(),
-});
+export const UpdateEndDateSchema = z
+  .object({
+    projectId: z.number().min(3, { message: 'Укажите id проекта!' }).optional(),
+    newPlannedAndContractEndDate: z
+      .date({
+        required_error: 'Пожалуйста, выберите дату',
+        invalid_type_error: 'Не правильный формат даты',
+      })
+      .nullable(),
+    currentContractEndDate: z.date().nullable().optional(),
+  })
+  .refine(
+    (schema) =>
+      dayjs(schema.newPlannedAndContractEndDate).isAfter(
+        dayjs(schema.currentContractEndDate)
+      ),
+    {
+      message: 'Пожалуйста, выберите новую дату позже текущей даты в контракте',
+      path: ['newPlannedAndContractEndDate'],
+    }
+  );
 
 export type UpdateEndDateFormValues = z.infer<typeof UpdateEndDateSchema>;
 

@@ -1,7 +1,7 @@
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useLocalStorage } from '@mantine/hooks';
-import { WrapperIcon } from './styles';
 import { LocalStorage } from '../../../../../constants/localStorage';
+import styles from './TableIcon.module.scss';
 
 interface Props {
   projectId: number;
@@ -17,12 +17,21 @@ export const TableIcon = ({ projectId, icon }: Props) => {
 
   const handleNavigateToDetails = () => {
     setFromReports(true);
-    navigate(`/reports/by-projects/project/${projectId}/details`);
   };
 
   return (
-    <WrapperIcon type="button" onClick={handleNavigateToDetails}>
-      {icon}
-    </WrapperIcon>
+    <button
+      type="button"
+      onClick={handleNavigateToDetails}
+      className={styles.icon__wrapper}
+    >
+      <Link
+        to={`/reports/by-projects/project/${projectId}/details`}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        {icon}
+      </Link>
+    </button>
   );
 };

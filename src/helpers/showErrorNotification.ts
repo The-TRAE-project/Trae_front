@@ -3,8 +3,8 @@ import { notifications } from '@mantine/notifications';
 export const showErrorNotification = (title: string, message: string) =>
   notifications.show({
     title,
-    message,
-    autoClose: 5000,
+    message: message === '' ? 'Ошибка при взаимодействии с сервером.' : message,
+    autoClose: 50000,
     styles: (theme) => ({
       root: {
         minHeight: 88,

@@ -3,7 +3,7 @@ import { convertToDayjs } from '../../../helpers/convertToDayjs';
 export const calculateDeviation = (
   plannedEnd: number[],
   realEnd: number[] | null
-) => {
+): number | null => {
   if (realEnd === null) {
     return null;
   }

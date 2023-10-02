@@ -1,18 +1,28 @@
+import dayjs from 'dayjs';
 import { convertToDayjs } from '../../../../helpers/convertToDayjs';
 import { ProjectOperation } from '../../../../store/apis/reports/types';
+import { getOperationStartDate } from './getOperationStartDate';
 
 export function getCeilLength(
   dateStart: number[],
   dateEnd: number[],
   operationInfo: ProjectOperation,
-  hoursforOperation: number
+  hoursforOperation: number,
+  nextOperation?: ProjectOperation
 ) {
   if (operationInfo?.id === undefined) {
     return null;
   }
 
+  const isNextOperation =
+    nextOperation !== undefined &&
+    !dayjs(getOperationStartDate(dateStart, nextOperation)).isAfter(
+      convertToDayjs(dateEnd)
+    );
   const minDate = convertToDayjs(dateStart);
-  const maxDate = convertToDayjs(dateEnd);
+  const maxDate = isNextOperation
+    ? convertToDayjs(nextOperation.startDate)
+    : convertToDayjs(dateEnd);
 
   const fullLength = operationInfo.isEnded
     ? convertToDayjs(operationInfo.realEndDate as number[]).diff(
@@ -35,7 +45,7 @@ export function getCeilLength(
   let adjustedLength =
     fullLength -
     (minDifference > 0 ? minDifference : 0) -
-    (maxDifference > 0 ? maxDifference - 1 : 0);
+    (maxDifference > 0 ? maxDifference - (isNextOperation ? 0 : 1) : 0);
 
   adjustedLength = adjustedLength <= 0 ? 1 : adjustedLength;
 

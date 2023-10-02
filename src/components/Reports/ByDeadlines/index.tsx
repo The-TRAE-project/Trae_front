@@ -12,6 +12,8 @@ import {
   DeadlineReportSchema,
   DeadlinesReportFormValues,
 } from '../../../store/apis/reports/types';
+import { prepareToExcel } from './helpers/prepareToExcel';
+import { useDisplayError } from '../../../helpers/hooks/useDisplayError';
 
 export function ByDeadlines() {
   const [queryParams, setQueryParams] = useState<DeadlinesReportFormValues>({
@@ -21,7 +23,6 @@ export function ByDeadlines() {
     valueOfFirstParameter: [{ id: 0, value: 0 }],
     valuesOfSecondParameter: [],
     valuesOfThirdParameter: [],
-    isDatesActive: false,
   });
 
   const form = useForm<DeadlinesReportFormValues>({
@@ -47,6 +48,8 @@ export function ByDeadlines() {
     data: reportsByDeadlines,
     isLoading: isGetLoading,
     isFetching,
+    error,
+    isError,
   } = useGetDeadlinesReportsQuery(
     {
       firstParameter: queryParams.firstParameter[0].id,
@@ -65,6 +68,8 @@ export function ByDeadlines() {
     }
   );
 
+  useDisplayError(error, isError);
+
   const { isLoading: isExcelExportLoading, exportToExcel } = useExportToExcel();
 
   const handleSubmit = (values: DeadlinesReportFormValues) => {
@@ -74,7 +79,16 @@ export function ByDeadlines() {
   const handleExportToExcel = () => {
     if (!reportsByDeadlines) return;
 
-    exportToExcel('', 'Отчеты по срокам', 'Deadlines');
+    exportToExcel(
+      prepareToExcel({
+        reportsByDeadlines,
+        firstParameter: form.values.firstParameter[0].value,
+        secondParameter: form.values.secondParameter[0].value,
+        thirdParameter: form.values.thirdParameter[0].value,
+      }),
+      'Отчет по срокам',
+      'Deadlines'
+    );
   };
 
   const isReportExist = !!reportsByDeadlines;
@@ -97,9 +111,9 @@ export function ByDeadlines() {
         <FormBody form={form} />
 
         {!!reportsByDeadlines &&
-          !!firstParameter &&
-          !!secondParameter &&
-          !!thirdParameter &&
+          firstParameter.id !== '' &&
+          secondParameter.id !== '' &&
+          thirdParameter.id !== '' &&
           form.isValid() &&
           (!isGetLoading && !isFetching && !!reportsByDeadlines ? (
             <ReportTable

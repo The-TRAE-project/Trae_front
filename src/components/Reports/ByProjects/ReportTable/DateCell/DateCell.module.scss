@@ -1,0 +1,51 @@
+.dateCell { 
+  background-color: var(--grey2);
+
+  &_operation {
+    background-color: var(--white);
+    color: var(--orange);
+    border: 2px solid var(--orange);
+  }
+
+  &_ended {
+    background-color: var(--light-green);
+    color: var(--black);
+    border: none;
+  }
+
+  &_inWork {
+    background-color: var(--orange);
+    color: var(--white);
+    border: none;
+  }
+
+  &_available {
+    background-color: var(--green);
+    color: var(--white);
+    border: none;
+  }
+
+  height: 95px;
+  
+  z-index: 3;
+  font-family: var(--font-roboto);
+  font-weight: 400;
+  font-size: 18px;
+  display: flex;
+  place-items: center;
+  justify-content: center;
+
+  position: absolute;
+  left: 0;
+  top: 0;
+
+  &__wrapper {
+  overflow-x: hidden;
+
+    &_overdue {
+      background-color: var(--white);
+      border-radius: 10px;
+      color: var(--red);
+    }
+  }
+}

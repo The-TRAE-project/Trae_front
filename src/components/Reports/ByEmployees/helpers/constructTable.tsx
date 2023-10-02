@@ -24,13 +24,13 @@ interface TableCell {
   closed: boolean;
 }
 
-interface TableData {
-  employees: string;
-  totalShifts: number;
-  [key: string]: string | number | [string, TableCell];
+export interface TableData {
+  [key: string]: string | number | TableCell;
 }
 
 function constructTableData(data: EmployeesReportTableData) {
+  const datesArray = getDatesBetween(data.dateStart, data.dateEnd);
+
   const result = Array.from(data.employees).map((emp) => {
     const { id: currentId } = emp;
     const name = `${emp.firstName} ${emp.lastName}`;
@@ -39,22 +39,19 @@ function constructTableData(data: EmployeesReportTableData) {
       data.employeeTotalShifts.find((shifts) => shifts.id === currentId)
         ?.totalPartsOfShift || 0;
 
-    const shifts = getDatesBetween(data.dateStart, data.dateEnd).map((date) => {
+    const row: TableData = {};
+
+    datesArray.forEach((date) => {
       const currentShift = data.employeeWorkingShifts.find(
         (shift) =>
           shift.employeeId === currentId &&
           convertToString(shift.shiftDate) === date
       );
-      return [
-        date,
-        {
-          shift: currentShift?.partOfShift || null,
-          closed: currentShift?.autoClosed || false,
-        },
-      ];
+      row[date] = {
+        shift: currentShift?.partOfShift || '',
+        closed: currentShift?.autoClosed || false,
+      };
     });
-
-    const row: TableData = Object.fromEntries(shifts);
 
     row.employees = name;
     row.totalShifts = totalShifts ?? 0;
@@ -104,7 +101,7 @@ function constructTableColumns(dateStart: number[], dateEnd: number[]) {
       result.push({
         id: `${currentYear}-${currentMonth}`,
         header: () => (
-          <TableMonthHeader>
+          <TableMonthHeader $span={columnsForDays.length}>
             {convertMonthToString(currentMonth)}
           </TableMonthHeader>
         ),

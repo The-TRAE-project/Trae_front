@@ -273,14 +273,34 @@ export const FormWrapper = styled.form`
 `;
 
 export const ErrorMessage = styled.p`
-  display: block;
+  display: inline-flex;
+  align-items: center;
+
+  position: relative;
+  right: 0px;
+  align-self: end;
+  order: 1;
+
+  width: fit-content;
+  min-height: 35px;
+  padding: 8px 10px;
+
+  background-color: var(--white);
+  border-radius: 15px;
   font-family: var(--font-roboto);
-  ${({ theme }) => theme.mixins.fontSize24};
+  font-size: 24px;
   font-weight: 500;
+  line-height: 26px;
   word-break: break-word;
   color: var(--red);
   letter-spacing: 1px;
-  margin-top: -6px;
+
+  &::after {
+    content: url("data:image/svg+xml,%3Csvg width='25' height='9' viewBox='0 0 25 9' fill='none' xmlns='http://www.w3.org/2000/svg' %3E%3Cpath d='M11 9C9 3 2.83333 0.5 0 0H24.5L11 9Z' fill='white' /%3E%3C/svg%3E");
+    position: absolute;
+    bottom: -14px;
+    left: 30%;
+  }
 `;
 
 export const useModalStyles = createStyles(() => ({
@@ -324,7 +344,7 @@ export const useModalStyles = createStyles(() => ({
 
   body: {
     padding: '32px 0 !important',
-    height: '40.5vh',
+    maxHeight: '40.5vh',
   },
 }));
 // TODO:
@@ -424,6 +444,7 @@ export const SelectLabel = styled.p`
   font-weight: 400;
   color: var(--white);
   padding-left: 14px;
+  order: 2;
 `;
 
 type SelectDisplayInputProps = {
@@ -442,6 +463,8 @@ export const SelectDisplayInput = styled.div<SelectDisplayInputProps>`
   border-radius: var(--border-radius);
   background: ${(props) =>
     props.$disabled ? 'var(--gray-shadow)' : 'var(--white);'};
+  order: 2;
+
   input {
     display: none;
   }
