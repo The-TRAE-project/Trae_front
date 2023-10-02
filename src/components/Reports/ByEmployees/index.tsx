@@ -23,6 +23,7 @@ import { ReportTable } from './ReportTable';
 import { prepareToExcel } from './helpers/prepareToExcel';
 import { EmployeesShortInfo } from '../../../store/apis/employee/types';
 import { useDisplayError } from '../../../helpers/hooks/useDisplayError';
+import { convertToString } from '../../../helpers/convertToString';
 
 const ByEmployees = () => {
   const [queryParams, setQueryParams] = useState<
@@ -115,7 +116,10 @@ const ByEmployees = () => {
         employeeWorkingShifts: reportsByEmployees.workingShiftEmployeeDtoList,
         employeeTotalShifts: reportsByEmployees.employeeIdTotalPartsDtoList,
       }),
-      'Отчеты по сотрудникам',
+      `Отчет по сотрудникам ${convertToString(
+        reportsByEmployees.startPeriod,
+        '.'
+      )}-${convertToString(reportsByEmployees.endPeriod, '.')}`,
       'Employees'
     );
   };

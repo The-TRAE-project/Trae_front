@@ -86,7 +86,7 @@ export function ByDeadlines() {
         secondParameter: form.values.secondParameter[0].value,
         thirdParameter: form.values.thirdParameter[0].value,
       }),
-      'Отчеты по срокам',
+      'Отчет по срокам',
       'Deadlines'
     );
   };

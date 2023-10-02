@@ -20,6 +20,7 @@ import FormBody from './FormBody';
 import { ReportTable } from './ReportTable';
 import { prepareToExcel } from './helpers/prepareToExcel';
 import { useDisplayError } from '../../../helpers/hooks/useDisplayError';
+import { convertToString } from '../../../helpers/convertToString';
 
 const ByProjects = () => {
   const [sortType, setSortType] = useState<SortingState>([
@@ -90,7 +91,10 @@ const ByProjects = () => {
         projects: reportsByProjects.projectsForReportDtoList,
         dateOfReportFormation: reportsByProjects.dateOfReportFormation,
       }),
-      'Отчеты по проектам',
+      `Отчет по проектам ${convertToString(
+        reportsByProjects.startPeriod,
+        '.'
+      )}-${convertToString(reportsByProjects.endPeriod, '.')}`,
       'Projects'
     );
   };

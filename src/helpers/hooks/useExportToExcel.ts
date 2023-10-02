@@ -59,7 +59,7 @@ export function useExportToExcel() {
                 for (let i = 1; i < style.length; i += 1) {
                   cell.value = `${
                     row.getCell((cell.col as unknown as number) + i).value
-                  } ${cell.value}`;
+                  }${cell.value}`;
                 }
 
                 workSheet.mergeCells(
@@ -94,7 +94,7 @@ export function useExportToExcel() {
         default:
           break;
       }
-      // TODO add parameters as second argumant
+
       const buffer = await workBook.xlsx.writeBuffer();
 
       const blob = new Blob([buffer], {

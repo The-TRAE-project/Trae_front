@@ -194,6 +194,7 @@ function constructExcelStyles(data: ProjectsReportTableData) {
         alignment: {
           vertical: 'middle',
           horizontal: 'center',
+          wrapText: true,
         },
         border,
       };
@@ -270,7 +271,7 @@ function constructExcelStyles(data: ProjectsReportTableData) {
         cellsStyles[`${convertNumberToColumn(cellName.column)}${rowNumber}`] = {
           alignment: {
             vertical: 'middle',
-            horizontal: 'center',
+            horizontal: 'left',
           },
           font: {
             name: 'Roboto',
