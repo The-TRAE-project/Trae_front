@@ -9,6 +9,7 @@ import {
   ExcelBorderStyle,
   ExcelStylesForReports,
 } from '../../../../helpers/hooks/useExportToExcel';
+import { convertToDayjs } from '../../../../helpers/convertToDayjs';
 
 function constructExcelHeader(dateStart: number[], dateEnd: number[]) {
   let currentDate = dayjs(convertToString(dateStart)).clone();
@@ -82,7 +83,20 @@ function constructExcelStyles(data: EmployeesReportTableData) {
   cellsStyles.A1 = {
     border,
   };
-  datesArray.forEach(() => {
+
+  const lastDate = convertToDayjs(data.dateEnd);
+  const firstDate = convertToDayjs(data.dateStart);
+
+  datesArray.forEach((date) => {
+    const currentDate = dayjs(date);
+    const currentMonth = currentDate.month();
+    const currentYear = currentDate.year();
+
+    const length =
+      currentMonth === lastDate.month() && currentYear === lastDate.year()
+        ? lastDate.date() - currentDate.date() + 1
+        : currentDate.daysInMonth() - currentDate.date() + 1;
+
     const currentColumn = cellName.column;
     cellsStyles[`${convertNumberToColumn(currentColumn)}1`] = {
       alignment,
@@ -96,7 +110,16 @@ function constructExcelStyles(data: EmployeesReportTableData) {
         pattern: 'solid',
         fgColor: { argb: 'FF42894D' },
       },
-      border,
+      border: {
+        top: { style: 'thin', color: { argb: 'FF42894D' } },
+        left: { style: 'thin', color: { argb: 'FFFFFFFF' } },
+        bottom: { style: 'thin', color: { argb: 'FF42894D' } },
+        right: { style: 'thin', color: { argb: 'FFFFFFFF' } },
+      },
+      length:
+        currentDate.isSame(firstDate) || currentDate.date() === 1
+          ? length
+          : undefined,
     };
 
     cellName.column += 1;

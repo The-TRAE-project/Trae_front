@@ -42,7 +42,7 @@ const ProjectSearchInput = ({
         onFocus={onClearFilter}
         placeholder="№ проекта или наименование клиента"
       />
-      <SearchIcon />
+      <SearchIcon onClick={() => setSearchValue(value)} />
     </InputWrapper>
   );
 };

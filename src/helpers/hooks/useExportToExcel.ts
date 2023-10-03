@@ -34,43 +34,39 @@ export function useExportToExcel() {
 
       workSheet.addRows(data.header);
       workSheet.addRows(data.body);
+      workSheet.eachRow((row) => {
+        row.height = 25;
+        row.eachCell({ includeEmpty: true }, (cell) => {
+          const style = data.styles[cell.address];
+          cell.style = style;
+
+          if (
+            style?.length !== undefined &&
+            style.length !== null &&
+            style.length > 1
+          ) {
+            for (let i = 1; i < style.length; i += 1) {
+              cell.value = `${
+                row.getCell((cell.col as unknown as number) + i).value
+              }${cell.value}`;
+            }
+
+            workSheet.mergeCells(
+              cell.address,
+              `${convertNumberToColumn(
+                (cell.col as unknown as number) + style.length - 2
+              )}${cell.row}`
+            );
+          }
+        });
+      });
+
       switch (type) {
         case 'Employees':
-          workSheet.eachRow((row) => {
-            row.height = 25;
-            row.eachCell({ includeEmpty: true }, (cell) => {
-              cell.style = data.styles[cell.address];
-            });
-          });
           workSheet.getColumn(1).width = 25;
           workSheet.getColumn(workSheet.actualColumnCount - 1).width = 15;
           break;
         case 'Projects':
-          workSheet.eachRow((row) => {
-            row.height = 25;
-            row.eachCell({ includeEmpty: true }, (cell) => {
-              const style = data.styles[cell.address];
-              cell.style = style;
-              if (
-                style?.length !== undefined &&
-                style.length !== null &&
-                style.length > 1
-              ) {
-                for (let i = 1; i < style.length; i += 1) {
-                  cell.value = `${
-                    row.getCell((cell.col as unknown as number) + i).value
-                  }${cell.value}`;
-                }
-
-                workSheet.mergeCells(
-                  cell.address,
-                  `${convertNumberToColumn(
-                    (cell.col as unknown as number) + style.length - 2
-                  )}${cell.row}`
-                );
-              }
-            });
-          });
           workSheet.getColumn(1).width = 10;
           workSheet.getColumn(2).width = 25;
           workSheet.getColumn(3).width = 25;
@@ -78,12 +74,6 @@ export function useExportToExcel() {
           workSheet.getColumn(5).width = 30;
           break;
         case 'Deadlines':
-          workSheet.eachRow((row) => {
-            row.height = 25;
-            row.eachCell({ includeEmpty: true }, (cell) => {
-              cell.style = data.styles[cell.address];
-            });
-          });
           workSheet.getColumn(1).width = 30;
           workSheet.getColumn(2).width = 30;
           workSheet.getColumn(3).width = 30;

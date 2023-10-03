@@ -4,9 +4,8 @@ import styled from 'styled-components';
 export const useMenuStyles = createStyles(() => ({
   dropdown: {
     left: '0px !important',
-    width: '369px !important',
-    maxWidth: 369,
-    maxHeight: 700,
+    maxHeight: 400,
+    overflow: 'auto',
     border: 'none',
     background: 'var(--white)',
     padding: 'var(--menu-ptb) var(--menu-plr)',

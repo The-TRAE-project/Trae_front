@@ -36,6 +36,7 @@ export const Input = styled.input`
 export const SearchIcon = styled(MdOutlineSearch)`
   --fs-32: clamp(1.75rem, calc(1.13rem + 0.72vw), 2rem);
 
+  cursor: pointer;
   font-size: var(--fs-32);
   font-weight: 300;
   color: var(--white);

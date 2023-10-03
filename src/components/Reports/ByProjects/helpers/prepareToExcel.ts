@@ -120,7 +120,20 @@ function constructExcelStyles(data: ProjectsReportTableData) {
     };
     cellName.column += 1;
   }
-  datesArray.forEach(() => {
+
+  const lastDate = convertToDayjs(data.dateEnd);
+  const firstDate = convertToDayjs(data.dateStart);
+
+  datesArray.forEach((date) => {
+    const currentDate = dayjs(date);
+    const currentMonth = currentDate.month();
+    const currentYear = currentDate.year();
+
+    const length =
+      currentMonth === lastDate.month() && currentYear === lastDate.year()
+        ? lastDate.date() - currentDate.date() + 1
+        : currentDate.daysInMonth() - currentDate.date() + 1;
+
     const currentColumn = cellName.column;
     cellsStyles[`${convertNumberToColumn(currentColumn)}1`] = {
       alignment,
@@ -134,7 +147,16 @@ function constructExcelStyles(data: ProjectsReportTableData) {
         pattern: 'solid',
         fgColor: { argb: 'FF42894D' },
       },
-      border,
+      border: {
+        top: { style: 'thin', color: { argb: 'FF42894D' } },
+        left: { style: 'thin', color: { argb: 'FFFFFFFF' } },
+        bottom: { style: 'thin', color: { argb: 'FF42894D' } },
+        right: { style: 'thin', color: { argb: 'FFFFFFFF' } },
+      },
+      length:
+        currentDate.isSame(firstDate) || currentDate.date() === 1
+          ? length
+          : undefined,
     };
     cellName.column += 1;
   });
@@ -274,10 +296,7 @@ function constructExcelStyles(data: ProjectsReportTableData) {
         }
 
         cellsStyles[`${convertNumberToColumn(cellName.column)}${rowNumber}`] = {
-          alignment: {
-            vertical: 'middle',
-            horizontal: 'left',
-          },
+          alignment,
           font: {
             name: 'Roboto',
             size: 14,
@@ -317,6 +336,7 @@ function constructExcelStyles(data: ProjectsReportTableData) {
     cellName.column = 0;
   });
 
+  // console.log(cellsStyles);
   return cellsStyles;
 }
 
