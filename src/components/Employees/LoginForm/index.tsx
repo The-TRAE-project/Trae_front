@@ -118,6 +118,7 @@ const EmployeeLoginForm = () => {
             {...form.getInputProps('pinCode')}
             onFocus={() => setIsInputInFocus(true)}
             classNames={{ input }}
+            autocomplete="off"
           />
           <Button type="submit" disabled={!disabled}>
             {isLoading ? <Loader size={40} /> : 'Подтвердить'}
