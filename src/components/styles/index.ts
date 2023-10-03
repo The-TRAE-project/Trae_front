@@ -147,6 +147,9 @@ export const UnstyledButton = styled.button`
       svg {
         width: var(--home-i-wd);
         height: var(--home-i-ht);
+        &:hover {
+          filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+        }
       }
     `}
 
@@ -185,6 +188,10 @@ export const OrangeButton = styled.button`
   ${({ theme }) => theme.mixins.fontSize24};
   color: var(--white);
 
+  &:hover {
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  }
+
   &:is(:focus, :focus-within) {
     outline: none;
   }
@@ -202,6 +209,9 @@ export const BgWhiteCardLinkBtn = styled.button`
   padding: var(--bg-white-card-ptb) var(--bg-white-card-plr);
   background: var(--white);
   border-radius: var(--border-radius);
+  &:hover {
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  }
 
   &:is(:focus, :focus-within) {
     outline: none;
@@ -260,6 +270,9 @@ export const DashedOrangeButton = styled.button`
   color: var(--white);
   padding: 15px 34px;
 
+  &:hover {
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  }
   &:is(:focus, :focus-within) {
     outline: none;
   }
@@ -464,6 +477,9 @@ export const SelectDisplayInput = styled.div<SelectDisplayInputProps>`
   background: ${(props) =>
     props.$disabled ? 'var(--gray-shadow)' : 'var(--white);'};
   order: 2;
+  &:hover {
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  }
 
   input {
     display: none;

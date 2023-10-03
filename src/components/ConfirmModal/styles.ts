@@ -35,6 +35,9 @@ export const Button = styled.button`
   font-weight: 500;
   text-align: center;
   color: var(--white);
+  &:hover {
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  }
 
   &:is(:focus, :focus-within, :active) {
     outline: none;

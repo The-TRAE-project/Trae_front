@@ -14,7 +14,9 @@ export const Wrapper = styled.div`
   border: none;
   border-radius: var(--border-radius);
   background: var(--white);
-  box-shadow: 0px 4px 6px var(--black-shadow);
+  &:hover {
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  }
 
   &:is(:hover, :active, :focus) {
     outline: none;

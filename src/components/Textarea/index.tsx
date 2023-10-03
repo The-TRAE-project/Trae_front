@@ -29,6 +29,9 @@ const Textarea = (props: TextareaProps, ref: Ref<HTMLTextAreaElement>) => (
         fontSize: 28,
         lineHeight: '33px',
         color: 'var(--white-black)',
+        '&:hover': {
+          boxShadow: '0px 4px 4px 0px rgba(0, 0, 0, 0.25)',
+        },
 
         '&::focus': {
           outline: 'none',
