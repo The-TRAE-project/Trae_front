@@ -5,12 +5,17 @@ export const sortWorkTypesByPriority = (data: WorkType[]) => {
     (it) => it.name === WorkTypeStatuses.SHIPMENT
   )[0];
 
-  const first10WorkTypes = data
-    .filter((it) => it.name !== WorkTypeStatuses.SHIPMENT)
+  const workTypesWithoutShipment = data.filter(
+    (it) => it.name !== WorkTypeStatuses.SHIPMENT
+  );
+
+  const first10WorkTypes = workTypesWithoutShipment
     .slice(0, 10)
     .sort((a, b) => a.id - b.id);
 
-  const restWorkTypes = data.slice(10);
+  const restWorkTypes = workTypesWithoutShipment
+    .slice(10)
+    .sort((a, b) => a.id - b.id);
 
   return shipment
     ? [...first10WorkTypes, shipment, ...restWorkTypes]

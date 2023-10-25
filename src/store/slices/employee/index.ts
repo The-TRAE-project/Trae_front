@@ -1,9 +1,13 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 import Cookies from 'js-cookie';
+import axios from 'axios';
 import instance from '../../../config/axiosConfig';
 import { InitialState } from './types';
 import { TokenTypes } from '../../../helpers/hooks/useCookies';
+import { TokenValue } from '../auth/types';
+import { isRefreshTokenNearExpiration } from '../../../helpers/isRefreshTokenNearExpiration';
+import { RequestHeader } from '../../../constants/requestHeader';
 
 const initialState = {
   isLoggedIn: false,
@@ -35,8 +39,57 @@ export const loginEmployee = createAsyncThunk(
 
         return response.data;
       }
+      throw new Error('no access token');
+
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
+      if (
+        error.message === 'no access token' ||
+        error.response.data.status === 401
+      ) {
+        const refreshToken = Cookies.get(TokenTypes.REFRESH_TOKEN);
+        const accessResponse = await axios({
+          method: 'post',
+          url: `${import.meta.env.VITE_BACK_API_URL}/auth/token`,
+          headers: {},
+          data: {
+            refreshToken,
+          },
+        });
+
+        if (accessResponse?.data) {
+          const { accessToken } = accessResponse.data as TokenValue;
+          Cookies.set(TokenTypes.ACCESS_TOKEN, accessToken);
+
+          if (isRefreshTokenNearExpiration()) {
+            const refreshResponse = await axios({
+              method: 'post',
+              url: `${import.meta.env.VITE_BACK_API_URL}/auth/refresh`,
+              headers: {
+                Authorization: RequestHeader.AUTHORIZATION_PREFIX + accessToken,
+              },
+              data: {
+                refreshToken,
+              },
+            });
+
+            const { refreshToken: newRefreshToken } =
+              refreshResponse.data as TokenValue;
+            Cookies.set(TokenTypes.REFRESH_TOKEN, newRefreshToken);
+          }
+
+          const config = {
+            headers: { Authorization: `Bearer ${accessToken}` },
+          };
+
+          const response = await instance.post(
+            `/employee/checkin/${id}`,
+            {},
+            config
+          );
+          return response.data;
+        }
+      }
       return rejectWithValue(error.response.data);
     }
   }
@@ -62,8 +115,56 @@ export const logoutEmployee = createAsyncThunk(
 
         return response.data;
       }
+      throw new Error('no access token');
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
+      if (
+        error.message === 'no access token' ||
+        error.response.data.status === 401
+      ) {
+        const refreshToken = Cookies.get(TokenTypes.REFRESH_TOKEN);
+        const accessResponse = await axios({
+          method: 'post',
+          url: `${import.meta.env.VITE_BACK_API_URL}/auth/token`,
+          headers: {},
+          data: {
+            refreshToken,
+          },
+        });
+
+        if (accessResponse?.data) {
+          const { accessToken } = accessResponse.data as TokenValue;
+          Cookies.set(TokenTypes.ACCESS_TOKEN, accessToken);
+
+          if (isRefreshTokenNearExpiration()) {
+            const refreshResponse = await axios({
+              method: 'post',
+              url: `${import.meta.env.VITE_BACK_API_URL}/auth/refresh`,
+              headers: {
+                Authorization: RequestHeader.AUTHORIZATION_PREFIX + accessToken,
+              },
+              data: {
+                refreshToken,
+              },
+            });
+
+            const { refreshToken: newRefreshToken } =
+              refreshResponse.data as TokenValue;
+            Cookies.set(TokenTypes.REFRESH_TOKEN, newRefreshToken);
+          }
+
+          const config = {
+            headers: { Authorization: `Bearer ${accessToken}` },
+          };
+
+          const response = await instance.post(
+            `/employee/checkout/${id}`,
+            {},
+            config
+          );
+          return response.data;
+        }
+      }
       return rejectWithValue(error.response.data);
     }
   }

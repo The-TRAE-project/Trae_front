@@ -42,8 +42,6 @@ const baseQueryWithReAuth = async (
   let result = await baseQuery(args, api, extraOptions);
   const refreshToken = Cookies.get(TokenTypes.REFRESH_TOKEN);
 
-  console.log('BASE_QUERY:', result, args, api, extraOptions, new Date());
-
   if (result?.error?.status === 401) {
     const accessResponse = await axios({
       method: 'post',

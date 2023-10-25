@@ -336,7 +336,6 @@ function constructExcelStyles(data: ProjectsReportTableData) {
     cellName.column = 0;
   });
 
-  // console.log(cellsStyles);
   return cellsStyles;
 }
 
