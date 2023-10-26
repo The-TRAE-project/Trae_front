@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { useForm } from '@mantine/form';
 
 import Cookies from 'js-cookie';
-import axios from 'axios';
 import { useAppDispatch } from '../../../helpers/hooks/useAppDispatch';
 import { useAppSelector } from '../../../helpers/hooks/useAppSelector';
 import { showErrorNotification } from '../../../helpers/showErrorNotification';
@@ -21,9 +20,6 @@ import ConfirmModal from '../ConfirmModal';
 import NumericKeyboard from './NumericKeyboard';
 import { Button, GroupForm, useTextInputStyles, Wrapper } from './styles';
 import { TokenTypes } from '../../../helpers/hooks/useCookies';
-import { RequestHeader } from '../../../constants/requestHeader';
-import { isRefreshTokenNearExpiration } from '../../../helpers/isRefreshTokenNearExpiration';
-import { TokenValue } from '../../../store/slices/auth/types';
 
 interface LoginFormValues {
   pinCode: string;
@@ -75,63 +71,9 @@ const EmployeeLoginForm = () => {
       resetAll();
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
-      if (err.response.data.status === 401) {
-        const refreshToken = Cookies.get(TokenTypes.REFRESH_TOKEN);
-        const accessResponse = await axios({
-          method: 'post',
-          url: `${import.meta.env.VITE_BACK_API_URL}/auth/token`,
-          headers: {},
-          data: {
-            refreshToken,
-          },
-        });
-
-        if (accessResponse?.data) {
-          const { accessToken: token } = accessResponse.data as TokenValue;
-          Cookies.set(TokenTypes.ACCESS_TOKEN, token);
-          if (isRefreshTokenNearExpiration()) {
-            const refreshResponse = await axios({
-              method: 'post',
-              url: `${import.meta.env.VITE_BACK_API_URL}/auth/refresh`,
-              headers: {
-                Authorization: RequestHeader.AUTHORIZATION_PREFIX + token,
-              },
-              data: {
-                refreshToken,
-              },
-            });
-
-            const { refreshToken: newRefreshToken } =
-              refreshResponse.data as TokenValue;
-            Cookies.set(TokenTypes.REFRESH_TOKEN, newRefreshToken);
-          }
-
-          const config = {
-            headers: { Authorization: `Bearer ${token}` },
-          };
-          const response = await instance.get(
-            `/employee/login/${values.pinCode}`,
-            config
-          );
-
-          setEmployee(response.data);
-          setIsLoading(false);
-          if (!response.data.onShift) {
-            dispatch(toggleModal(true));
-          } else {
-            dispatch(setEmployeeCredentials(response.data));
-            navigate(Paths.EMPLOYEE_MAIN);
-          }
-          resetAll();
-        }
-      } else {
-        resetAll();
-        setIsLoading(false);
-        showErrorNotification(
-          err.response.data.status,
-          err.response.data.error
-        );
-      }
+      resetAll();
+      setIsLoading(false);
+      showErrorNotification(err.response.data.status, err.response.data.error);
     }
   };
 
