@@ -60,7 +60,7 @@ export const Button = styled.button`
   }
 
   &:hover:not(button:disabled) {
-    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+    filter: drop-shadow(var(--drop-shadow));
   }
   ${(props) =>
     props.$responsive &&

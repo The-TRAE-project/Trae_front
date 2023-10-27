@@ -148,7 +148,7 @@ export const UnstyledButton = styled.button`
         width: var(--home-i-wd);
         height: var(--home-i-ht);
         &:hover {
-          filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+          filter: drop-shadow(var(--drop-shadow));
         }
       }
     `}
@@ -189,7 +189,7 @@ export const OrangeButton = styled.button`
   color: var(--white);
 
   &:hover {
-    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    box-shadow: var(--box-shadow);
   }
 
   &:is(:focus, :focus-within) {
@@ -210,7 +210,7 @@ export const BgWhiteCardLinkBtn = styled.button`
   background: var(--white);
   border-radius: var(--border-radius);
   &:hover {
-    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    box-shadow: var(--box-shadow);
   }
 
   &:is(:focus, :focus-within) {
@@ -271,7 +271,7 @@ export const DashedOrangeButton = styled.button`
   padding: 15px 34px;
 
   &:hover {
-    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    box-shadow: var(--box-shadow);
   }
   &:is(:focus, :focus-within) {
     outline: none;
@@ -410,13 +410,13 @@ export const ProjectNumber = styled.p`
   ${(props: ProjectNumberProps) =>
     props.$isEnded &&
     css`
-      background-color: var(--light-green2);
+      background-color: var(--light-green);
     `}
 
   ${(props: ProjectNumberProps) =>
     props.$isOverdue &&
     css`
-      background-color: var(--red2);
+      background-color: var(--red);
     `}
 `;
 
@@ -478,7 +478,7 @@ export const SelectDisplayInput = styled.div<SelectDisplayInputProps>`
     props.$disabled ? 'var(--gray-shadow)' : 'var(--white);'};
   order: 2;
   &:hover {
-    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    box-shadow: var(--box-shadow);
   }
 
   input {

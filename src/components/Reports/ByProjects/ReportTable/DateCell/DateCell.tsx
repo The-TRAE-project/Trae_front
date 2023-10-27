@@ -34,7 +34,7 @@ export function DateCell({
   let color;
 
   if (isOverdue) {
-    color = 'var(--red2)';
+    color = 'var(--red)';
   } else if (isEnded) {
     color = 'var(--black)';
   } else if (inWork || readyToAcceptance) {

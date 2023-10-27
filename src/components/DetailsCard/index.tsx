@@ -1,4 +1,4 @@
-import { Label, Text, Stack, TextWrapper } from './styles';
+import { Label, Text, Stack } from './styles';
 
 interface Props {
   label: string;
@@ -9,9 +9,7 @@ const DetailsCard = ({ label, text }: Props) => {
   return (
     <Stack>
       <Label>{label}</Label>
-      <TextWrapper>
-        <Text>{text || ''}</Text>
-      </TextWrapper>
+      <Text>{text || ''}</Text>
     </Stack>
   );
 };
