@@ -1,14 +1,26 @@
 import styled from 'styled-components';
 
-import { TextWrapper } from '../../../../DetailsCard/styles';
-
-export const WorkTypeWrapper = styled(TextWrapper)`
-  min-height: initial;
-`;
-
 export const GroupWrapper = styled.div`
-  background: var(--green3);
+  background: var(--green-disabled);
   border-radius: var(--border-radius);
+
+  border: solid 2px transparent;
+  background-clip: padding-box;
+  position: relative;
+
+  &:before {
+    content: '';
+    position: absolute;
+    inset: 0px;
+    z-index: -1;
+    margin: -2px;
+    border-radius: inherit;
+    background: linear-gradient(
+      to right,
+      var(--black-gradient),
+      var(--white-gradient)
+    );
+  }
 `;
 
 export const Group = styled.div`

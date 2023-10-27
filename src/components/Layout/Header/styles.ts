@@ -15,7 +15,6 @@ export const Navbar = styled.nav`
   background-color: var(--white);
   border-radius: 0px 0px 15px 15px;
   overflow: hidden;
-  filter: drop-shadow(0px 4px 4px var(--black-shadow));
 `;
 
 export const List = styled.ul`

@@ -4,7 +4,7 @@ export const Wrapper = styled.button`
   min-height: 240px;
   position: relative;
   padding: 57px 20px 13px;
-  background-color: var(--secondary-white);
+  background-color: var(--white);
   ${({ theme }) => theme.mixins.column};
   align-items: center;
   gap: 0.9rem;

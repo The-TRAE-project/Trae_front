@@ -32,8 +32,7 @@ export const loginUser = createAsyncThunk(
       const response = await instance.post<
         LoginFormValues,
         Response<TokenValue>
-      >('/auth/login', value);
-
+      >('/auth/login', value, {});
       if (response.data) {
         Cookies.set(TokenTypes.ACCESS_TOKEN, response.data.accessToken, {
           expires: ACCESS_TOKEN_EXPIRATION,

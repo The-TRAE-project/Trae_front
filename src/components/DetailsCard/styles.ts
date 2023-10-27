@@ -13,26 +13,32 @@ export const Label = styled.p`
   padding-left: 14px;
 `;
 
-export const TextWrapper = styled.div`
-  min-height: 73px;
-  padding: 2px;
-  border-radius: var(--border-radius);
-  background: linear-gradient(
-    268.17deg,
-    var(--white-gradient) 0%,
-    var(--black-gradient) 104.24%
-  );
-`;
-
 export const Text = styled.p`
-  height: 100%;
+  min-height: 73px;
   ${({ theme }) => theme.mixins.center};
   border-radius: var(--border-radius);
-  background: var(--green3);
-  backdrop-filter: blur(40px);
+  background: var(--green-disabled);
   padding: 20px 12px;
   font-family: var(--font-roboto);
   font-weight: 400;
   ${({ theme }) => theme.mixins.fontSize28};
   color: var(--white);
+
+  border: solid 2px transparent;
+  background-clip: padding-box;
+  position: relative;
+
+  &:before {
+    content: '';
+    position: absolute;
+    inset: 0px;
+    z-index: -1;
+    margin: -2px;
+    border-radius: inherit;
+    background: linear-gradient(
+      to right,
+      var(--black-gradient),
+      var(--white-gradient)
+    );
+  }
 `;

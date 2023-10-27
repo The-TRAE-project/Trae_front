@@ -15,7 +15,7 @@ export const Wrapper = styled.div`
   border-radius: var(--border-radius);
   background: var(--white);
   &:hover {
-    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    box-shadow: var(--box-shadow);
   }
 
   &:is(:hover, :active, :focus) {
@@ -25,7 +25,7 @@ export const Wrapper = styled.div`
   ${(props: WrapperProps) =>
     props.$isOpOverdue &&
     css`
-      border: 3px solid var(--red2);
+      border: 3px solid var(--red);
     `}
 `;
 

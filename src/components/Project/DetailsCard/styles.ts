@@ -8,6 +8,7 @@ export const Wrapper = styled.div`
   border-radius: var(--border-radius);
 `;
 
+// TODO replace outline with clip path
 export const ProjectNumber = styled.p`
   position: absolute;
   top: -40px;

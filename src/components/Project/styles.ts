@@ -30,7 +30,8 @@ export const DateBadge = styled.p`
   width: 94px;
   height: 43px;
   ${({ theme }) => theme.mixins.fCenter};
-  background: var(--orange2);
+  background: var(--orange);
+  opacity: 0.8;
   border-radius: var(--border-radius);
 
   font-family: var(--font-roboto);

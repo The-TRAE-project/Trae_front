@@ -34,7 +34,7 @@ export const KeyboardBtn = styled.button`
   height: 80px;
   border: none;
   border-radius: var(--border-radius);
-  background: var(--light-green2);
+  background: var(--white-40);
   ${({ theme }) => theme.mixins.fCenter};
 
   font-family: var(--font-roboto);

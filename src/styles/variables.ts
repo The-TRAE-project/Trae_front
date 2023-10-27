@@ -2,32 +2,30 @@ import { css } from 'styled-components';
 
 const variables = css`
   :root {
-    --white: #ffff;
-    --white2: #fcf8f8;
-    --secondary-white: #fafafa;
-    --secondary-white2: #fffefe;
+    --white: rgba(255, 255, 255, 1);
+    --white2: rgba(252, 248, 248, 1);
+    --white-40: rgba(255, 255, 255, 0.4);
     --white-gradient: rgba(255, 253, 253, 0.6);
-    --black: #000000;
+    --black: rgba(0, 0, 0, 1);
     --secondary-black: rgba(0, 0, 0, 0.54);
-    --white-black: #2a302b;
+    --white-black: rgba(42, 48, 43, 1);
     --black-shadow: rgba(0, 0, 0, 0.25);
     --black-gradient: rgba(255, 255, 255, 0);
     --dark-purple: rgba(27, 31, 59, 0.8);
-    --orange: #ff9a4a;
-    --orange2: rgba(255, 154, 74, 0.8);
-    --red: #da1212;
-    --red2: #f93c3c;
-    --green: #42894d;
-    --green2: rgba(131, 204, 140, 0.6);
-    --green3: #68a56e;
-    --gradient-green1: #508255;
-    --gradient-green2: #419149;
-    --gradient-green3: #367345;
-    --light-green: #83cc8c;
-    --light-green2: #8fb398;
-    --gray: #909491;
+    --orange: rgb(255, 154, 74);
+    --red: rgba(249, 60, 60, 1);
+    --green: rgba(66, 137, 77, 1);
+    --green-disabled: rgba(104, 165, 110, 1);
+    --gradient-green1: rgba(80, 130, 85, 1);
+    --gradient-green2: rgba(65, 145, 73, 1);
+    --gradient-green3: rgba(54, 115, 69, 1);
+    --light-green: rgba(131, 204, 140, 1);
+    --gray: rgb(144, 148, 145);
     --gray2: rgba(144, 148, 145, 0.5);
     --gray-shadow: rgba(255, 255, 255, 0.2);
+
+    --box-shadow: 0px 4px 4px 0px var(--black-shadow);
+    --drop-shadow: 0px 4px 4px var(--black-shadow);
 
     --font-roboto: 'Roboto', sans-serif;
     --font-raleway: 'Raleway', sans-serif;
