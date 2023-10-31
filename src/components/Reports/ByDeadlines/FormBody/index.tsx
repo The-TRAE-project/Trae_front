@@ -154,6 +154,7 @@ export function FormBody({ form }: Props) {
     },
   };
 
+  // TODO: change disabled styles similiar to DetailsCard
   return (
     <ThreeColumnGrid>
       <DatePicker

@@ -5,6 +5,7 @@ import {
   createColumnHelper,
 } from '@tanstack/react-table';
 import dayjs from 'dayjs';
+import classNames from 'classnames';
 import { ProjectsReportTableData } from '../ReportTable';
 import { convertMonthToString } from '../../../../helpers/convertMonthToString';
 import { convertToString } from '../../../../helpers/convertToString';
@@ -235,21 +236,23 @@ function constructTableColumns(dateStart: number[], dateEnd: number[]) {
           ? 0
           : 1;
       },
-      cell: (info: CellContext<TableData, NumberCellInfo>) => (
-        <div
-          className={`${styles.table__stickyCell} ${
-            info.getValue()?.isOverdueByProject
-              ? styles.table__stickyCell_overdueProject
-              : ''
-          } ${
-            info.getValue()?.isOverdueByOperations
-              ? styles.table__stickyCell_ovedueOperations
-              : ''
-          }`}
-        >
-          {info.getValue()?.number}
-        </div>
-      ),
+      cell: (info: CellContext<TableData, NumberCellInfo>) => {
+        return (
+          <div
+            className={classNames(
+              styles.table__stickyCell,
+              info.getValue().isOverdueByProject
+                ? styles.table__stickyCell_overdueProject
+                : '',
+              info.getValue().isOverdueByOperations
+                ? styles.table__stickyCell_overdueOperations
+                : ''
+            )}
+          >
+            {info.getValue()?.number}
+          </div>
+        );
+      },
     }),
     columnHelper.accessor('customer', {
       header: () => <div className={styles.table__stickyCell}>Клиент</div>,
@@ -268,7 +271,10 @@ function constructTableColumns(dateStart: number[], dateEnd: number[]) {
     columnHelper.accessor('deviation', {
       header: () => (
         <div
-          className={`${styles.table__stickyCell} ${styles.table__stickyCell_deviation}`}
+          className={classNames(
+            styles.table__stickyCell,
+            styles.table__stickyCell_deviation
+          )}
         >
           Отклонение
         </div>

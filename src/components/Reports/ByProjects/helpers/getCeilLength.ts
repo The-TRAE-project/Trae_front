@@ -24,16 +24,28 @@ export function getCeilLength(
     ? convertToDayjs(nextOperation.startDate)
     : convertToDayjs(dateEnd);
 
-  const fullLength = operationInfo.isEnded
-    ? convertToDayjs(operationInfo.realEndDate as number[]).diff(
-        convertToDayjs(
-          (operationInfo.acceptanceDate !== null
-            ? operationInfo.acceptanceDate
-            : operationInfo.realEndDate) as number[]
-        ),
+  let fullLength;
+  if (operationInfo.isEnded) {
+    fullLength = convertToDayjs(operationInfo.realEndDate as number[]).diff(
+      convertToDayjs(
+        (operationInfo.acceptanceDate !== null
+          ? operationInfo.acceptanceDate
+          : operationInfo.realEndDate) as number[]
+      ),
+      'd'
+    );
+  } else if (operationInfo.inWork) {
+    fullLength = Math.max(
+      dayjs().diff(
+        convertToDayjs(operationInfo.acceptanceDate as number[]),
         'd'
-      )
-    : Math.ceil(hoursforOperation / 24);
+      ),
+      Math.ceil(hoursforOperation / 24)
+    );
+  } else {
+    fullLength = Math.ceil(hoursforOperation / 24);
+  }
+
   const minDifference = minDate.diff(
     convertToDayjs(operationInfo.startDate),
     'd'
