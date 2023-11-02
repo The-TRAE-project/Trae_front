@@ -68,7 +68,8 @@ function constructTableData(data: ProjectsReportTableData) {
     const deviation = calculateDeviation(endDateInContract, realEndDate);
 
     const isOverdueByProject = convertToDayjs(endDateInContract).isBefore(
-      dayjs()
+      convertToDayjs(operations.at(-1)?.plannedEndDate as number[]),
+      'd'
     );
     let isOverdueByOperations = false;
 
@@ -81,16 +82,18 @@ function constructTableData(data: ProjectsReportTableData) {
     });
 
     operations.forEach((currentOperation, operationIndex) => {
-      const plannedEndDate = convertToString(currentOperation.plannedEndDate);
+      const plannedEndDate = convertToDayjs(currentOperation.plannedEndDate);
 
       const isOverdue =
         (currentOperation.isEnded &&
-          plannedEndDate <
-            convertToString(currentOperation.realEndDate as number[])) ||
+          plannedEndDate.isBefore(
+            convertToDayjs(currentOperation.realEndDate as number[])
+          )) ||
         ((currentOperation.inWork || currentOperation.readyToAcceptance) &&
-          plannedEndDate < todayDate);
+          plannedEndDate.isBefore(todayDate));
 
       isOverdueByOperations = isOverdue ? true : isOverdueByOperations;
+
       const startDate = getOperationStartDate(data.dateStart, currentOperation);
 
       const isInReport = row[startDate] !== undefined;
