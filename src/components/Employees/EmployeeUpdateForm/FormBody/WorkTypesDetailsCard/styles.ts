@@ -1,11 +1,8 @@
 import styled from 'styled-components';
 
 export const GroupWrapper = styled.div`
-  background: var(--green-disabled);
+  background-color: var(--white-20);
   border-radius: var(--border-radius);
-
-  border: solid 2px transparent;
-  background-clip: padding-box;
   position: relative;
 
   &:before {
@@ -13,13 +10,20 @@ export const GroupWrapper = styled.div`
     position: absolute;
     inset: 0px;
     z-index: -1;
-    margin: -2px;
+    padding: 2px;
     border-radius: inherit;
     background: linear-gradient(
       to right,
       var(--black-gradient),
       var(--white-gradient)
     );
+
+    -webkit-mask: linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
   }
 `;
 

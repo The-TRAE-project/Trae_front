@@ -11,9 +11,32 @@ export const Wrapper = styled.div`
   height: var(--ht);
   ${({ theme }) => theme.mixins.fCenter};
   padding: var(--pt) 4px var(--pb);
-  background: var(--gray-shadow);
-  backdrop-filter: blur(40px);
   border-radius: var(--border-radius);
+
+  background-color: var(--white-20);
+  border-radius: var(--border-radius);
+  position: relative;
+
+  &:before {
+    content: '';
+    position: absolute;
+    inset: 0px;
+    z-index: -1;
+    padding: 2px;
+    border-radius: inherit;
+    background: linear-gradient(
+      to right,
+      var(--black-gradient),
+      var(--white-gradient)
+    );
+
+    -webkit-mask: linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+  }
 
   @media (min-width: 1532px) {
     width: 355px;

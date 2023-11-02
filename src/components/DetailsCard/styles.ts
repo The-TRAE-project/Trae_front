@@ -16,16 +16,15 @@ export const Label = styled.p`
 export const Text = styled.p`
   min-height: 73px;
   ${({ theme }) => theme.mixins.center};
-  border-radius: var(--border-radius);
-  background: var(--green-disabled);
+
   padding: 20px 12px;
   font-family: var(--font-roboto);
   font-weight: 400;
   ${({ theme }) => theme.mixins.fontSize28};
   color: var(--white);
 
-  border: solid 2px transparent;
-  background-clip: padding-box;
+  background-color: var(--white-20);
+  border-radius: var(--border-radius);
   position: relative;
 
   &:before {
@@ -33,12 +32,19 @@ export const Text = styled.p`
     position: absolute;
     inset: 0px;
     z-index: -1;
-    margin: -2px;
+    padding: 2px;
     border-radius: inherit;
     background: linear-gradient(
       to right,
       var(--black-gradient),
       var(--white-gradient)
     );
+
+    -webkit-mask: linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
   }
 `;
