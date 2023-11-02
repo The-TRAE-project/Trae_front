@@ -4,13 +4,13 @@
 <path fill-rule="evenodd" clip-rule="evenodd" d="M1175.03 107.958L972.731 387.127C943.566 427.375 937.568 479.942 956.915 525.725L1063.55 778.059C1085.18 829.236 1074.97 888.325 1037.43 929.282L990.946 980H0V0H1200.04C1206.51 35.5569 1199.54 74.1324 1175.03 107.958Z" fill="white"/>
 <defs>
 <linearGradient id="paint0_linear_194_141" x1="1945.5" y1="411.5" x2="559.5" y2="671.5" gradientUnits="userSpaceOnUse">
-<stop stop-color="#508255"/>
-<stop offset="1" stop-color="#419149"/>
+<stop stop-color="rgba(95, 105, 87, 1)"/>
+<stop offset="1" stop-color="rgba(118, 130, 108, 1)"/>
 </linearGradient>
 <radialGradient id="paint1_radial_194_141" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(1394 490) rotate(76.0739) scale(504.839 989.072)">
-<stop offset="0.347294" stop-color="#3B7157" stop-opacity="0.53"/>
-<stop offset="1" stop-color="#419149"/>
-<stop offset="1" stop-color="#419149"/>
+<stop offset="0.347294" stop-color="rgba(79, 86, 73, 1)" stop-opacity="0.53"/>
+<stop offset="1" stop-color="rgba(118, 130, 108, 1)"/>
+<stop offset="1" stop-color="rgba(118, 130, 108, 1)"/>
 </radialGradient>
 </defs>
 </svg>

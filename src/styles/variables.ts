@@ -4,6 +4,7 @@ const variables = css`
   :root {
     --white: rgba(255, 255, 255, 1);
     --white2: rgba(252, 248, 248, 1);
+    --white-20: rgba(255, 255, 255, 0.2);
     --white-40: rgba(255, 255, 255, 0.4);
     --white-gradient: rgba(255, 253, 253, 0.6);
     --black: rgba(0, 0, 0, 1);
@@ -12,17 +13,28 @@ const variables = css`
     --black-shadow: rgba(0, 0, 0, 0.25);
     --black-gradient: rgba(255, 255, 255, 0);
     --dark-purple: rgba(27, 31, 59, 0.8);
-    --orange: rgb(255, 154, 74);
+    --orange: rgba(167, 84, 61);
     --red: rgba(249, 60, 60, 1);
-    --green: rgba(66, 137, 77, 1);
-    --green-disabled: rgba(104, 165, 110, 1);
-    --gradient-green1: rgba(80, 130, 85, 1);
-    --gradient-green2: rgba(65, 145, 73, 1);
-    --gradient-green3: rgba(54, 115, 69, 1);
-    --light-green: rgba(131, 204, 140, 1);
-    --gray: rgb(144, 148, 145);
-    --gray2: rgba(144, 148, 145, 0.5);
+    --green: rgba(128, 136, 109, 1);
+    --green-disabled: rgba(152, 165, 138, 1);
+    --gradient-green1: rgba(95, 105, 87, 1);
+    --gradient-green2: rgba(118, 130, 108, 1);
+    --gradient-green3: rgba(79, 86, 73, 1);
+    --light-green: rgba(152, 165, 138, 1);
+    --gray: rgb(228, 224, 220);
+    --gray2: rgba(228, 224, 220, 0.5);
     --gray-shadow: rgba(255, 255, 255, 0.2);
+
+    // Old colors:
+    // --green: rgba(66, 137, 77, 1);
+    // --orange: rgb(255, 154, 74);
+    // --green-disabled: rgba(104, 165, 110, 1);
+    // --gradient-green1: rgba(80, 130, 85, 1);
+    // --gradient-green2: rgba(65, 145, 73, 1);
+    // --gradient-green3: rgba(54, 115, 69, 1);
+    // --light-green: rgba(131, 204, 140, 1);
+    // --gray: rgb(144, 148, 145);
+    // --gray2: rgba(144, 148, 145, 0.5);
 
     --box-shadow: 0px 4px 4px 0px var(--black-shadow);
     --drop-shadow: 0px 4px 4px var(--black-shadow);
