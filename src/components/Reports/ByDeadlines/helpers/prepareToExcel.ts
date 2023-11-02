@@ -1,3 +1,4 @@
+import { Border } from 'exceljs';
 import { convertToString } from '../../../../helpers/convertToString';
 import {
   ExcelAligmentStyle,
@@ -6,6 +7,7 @@ import {
 } from '../../../../helpers/hooks/useExportToExcel';
 import { DeadlinesReport } from '../../../../store/apis/reports/types';
 import { calculateDeviation } from '../../helpers/calculateDeviation';
+import { excelColors } from '../../helpers/excelColors';
 
 interface PrepareToExcelProps {
   reportsByDeadlines: DeadlinesReport;
@@ -61,12 +63,16 @@ function constructExcelStyles(data: DeadlinesReport) {
   const cellName = { column: 1, row: 1 };
   const columnArray = ['A', 'B', 'C', 'D', 'E', 'F'];
   const cellsStyles: { [key: string]: ExcelStylesForReports } = {};
+  const borderStyle: Partial<Border> = {
+    style: 'thin',
+    color: { argb: excelColors.green },
+  };
 
   const border: ExcelBorderStyle = {
-    top: { style: 'thin', color: { argb: 'FF42894D' } },
-    left: { style: 'thin', color: { argb: 'FF42894D' } },
-    bottom: { style: 'thin', color: { argb: 'FF42894D' } },
-    right: { style: 'thin', color: { argb: 'FF42894D' } },
+    top: borderStyle,
+    left: borderStyle,
+    bottom: borderStyle,
+    right: borderStyle,
   };
   const alignment: ExcelAligmentStyle = {
     vertical: 'middle',

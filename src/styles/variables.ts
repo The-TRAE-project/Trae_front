@@ -23,6 +23,7 @@ const variables = css`
     --light-green: rgba(152, 165, 138, 1);
     --gray: rgb(228, 224, 220);
     --gray2: rgba(228, 224, 220, 0.5);
+    --gray-dark: rgba(151, 153, 152, 1);
     --gray-shadow: rgba(255, 255, 255, 0.2);
 
     // Old colors:

@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import { Border } from 'exceljs';
 import { convertMonthToString } from '../../../../helpers/convertMonthToString';
 import { convertToString } from '../../../../helpers/convertToString';
 import { ProjectsReportTableData } from '../ReportTable';
@@ -14,6 +15,7 @@ import {
   ExcelStylesForReports,
 } from '../../../../helpers/hooks/useExportToExcel';
 import { ProjectOperation } from '../../../../store/apis/reports/types';
+import { excelColors } from '../../helpers/excelColors';
 
 function constructExcelHeader(dateStart: number[], dateEnd: number[]) {
   let currentDate = dayjs(convertToString(dateStart)).clone();
@@ -100,12 +102,20 @@ function constructExcelStyles(data: ProjectsReportTableData) {
   const cellName = { column: 0, row: 1 };
   const datesArray = getDatesBetween(data.dateStart, data.dateEnd);
   const cellsStyles: { [key: string]: ExcelStylesForReports } = {};
+  const borderStyleGreen: Partial<Border> = {
+    style: 'thin',
+    color: { argb: excelColors.green },
+  };
+  const borderStyleWhite: Partial<Border> = {
+    style: 'thin',
+    color: { argb: excelColors.white },
+  };
 
   const border: ExcelBorderStyle = {
-    top: { style: 'thin', color: { argb: 'FF42894D' } },
-    left: { style: 'thin', color: { argb: 'FF42894D' } },
-    bottom: { style: 'thin', color: { argb: 'FF42894D' } },
-    right: { style: 'thin', color: { argb: 'FF42894D' } },
+    top: borderStyleGreen,
+    left: borderStyleGreen,
+    bottom: borderStyleGreen,
+    right: borderStyleGreen,
   };
   const alignment: ExcelAligmentStyle = {
     vertical: 'middle',
@@ -139,19 +149,19 @@ function constructExcelStyles(data: ProjectsReportTableData) {
       alignment,
       font: {
         name: 'Raleway',
-        color: { argb: 'FFFFFFFF' },
+        color: { argb: excelColors.white },
         bold: true,
       },
       fill: {
         type: 'pattern',
         pattern: 'solid',
-        fgColor: { argb: 'FF42894D' },
+        fgColor: { argb: excelColors.green },
       },
       border: {
-        top: { style: 'thin', color: { argb: 'FF42894D' } },
-        left: { style: 'thin', color: { argb: 'FFFFFFFF' } },
-        bottom: { style: 'thin', color: { argb: 'FF42894D' } },
-        right: { style: 'thin', color: { argb: 'FFFFFFFF' } },
+        top: borderStyleGreen,
+        left: borderStyleWhite,
+        bottom: borderStyleGreen,
+        right: borderStyleWhite,
       },
       length:
         currentDate.isSame(firstDate) || currentDate.date() === 1
@@ -180,7 +190,9 @@ function constructExcelStyles(data: ProjectsReportTableData) {
     cellsStyles[`${convertNumberToColumn(currentColumn)}2`] = {
       alignment,
       font: {
-        color: { argb: date === todayDate ? 'FF42894D' : 'FFFFFFFF' },
+        color: {
+          argb: date === todayDate ? excelColors.green : excelColors.white,
+        },
         name: 'Roboto',
         bold: true,
       },
@@ -188,7 +200,7 @@ function constructExcelStyles(data: ProjectsReportTableData) {
         type: 'pattern',
         pattern: 'solid',
         fgColor: {
-          argb: date === todayDate ? 'FFFFFFFF' : 'FFFF9A4A',
+          argb: date === todayDate ? excelColors.white : excelColors.orange,
         },
       },
       border,
@@ -242,7 +254,7 @@ function constructExcelStyles(data: ProjectsReportTableData) {
         fill: {
           type: 'pattern',
           pattern: 'solid',
-          fgColor: { argb: '80909491' },
+          fgColor: { argb: excelColors.gray },
         },
         alignment,
         border,
@@ -282,17 +294,17 @@ function constructExcelStyles(data: ProjectsReportTableData) {
         let textColor = '';
 
         if (currentOperation.readyToAcceptance) {
-          backgroundColor = 'FF42894D';
-          textColor = 'FFFFFFFF';
+          backgroundColor = excelColors.green;
+          textColor = excelColors.white;
         } else if (currentOperation.inWork) {
-          backgroundColor = 'FFFF9A4A';
-          textColor = 'FFFFFFFF';
+          backgroundColor = excelColors.orange;
+          textColor = excelColors.white;
         } else if (currentOperation.isEnded) {
-          backgroundColor = 'FF83CC8C';
-          textColor = 'FF000000';
+          backgroundColor = excelColors.light_green;
+          textColor = excelColors.black;
         } else {
-          backgroundColor = 'FFFFFFFF';
-          textColor = 'FFFF9A4A';
+          backgroundColor = excelColors.white;
+          textColor = excelColors.orange;
         }
 
         cellsStyles[`${convertNumberToColumn(cellName.column)}${rowNumber}`] = {
@@ -318,16 +330,18 @@ function constructExcelStyles(data: ProjectsReportTableData) {
     cellsStyles[`A${rowNumber}`].fill = {
       type: 'pattern',
       pattern: 'solid',
-      fgColor: { argb: isOverdueByProject ? 'FFDA1212' : 'FFFFFFFF' },
+      fgColor: {
+        argb: isOverdueByProject ? excelColors.red : excelColors.white,
+      },
     };
     cellsStyles[`A${rowNumber}`].font = {
       name: 'Raleway',
       color: {
         // eslint-disable-next-line no-nested-ternary
         argb: isOverdueByProject
-          ? 'FFFFFFFF'
+          ? excelColors.white
           : isOverdueByOperations
-          ? 'FFDA1212'
+          ? excelColors.red
           : '',
       },
     };
