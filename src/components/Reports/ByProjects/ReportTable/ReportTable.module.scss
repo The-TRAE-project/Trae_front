@@ -48,13 +48,13 @@
     place-items: safe center;
     justify-content: safe center;
 
+    &_overdueOperations {
+      color: var(--red);
+    }
+
     &_overdueProject {
       background-color: var(--red); 
       color: var(--white);
-    }
-
-    &_overdueOperations {
-      color: var(--red);
     }
 
     &_deviation {
