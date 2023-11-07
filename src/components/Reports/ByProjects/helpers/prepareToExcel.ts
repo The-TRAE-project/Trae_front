@@ -215,7 +215,8 @@ function constructExcelStyles(data: ProjectsReportTableData) {
     const { endDateInContract, operationPeriod, operations } = project;
 
     const isOverdueByProject = convertToDayjs(endDateInContract).isBefore(
-      dayjs()
+      convertToDayjs(operations.at(-1)?.startDate as number[]),
+      'd'
     );
     let isOverdueByOperations = false;
     const rowNumber = cellName.row;
