@@ -11,15 +11,13 @@ import {
 import { useExportToExcel } from '../../../helpers/hooks/useExportToExcel';
 import { FormWrapper } from '../../styles';
 import Loader from '../../Loader';
-import {
-  DATE_30_AHEAD,
-  formatToQueryParamDate,
-} from '../helpers/formatToParamDate';
+import { formatToQueryParamDate } from '../helpers/formatToParamDate';
 import FormHeader from '../FormHeader';
 import FormBody from './FormBody';
 import { ReportTable } from './ReportTable';
 import { prepareToExcel } from './helpers/prepareToExcel';
 import { useDisplayError } from '../../../helpers/hooks/useDisplayError';
+import { useFormInitialDates } from '../helpers/useFormInitialDates';
 
 const ByProjects = () => {
   const [sortType, setSortType] = useState<SortingState>([
@@ -36,10 +34,12 @@ const ByProjects = () => {
     | undefined
   >(undefined);
 
+  const [formInitialDateStart, formInitialDateEnd] = useFormInitialDates();
+
   const form = useForm<ProjectReportFormValues>({
     initialValues: {
-      startOfPeriod: new Date(),
-      endOfPeriod: DATE_30_AHEAD,
+      startOfPeriod: formInitialDateStart,
+      endOfPeriod: formInitialDateEnd,
     },
     validate: (values) => {
       const resolver = zodResolver(ProjectReportSchema);

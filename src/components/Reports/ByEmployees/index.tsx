@@ -13,16 +13,14 @@ import { useExportToExcel } from '../../../helpers/hooks/useExportToExcel';
 import Loader from '../../Loader';
 import FormHeader from '../FormHeader';
 import { FormWrapper } from '../../styles';
-import {
-  DATE_30_AHEAD,
-  formatToQueryParamDate,
-} from '../helpers/formatToParamDate';
+import { formatToQueryParamDate } from '../helpers/formatToParamDate';
 import { useSetDefaultValue } from './helpers/useSetDefaultValue';
 import FormBody from './FormBody';
 import { ReportTable } from './ReportTable';
 import { prepareToExcel } from './helpers/prepareToExcel';
 import { EmployeesShortInfo } from '../../../store/apis/employee/types';
 import { useDisplayError } from '../../../helpers/hooks/useDisplayError';
+import { useFormInitialDates } from '../helpers/useFormInitialDates';
 
 const ByEmployees = () => {
   const [queryParams, setQueryParams] = useState<
@@ -53,10 +51,12 @@ const ByEmployees = () => {
     };
   }, [employees]);
 
+  const [formInitialDateStart, formInitialDateEnd] = useFormInitialDates();
+
   const form = useForm<EmployeeReportFormValues>({
     initialValues: {
-      startOfPeriod: new Date(),
-      endOfPeriod: DATE_30_AHEAD,
+      startOfPeriod: formInitialDateStart,
+      endOfPeriod: formInitialDateEnd,
       employeeIds: onlyEmployeesIds,
     },
     validate: (values) => {
