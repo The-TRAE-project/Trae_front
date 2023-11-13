@@ -78,7 +78,6 @@ function constructTableData(data: ProjectsReportTableData) {
     }
     const deviation = calculateDeviation(endDateInContract, realEndDate);
 
-    // console.log(number, deviation);
     const isOverdueByProject = convertToDayjs(endDateInContract).isBefore(
       convertToDayjs(operations.at(-1)?.startDate as number[]),
       'd'

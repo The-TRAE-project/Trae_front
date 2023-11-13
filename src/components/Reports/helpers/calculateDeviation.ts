@@ -8,7 +8,8 @@ export const calculateDeviation = (
     return null;
   }
   const plannedEndDate = convertToDayjs(plannedEnd);
-  const deviation = plannedEndDate.diff(convertToDayjs(realEnd), 'd');
+  const realEndDate = convertToDayjs(realEnd);
+  const deviation = plannedEndDate.diff(realEndDate, 'd');
 
   return deviation;
 };
