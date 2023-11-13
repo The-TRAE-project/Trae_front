@@ -2,15 +2,13 @@ import { convertToDayjs } from '../../../helpers/convertToDayjs';
 
 export const calculateDeviation = (
   plannedEnd: number[],
-  realEnd: number[] | null
+  realEnd: number[] | undefined | null
 ): number | null => {
-  if (realEnd === null) {
+  if (realEnd === undefined || realEnd === null) {
     return null;
   }
-
   const plannedEndDate = convertToDayjs(plannedEnd);
-  const realEndDate = convertToDayjs(realEnd);
-  const deviation = plannedEndDate.diff(realEndDate, 'd');
+  const deviation = plannedEndDate.diff(convertToDayjs(realEnd), 'd');
 
   return deviation;
 };

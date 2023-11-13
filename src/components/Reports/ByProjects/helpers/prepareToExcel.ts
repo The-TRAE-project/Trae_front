@@ -49,21 +49,28 @@ function constructExcelBody(data: ProjectsReportTableData) {
   const datesArray = getDatesBetween(data.dateStart, data.dateEnd);
 
   const result: (string | number | null)[][] = data.projects.map((project) => {
-    const {
-      name,
-      number,
-      comment,
-      customer,
-      realEndDate,
-      endDateInContract,
-      operations,
-    } = project;
+    const { name, number, comment, customer, endDateInContract, operations } =
+      project;
 
     const tableOperationsData: [string, string][] = datesArray.map((date) => {
       const isEndDateInContract = convertToString(endDateInContract) === date;
 
       return [date, isEndDateInContract ? '*' : ''];
     });
+
+    const shippingOperation = operations.find(
+      (op) => op.name === 'Отгрузка'
+    ) as ProjectOperation;
+
+    let realEndDate: number[] | undefined;
+    if (shippingOperation.isEnded && !shippingOperation.acceptanceDate) {
+      realEndDate = shippingOperation.realEndDate as number[];
+    } else if (shippingOperation.isEnded || shippingOperation.inWork) {
+      realEndDate = shippingOperation.acceptanceDate as number[];
+    } else {
+      realEndDate = shippingOperation.startDate;
+    }
+    const deviation = calculateDeviation(endDateInContract, realEndDate);
 
     operations.forEach((currentOperation) => {
       const startDate = getOperationStartDate(data.dateStart, currentOperation);
@@ -86,7 +93,7 @@ function constructExcelBody(data: ProjectsReportTableData) {
       number,
       customer,
       name,
-      calculateDeviation(endDateInContract, realEndDate),
+      deviation,
       comment,
       ...tableOperationsData.map((operation) => operation[1]),
     ];

@@ -17,6 +17,7 @@ import { convertToDayjs } from '../../../../helpers/convertToDayjs';
 import { DateCell } from '../ReportTable/DateCell/DateCell';
 import styles from '../ReportTable/ReportTable.module.scss';
 import { TableMonthHeader } from '../ReportTable/styles';
+import { ProjectOperation } from '../../../../store/apis/reports/types';
 
 export interface OperationCellInfo {
   projectId: number;
@@ -58,15 +59,26 @@ function constructTableData(data: ProjectsReportTableData) {
       comment,
       customer,
       id: projectId,
-      realEndDate,
       endDateInContract,
       operationPeriod,
       operations,
     } = project;
     const endDateInContractAsString = convertToString(endDateInContract);
 
+    const shippingOperation = operations.find(
+      (op) => op.name === 'Отгрузка'
+    ) as ProjectOperation;
+    let realEndDate: number[] | undefined;
+    if (shippingOperation.isEnded && !shippingOperation.acceptanceDate) {
+      realEndDate = shippingOperation.realEndDate as number[];
+    } else if (shippingOperation.isEnded || shippingOperation.inWork) {
+      realEndDate = shippingOperation.acceptanceDate as number[];
+    } else {
+      realEndDate = shippingOperation.startDate;
+    }
     const deviation = calculateDeviation(endDateInContract, realEndDate);
 
+    // console.log(number, deviation);
     const isOverdueByProject = convertToDayjs(endDateInContract).isBefore(
       convertToDayjs(operations.at(-1)?.startDate as number[]),
       'd'

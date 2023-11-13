@@ -105,7 +105,7 @@ To run this project, you will need to add the following environment variables to
 
   ```sh
   # docker prod mode
-  docker build -f Dockerfile.prod -t eld11ar/trae-front .
+  docker build -f Dockerfile.prod -t traebuilds/fontend .
   ```
 
   ```sh
