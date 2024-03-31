@@ -56,6 +56,11 @@
       background-color: var(--red); 
       color: var(--white);
     }
+	
+	&_finishedProject {
+      background-color: var(--green); 
+      color: var(--white);
+    }
 
     &_deviation {
       overflow: visible;

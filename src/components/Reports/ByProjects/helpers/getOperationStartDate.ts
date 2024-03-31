@@ -4,35 +4,33 @@ import { ProjectOperation } from '../../../../store/apis/reports/types';
 
 export function getOperationStartDate(
   repStartDate: number[],
-  operation: ProjectOperation
+  operation: ProjectOperation,
+  overdueDays: number
 ) {
-  const reportStartDate = convertToDayjs(repStartDate);
-  const operationStartDate = convertToDayjs(
-    operation.isEnded
-      ? ((operation.acceptanceDate !== null
-          ? operation.acceptanceDate
-          : operation.realEndDate) as number[])
-      : operation.startDate
-  );
-  const operationEndDate = convertToDayjs(
-    operation.isEnded
-      ? (operation.realEndDate as number[])
-      : operation.plannedEndDate
-  );
-
-  if (
-    operationStartDate.isBefore(reportStartDate) &&
-    (operationEndDate.isAfter(reportStartDate) ||
-      operationEndDate.isSame(reportStartDate))
-  ) {
-    return convertToString(repStartDate);
+  const now = new Date();
+  //console.log([now.getFullYear(), now.getMonth()+1, now.getDate(), now.getHours(), now.getMinutes(), now.getSeconds()] as number[]);
+  
+  
+  if (operation.inWork || operation.isEnded){
+	if (operation.acceptanceDate !== null){
+	  return convertToString(operation.acceptanceDate);
+	} else {
+	  return convertToString(operation.startDate);
+	}
   }
-
-  return convertToString(
-    operation.isEnded
-      ? ((operation.acceptanceDate !== null
-          ? operation.acceptanceDate
-          : operation.realEndDate) as number[])
-      : operation.startDate
-  );
+  
+  if (operation.inWork == false){
+    if (operation.readyToAcceptance){
+	  const startDate = convertToString([now.getFullYear(), now.getMonth()+1, now.getDate(), now.getHours(), now.getMinutes(), now.getSeconds()] as number[]);	
+	  console.log("readyToAcceptance; "+now.getFullYear()+"-"+String(now.getMonth()+1)+"-"+now.getDate()+"; "+operation.name+"; "+startDate);
+      return startDate
+	  
+	} else {	  
+	  const planedStartDate = new Date (String(operation.startDate[0])+'-'+String(operation.startDate[1])+'-'+String(operation.startDate[2]));	  
+	  let planedStartDateShift = new Date(String(operation.startDate[0])+'-'+String(operation.startDate[1])+'-'+String(operation.startDate[2]));
+	  planedStartDateShift.setDate(planedStartDateShift.getDate() + overdueDays);	  
+	  return convertToString([planedStartDateShift.getFullYear(), planedStartDateShift.getMonth()+1, planedStartDateShift.getDate(), planedStartDateShift.getHours(), planedStartDateShift.getMinutes(), planedStartDateShift.getSeconds()] as number[]);
+	}
+  }
+  
 }
