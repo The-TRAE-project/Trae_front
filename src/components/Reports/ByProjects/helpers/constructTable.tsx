@@ -4,7 +4,7 @@ import {
   Row,
   createColumnHelper,
 } from '@tanstack/react-table';
-import dayjs from 'dayjs';
+import dayjs , { Dayjs } from 'dayjs';
 import classNames from 'classnames';
 import { ProjectsReportTableData } from '../ReportTable';
 import { convertMonthToString } from '../../../../helpers/convertMonthToString';
@@ -14,6 +14,7 @@ import { getDatesBetween } from '../../helpers/getDatesBetween';
 import { calculateDeviation } from '../../helpers/calculateDeviation';
 import { getCeilLength } from './getCeilLength';
 import { getOperationDateRange } from './getOperationDateRange';
+import { getProjectDaysOverdue } from './getProjectDaysOverdue';
 import { convertToDayjs } from '../../../../helpers/convertToDayjs';
 import { DateCell } from '../ReportTable/DateCell/DateCell';
 import styles from '../ReportTable/ReportTable.module.scss';
@@ -37,6 +38,7 @@ export interface NumberCellInfo {
   number: number;
   isOverdueByOperations: boolean;
   isOverdueByProject: boolean;
+  projectIsEnded: boolean;
 }
 
 export interface TableData {
@@ -77,52 +79,32 @@ function constructTableData(data: ProjectsReportTableData) {
     } else {
       realEndDate = shippingOperation.startDate;
     }
-    let deviation = -0;
-
-    
+    let deviation = -0;    
     let isOverdueByOperations = false;
-
     const row: TableData = {};
 
     datesArray.forEach((date) => {
-      const isEndDateInContract = endDateInContractAsString === date;
-
-      row[date] = { isEndDateInContract, projectId };
+		const isEndDateInContract = endDateInContractAsString === date;
+		row[date] = { isEndDateInContract, projectId };
     });
 
-	//	---Find minStartDate and maxEndDate for futures operations	
-	const FutureOperationsStartDates = [];
-	const FutureOperationsEndDates = [];	
-	let overdueDays: number = 0;
-	operations.forEach((currentOperation, operationIndex) => {
-		if ((currentOperation.isEnded == false)&&(currentOperation.inWork == false)){			
-			FutureOperationsStartDates.push(convertToDate([currentOperation.startDate[0],currentOperation.startDate[1],currentOperation.startDate[2]]));
-			FutureOperationsEndDates.push(convertToDate([currentOperation.plannedEndDate[0],currentOperation.plannedEndDate[1],currentOperation.plannedEndDate[2]]));			
-		}
-	});    
-	const now = new Date();
-	const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-	if (FutureOperationsStartDates.length > 0){
-		const FutureOperationsMinStartDate = FutureOperationsStartDates.reduce(function(a, b) { return a < b ? a : b; });
-		overdueDays = Math.ceil((today - FutureOperationsMinStartDate)/(1000 * 3600 * 24));
-		if (overdueDays < 0) {
-		  overdueDays = 0;
-		}
-		console.log("Project number: "+project.number + "; overdue days: " + overdueDays);
-	}
-	if (FutureOperationsEndDates.length > 0){
-		const FutureOperationsMaxEndDate = FutureOperationsEndDates.reduce(function(a, b) { return a > b ? a : b; });	  
-	}
+	//	--getProjectDaysOverdue
+	var overdueDays:number = getProjectDaysOverdue (operations);
+	/*
+	console.log(
+		"Project number: "+project.number
+		+"; isEnded: "+project.isEnded
+		+"; ContractDate: "+convertToDayjs(project.endDateInContract).format("YYYY-MM-DD")
+		+"; overdue days: "+overdueDays
+	);
+	*/
 	
-		
-	//----------------------------------------------------------------------------------------------
-	
-	let maxPlannedEndDate = convertToDayjs(project.endDateInContract);	
+	var maxPlannedEndDate:Dayjs = convertToDayjs(project.endDateInContract);	
 	operations.forEach((currentOperation, operationIndex) => {		
-		const operationDateRange = getOperationDateRange(data.dateStart, currentOperation, overdueDays);
-		const startDate = operationDateRange[0];
-		const plannedEndDate = operationDateRange[1];
-		maxPlannedEndDate= (plannedEndDate.isAfter(maxPlannedEndDate) ? plannedEndDate : maxPlannedEndDate);
+		var operationDateRange:Dayjs[] = getOperationDateRange(currentOperation, overdueDays)!;
+		var startDate:Dayjs = operationDateRange[0];
+		var plannedEndDate:Dayjs = operationDateRange[1];
+		maxPlannedEndDate = (plannedEndDate.isAfter(maxPlannedEndDate) ? plannedEndDate : maxPlannedEndDate);
 	  	  
         const isOverdue =
         (currentOperation.isEnded &&
@@ -134,9 +116,17 @@ function constructTableData(data: ProjectsReportTableData) {
 
       isOverdueByOperations = isOverdue ? true : isOverdueByOperations;
       
-      console.log("Operation: "+currentOperation.name+"; planedStartDate: "+convertToString(currentOperation.startDate)+"; newStartDate: "+startDate+"; plannedEndDate: "+ convertToString(currentOperation.plannedEndDate)+"; newPlannedEndDate: "+ plannedEndDate.format("YYYY-MM-DD")+"; realEndDate: "+ (currentOperation.realEndDate ? convertToString(currentOperation.realEndDate) : ''));
+		/*console.log(
+			"Operation: "+currentOperation.name
+			+"; planedStartDate: "+convertToString(currentOperation.startDate)
+			+"; plannedEndDate: "+ convertToString(currentOperation.plannedEndDate)
+			+"; newStartDate: "+startDate.format("YYYY-MM-DD")			
+			+"; newPlannedEndDate: "+ plannedEndDate.format("YYYY-MM-DD")
+			+"; realEndDate: "+ (currentOperation.realEndDate ? convertToString(currentOperation.realEndDate) : '')
+		);
+		*/
 	  
-      const isInReport = row[startDate] !== undefined;
+      const isInReport = row[startDate.format('YYYY-MM-DD')] !== undefined;
 
       if (isInReport) {
         const nextOperation = operations.find((op) => {
@@ -153,13 +143,15 @@ function constructTableData(data: ProjectsReportTableData) {
             : getCeilLength(               
 				startDate,
 				plannedEndDate,
+				convertToDayjs(data.dateStart),
+				convertToDayjs(data.dateEnd)
               );
-        const isEndDateInContract = endDateInContractAsString === startDate;
+        const isEndDateInContract = endDateInContractAsString === startDate.format('YYYY-MM-DD');
 
         const isOverlapping =
-          (row[startDate] as Partial<OperationCellInfo>).id !== undefined;
+          (row[startDate.format('YYYY-MM-DD')] as Partial<OperationCellInfo>).id !== undefined;
 
-        row[startDate] = {
+        row[startDate.format('YYYY-MM-DD')] = {
           isEndDateInContract,
           projectId,
           id: currentOperation.id,
@@ -177,15 +169,13 @@ function constructTableData(data: ProjectsReportTableData) {
 		maxPlannedEndDate.diff(convertToDayjs(project.endDateInContract), 'd') :
 		convertToDayjs(project.endDateInContract).diff(maxPlannedEndDate, 'd')
 	);
-	const isOverdueByProject = convertToDayjs(endDateInContract).isBefore(
-      maxPlannedEndDate,
-      'd'
-    );
-	const projectIsEnded = project.isEnded
-	console.log("isOverdueByProject: "+isOverdueByProject);
-	console.log("isEnded: "+project.isEnded);
-	console.log(convertToDayjs(project.endDateInContract).format("YYYY-MM-DD")+"; "+maxPlannedEndDate.format("YYYY-MM-DD"));
-	console.log("deviation: "+deviation);
+	const isOverdueByProject = convertToDayjs(endDateInContract).isBefore(maxPlannedEndDate,'d');
+	const projectIsEnded:boolean = project.isEnded;
+	//console.log("isOverdueByProject: "+isOverdueByProject);
+	//console.log("isEnded: "+project.isEnded);
+	//console.log("endDateInContract: "+convertToDayjs(project.endDateInContract).format("YYYY-MM-DD")+"; maxPlannedEndDate: "+maxPlannedEndDate.format("YYYY-MM-DD"));
+	//console.log("deviation: "+deviation);
+	//console.log("-----------------------------------------------");
 	
 	
     row.name = name;

@@ -5,6 +5,7 @@ import { convertToString } from '../../../../helpers/convertToString';
 import { ProjectsReportTableData } from '../ReportTable';
 import { calculateDeviation } from '../../helpers/calculateDeviation';
 import { getDatesBetween } from '../../helpers/getDatesBetween';
+import { getProjectDaysOverdue } from './getProjectDaysOverdue';
 import { getOperationStartDate } from './getOperationStartDate';
 import { convertNumberToColumn } from '../../helpers/convertNumberToColumn';
 import { getCeilLength } from './getCeilLength';
@@ -72,8 +73,9 @@ function constructExcelBody(data: ProjectsReportTableData) {
     }
     const deviation = calculateDeviation(endDateInContract, realEndDate);
 
+	var overdueDays:number = getProjectDaysOverdue (operations);	
     operations.forEach((currentOperation) => {
-      const startDate = getOperationStartDate(data.dateStart, currentOperation);
+      const startDate = getOperationStartDate(currentOperation, overdueDays);
 
       const index = tableOperationsData.findIndex(
         (cell) => cell[0] === startDate
@@ -244,10 +246,12 @@ function constructExcelStyles(data: ProjectsReportTableData) {
       cellName.column += 1;
     }
 
+	var overdueDays:number = getProjectDaysOverdue (operations);
+	//console.log ("overdueDays 2: "+overdueDays);
     datesArray.forEach((date) => {
       const currentOperation = operations.reduce(
         (result: undefined | ProjectOperation, op) => {
-          const startDate = getOperationStartDate(data.dateStart, op);
+          const startDate = getOperationStartDate(op, overdueDays);
           result = startDate === date ? op : result;
           return result;
         },
@@ -292,11 +296,13 @@ function constructExcelStyles(data: ProjectsReportTableData) {
           currentOperation.name === 'Отгрузка'
             ? 1
             : getCeilLength(
-                data.dateStart,
-                data.dateEnd,
-                currentOperation,
-                operationPeriod,
-                nextOperation
+                convertToDayjs(data.dateStart),
+                convertToDayjs(data.dateEnd),
+				convertToDayjs(data.dateStart),
+				convertToDayjs(data.dateEnd),
+                //currentOperation,
+                //operationPeriod,
+                //nextOperation
               );
         let backgroundColor = '';
         let textColor = '';
